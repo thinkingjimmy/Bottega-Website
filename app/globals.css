@@ -43,6 +43,20 @@ p {
   margin: 0;
 }
 
+/* ── --bleed 必须注册 ────────────────────────────────────────────
+ * 未注册的自定义属性在 getComputedStyle 里原样返回记号流（拿到的是字符串
+ * "min(120px, 6.5vw)" 而不是 "93.6px"），hero.tsx 读它算收缩终点会得到
+ * NaN，横向收缩于是整个失效——而且是静默失效：页面照样好看，只是那台机器
+ * 再也不往里收了。注册成 <length> 之后它在计算值阶段就落成 px。
+ * 不支持 @property 的浏览器仍取到字符串，parseFloat 落回 0：不收缩，
+ * 但不塌——降级而非损坏。
+ * ────────────────────────────────────────────────────────── */
+@property --bleed {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
 /* ============================================================
  * 1 · token
  *
@@ -92,8 +106,17 @@ p {
     "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
-  --wrap: 1200px;
-  --gutter: 40px;
+  /* ── 全页左右边界的唯一真相源 ────────────────────────────────
+   * 首屏那台机器收缩到位后左右各让出的量。这一个数同时决定三件事：
+   * 舞台的收缩终点（hero.tsx 读它，不再自己算一遍）、站点 header 的
+   * 内缩、以及正文每一节的边界——于是「header 与正文对不齐」这件事
+   * 没有发生的余地。
+   *
+   * 正文相对舞台边缘再让 --gutter：卡片是一块表面，文字不该贴着它的
+   * 圆角起头。header 与正文让的是同一个量，所以它们共用一条竖线。
+   * ────────────────────────────────────────────────────────── */
+  --bleed: min(120px, 6.5vw);
+  --gutter: 8px;
 }
 
 [data-theme="dark"] {
@@ -156,9 +179,8 @@ h3 {
 
 .wrap {
   width: 100%;
-  max-width: var(--wrap);
   margin: 0 auto;
-  padding: 0 var(--gutter);
+  padding: 0 calc(var(--bleed) + var(--gutter));
 }
 
 /* 明暗两版字标都在 DOM 里，靠这两条让其中一版让位。
@@ -188,21 +210,37 @@ h3 {
   opacity: 0.86;
 }
 
+/* 导航条上已经有两条文字链和一颗实心 CTA。再给开关加一圈描边，它就成了
+   第三种形状，跟谁都不是一族——而它要说的话（换个主题）远没有重要到值得
+   一种自己的形状。去掉边，它就退回文字链那一族：静息是弱对比，指过去才
+   浮出一块底色。 */
 .icon-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
+  border: 0;
   border-radius: 9999px;
-  border: 1px solid var(--line-2);
   background: transparent;
-  color: var(--ink);
+  color: var(--ink-3);
   cursor: pointer;
-  transition: background 140ms ease;
+  transition: background 160ms ease, color 160ms ease;
 }
 .icon-btn:hover {
   background: var(--ground-2);
+  color: var(--ink);
+}
+.icon-btn:focus-visible {
+  outline: 2px solid var(--ink-3);
+  outline-offset: 2px;
+}
+/* 昼夜两枚字形换的是同一件东西，所以是转过去，不是闪一下。 */
+.icon-btn svg {
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-theme="dark"] .icon-btn svg {
+  transform: rotate(-40deg);
 }
 
 :focus-visible {
@@ -248,7 +286,7 @@ h3 {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 0 calc(var(--stage-x, 0px) + 8px);
+  padding: 0 calc(var(--stage-x, 0px) + var(--gutter));
   opacity: var(--stage-p, 0);
   overflow: hidden;
 }
@@ -342,7 +380,9 @@ h3 {
   align-items: center;
   justify-content: center;
   gap: 24px;
-  padding: 0 0 40px;
+  /* 上缘多让 20px：居中只保证两头等分，而这一头顶着的是系统菜单栏，
+     等分下来仍然贴得太近——那条带子需要一点自己的空气。 */
+  padding: 20px 0 40px;
 }
 
 /* 深色玻璃：亮暗两张壁纸上同一套值都成立，故不分主题。 */
@@ -386,16 +426,28 @@ h3 {
 /* ============================================================
  * 4 · 产品窗口
  *
- * 几何取自 apps/desktop/src/components/sidebar：行高 32px、
- * 行首 16px 等宽槽内放 14px 痕迹、分组标签是 /35 弱对比。
- * 抄的是真组件的数，不是眼量的近似值——差 2px 就不像同一个产品。
+ * 几何逐项抄自 apps/desktop，不是眼量的近似值——差 2px 就不像同一个产品：
+ *   侧栏宽 256px（lib/sidebar-layout 的 SIDEBAR_DEFAULT_WIDTH）；
+ *   行高 32px、内边距 8px、行首 16px 等宽槽内放 14px 痕迹（sidebar-row.tsx）；
+ *   子行缩进 24px（SIDEBAR_SUB_ROW_INDENT = pl-6）；
+ *   分组标签 12px、/70 弱对比（ui 的 SidebarGroupLabel）；
+ *   页头 40px（page-shell 的 --page-shell-header-height），标题 14px/500；
+ *   输入框圆角 18px（rounded-2xl）、发送钮 28px（InputGroupButton 的 icon-sm）。
+ *
+ * 侧栏 12px、聊天与输入框 14px：产品里这两处本就是 text-xs 与 text-sm。
+ * 统一成一个字号会让边栏抢走正文的位置——密度也是层级的一部分。
  * ============================================================ */
+/* `flex: 0 1 auto` + `min-height: 0`：视口一矮，窗口先被压扁，而不是
+   顶穿上面那条系统菜单栏。`justify-content: center` 的容器里，超长的
+   `flex: none` 子项会向两头同时溢出——溢出的上半截正好压在菜单栏上。
+   压扁之后内容由 `.chat` 自己滚，所以压扁不等于截断。 */
 .window {
   position: relative;
   z-index: 2;
-  flex: none;
-  width: min(1000px, 92%);
-  height: min(600px, 62vh);
+  flex: 0 1 auto;
+  min-height: 0;
+  width: min(1080px, 92%);
+  height: min(660px, calc(100vh - 260px));
   display: flex;
   border-radius: 12px;
   overflow: hidden;
@@ -409,13 +461,15 @@ h3 {
 
 .win-sidebar {
   flex: none;
-  width: 248px;
+  width: 256px;
   display: flex;
   flex-direction: column;
   background: var(--app-sidebar);
   border-right: 1px solid var(--app-border);
 }
 
+/* mac 把折叠钮浮在红绿灯旁，字标因此让到下一行——那条 40px 是窗口的
+   拖拽带，不是产品的地界。 */
 .traffic {
   display: flex;
   align-items: center;
@@ -430,15 +484,74 @@ h3 {
   border-radius: 9999px;
   display: block;
 }
-
-.group-label {
-  padding: 10px 8px 2px;
-  font-size: 11.5px;
-  font-weight: 500;
-  color: var(--app-muted-fg);
-  opacity: 0.62;
+.traffic .icon-slot {
+  margin-left: 6px;
 }
 
+/* 真值：`flex h-12 items-center px-2` 里放一张 `h-8 w-auto` 的字标
+   （app-sidebar.tsx + lib/brand.ts）。48px 的行配 32px 的图——字标是这块屏
+   上唯一的品牌落点，缩到 19px 就成了一行小字，而不是一个标识。 */
+.brand {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 48px;
+  padding: 0 8px;
+}
+.brand img {
+  margin-right: auto;
+}
+
+/* 28px 命中区里放 16px 痕迹：搜索、通知、折叠、第三栏开合共用这一档，
+   它们同处一条基线，尺寸各写各的肉眼立刻看得出台阶。 */
+.icon-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border-radius: 6px;
+  color: var(--app-muted-fg);
+}
+
+.sidebar-nav {
+  flex: none;
+  padding: 0 6px 4px;
+}
+/* 真侧栏是滚的。滚动条藏起来是因为这是一张产品照，不是因为列表到此为止——
+   Show more 放进来的两行仍然到得了。 */
+.sidebar-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 0 6px;
+}
+.sidebar-scroll::-webkit-scrollbar {
+  display: none;
+}
+.sidebar-foot {
+  flex: none;
+  padding: 4px 6px 6px;
+}
+
+.group-label {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--app-muted-fg);
+}
+
+/* ── 行：一套词汇，三个宿主 ────────────────────────────────────────
+ * 根级导航、Project 折叠区里的 chat、根级 Chats 里的 chat 共用这一条。
+ * 缩进已经把「我是子行」说完了，行高再说一遍就是第二种说法。
+ * 行首那一格不改颜色：agent 的 logo 要自陈其色（claude 通体品牌橙、
+ * kimi 一点品牌蓝），一旦在这里统一涂灰，四家就成了同一家。
+ * ────────────────────────────────────────────────────────── */
 .row {
   display: flex;
   align-items: center;
@@ -447,33 +560,39 @@ h3 {
   height: 32px;
   padding: 0 8px;
   border: 0;
-  border-radius: 7px;
+  border-radius: 8px;
   background: transparent;
   color: var(--app-fg);
-  font-size: 13.5px;
+  font-size: 12px;
   text-align: left;
-  transition: box-shadow 120ms ease;
+}
+.row.sub {
+  padding-left: 24px;
+}
+.row.dim {
+  color: var(--app-muted-fg);
 }
 button.row {
   cursor: pointer;
 }
-button.row:hover {
-  box-shadow: inset 0 0 0 1px var(--app-border);
-}
+button.row:hover,
 .row.on {
   background: var(--app-accent);
 }
-.row .mark {
+.row.on {
+  font-weight: 500;
+}
+.mark {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 16px;
   height: 16px;
   flex: none;
-  color: var(--app-muted-fg);
 }
-.row.on .mark {
-  color: var(--app-fg);
+.emoji {
+  font-size: 13px;
+  line-height: 1;
 }
 .row .title {
   min-width: 0;
@@ -485,6 +604,7 @@ button.row:hover {
 .win-main {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
 }
@@ -493,36 +613,42 @@ button.row:hover {
   flex: none;
   display: flex;
   align-items: center;
-  gap: 10px;
-  height: 44px;
+  gap: 8px;
+  height: 40px;
   padding: 0 16px;
   border-bottom: 1px solid var(--app-border);
 }
-
-.pill {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  height: 24px;
-  padding: 0 10px;
-  border-radius: 9999px;
-  border: 1px solid var(--app-border);
-  font-size: 12px;
-  color: var(--app-muted-fg);
+.win-title {
+  min-width: 0;
+  overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 /* 真聊天窗里消息压在输入框上方，不是顶在标题下——顶对齐会在
    中间留一块死白，那块白不是留白，是「这里本该有内容却没有」。 */
+/* 真聊天窗里消息压在输入框上方，不是顶在标题下——顶对齐会在中间留一块
+   死白，那块白不是留白，是「这里本该有内容却没有」。
+   贴底用 `margin-top: auto` 而不是 `justify-content: flex-end`：后者一旦
+   溢出，顶部那几条会被滚动条够不着（flex 溢出的老毛病），于是「压在底部」
+   与「滚得动」二者只能得一。滚动条藏起来是因为这是一张产品照。 */
 .chat {
   flex: 1;
   min-height: 0;
-  overflow: hidden;
-  padding: 20px 22px 8px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 20px 24px 8px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   gap: 14px;
+}
+.chat::-webkit-scrollbar {
+  display: none;
+}
+.chat > :first-child {
+  margin-top: auto;
 }
 
 .bubble {
@@ -531,57 +657,691 @@ button.row:hover {
   border-radius: 12px;
   background: var(--app-accent);
   padding: 11px 14px;
-  font-size: 13.5px;
+  font-size: 14px;
   line-height: 1.5;
 }
 
+/* ── 计时头：标签在前，箭头紧随其后，下缘一条全宽发丝线 ────────────
+ * 抄自 chat/transcript 的 WorkedForRow：`w-full border-b pb-2` +
+ * `Marker`（14px 弱对比一行）+ 尾随的 `ChevronRight`，展开时旋 90°。
+ * 那条线不是装饰，它说的是「过程到此为止，下面是结论」。
+ * 箭头不推到行尾：推过去，标签与它之间会裂开一片空白，整行读成两栏表格。
+ * ────────────────────────────────────────────────────────── */
+.turn {
+  width: 100%;
+}
+.worked {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0 0 8px;
+  border: 0;
+  border-bottom: 1px solid var(--app-border);
+  background: transparent;
+  color: var(--app-muted-fg);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+.worked:hover {
+  color: var(--app-fg);
+}
+.worked-caret {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  transition: transform 160ms ease;
+}
+.worked-caret.on {
+  transform: rotate(90deg);
+}
+/* 痕迹不额外缩进：行首那格图标槽已经把「我是过程」说清楚了，
+   再加一段左padding 就成了第二种说法。 */
+.turn-parts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 16px;
+  font-size: 14px;
+  color: var(--app-muted-fg);
+}
 .trace {
   display: flex;
   align-items: flex-start;
-  gap: 9px;
-  font-size: 13px;
+  gap: 8px;
   line-height: 1.5;
-  color: var(--app-muted-fg);
+}
+.trace .mark {
+  margin-top: 3px;
 }
 
+/* ── Plan 卡：抄自 chat/transcript 的 chat-plan-card.tsx ────────────
+ * 预览有上限，够不着的部分由底部那道渐变自陈——截断若不留痕迹，
+ * 人会以为已经读完了。
+ * ────────────────────────────────────────────────────────── */
+.plan-card {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--app-border);
+  border-radius: 18px;
+  background: var(--app-bg);
+}
+.plan-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--app-muted-fg);
+}
+.plan-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.plan-body {
+  position: relative;
+  max-height: 150px;
+  overflow: hidden;
+  padding-top: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.62;
+}
+.plan-body h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+.plan-body h4 {
+  margin: 14px 0 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.plan-fade {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 80px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--app-bg) 78%);
+}
+
+/* 反引号即 code。演示里出现的行内标记只有它，为剩下的九成 markdown
+   语法装一个解析器不划算。 */
+.chat code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--app-accent);
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+}
+
+.reply {
+  font-size: 14px;
+  line-height: 1.62;
+}
+.reply ul,
+.plan-body ul {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.plan-body ul {
+  margin-top: 0;
+}
+.reply li,
+.plan-body li {
+  position: relative;
+  padding-left: 18px;
+}
+.reply li::before,
+.plan-body li::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--app-muted-fg);
+}
+
+/* ── 流式状态行：orb + 扫光文字 ────────────────────────────────────
+ * 抄自 ai-elements 的 ThinkingShimmer / Shimmer：orb 与工具图标同槽同号
+ * （16px 槽里 14px 字形），文字是 text-transparent + background-clip 的
+ * 扫动渐变，两端同色故瓦片接缝无痕。
+ * 恒为一行：它表达的是「此刻在做什么」这一瞬态事实，占多少高度不该由
+ * 内容长度决定，否则每换一个工具整条流就抖一次。
+ * ────────────────────────────────────────────────────────── */
+@keyframes bt-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+.shimmer-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 4px 0;
+}
+.shimmer {
+  display: inline-block;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  user-select: none;
+  background-image: linear-gradient(
+    90deg,
+    var(--app-muted-fg) 40%,
+    var(--app-fg) 50%,
+    var(--app-muted-fg) 60%
+  );
+  background-size: 200% 100%;
+  background-repeat: repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: bt-shimmer 2s linear infinite;
+}
+
+/* ── 输入框：两行，不是一行 ────────────────────────────────────────
+ * 上行只管写字，下行左侧是这一轮怎么跑、右侧是谁来跑。把它们挤进一行
+ * 就得让文字与七颗控件抢同一条基线，长模型名一到位，输入区先塌。
+ * ────────────────────────────────────────────────────────── */
 .composer {
   flex: none;
   margin: 0 16px 16px;
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
   border: 1px solid var(--app-border);
-  border-radius: 14px;
-  padding: 6px 8px;
+  border-radius: 18px;
+  background: var(--app-bg);
 }
-.composer .field {
-  flex: 1;
-  min-width: 0;
-  padding: 9px 4px;
-  font-size: 13.5px;
+.composer-field {
+  padding: 13px 14px 6px;
+  font-size: 14px;
   color: var(--app-muted-fg);
 }
-.composer .ghost {
+.composer-tools {
   display: flex;
   align-items: center;
+  gap: 4px;
+  padding: 0 8px 8px;
+}
+.composer-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.tool,
+.tool-round {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   gap: 6px;
-  height: 30px;
-  padding: 0 11px;
+  height: 32px;
+  border: 0;
   border-radius: 9999px;
-  border: 1px solid var(--app-border);
-  font-size: 12.5px;
+  background: transparent;
+  color: var(--app-muted-fg);
+  font-size: 14px;
+  white-space: nowrap;
+}
+.tool {
+  min-width: 0;
+  padding: 0 6px;
+}
+.tool-round {
+  width: 32px;
+  flex: none;
+}
+/* 按得下去的才给手型与底色。静态那两颗是这张照片的一部分，
+   给它们悬停反馈等于许一个按不动的诺。 */
+.tool-btn {
+  cursor: pointer;
+  color: var(--app-fg);
+  transition: background 120ms ease;
+}
+.tool-btn:hover,
+.tool-btn.on {
+  background: var(--app-accent);
+}
+.tool .tool-name {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* 名长者让位：模型名省略，档位短且不可猜，整块保留。 */
+.tool-dim {
+  flex: none;
   color: var(--app-muted-fg);
 }
-.composer .send {
+
+.send {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 9999px;
   background: var(--app-primary);
   color: var(--app-primary-fg);
   flex: none;
+}
+
+/* 菜单向上向右开：这一行贴着窗口底边，向下没有地方可去。 */
+.menu-host {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+.menu-panel {
+  position: absolute;
+  z-index: 6;
+  right: 0;
+  bottom: calc(100% + 4px);
+  min-width: 240px;
+  padding: 4px;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  background: var(--app-bg);
+  box-shadow:
+    0 1px 2px rgba(27, 26, 22, 0.08),
+    0 16px 40px -12px rgba(27, 26, 22, 0.3);
+}
+[data-theme="dark"] .menu-panel {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.5),
+    0 16px 40px -12px rgba(0, 0, 0, 0.7);
+}
+.menu-label {
+  padding: 6px 8px 2px;
+  font-size: 11.5px;
+  color: var(--app-muted-fg);
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 34px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--app-fg);
+  font-size: 14px;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.menu-item:hover {
+  background: var(--app-accent);
+}
+.menu-item-body {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+.menu-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+/* ── 问题卡：agent 在等你回话时，输入框整只让位 ──────────────────────
+ * 抄自 chat/composer 的 chat-user-input-selector.tsx。让位而不是并排，
+ * 是因为此刻你能做的就只有回话——摆着一个能打字的框，是让人去猜。
+ *
+ * 徽章直径 = 它对齐的那一行的行高（20px 徽章对 20px 标题行）：上下沿正好
+ * 扣在标题行盒上，越不进描述行。数不是拍的，是这条律推出来的。
+ * 行尾不画「点了就走」的箭头：整行就是按钮，hover 有底色，这句话已经说过。
+ * ────────────────────────────────────────────────────────── */
+.ask-card {
+  flex: none;
+  margin: 0 16px 16px;
+  padding: 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 18px;
+  background: var(--app-bg);
+}
+.ask-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 32px;
+}
+.ask-title {
+  min-width: 0;
+  flex: 1;
+}
+.ask-eyebrow {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  color: var(--app-muted-fg);
+}
+.ask-head h2 {
+  padding-top: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+.ask-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 20px;
+}
+.ask-option {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: start;
+  column-gap: 10px;
+  width: 100%;
+  padding: 6px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--app-fg);
+  text-align: left;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+.ask-option:hover,
+.ask-option.lit {
+  background: var(--app-accent);
+}
+.ask-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border: 1px solid var(--app-border);
+  border-radius: 9999px;
+  background: var(--app-bg);
+  color: var(--app-muted-fg);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.ask-option[aria-pressed="true"] .ask-badge {
+  border-color: transparent;
+  background: var(--app-primary);
+  color: var(--app-primary-fg);
+}
+.ask-label {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-weight: 500;
+}
+.ask-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+  flex: none;
+  padding: 0 6px;
+  border: 1px solid var(--app-border);
+  border-radius: 9999px;
+  background: var(--app-bg);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--app-muted-fg);
+}
+.ask-desc {
+  grid-column: 2;
+  color: var(--app-muted-fg);
+}
+.ask-other {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 6px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--app-muted-fg);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+.ask-other:hover {
+  color: var(--app-fg);
+}
+
+/* ── 模型面板：两张脸，因为产品有两张脸 ────────────────────────────
+ * Codex 是 `modelOptions: "full"`——一条蓝色档位滑轨 + Fast 开关，
+ * Advanced 之后才是列表；其余三家是 `list-only`——Model / Effort 两行
+ * 摘要，点进去才是列表。这不是两种设计口味，是能力位的直接后果。
+ * ────────────────────────────────────────────────────────── */
+.menu-quick {
+  min-width: 288px;
+  padding: 12px;
+}
+.quick-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.quick-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--app-muted-fg);
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+.quick-link:hover {
+  color: var(--app-fg);
+}
+.quick-zap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--app-muted-fg);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.quick-zap:hover:not(:disabled) {
+  background: var(--app-accent);
+  color: var(--app-fg);
+}
+.quick-zap.on {
+  color: #3598f6;
+}
+.quick-zap:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── 档位滑轨 ────────────────────────────────────────────────────
+ * 28px 胶囊，蓝色填到当前档，每档钉一颗点。用原生 range 而不是自己造：
+ * 拖拽、键盘、无障碍三件事它天生就对。
+ * 填充边界写成 calc(14px + (100% − 28px) × p)，而不是裸的 p%——把手travel
+ * 的两端各让了半个把手，裸百分比会让色界与把手中心一路错开。
+ * ────────────────────────────────────────────────────────── */
+.slider-shell {
+  position: relative;
+  margin-top: 12px;
+  height: 28px;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    #3598f6 var(--fill),
+    var(--app-accent) var(--fill)
+  );
+  cursor: pointer;
+  outline: none;
+}
+.slider:disabled {
+  cursor: default;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--app-border);
+  border-radius: 9999px;
+  background: var(--app-bg);
+  box-shadow: 0 1px 3px rgba(27, 26, 22, 0.24);
+}
+.slider::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--app-border);
+  border-radius: 9999px;
+  background: var(--app-bg);
+}
+.slider-dots {
+  position: absolute;
+  z-index: 2;
+  left: 14px;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.slider-dots i {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--app-muted-fg) 50%, transparent);
+}
+.slider-dots i.on {
+  background: rgba(255, 255, 255, 0.45);
+}
+@keyframes bt-spark {
+  from {
+    transform: translateX(15rem) scale(0.65);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.85;
+  }
+  to {
+    transform: translateX(-2rem) scale(1);
+    opacity: 0;
+  }
+}
+.slider-sparks {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.8);
+}
+.spark {
+  position: absolute;
+  left: 0;
+  animation: bt-spark 1.7s linear infinite;
+}
+
+/* 摘要行：标签吃掉全部余量，值列与箭头各自定宽——否则箭头会与值平分
+   空隙，值于是浮在行中间。 */
+.summary-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 32px;
+  padding: 8px 6px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--app-fg);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+.summary-row:disabled {
+  cursor: default;
+}
+.summary-row:not(:disabled):hover {
+  background: var(--app-accent);
+}
+.summary-label {
+  flex: 1;
+  font-weight: 500;
+}
+.summary-value {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--app-muted-fg);
+}
+.menu-back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  padding: 4px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--app-fg);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 /* App 表面：取自 apps/desktop/src/components/bases/views/table */
@@ -705,6 +1465,7 @@ button.row:hover {
 }
 
 .checks {
+  max-width: 62ch;
   display: flex;
   flex-direction: column;
   gap: 11px;
@@ -755,9 +1516,11 @@ button.row:hover {
 }
 
 /* changelog */
+/* 第二栏封顶而不是吃满余量：容器宽了不等于句子该变长，
+   1000px 一行的 15.5px 正文没人读得完一行还找得回下一行的开头。 */
 .entry {
   display: grid;
-  grid-template-columns: 172px 1fr;
+  grid-template-columns: 172px minmax(0, 72ch);
   gap: 40px;
   padding: 38px 0;
   border-top: 1px solid var(--line);
@@ -807,57 +1570,16 @@ button.row:hover {
     transform: none;
   }
 }
-@keyframes bt-pulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.4;
-    transform: scale(0.78);
-  }
-}
-@keyframes bt-caret {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
-}
-
 .rise {
   animation: bt-rise 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .rise-2 {
   animation-delay: 0.12s;
 }
-.pulse {
-  animation: bt-pulse 1.9s ease-in-out infinite;
-}
-.caret {
-  display: inline-block;
-  width: 2px;
-  height: 1em;
-  vertical-align: -0.15em;
-  background: currentColor;
-  animation: bt-caret 1.1s steps(1) infinite;
-}
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 9999px;
-  background: var(--green-lit);
-  flex: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .rise,
-  .pulse,
-  .caret {
+  .shimmer,
+  .spark {
     animation: none !important;
   }
   .rise {
@@ -877,7 +1599,7 @@ button.row:hover {
  * ============================================================ */
 @media (max-width: 900px) {
   :root {
-    --gutter: 24px;
+    --bleed: 16px;
   }
   .hero-pin {
     height: auto;

@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖 next/link，依赖 ./icons 的 Wordmark
+ * [INPUT]: 依赖 next/link，依赖 ./icons 的 AppIcon
  * [OUTPUT]: 对外提供 SiteFooter 组件
  * [POS]: Bottega-Website 的落款。名字的来历放在这里而不是叫卖区——
  *        它解释的是我们是谁，不是请你买什么
@@ -8,7 +8,7 @@
 
 import Link from "next/link";
 
-import { Wordmark } from "./icons";
+import { AppIcon } from "./icons";
 
 const REPO = "https://github.com/thinkingjimmy/Bottega";
 
@@ -46,7 +46,7 @@ export function SiteFooter() {
       <div className="wrap" style={{ display: "flex", alignItems: "flex-start", gap: 40, flexWrap: "wrap" }}>
         <div style={{ maxWidth: 340 }}>
           <div style={{ marginBottom: 14 }}>
-            <Wordmark height={22} />
+            <AppIcon size={32} />
           </div>
           <p style={{ fontSize: 14, lineHeight: 1.6, color: "var(--ink-3)", marginBottom: 12 }}>
             A bottega was a Renaissance workshop: the master held the direction, the apprentices did the

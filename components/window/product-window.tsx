@@ -1,202 +1,211 @@
+"use client";
+
 /**
- * [INPUT]: 依赖 @/lib/agents 的 AGENTS/LEDGER/LEDGER_SUM，依赖 ./icons 的 Stroke/Glyph/D
+ * [INPUT]: 依赖 react 的 useState，依赖 @/lib/agents 的
+ *          CHATS/PROJECT/PINNED_APPS/PROJECT_PAGE_SIZE/LEDGER/defaultTurn，
+ *          依赖 ./product-transcript 与 ./product-composer，
+ *          依赖 ../icons 的 AgentLogo/Stroke/Wordmark/D
  * [OUTPUT]: 对外提供 ProductWindow 组件
  * [POS]: Bottega-Website 首屏里那台机器。几何逐项抄自
- *        apps/desktop/src/components/sidebar 与 components/bases/views/table，
+ *        apps/desktop/src/components/sidebar 与 chat/composer、page-shell，
  *        不是眼量的近似——差 2px 就不像同一个产品
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
-import { AGENTS, LEDGER, LEDGER_SUM } from "@/lib/agents";
-import { D, Glyph, Stroke } from "./icons";
+import { useState } from "react";
+import {
+  CHATS,
+  LEDGER,
+  LEDGER_SUM,
+  PINNED_APPS,
+  PROJECT,
+  PROJECT_PAGE_SIZE,
+  defaultTurn,
+  type AgentId,
+  type Chat,
+} from "@/lib/agents";
+import { AgentLogo, D, Stroke, Wordmark } from "../icons";
+import { ProductComposer } from "./product-composer";
+import { ProductTranscript } from "./product-transcript";
 
-const PROJECTS = ["Bottega Site", "Household ledger"];
-const APPS = [
-  { name: "Expense Tracker", icon: D.table },
-  { name: "Dev Kanban", icon: D.columns },
-];
+/* ── 行：一套词汇，三个宿主 ────────────────────────────────────────
+ * 根级导航、Project 折叠区里的 chat、根级 Chats 分组里的 chat，在产品里
+ * 本就是同一个 ChatThreadItem 被三处消费。缩进已经把「我是子行」说完了，
+ * 行高再说一遍就成了第二种说法——而两种说法必然有一种多余。
+ * ────────────────────────────────────────────────────────── */
+function Row({
+  mark,
+  title,
+  on,
+  sub,
+  dim,
+  onClick,
+}: {
+  mark: React.ReactNode;
+  title: string;
+  on?: boolean;
+  sub?: boolean;
+  dim?: boolean;
+  onClick?: () => void;
+}) {
+  const className = `row${on ? " on" : ""}${sub ? " sub" : ""}${dim ? " dim" : ""}`;
+  const body = (
+    <>
+      <span className="mark">{mark}</span>
+      <span className="title">{title}</span>
+    </>
+  );
+  return onClick ? (
+    <button type="button" className={className} onClick={onClick} aria-pressed={on}>
+      {body}
+    </button>
+  ) : (
+    <div className={className}>{body}</div>
+  );
+}
 
 export function ProductWindow({
-  chatIndex,
   surface,
-  onPickChat,
+  onSurface,
 }: {
-  chatIndex: number;
   surface: "chat" | "app";
-  onPickChat: (index: number) => void;
+  onSurface: (surface: "chat" | "app") => void;
 }) {
-  const active = AGENTS[chatIndex] ?? AGENTS[0];
+  /* 一个 chat 的 agent/模型/档位是它自己的属性，不是选择器的局部状态：
+     行首那枚 logo、页头那枚 logo、输入框那颗按钮读的都是这一个值，
+     所以换 agent 时三处一起变，不必再有第二处去同步。 */
+  const [chats, setChats] = useState<Chat[]>(CHATS);
+  /* 默认落在 Codex 那条：它是 `modelOptions: "full"` 的唯一一家，
+     首屏第一眼给出的就该是产品最完整的那张脸。 */
+  const [openId, setOpenId] = useState(CHATS[0].id);
+  const [limit, setLimit] = useState(PROJECT_PAGE_SIZE);
+
+  const open = chats.find((chat) => chat.id === openId) ?? chats[0];
+  const project = chats.filter((chat) => chat.home === "project");
+  const rest = project.length - limit;
   const isApp = surface === "app";
+
+  const patch = (turn: Partial<Chat>) =>
+    setChats((current) =>
+      current.map((chat) => (chat.id === openId ? { ...chat, ...turn } : chat))
+    );
+
+  const pick = (id: string) => {
+    setOpenId(id);
+    onSurface("chat");
+  };
+
+  const chatRow = (chat: Chat, sub: boolean) => (
+    <Row
+      key={chat.id}
+      mark={<AgentLogo backend={chat.agent} />}
+      title={chat.title}
+      on={!isApp && chat.id === openId}
+      sub={sub}
+      onClick={() => pick(chat.id)}
+    />
+  );
 
   return (
     <div className="window rise">
       <aside className="win-sidebar">
+        {/* mac 的折叠钮浮在红绿灯旁，Windows 才把它收回 logo 右侧。 */}
         <div className="traffic">
           <i style={{ background: "#FF5F57" }} />
           <i style={{ background: "#FEBC2E" }} />
           <i style={{ background: "#28C840" }} />
-        </div>
-
-        <div className="row" style={{ margin: "0 6px 6px", width: "auto" }}>
-          <span className="mark">
-            <Stroke d={D.plus} size={14} />
-          </span>
-          <span style={{ color: "var(--app-muted-fg)" }}>New chat</span>
-          <span className="mono" style={{ marginLeft: "auto", fontSize: 11, color: "var(--app-muted-fg)" }}>
-            ⌘N
+          <span className="icon-slot">
+            <Stroke d={D.panelRight} size={16} width={1.5} />
           </span>
         </div>
 
-        <div style={{ flex: 1, minHeight: 0, overflow: "hidden", padding: "0 6px 6px" }}>
+        <div className="brand">
+          <Wordmark height={26} />
+          <span className="icon-slot">
+            <Stroke d={D.search} size={16} width={1.9} />
+          </span>
+          <span className="icon-slot">
+            <Stroke d={D.bell} size={16} width={1.9} />
+          </span>
+        </div>
+
+        <div className="sidebar-nav">
+          <Row mark={<Stroke d={D.squarePen} size={16} width={1.9} />} title="New chat" />
+          <Row
+            mark={<Stroke d={D.grid} size={16} width={1.9} />}
+            title="Apps"
+            on={isApp}
+            onClick={() => onSurface("app")}
+          />
+          {PINNED_APPS.map((app) => (
+            <Row
+              key={app.id}
+              mark={<span className="emoji">{app.icon}</span>}
+              title={app.name}
+              sub
+              on={isApp && app.id === "expense"}
+              onClick={() => onSurface("app")}
+            />
+          ))}
+        </div>
+
+        {/* 行首那枚痕迹就是 agent 的 logo——「谁在干这活」在产品里从来
+            不用问，看一眼行首就知道。这块屏最要紧的就是这件事。 */}
+        <div className="sidebar-scroll">
           <p className="group-label">Projects</p>
-          {PROJECTS.map((name) => (
-            <div className="row" key={name}>
-              <span className="mark">
-                <Stroke d={D.folder} size={14} width={1.9} />
-              </span>
-              <span className="title">{name}</span>
-            </div>
-          ))}
+          <Row mark={<Stroke d={D.folder} size={16} width={1.9} />} title={PROJECT.name} />
+          {project.slice(0, limit).map((chat) => chatRow(chat, true))}
+          {/* 站在列表里当一行，而不是浮在列表外当一个控件：它的位置就是
+              「下面还有」这句话本身。弱前景色说明这一行不是其中一员，
+              是通往其中的门。 */}
+          {rest > 0 ? (
+            <Row
+              mark={<Stroke d={D.chevronDown} size={16} width={1.9} />}
+              title="Show more"
+              sub
+              dim
+              onClick={() => setLimit((current) => current + PROJECT_PAGE_SIZE)}
+            />
+          ) : null}
 
-          <p className="group-label">Apps</p>
-          {APPS.map((app) => (
-            <div className={`row${isApp && app.name === "Expense Tracker" ? " on" : ""}`} key={app.name}>
-              <span className="mark">
-                <Stroke d={app.icon} size={14} width={1.9} />
-              </span>
-              <span className="title">{app.name}</span>
-            </div>
-          ))}
-
-          {/* 行首那枚痕迹就是 agent 的 logo——「谁在干这活」在产品里
-              从来不用问，看一眼行首就知道。这块屏最要紧的就是这件事。 */}
           <p className="group-label">Chats</p>
-          {AGENTS.map((chat, i) => {
-            const on = i === chatIndex && !isApp;
-            return (
-              <button
-                type="button"
-                key={chat.title}
-                className={`row${on ? " on" : ""}`}
-                onClick={() => onPickChat(i)}
-                aria-pressed={on}
-              >
-                <span className="mark">
-                  <Glyph d={chat.iconPath} />
-                </span>
-                <span className="title">{chat.title}</span>
-                {on ? <span className="dot" /> : null}
-              </button>
-            );
-          })}
+          {chats.filter((chat) => chat.home === "chats").map((chat) => chatRow(chat, false))}
         </div>
 
-        <div
-          style={{
-            flex: "none",
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            height: 44,
-            padding: "0 14px",
-            borderTop: "1px solid var(--app-border)",
-            fontSize: 13,
-            color: "var(--app-muted-fg)",
-          }}
-        >
-          <span
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 22,
-              height: 22,
-              borderRadius: 9999,
-              background: "var(--app-accent)",
-              fontSize: 10.5,
-              color: "var(--app-fg)",
-            }}
-          >
-            JW
-          </span>
-          <span>Settings</span>
+        <div className="sidebar-foot">
+          <Row mark={<Stroke d={D.settings} size={16} width={1.9} />} title="Settings" />
         </div>
       </aside>
 
       <div className="win-main">
         <div className="win-head">
-          <span
-            style={{
-              fontSize: 13.5,
-              fontWeight: 500,
-              minWidth: 0,
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
-            }}
-          >
-            {isApp ? "Expense Tracker" : active.title}
+          <span className="mark">
+            {isApp ? <span className="emoji">💸</span> : <AgentLogo backend={open.agent} />}
           </span>
-          <span className="pill" style={{ marginLeft: "auto" }}>
-            <Glyph d={active.iconPath} size={13} />
-            <span>{active.agent}</span>
-          </span>
-          <span className="pill mono" style={{ fontSize: 11.5 }}>
-            {isApp ? `Base · ${LEDGER.length} records` : active.model}
+          <span className="win-title">{isApp ? "Expense Tracker" : open.title}</span>
+          <span className="icon-slot" style={{ marginLeft: "auto" }}>
+            <Stroke d={D.panelRight} size={16} width={1.5} />
           </span>
         </div>
 
-        {isApp ? <AppSurface /> : <ChatSurface index={chatIndex} />}
+        {isApp ? (
+          <AppSurface />
+        ) : (
+          <>
+            <ProductTranscript chat={open} />
+            <ProductComposer
+              chat={open}
+              onAgent={(agent: AgentId) => patch({ agent, ...defaultTurn(agent) })}
+              onPatch={patch}
+            />
+          </>
+        )}
       </div>
     </div>
   );
 }
 
-function ChatSurface({ index }: { index: number }) {
-  const active = AGENTS[index] ?? AGENTS[0];
-  return (
-    <>
-      <div className="chat">
-        <div className="bubble">{active.ask}</div>
-        {active.trace.map((t) => (
-          <div className="trace" key={t.label}>
-            <span className="mark" style={{ marginTop: 1 }}>
-              <Stroke d={t.icon} size={13} />
-            </span>
-            <span>{t.label}</span>
-          </div>
-        ))}
-        <p style={{ fontSize: 13.5, lineHeight: 1.62 }}>{active.reply}</p>
-        <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12.5, color: "var(--app-muted-fg)" }}>
-          <span className="dot pulse" />
-          <span>
-            {active.running}
-            <span className="caret" />
-          </span>
-        </div>
-      </div>
-
-      <div className="composer">
-        <span className="mark" style={{ width: 30, height: 30 }}>
-          <Stroke d={D.plus} />
-        </span>
-        <span className="field">Ask {active.agent} for anything…</span>
-        {/* Plan 这颗按钮的有无就是「诚实降级」那条规矩本身：
-            OpenCode 没有 plan 通道，所以这里不是置灰，是压根不画。 */}
-        {active.hasPlan ? (
-          <span className="ghost">
-            <Stroke d={D.bulb} size={14} />
-            <span>Plan</span>
-          </span>
-        ) : null}
-        <span className="send">
-          <Stroke d={D.arrowUp} size={15} width={2.2} />
-        </span>
-      </div>
-    </>
-  );
-}
-
+/** App 表面：取自 apps/desktop/src/components/bases/views/table */
 function AppSurface() {
   return (
     <>
@@ -212,14 +221,14 @@ function AppSurface() {
         <span className="c-note">Note</span>
       </div>
       <div style={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
-        {LEDGER.map((r) => (
-          <div className="grid-row" key={r.date}>
-            <span className="c-date mono">{r.date}</span>
-            <span className="c-amount mono">{r.amount}</span>
+        {LEDGER.map((record) => (
+          <div className="grid-row" key={record.date}>
+            <span className="c-date mono">{record.date}</span>
+            <span className="c-amount mono">{record.amount}</span>
             <span className="c-cat">
-              <span className="tag">{r.category}</span>
+              <span className="tag">{record.category}</span>
             </span>
-            <span className="c-note">{r.note}</span>
+            <span className="c-note">{record.note}</span>
           </div>
         ))}
       </div>

@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖 @/lib/agents 的 GANG，依赖 ./icons 的 Stroke/Glyph/D
+ * [INPUT]: 依赖 @/lib/agents 的 GANG/backendLabel，依赖 ./icons 的 AgentLogo/Stroke/D
  * [OUTPUT]: 对外提供 AgentsSection 组件
  * [POS]: Bottega-Website 唯一的功能介绍段。左图右文——图画的是边栏本身，
  *        因为「谁在干这活」这件事在产品里就是靠 chat 行首那枚 logo 回答的，
@@ -7,8 +7,8 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
-import { GANG } from "@/lib/agents";
-import { D, Glyph, Stroke } from "./icons";
+import { GANG, backendLabel } from "@/lib/agents";
+import { AgentLogo, D, Stroke } from "./icons";
 
 const POINTS = [
   "Connects to the official CLI you already have installed — nothing is reimplemented.",
@@ -37,11 +37,11 @@ export function AgentsSection() {
                 style={{ height: 36, padding: "0 10px", gap: 10, fontSize: 14 }}
               >
                 <span className="mark">
-                  <Glyph d={g.iconPath} />
+                  <AgentLogo backend={g.agent} />
                 </span>
                 <span className="title">{g.title}</span>
                 <span style={{ flex: "none", marginLeft: "auto", fontSize: 11.5, color: "var(--app-muted-fg)" }}>
-                  {g.agent}
+                  {backendLabel(g.agent)}
                 </span>
               </div>
             ))}
@@ -70,12 +70,12 @@ export function AgentsSection() {
           <h1 style={{ fontSize: 56, lineHeight: 1.03, maxWidth: "16ch", marginBottom: 22 }}>
             Every agent you pay for, in one sidebar.
           </h1>
-          <p style={{ fontSize: 18, lineHeight: 1.62, color: "var(--ink-2)", marginBottom: 18 }}>
+          <p style={{ fontSize: 18, lineHeight: 1.62, color: "var(--ink-2)", marginBottom: 18, maxWidth: "60ch" }}>
             Codex, Claude Code, Kimi Code and OpenCode all live in Bottega. Give a job to whichever one fits
             it — every chat carries the mark of the agent running it, so you never have to ask who did the
             work.
           </p>
-          <p style={{ fontSize: 18, lineHeight: 1.62, color: "var(--ink-2)", marginBottom: 26 }}>
+          <p style={{ fontSize: 18, lineHeight: 1.62, color: "var(--ink-2)", marginBottom: 26, maxWidth: "60ch" }}>
             Each runs on your own subscription: the plan you already pay for, billed by the provider, not by
             us. No API key to top up, no tokens resold.
           </p>

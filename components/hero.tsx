@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * [INPUT]: 依赖 react 的 useEffect/useRef/useState，依赖 ./product-window、./theme、./icons
+ * [INPUT]: 依赖 react 的 useEffect/useRef/useState，依赖 ./window/product-window、./theme、./icons
  * [OUTPUT]: 对外提供 Hero 组件
  * [POS]: Bottega-Website 的首屏。页面不以一张讲产品的海报开场，
  *        而是直接给出产品本身；滚动时这台机器钉住并收成一张卡片，
@@ -11,8 +11,8 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { D, Stroke, Wordmark } from "./icons";
-import { ProductWindow } from "./product-window";
+import { AppIcon, D, Glyph, Stroke } from "./icons";
+import { ProductWindow } from "./window/product-window";
 import { ThemeToggle } from "./theme";
 
 /** 收缩终点。上缘让得比下缘多，让出来的那条正好装下 header。 */
@@ -24,7 +24,6 @@ const MAX_SH = 26;
 export function Hero() {
   const pinRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  const [chat, setChat] = useState(0);
   const [surface, setSurface] = useState<"chat" | "app">("chat");
 
   useEffect(() => {
@@ -50,8 +49,11 @@ export function Hero() {
       const p = Math.min(1, Math.max(0, travelled / runway));
       const e = p * p * (3 - 2 * p); /* smoothstep：两端都收得住，起步不突跳 */
 
-      /* 横向让出的量跟着视口走：固定 96px 在 2560 宽的屏上会显得小气。 */
-      const maxX = Math.min(120, Math.round(window.innerWidth * 0.065));
+      /* 横向让出的量读 CSS 的 --bleed：正文与 header 靠的也是这一个数，
+         在这里再算一遍就等于给同一条边界备了第二份定义，迟早分叉。 */
+      const maxX = parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--bleed")
+      ) || 0;
 
       const s = stage.style;
       s.setProperty("--stage-x", `${(maxX * e).toFixed(2)}px`);
@@ -84,7 +86,7 @@ export function Hero() {
       <div className="stage" ref={stageRef}>
         <header className="stage-header">
           <Link href="/" aria-label="Bottega" style={{ display: "flex", alignItems: "center" }}>
-            <Wordmark height={21} />
+            <AppIcon size={30} />
           </Link>
           <span style={{ fontSize: 15, color: "var(--ink-3)" }}>the workshop that builds itself</span>
           <nav>
@@ -117,8 +119,7 @@ export function Hero() {
           {/* 真 macOS 的菜单栏不放产品 CTA。放了就是拿系统的壳卖自己的货，
               illusion 一破，整台机器都不像真的了。 */}
           <div className="scene-bar">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/mark.png" alt="" style={{ height: 14, width: "auto", display: "block" }} />
+            <Glyph d={D.apple} size={15} />
             <span style={{ fontWeight: 600 }}>Bottega</span>
             <span className="menu">File</span>
             <span className="menu">Edit</span>
@@ -132,17 +133,12 @@ export function Hero() {
           </div>
 
           <div className="scene-body">
-            <ProductWindow
-              chatIndex={chat}
-              surface={surface}
-              onPickChat={(i) => {
-                setChat(i);
-                setSurface("chat");
-              }}
-            />
+            <ProductWindow surface={surface} onSurface={setSurface} />
 
             {/* 两颗并列而不是一个开关：chat 与 App 是产品的两种表面，
-                开关会把其中一种说成「另一种的反面」，并列才说得对。 */}
+                开关会把其中一种说成「另一种的反面」，并列才说得对。
+                标签直说这一面是什么，不设问也不加注解——注解要说的话，
+                上面那台机器正在演，写下来只是把演过的再讲一遍。 */}
             <div className="chip-bar rise rise-2">
               <button
                 type="button"
@@ -151,7 +147,7 @@ export function Hero() {
                 aria-pressed={surface === "chat"}
               >
                 <Stroke d={D.message} size={15} />
-                <span>Chat with an agent</span>
+                <span>Chat, just like your CLI</span>
               </button>
               <button
                 type="button"
@@ -160,7 +156,7 @@ export function Hero() {
                 aria-pressed={surface === "app"}
               >
                 <Stroke d={D.grid} size={15} />
-                <span>Work inside an App</span>
+                <span>Apps your agent builds</span>
               </button>
             </div>
           </div>

@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Wordmark } from "@/components/icons";
+import { AppIcon } from "@/components/icons";
 import { SiteFooter } from "@/components/site-footer";
 import { ThemeToggle } from "@/components/theme";
 import { readEntries, renderInline } from "@/lib/changelog";
 
 /**
- * [INPUT]: 依赖 @/lib/changelog 的 readEntries/renderInline，依赖 @/components 的 Wordmark/ThemeToggle/SiteFooter
+ * [INPUT]: 依赖 @/lib/changelog 的 readEntries/renderInline，依赖 @/components 的 AppIcon/ThemeToggle/SiteFooter
  * [OUTPUT]: 对外提供 /changelog 页面与其 metadata
  * [POS]: Bottega-Website 唯一的子页。内容来自 Bottega 仓库
  *        docs/changelog/README.md 的构建期快照，记录产品里程碑而非内部迭代
@@ -39,7 +39,7 @@ export default function ChangelogPage() {
         className="wrap"
       >
         <Link href="/" aria-label="Bottega" style={{ display: "flex", alignItems: "center" }}>
-          <Wordmark height={22} />
+          <AppIcon size={30} />
         </Link>
         <nav style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 20, fontSize: 14.5 }}>
           <a href={REPO} style={{ color: "var(--ink-2)" }}>

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * [INPUT]: 依赖 react 的 useState/useEffect，依赖 ./icons 的 Stroke，依赖 @/lib/agents 的 SUN/MOON
+ * [INPUT]: 依赖 react 的 useState/useEffect，依赖 ./icons 的 Stroke 与 D
  * [OUTPUT]: 对外提供 ThemeToggle 组件与 THEME_BOOT 内联脚本字符串
  * [POS]: Bottega-Website 的主题开关。真相源是 <html data-theme>，
  *        React 只负责改它——不做第二份状态，否则两份迟早对不上
@@ -9,8 +9,7 @@
  */
 
 import { useEffect, useState } from "react";
-import { Stroke } from "./icons";
-import { MOON, SUN } from "@/lib/agents";
+import { D, Stroke } from "./icons";
 
 const KEY = "bottega-theme";
 
@@ -46,7 +45,7 @@ export function ThemeToggle() {
 
   return (
     <button type="button" className="icon-btn" onClick={toggle} aria-label="Switch theme">
-      <Stroke d={theme === "dark" ? SUN : MOON} />
+      <Stroke d={theme === "dark" ? D.sun : D.moon} size={18} width={1.8} />
     </button>
   );
 }
