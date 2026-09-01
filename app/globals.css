@@ -288,6 +288,10 @@ h3 {
   gap: 16px;
   padding: 0 calc(var(--stage-x, 0px) + var(--gutter));
   opacity: var(--stage-p, 0);
+  /* 现身时顺带落 7px：一条凭空亮起来的横条读起来像闪了一下，
+     让它从上缘滑下来，人才看得出「这条带子是刚让出来的」。 */
+  transform: translateY(calc((var(--stage-p, 0) - 1) * 7px));
+  pointer-events: var(--stage-pe, none);
   overflow: hidden;
 }
 
@@ -1456,33 +1460,268 @@ button.row:hover,
   align-items: center;
 }
 
-.sidebar-card {
-  border-radius: 14px;
+/* ── 一镜到底 ────────────────────────────────────────────────────
+ * 先给整台机器（对话区是骨架屏，此刻要看的不是它），推近到侧栏，再自上
+ * 而下摇下去，让每一行行首那枚 logo 一个一个走过镜头。这一节要讲的话就
+ * 是这个动作本身，所以文字里不必再解释一遍「你怎么知道是谁干的」。
+ *
+ * 四个数钉住整段镜头，都是从这一格的 460×360 与机器的 720×420 推出来的：
+ *   --cam-out   460/720 = 0.639，整台机器恰好嵌进画框
+ *   --cam-out-y (360 − 420×0.639)/2 = 46px，纵向居中
+ *   --cam-in    1.7，侧栏 200px 占到画框的四分之三，10px 的字读得出来
+ *   --cam-pan-y −340px，摇到机器底部前一点收住
+ * 改画框只需改这四个数，keyframes 一行都不用动。
+ *
+ * 不写 will-change：那会把这一层钉成一张固定分辨率的位图，推近之后字就
+ * 糊了。让浏览器自己在每段停顿里重新栅格化，停住时才是清楚的。
+ * ────────────────────────────────────────────────────────── */
+.reel {
+  /* 六个数钉住整段镜头，都是从画框 460×330 与机器 720×420 推出来的：
+       --cam-out    0.585，机器缩到 421×246，四周留出桌面
+       --cam-out-x  (460 − 421)/2 = 20px
+       --cam-out-y  (330 − 246)/2 = 42px
+       --cam-in     1.7，侧栏 200px 占到画框的四分之三，10px 的字读得出来
+       --cam-in-x   −12px，把机器的左圆角推出画框——推近之后那个圆角会
+                    在画框左上角豁开一小块桌面，看着像渲染事故
+       --cam-pan-y  −340px，摇到侧栏末尾收住
+     改画框只需改这几个数，keyframes 一行都不用动。 */
+  --cam-out: 0.585;
+  --cam-out-x: 20px;
+  --cam-out-y: 42px;
+  --cam-in: 1.7;
+  --cam-in-x: -12px;
+  --cam-pan-y: -340px;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 460 / 330;
   overflow: hidden;
-  background: var(--app-sidebar);
-  color: var(--app-fg);
-  box-shadow: 0 0 0 1px var(--app-border), var(--shadow);
+  border-radius: 14px;
+  /* 桌面色，不是机器色。两者同色时全景那一格读起来是「一台机器浮在白里」
+     ——letterbox 与机身分不出边界，于是它既不像一台机器，也不像一张图。 */
+  background: var(--ground-2);
 }
 
-.checks {
-  max-width: 62ch;
+@keyframes bt-reel {
+  0%,
+  12% {
+    transform: translate(var(--cam-out-x), var(--cam-out-y)) scale(var(--cam-out));
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  26%,
+  36% {
+    transform: translate(var(--cam-in-x), 0) scale(var(--cam-in));
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  }
+  66%,
+  76% {
+    transform: translate(var(--cam-in-x), var(--cam-pan-y)) scale(var(--cam-in));
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  90%,
+  100% {
+    transform: translate(var(--cam-out-x), var(--cam-out-y)) scale(var(--cam-out));
+  }
+}
+
+.reel-cam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  /* 静息态即镜头推近侧栏那一格：动效关掉时，留下的该是这一节要说的话，
+     而不是一张什么都看不清的全景。 */
+  transform: translate(var(--cam-in-x), 0) scale(var(--cam-in));
+  animation: bt-reel 15s infinite;
+}
+
+.reel-app {
+  display: flex;
+  width: 720px;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  box-shadow:
+    0 0 0 1px var(--app-border),
+    0 12px 32px -10px rgba(27, 26, 22, 0.3);
+}
+[data-theme="dark"] .reel-app {
+  box-shadow:
+    0 0 0 1px var(--app-border),
+    0 12px 32px -10px rgba(0, 0, 0, 0.6);
+}
+
+.reel-side {
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  width: 200px;
+  flex: none;
+  padding: 0 5px 5px;
+  background: var(--app-sidebar);
+  border-right: 1px solid var(--app-border);
 }
-.checks li {
+.reel-traffic {
   display: flex;
-  align-items: flex-start;
-  gap: 11px;
-  font-size: 15.5px;
-  line-height: 1.55;
+  align-items: center;
+  gap: 5px;
+  height: 24px;
+  padding: 0 7px;
+  flex: none;
+}
+.reel-traffic i {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+}
+.reel-brand {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 6px;
+  flex: none;
+}
+.reel-label {
+  display: flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 6px;
+  flex: none;
+  font-size: 9px;
+  color: var(--app-muted-fg);
+}
+.reel-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  flex: none;
+  padding: 0 6px;
+  border-radius: 5px;
+  font-size: 10px;
+}
+.reel-row.sub {
+  padding-left: 16px;
+}
+.reel-row.on {
+  background: var(--app-accent);
+  font-weight: 500;
+}
+.reel-foot {
+  margin-top: auto;
+}
+.reel-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  flex: none;
+}
+.reel-title {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.reel-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.reel-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  flex: none;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--app-border);
+}
+.reel-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 7px;
+  flex: 1;
+  min-height: 0;
+  padding: 10px 12px;
+  overflow: hidden;
+}
+.reel-composer {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  flex: none;
+  margin: 0 10px 10px;
+  padding: 0 10px;
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+}
+
+@keyframes bt-sk {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+/* 比产品的 Skeleton 深一档：那边的骨架躺在真尺寸的界面里，这里要在
+   0.639 倍的全景镜头下仍然看得出「那边有一台在干活的机器」。 */
+.sk {
+  display: block;
+  flex: none;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--app-muted-fg) 22%, transparent);
+  animation: bt-sk 2s ease-in-out infinite;
+}
+.sk-dot {
+  width: 12px;
+  height: 12px;
+}
+.sk-bar {
+  height: 7px;
+}
+.sk-bubble {
+  align-self: flex-end;
+  width: 132px;
+  height: 26px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+}
+
+/* 四枚标记就是「有谁」的全部证据。名字不画在旁边：一行 logo 读得比一行
+   名字快，读不出来的人 hover 就有，读屏器走 .sr-only。 */
+.agent-marks {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   color: var(--ink-2);
 }
-.checks svg {
-  flex: none;
-  margin-top: 3px;
-  color: var(--green);
+.agent-marks li {
+  display: flex;
 }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 
 .band {
   border-radius: 20px;
@@ -1579,7 +1818,9 @@ button.row:hover,
 @media (prefers-reduced-motion: reduce) {
   .rise,
   .shimmer,
-  .spark {
+  .spark,
+  .reel-cam,
+  .sk {
     animation: none !important;
   }
   .rise {

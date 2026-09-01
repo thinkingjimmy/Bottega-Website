@@ -4,7 +4,7 @@ Next.js 16 (App Router, static export) + plain CSS + TypeScript
 
 <directory>
 app/ - 路由与页面 (2 页: `/` 首页, `/changelog` 更新日志)
-components/ - 页面构件 (5 个: hero / agents-section / fork-band / site-footer / theme / icons)
+components/ - 页面构件 (6 个: hero / agents-section / agents-reel / fork-band / site-footer / theme / icons)
 components/window/ - 首屏那台机器 (4 个: 外壳 / 对话 / 输入框 / 模型面板；见其 README)
 lib/ - 数据与解析 (2 个: agents 演示数据, changelog 解析)
 content/ - 构建期内容快照 (changelog.md)
@@ -56,8 +56,8 @@ postcss.config.mjs - 空管道；本站不用 Tailwind
 `parseFloat` 落回 0：不收缩，但不塌。
 
 正文因此没有 `max-width` 上限，宽度随视口走。行长改由文字自己封顶
-（`.checks` 62ch、`.entry` 第二栏 72ch、几段正文 60ch）——容器宽了不等于
-句子该变长，这两件事本来就该分开管。
+（`.entry` 第二栏 72ch、几段正文 56ch）——容器宽了不等于句子该变长，
+这两件事本来就该分开管。
 
 ## 首屏
 
@@ -68,6 +68,12 @@ postcss.config.mjs - 空管道；本站不用 Tailwind
 收缩改的是盒子的内边距与圆角，不是 `transform: scale`——scale 会把整台
 机器连同窗口里的文字一起重采样，字会糊。三个 CSS 变量默认 0，也就是满幅：
 脚本没跑起来时首屏是完好的，而不是一个缩了一半的中间态。
+
+header 的显影不跟收缩进度走，跟「带子装不装得下它」走：带子矮于 48px
+（那颗 36px 的 CTA 加一点呼吸）时它一个字都不露，装下了才在 22px 的行程里
+落定，顺带落 7px 滑进来。原来那条随进度线性显影的斜坡，会让一条被切掉上下
+沿的横条正压在系统菜单栏上——两样东西都读不成。透明的那一段同时把
+`pointer-events` 关掉：看不见不等于点不到。
 
 窗口的几何逐项抄自 Bottega 的真组件，不是眼量的近似值：侧栏来自
 `apps/desktop/src/components/sidebar`（宽 256px、行高 32px、行首 16px
@@ -132,6 +138,29 @@ slug 本身。这些都是 `browserModels` 与 `capabilities.modelOptions` 里�
 两颗芯片直说这一面是什么（"Chat, just like your CLI" / "Apps your agent
 builds"），底下不再挂一行注解——注解要说的话，上面那台机器正在演，
 写下来只是把演过的再讲一遍。
+
+## Agents 一节
+
+左侧那台机器是会动的，一镜到底：先给整台机器（对话区是骨架屏，此刻要看
+的不是它），推近到侧栏，再自上而下摇下去，让每一行行首那枚 agent logo
+一个一个走过镜头。这一节要讲的话就是这个动作本身，所以右侧文字只需要说
+「有谁」和「谁付钱」，不必再解释「你怎么知道是谁干的」——原来那三条勾选
+清单因此整块撤掉了。
+
+镜头由六个 CSS 变量钉住（`--cam-out` / `--cam-out-x` / `--cam-out-y` /
+`--cam-in` / `--cam-in-x` / `--cam-pan-y`），都是从画框的 460×330 与机器的
+720×420 推出来的；改画框只改这六个数，`@keyframes` 一行都不用动。
+
+画框底色是**桌面色**（`--ground-2`）而不是机器色，机身自己带一圈边与影。
+两者同色时全景那一格读起来是「一台机器浮在白里」——letterbox 与机身分不出
+边界，于是它既不像一台机器，也不像一张图。`--cam-in-x` 的 −12px 是把机身
+左圆角推出画框：推近之后那个圆角会在左上角豁开一小块桌面，看着像渲染事故。
+
+整段是一条 keyframes，没有 hook 也没有脚本，服务端渲染即可。不写
+`will-change`：那会把这一层钉成一张固定分辨率的位图，推近之后字就糊了；
+让浏览器在每段停顿里自己重新栅格化，停住时才是清楚的。
+`prefers-reduced-motion` 下动效整个停掉，静息态就是「推近到侧栏」那一格
+——留下的该是这一节要说的话，而不是一张什么都看不清的全景。
 
 ## Changelog
 

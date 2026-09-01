@@ -17,6 +17,9 @@ import { ThemeToggle } from "./theme";
 
 /** 收缩终点。上缘让得比下缘多，让出来的那条正好装下 header。 */
 const MAX_T = 92;
+/* header 内容的净高（那颗 36px 的 CTA）再加一点呼吸。带子矮于这个数时
+   它一个字都不该露：淡入一条被上下切掉的横条，比什么都不显示更糟。 */
+const HEADER_ROOM = 48;
 const MAX_B = 44;
 const MAX_R = 14;
 const MAX_SH = 26;
@@ -61,9 +64,15 @@ export function Hero() {
       s.setProperty("--stage-b", `${(MAX_B * e).toFixed(2)}px`);
       s.setProperty("--stage-r", `${(MAX_R * e).toFixed(2)}px`);
       s.setProperty("--stage-sh", `${(MAX_SH * e).toFixed(2)}px`);
-      /* header 的显影比几何快一截：带子刚让出来它就该读得出来，
-         而不是等收缩走完才姗姗现身。 */
-      s.setProperty("--stage-p", Math.min(1, e * 1.6).toFixed(3));
+      /* header 的显影不跟进度走，跟「带子装不装得下它」走：装不下时它
+         一个字都不露，装下了才在 22px 的行程里落定。原来那条 e×1.6 的
+         斜坡让它在带子还只有二三十像素时就开始显影，于是有一段路上，
+         一条被切掉上下沿的横条正压在系统菜单栏上——两样东西都读不成。 */
+      const band = MAX_T * e;
+      const reveal = Math.min(1, Math.max(0, (band - HEADER_ROOM) / 22));
+      s.setProperty("--stage-p", reveal.toFixed(3));
+      /* 透明不等于不在：不显影的时候它仍然盖在桌面上截走点击。 */
+      s.setProperty("--stage-pe", reveal > 0 ? "auto" : "none");
     };
 
     const onScroll = () => {

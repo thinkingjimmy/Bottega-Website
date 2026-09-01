@@ -1,8 +1,8 @@
 /**
  * [INPUT]: 无运行时依赖；后端目录、模型目录与档位文案逐项取自
  *          apps/desktop/src/lib/settings-client.ts 与 chat-model-selection.ts
- * [OUTPUT]: 对外提供 AgentId/BACKENDS/MODELS/CHATS/PROJECT/PINNED_APPS、
- *           defaultTurn 与 effortLabel/compactModelLabel，以及 LEDGER/GANG
+ * [OUTPUT]: 对外提供 AgentId/BACKENDS/MODELS/MODEL_OPTIONS/CHATS/PROJECT/
+ *           PINNED_APPS、defaultTurn 与 effortLabel/compactModelLabel，以及 LEDGER
  * [POS]: Bottega-Website 的演示数据唯一真相源，被 hero 与 agents 两处消费
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
@@ -403,8 +403,3 @@ export const LEDGER = [
 ];
 
 export const LEDGER_SUM = "2,383.20";
-
-/** Agents 那一节左侧的边栏图：一眼看见四家 logo 混在同一列 chat 里。 */
-export const GANG: { title: string; agent: AgentId }[] = CHATS.slice(0, 6).map(
-  (chat) => ({ title: chat.title, agent: chat.agent })
-);
