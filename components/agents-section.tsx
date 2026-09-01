@@ -1,25 +1,22 @@
 /**
- * [INPUT]: 依赖 @/lib/agents 的 BACKENDS/backendLabel，依赖 ./agents-reel 的
+ * [INPUT]: 依赖 @/lib/agents 的 BACKENDS/backendLabel，依赖 ./reels/agents-reel 的
  *          AgentsReel，依赖 ./icons 的 AgentLogo
  * [OUTPUT]: 对外提供 AgentsSection 组件
- * [POS]: Bottega-Website 唯一的功能介绍段。左图右文——图是一台会动的机器，
+ * [POS]: Bottega-Website 唯一的功能介绍段。左文右图——图是一台会动的机器，
  *        镜头推近侧栏再摇下去，让四家 logo 一个一个走过；文字因此只需要说
  *        「有谁」和「谁付钱」，不必再解释「你怎么知道是谁干的」
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
 import { BACKENDS, backendLabel } from "@/lib/agents";
-import { AgentsReel } from "./agents-reel";
+import { AgentsReel } from "./reels/agents-reel";
 import { AgentLogo } from "./icons";
 
 export function AgentsSection() {
   return (
     <section className="section" id="agents">
       <div className="wrap split">
-        <AgentsReel />
-
         <div>
-          <p className="mono eyebrow">Agents</p>
           <h1 style={{ fontSize: 56, lineHeight: 1.03, maxWidth: "16ch", marginBottom: 22 }}>
             Every agent you pay for, in one sidebar.
           </h1>
@@ -44,6 +41,8 @@ export function AgentsSection() {
             ))}
           </ul>
         </div>
+
+        <AgentsReel />
       </div>
     </section>
   );

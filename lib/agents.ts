@@ -2,7 +2,8 @@
  * [INPUT]: 无运行时依赖；后端目录、模型目录与档位文案逐项取自
  *          apps/desktop/src/lib/settings-client.ts 与 chat-model-selection.ts
  * [OUTPUT]: 对外提供 AgentId/BACKENDS/MODELS/MODEL_OPTIONS/CHATS/PROJECT/
- *           PINNED_APPS、defaultTurn 与 effortLabel/compactModelLabel，以及 LEDGER
+ *           APPS/PINNED_APPS/LEDGER_APP、defaultTurn 与
+ *           effortLabel/compactModelLabel，以及 LEDGER
  * [POS]: Bottega-Website 的演示数据唯一真相源，被 hero 与 agents 两处消费
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
@@ -148,10 +149,62 @@ export type Question = {
 
 export const PROJECT = { name: "Bottega Site" };
 
-export const PINNED_APPS = [
-  { id: "expense", icon: "💸", name: "Expense Tracker" },
-  { id: "kanban", icon: "🗂️", name: "Dev Kanban" },
+/* ── App 目录 ────────────────────────────────────────────────────
+ * 四条逐项抄自 public/awesome-bottega-app 的 README，包括那句「是哪一种
+ * App」的限定语——`Base App` 与 `workspace-artifact App` 是产品里两种真实
+ * 的形状，不是营销上的分类。图标是 App manifest 自己的 emoji：全站不用
+ * emoji 装饰，但这四枚不是装饰，是这四只 App 在产品里的身份。
+ * ────────────────────────────────────────────────────────── */
+export type App = {
+  id: string;
+  icon: string;
+  name: string;
+  blurb: string;
+  shape: string;
+};
+
+export const APPS: App[] = [
+  {
+    id: "design-canvas",
+    icon: "✦",
+    name: "Design Canvas",
+    blurb:
+      "The Agent writes self-contained HTML into your workspace; the App is where you preview it, compare two directions or two versions, and append numbered element anchors to the next message.",
+    shape: "Workspace-artifact App · isolated GUI Surface",
+  },
+  {
+    id: "dev-kanban",
+    icon: "🧭",
+    name: "Development Kanban",
+    blurb:
+      "Implementation work and review findings as two kinds of structured record, so planning, building and closure stay traceable. The board is the source of truth; chats coordinate the work.",
+    shape: "Base App · 9 columns · task / findings / ledger",
+  },
+  {
+    id: "expense-tracker",
+    icon: "💰",
+    name: "Expense Tracker",
+    blurb:
+      "Say “lunch 25” or “taxi yesterday 38” and it lands as one normalized row — date, amount, category, note. Detail is the ledger; analysis is category share and daily spend.",
+    shape: "Base App · 4 columns · detail / analysis views",
+  },
+  {
+    id: "fitness-log",
+    icon: "🏋️",
+    name: "Fitness Log",
+    blurb:
+      "Tell it what you trained and it writes the sets down, then shows which muscles you have actually been hitting — and which you have been quietly skipping.",
+    shape: "Base App with GUI Surface · muscle heatmap",
+  },
 ];
+
+/** hero 侧栏里置顶的那两只。一份目录，两处消费，图标与名字不会各写各的。 */
+export const PINNED_APPS = APPS.filter((app) =>
+  ["expense-tracker", "dev-kanban"].includes(app.id)
+);
+
+/** hero 窗口的 App 表面画的就是记账本：页头与置顶行都读这一个值。 */
+export const LEDGER_APP = APPS.find((app) => app.id === "expense-tracker")!;
 
 /** Project 折叠区的初始页长。多出来的由「Show more」放进来，与产品同构。 */
 export const PROJECT_PAGE_SIZE = 5;

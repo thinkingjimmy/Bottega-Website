@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖 @/lib/agents 的 CHATS/PROJECT，依赖 ./icons 的 AgentLogo/Stroke/Wordmark/D
+ * [INPUT]: 依赖 @/lib/agents 的 CHATS/PROJECT，依赖 ../icons 的 AgentLogo/Stroke/Wordmark/D
  * [OUTPUT]: 对外提供 AgentsReel 组件
  * [POS]: Agents 一节左侧那台会动的机器。一镜到底：先给整台机器（对话区是
  *        骨架屏，因为此刻要看的不是它），推近到侧栏，再自上而下摇下去，
@@ -10,7 +10,7 @@
  */
 
 import { CHATS, PROJECT } from "@/lib/agents";
-import { AgentLogo, D, Stroke, Wordmark } from "./icons";
+import { AgentLogo, D, Stroke, Wordmark } from "../icons";
 
 const PROJECT_CHATS = CHATS.filter((chat) => chat.home === "project");
 const ROOT_CHATS = CHATS.filter((chat) => chat.home === "chats");

@@ -21,7 +21,7 @@ export function ForkBand() {
     <section className="section" id="source">
       <div className="wrap">
         <div className="band">
-          <div className="split split-flip">
+          <div className="split split-narrow">
             <div>
               <p className="mono eyebrow" style={{ color: "inherit", opacity: 0.55 }}>
                 Free · MIT · Local-first

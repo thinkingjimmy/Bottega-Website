@@ -2,7 +2,7 @@
 
 /**
  * [INPUT]: 依赖 react 的 useState，依赖 @/lib/agents 的
- *          CHATS/PROJECT/PINNED_APPS/PROJECT_PAGE_SIZE/LEDGER/defaultTurn，
+ *          CHATS/PROJECT/PINNED_APPS/LEDGER_APP/PROJECT_PAGE_SIZE/LEDGER/defaultTurn，
  *          依赖 ./product-transcript 与 ./product-composer，
  *          依赖 ../icons 的 AgentLogo/Stroke/Wordmark/D
  * [OUTPUT]: 对外提供 ProductWindow 组件
@@ -17,6 +17,7 @@ import {
   CHATS,
   LEDGER,
   LEDGER_SUM,
+  LEDGER_APP,
   PINNED_APPS,
   PROJECT,
   PROJECT_PAGE_SIZE,
@@ -143,7 +144,7 @@ export function ProductWindow({
               mark={<span className="emoji">{app.icon}</span>}
               title={app.name}
               sub
-              on={isApp && app.id === "expense"}
+              on={isApp && app.id === LEDGER_APP.id}
               onClick={() => onSurface("app")}
             />
           ))}
@@ -180,9 +181,9 @@ export function ProductWindow({
       <div className="win-main">
         <div className="win-head">
           <span className="mark">
-            {isApp ? <span className="emoji">💸</span> : <AgentLogo backend={open.agent} />}
+            {isApp ? <span className="emoji">{LEDGER_APP.icon}</span> : <AgentLogo backend={open.agent} />}
           </span>
-          <span className="win-title">{isApp ? "Expense Tracker" : open.title}</span>
+          <span className="win-title">{isApp ? LEDGER_APP.name : open.title}</span>
           <span className="icon-slot" style={{ marginLeft: "auto" }}>
             <Stroke d={D.panelRight} size={16} width={1.5} />
           </span>

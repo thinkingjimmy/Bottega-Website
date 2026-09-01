@@ -358,7 +358,11 @@ h3 {
   align-items: center;
   gap: 19px;
   height: 28px;
-  padding: 0 16px;
+  /* 右边多让 16px：mac 与新版 Chrome 的滚动条是**覆盖式**的——不占布局宽度，
+     直接浮在内容上，于是这条带子最右端的时钟正好被压在它下面。经典滚动条
+     会挤窄视口、内容自己就让开了，覆盖式不会，只能由内容自己退一步。
+     左 16 右 32 看着不对称，但那一侧本来就没有东西贴着边。 */
+  padding: 0 32px 0 16px;
   font-size: 12.5px;
   color: var(--ink);
   background: rgba(255, 255, 255, 0.26);
@@ -385,8 +389,10 @@ h3 {
   justify-content: center;
   gap: 24px;
   /* 上缘多让 20px：居中只保证两头等分，而这一头顶着的是系统菜单栏，
-     等分下来仍然贴得太近——那条带子需要一点自己的空气。 */
-  padding: 20px 0 40px;
+     等分下来仍然贴得太近——那条带子需要一点自己的空气。
+     下缘 28 而非 40：封顶抬到 780 之后余量本就不多，再多让 12px，
+     切换那两颗芯片下面就空出一条比机器本身还显眼的白。 */
+  padding: 20px 0 20px;
 }
 
 /* 深色玻璃：亮暗两张壁纸上同一套值都成立，故不分主题。 */
@@ -450,8 +456,8 @@ h3 {
   z-index: 2;
   flex: 0 1 auto;
   min-height: 0;
-  width: min(1080px, 92%);
-  height: min(660px, calc(100vh - 260px));
+  width: min(960px, 73%);
+  height: min(780px, calc(100vh - 200px));
   display: flex;
   border-radius: 12px;
   overflow: hidden;
@@ -750,7 +756,12 @@ button.row:hover,
 }
 .plan-body {
   position: relative;
-  max-height: 150px;
+  /* 预览高度跟着窗口一起长。窗口封顶 780、矮屏时按 100vh−250 收缩，转录
+     的内容却是固定的那几行——高窗口里于是空出两百多像素，等于把外面的
+     空白搬进了里面。这一条把多出来的高度还给 Plan：它本来就是个带渐变
+     的预览，能多露几行只是更诚实。
+     150 是矮屏的底，280 是高屏的顶——再高，预览就不像预览了。 */
+  max-height: clamp(150px, calc(100vh - 750px), 280px);
   overflow: hidden;
   padding-top: 12px;
   border-radius: 8px;
@@ -1453,19 +1464,275 @@ button.row:hover,
   margin-bottom: 18px;
 }
 
-/* 图那一栏 540、文那一栏吃余量：460 那一版里图只占内容宽的 38%、高度又
-   比文矮四分之一，两边分量对不上，读起来像文字旁边配了一张缩略图。
+/* 文吃余量、图定宽 540：460 那一版里图只占内容宽的 38%、高度又比文矮
+   四分之一，两边分量对不上，读起来像文字旁边配了一张缩略图。
+   图定宽的另一个原因是镜头那七个数按 540 算，栏一浮动它们就全不作数。
    列宽写在样式表里而不是内联：内联会压过下面窄屏那条 1fr，于是手机上
    两栏永远拆不开——fork-band 原来就是这个毛病。 */
 .split {
   display: grid;
-  grid-template-columns: 540px 1fr;
+  grid-template-columns: 1fr 540px;
   gap: 90px;
   align-items: center;
 }
-/* 图在右、文在左的那一版（Fork 带）。 */
-.split-flip {
+/* 图在左那一版（Apps 一节），与上一节的图在右交替。
+   DOM 里图仍排在前——它 aria-hidden，本就不在阅读顺序里；堆叠时由下面
+   那条 order 把它退到标题之后，手机上先读到的仍是那句话。 */
+.split-figure-first {
+  grid-template-columns: 540px 1fr;
+}
+/* 图那一栏窄一些的那一版（Fork 带的终端框）。 */
+.split-narrow {
   grid-template-columns: 1fr 400px;
+}
+
+/* ── App 列表：一行一只，尾巴上那句限定语照抄目录 ────────────────── */
+.app-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.app-list li {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 10px;
+}
+/* 这四枚 emoji 不是装饰，是 App manifest 自己的图标——产品的侧栏里
+   画的就是它们，所以这里也画它们。 */
+.app-list-icon {
+  grid-row: 1;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.app-list-name {
+  grid-column: 2;
+  font-size: 16px;
+  font-weight: 500;
+}
+.app-list-shape {
+  grid-column: 2;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+/* ── 四只 App 的四张表面 ──────────────────────────────────────────
+ * 同一台窗口里轮播：画布、看板、账本、热力图。四张长得都不一样，正是
+ * 「App 是为这件事长出来的一张面孔」这句话唯一的证据。
+ * 四张共用一条 keyframes，靠负 delay 各自错开一格——写四条各自的
+ * keyframes，改一次节奏就要改四处。
+ * ────────────────────────────────────────────────────────── */
+.apps-reel {
+  aspect-ratio: 540 / 400;
+  padding: 22px;
+}
+.apps-win {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 9px;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  box-shadow:
+    0 0 0 1px var(--app-border),
+    0 12px 32px -10px rgba(27, 26, 22, 0.3);
+}
+[data-theme="dark"] .apps-win {
+  box-shadow:
+    0 0 0 1px var(--app-border),
+    0 12px 32px -10px rgba(0, 0, 0, 0.6);
+}
+.apps-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  flex: none;
+  padding: 0 11px;
+  border-bottom: 1px solid var(--app-border);
+}
+.apps-bar i {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+}
+.apps-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+@keyframes bt-apps {
+  0%,
+  20% {
+    opacity: 1;
+  }
+  25%,
+  95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.apps-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  /* 静息即第一张：动效关掉时四张不该叠在一起。 */
+  opacity: 0;
+  animation: bt-apps 20s linear infinite;
+}
+.apps-slide:first-child {
+  opacity: 1;
+}
+.apps-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  flex: none;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--app-border);
+  font-size: 12px;
+  font-weight: 500;
+}
+.apps-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+.apps-body {
+  flex: 1;
+  min-height: 0;
+  padding: 14px;
+  overflow: hidden;
+}
+
+/* Design Canvas：Agent 写的 HTML 摆成两幅画板，左边那幅正被看着 */
+.cv-tools {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.cv-tools span {
+  padding: 3px 8px;
+  border-radius: 9999px;
+  font-size: 9.5px;
+  color: var(--app-muted-fg);
+}
+.cv-tools span.on {
+  background: var(--app-accent);
+  color: var(--app-fg);
+}
+.cv-boards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  height: calc(100% - 34px);
+}
+.cv-board {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+}
+.cv-board.on {
+  box-shadow: 0 0 0 2px #3598f6;
+}
+.cv-board-bar {
+  height: 12px;
+  flex: none;
+  background: var(--app-accent);
+}
+.cv-board-body {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 1;
+  min-height: 0;
+  padding: 10px;
+}
+.sk-block {
+  flex: 1;
+  min-height: 0;
+  border-radius: 4px;
+}
+
+/* Development Kanban：实现工作与评审发现，两类结构化记录 */
+.kb {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  height: 100%;
+}
+.kb-label {
+  margin-bottom: 7px;
+  font-size: 9.5px;
+  color: var(--app-muted-fg);
+}
+.kb-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 7px;
+  padding: 9px;
+  border: 1px solid var(--app-border);
+  border-radius: 6px;
+}
+
+/* Expense Tracker：一句话进来，一行规整的记录出去 */
+.lg {
+  display: flex;
+  flex-direction: column;
+}
+.lg-row {
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  height: 27px;
+  border-bottom: 1px solid var(--app-border);
+  font-size: 10px;
+}
+.lg-amount {
+  text-align: right;
+}
+.lg-cat {
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: var(--app-accent);
+  font-size: 9px;
+  color: var(--app-muted-fg);
+}
+
+/* Fitness Log：练了什么写下来，然后告诉你哪块一直在被跳过 */
+.ht {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  justify-content: center;
+}
+.ht-row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+}
+.ht-row i {
+  display: block;
+  height: 26px;
+  border-radius: 5px;
+  background: #d4622a;
 }
 
 /* ── 一镜到底 ────────────────────────────────────────────────────
@@ -1501,18 +1768,23 @@ button.row:hover,
   --cam-in-x: 26px;
   --cam-in-y: 20px;
   --cam-pan-y: -334px;
+  aspect-ratio: 540 / 400;
+}
+
+/* ── 两台会动的图共用的画框 ──────────────────────────────────────
+ * 定宽 540 而非吃满：镜头那七个数按 540 算，栏一变宽变窄它们就全不作数。
+ * 两栏时这一栏正好 540，堆叠时居中；只有窄到 540 以下才退回 100%。
+ * 底色是桌面色，不是机器色——两者同色时读起来是「一台机器浮在白里」，
+ * 画框与机身分不出边界，于是它既不像一台机器，也不像一张图。
+ * ────────────────────────────────────────────────────────── */
+.reel,
+.apps-reel {
   position: relative;
-  /* 定宽而非吃满：镜头那七个数是按 540 宽算的，栏一变宽变窄它们就全不作数。
-     两栏时这一栏正好 540，堆叠时居中；只有窄到 540 以下才退回 100%，
-     那时全景那一格会裁掉一点右边——手机上这张图本就是装饰。 */
   width: 540px;
   max-width: 100%;
   margin-inline: auto;
-  aspect-ratio: 540 / 400;
   overflow: hidden;
   border-radius: 14px;
-  /* 桌面色，不是机器色。两者同色时全景那一格读起来是「一台机器浮在白里」
-     ——letterbox 与机身分不出边界，于是它既不像一台机器，也不像一张图。 */
   background: var(--ground-2);
 }
 
@@ -1817,9 +2089,13 @@ button.row:hover,
    还给两边留着呼吸的排法。 */
 @media (max-width: 1300px) {
   .split,
-  .split-flip {
+  .split-figure-first,
+  .split-narrow {
     grid-template-columns: 1fr;
     gap: 48px;
+  }
+  .split-figure-first > :first-child {
+    order: 1;
   }
 }
 
@@ -1849,6 +2125,7 @@ button.row:hover,
   .shimmer,
   .spark,
   .reel-cam,
+  .apps-slide,
   .sk {
     animation: none !important;
   }
@@ -1899,7 +2176,8 @@ button.row:hover,
     display: none;
   }
   .split,
-  .split-flip {
+  .split-figure-first,
+  .split-narrow {
     grid-template-columns: 1fr;
     gap: 40px;
   }
