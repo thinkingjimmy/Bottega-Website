@@ -1453,11 +1453,19 @@ button.row:hover,
   margin-bottom: 18px;
 }
 
+/* 图那一栏 540、文那一栏吃余量：460 那一版里图只占内容宽的 38%、高度又
+   比文矮四分之一，两边分量对不上，读起来像文字旁边配了一张缩略图。
+   列宽写在样式表里而不是内联：内联会压过下面窄屏那条 1fr，于是手机上
+   两栏永远拆不开——fork-band 原来就是这个毛病。 */
 .split {
   display: grid;
-  grid-template-columns: 460px 1fr;
+  grid-template-columns: 540px 1fr;
   gap: 90px;
   align-items: center;
+}
+/* 图在右、文在左的那一版（Fork 带）。 */
+.split-flip {
+  grid-template-columns: 1fr 400px;
 }
 
 /* ── 一镜到底 ────────────────────────────────────────────────────
@@ -1476,24 +1484,31 @@ button.row:hover,
  * 糊了。让浏览器自己在每段停顿里重新栅格化，停住时才是清楚的。
  * ────────────────────────────────────────────────────────── */
 .reel {
-  /* 六个数钉住整段镜头，都是从画框 460×330 与机器 720×420 推出来的：
-       --cam-out    0.585，机器缩到 421×246，四周留出桌面
-       --cam-out-x  (460 − 421)/2 = 20px
-       --cam-out-y  (330 − 246)/2 = 42px
-       --cam-in     1.7，侧栏 200px 占到画框的四分之三，10px 的字读得出来
-       --cam-in-x   −12px，把机器的左圆角推出画框——推近之后那个圆角会
-                    在画框左上角豁开一小块桌面，看着像渲染事故
-       --cam-pan-y  −340px，摇到侧栏末尾收住
+  /* 七个数钉住整段镜头，都是从画框 540×400 与机器 720×420 推出来的：
+       --cam-out    0.672，机器缩到 484×282，四周留出桌面
+       --cam-out-x  (540 − 484)/2 = 28px
+       --cam-out-y  (400 − 282)/2 = 59px
+       --cam-in     1.7，侧栏 200px 仍占到画框的三分之二
+       --cam-in-x   26px  ┐推近落在机器的左上角上：左边与上边各留一条桌面，
+       --cam-in-y   20px  ┘于是"镜头推到了那台机器的一角"这件事自己说得出口，
+                          而不是一屏满幅的侧栏——满幅时人看不出镜头在哪儿。
+       --cam-pan-y  −334px，摇到机器底部前 20px 收住，下缘也留着那条桌面
      改画框只需改这几个数，keyframes 一行都不用动。 */
-  --cam-out: 0.585;
-  --cam-out-x: 20px;
-  --cam-out-y: 42px;
+  --cam-out: 0.672;
+  --cam-out-x: 28px;
+  --cam-out-y: 59px;
   --cam-in: 1.7;
-  --cam-in-x: -12px;
-  --cam-pan-y: -340px;
+  --cam-in-x: 26px;
+  --cam-in-y: 20px;
+  --cam-pan-y: -334px;
   position: relative;
-  width: 100%;
-  aspect-ratio: 460 / 330;
+  /* 定宽而非吃满：镜头那七个数是按 540 宽算的，栏一变宽变窄它们就全不作数。
+     两栏时这一栏正好 540，堆叠时居中；只有窄到 540 以下才退回 100%，
+     那时全景那一格会裁掉一点右边——手机上这张图本就是装饰。 */
+  width: 540px;
+  max-width: 100%;
+  margin-inline: auto;
+  aspect-ratio: 540 / 400;
   overflow: hidden;
   border-radius: 14px;
   /* 桌面色，不是机器色。两者同色时全景那一格读起来是「一台机器浮在白里」
@@ -1509,7 +1524,7 @@ button.row:hover,
   }
   26%,
   36% {
-    transform: translate(var(--cam-in-x), 0) scale(var(--cam-in));
+    transform: translate(var(--cam-in-x), var(--cam-in-y)) scale(var(--cam-in));
     animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
   }
   66%,
@@ -1530,7 +1545,7 @@ button.row:hover,
   transform-origin: 0 0;
   /* 静息态即镜头推近侧栏那一格：动效关掉时，留下的该是这一节要说的话，
      而不是一张什么都看不清的全景。 */
-  transform: translate(var(--cam-in-x), 0) scale(var(--cam-in));
+  transform: translate(var(--cam-in-x), var(--cam-in-y)) scale(var(--cam-in));
   animation: bt-reel 15s infinite;
 }
 
@@ -1794,6 +1809,20 @@ button.row:hover,
   font-weight: 600;
 }
 
+/* 两栏只在图那一栏（540px）旁边还剩得下一栏文字时才成立。1300 是从标题
+   倒推的：内容宽 ≈ 0.87vw − 16，减去 540 + 90 之后要给 56px/16ch 的标题
+   留下约 520px，解出 vw ≥ 1340；取 1300 收在这一档上。
+   没有这条时，1000px 宽的窗口上文字栏只剩 220px——一行放不下四个词；
+   1250 上也才 427px，标题会碎成四行。堆叠不是降级，是这个宽度下唯一
+   还给两边留着呼吸的排法。 */
+@media (max-width: 1300px) {
+  .split,
+  .split-flip {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+
 /* ============================================================
  * 6 · 动效
  * 进场一次，然后留一点活气。不做滚动驱动的显隐——那类写法一旦
@@ -1869,7 +1898,8 @@ button.row:hover,
   .win-sidebar {
     display: none;
   }
-  .split {
+  .split,
+  .split-flip {
     grid-template-columns: 1fr;
     gap: 40px;
   }
