@@ -7,8 +7,13 @@
 
 /* ============================================================
  * 6 · 动效
- * 进场一次，然后留一点活气。不做滚动驱动的显隐——那类写法一旦
- * 没触发，元素就永久停在 opacity:0，是「看起来更高级反而全白」。
+ * 进场一次，然后留一点活气。
+ *
+ * 正文每一节的进场是滚动驱动的，但那条老规矩仍然成立——「一旦没触发，
+ * 元素就永久停在 opacity:0」这个坑之所以被绕开，是因为**藏是脚本藏的**：
+ * 没有 data-reveal 属性时下面这两条规则一条都不匹配，服务端渲染出来的
+ * 就是完好的一节。脚本没跑、observer 没触发、JS 挂了，看到的都是它
+ * 本来的样子。见 components/reveal.tsx。
  * ============================================================ */
 @keyframes bt-rise {
   from {
@@ -22,6 +27,22 @@
 }
 .rise {
   animation: bt-rise 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ── 一节的进场 ────────────────────────────────────────────────────
+ * 只有 out → in 这一个方向：滚过去再滚回来不重演，一段动作演第二遍
+ * 不会多说出一个字。位移 18 与 .rise 同一个数——全站只该有一种「进来」。
+ * ────────────────────────────────────────────────────────── */
+.reveal[data-reveal="out"] {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.reveal[data-reveal="in"] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .rise-2 {
   animation-delay: 0.12s;
@@ -38,9 +59,22 @@
     opacity: 1;
     transform: none;
   }
+  /* 关掉动效的人不该为了看见一节内容而等它淡进来：直接到位。 */
+  .reveal[data-reveal="out"] {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal[data-reveal="in"] {
+    transition: none;
+  }
   /* 换页与那条进度线一并停。脚本在 apps-stage.tsx 里也会读同一条查询，
      于是「不再自动走」与「不再有动画」是同一个决定的两半。 */
   .app-pane {
+    transition: none;
+  }
+  /* 第三栏照开照关，只是不再滑：关掉动效的人要的是「到位」，不是「别开」。 */
+  .win-panel,
+  .win-panel-face {
     transition: none;
   }
   .app-switch button::after {
@@ -104,6 +138,11 @@
   }
   .win-sidebar {
     display: none;
+  }
+  /* 侧栏在这里是 display: none，于是「顶掉主栏」就等于占满整台机器。
+     手机上「打开一份文档」本就是换一屏，不是分一栏。 */
+  .win-panel {
+    --panel-w: 100cqw;
   }
   .split,
   .split-figure-first,

@@ -3,7 +3,7 @@
 /**
  * [INPUT]: 依赖 react 的 useState，依赖 @/lib/agents 的
  *          CHATS/PROJECT/PINNED_APPS/LEDGER_APP/PROJECT_PAGE_SIZE/LEDGER/defaultTurn，
- *          依赖 ./product-transcript 与 ./product-composer，
+ *          依赖 ./product-transcript / ./product-composer / ./product-plan-panel，
  *          依赖 ../icons 的 AgentLogo/Stroke/Wordmark/D
  * [OUTPUT]: 对外提供 ProductWindow 组件
  * [POS]: Bottega-Website 首屏里那台机器。几何逐项抄自
@@ -27,6 +27,7 @@ import {
 } from "@/lib/agents";
 import { AgentLogo, D, Stroke, Wordmark } from "../icons";
 import { ProductComposer } from "./product-composer";
+import { ProductPlanPanel } from "./product-plan-panel";
 import { ProductTranscript } from "./product-transcript";
 
 /* ── 行：一套词汇，三个宿主 ────────────────────────────────────────
@@ -80,11 +81,18 @@ export function ProductWindow({
      首屏第一眼给出的就该是产品最完整的那张脸。 */
   const [openId, setOpenId] = useState(CHATS[0].id);
   const [limit, setLimit] = useState(PROJECT_PAGE_SIZE);
+  /* 第三栏开在哪条 chat 上——不是一个 boolean。产品里侧栏是会话自己的
+     属性（SidePanelState 挂在 session 上），所以换走再换回来，它还开着；
+     记成 boolean 就得在换会话、换表面两处各写一句「顺手关掉」，而两句
+     顺手迟早有一句忘了写。 */
+  const [planChatId, setPlanChatId] = useState<string | null>(null);
 
   const open = chats.find((chat) => chat.id === openId) ?? chats[0];
   const project = chats.filter((chat) => chat.home === "project");
   const rest = project.length - limit;
   const isApp = surface === "app";
+  const planChat = chats.find((chat) => chat.id === planChatId) ?? null;
+  const planOpen = !isApp && planChatId === open.id;
 
   const patch = (turn: Partial<Chat>) =>
     setChats((current) =>
@@ -193,7 +201,11 @@ export function ProductWindow({
           <AppSurface />
         ) : (
           <>
-            <ProductTranscript chat={open} />
+            <ProductTranscript
+              chat={open}
+              planOpen={planOpen}
+              onPlan={() => setPlanChatId((current) => (current === open.id ? null : open.id))}
+            />
             <ProductComposer
               chat={open}
               onAgent={(agent: AgentId) => patch({ agent, ...defaultTurn(agent) })}
@@ -202,6 +214,12 @@ export function ProductWindow({
           </>
         )}
       </div>
+
+      <ProductPlanPanel
+        plan={planChat?.plan ?? null}
+        open={planOpen}
+        onClose={() => setPlanChatId(null)}
+      />
     </div>
   );
 }

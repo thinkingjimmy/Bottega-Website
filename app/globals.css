@@ -1,14 +1,15 @@
 /**
- * [INPUT]: 依赖 ./styles/ 下的十一支样式，顺序即级联顺序
+ * [INPUT]: 依赖 ./styles/ 下的十五支样式，顺序即级联顺序
  * [OUTPUT]: 全站唯一的样式入口，被 app/layout.tsx 引入
- * [POS]: 只剩一份清单。原来这里是 3465 行——想改页脚的一行，得先滚过
+ * [POS]: 只剩一份清单。shared 必须排在三支 reel 之前——画框与骨架条
+ *        住在它那儿。原来这里是 3465 行——想改页脚的一行，得先滚过
  *        首屏那台机器的全部几何；而「这条规则归谁管」在一支三千行的文件里
  *        根本问不出答案。拆开之后每一支都答得出：文件名就是它的地界
  * [PROTOCOL]: 变更时更新此头部，然后检查 styles/README.md
  */
 
 /* ── 顺序不是风格问题，是正确性问题 ──────────────────────────────
- * CSS 靠「谁排在后面」裁决同权重的冲突，所以这十一行的次序就是级联本身：
+ * CSS 靠「谁排在后面」裁决同权重的冲突，所以这十五行的次序就是级联本身：
  *   tokens  必须最先——它之下每一支都在读这里的变量
  *   motion  必须最后——它整支都靠「排在后面」去覆盖前面的规则
  *   bands 里那条 ≤1300 必须排在 motion 里那条 ≤900 之前，
@@ -19,14 +20,18 @@
 @import "./styles/base.css";
 
 @import "./styles/hero/shell.css";
-@import "./styles/hero/chat.css";
+@import "./styles/hero/surface.css";
+@import "./styles/hero/composer.css";
 
 @import "./styles/apps/stage.css";
 @import "./styles/apps/base.css";
 @import "./styles/apps/canvas.css";
 @import "./styles/apps/fitness.css";
 
-@import "./styles/reel.css";
+@import "./styles/reels/shared.css";
+@import "./styles/reels/agents.css";
+@import "./styles/reels/app-menu.css";
+@import "./styles/reels/base-views.css";
 @import "./styles/bands.css";
 
 @import "./styles/motion.css";

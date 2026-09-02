@@ -1,0 +1,119 @@
+/**
+ * [INPUT]: 依赖 ../tokens.css 的 --ground-2 与 --app-*
+ * [OUTPUT]: 三支 reel 共用的画框（580×360）、骨架条 .sk、.sr-only 与停住之后那颗重播钮
+ * [POS]: 共用的是形状（圆角、桌面底色、定宽居中、溢出裁掉），不是尺寸——每台图的宽高得跟自己那一栏文字对
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ── 三支 reel 共用的画框 ────────────────────────────────────────
+ * 共用的是形状（定宽、居中、溢出裁掉），不再共用底色：机器自己那圈
+ * `0 0 0 1px` 的边加一道落影已经够把它从纸面上抬起来，再垫一块桌面，
+ * 读到的是「一张被裱起来的截图」，而不是「一台摆在那儿的机器」。
+ *
+ * 唯一的例外是 Agents 那一支，它自己把底色加回去了——那一支的画框
+ * 不是「机器的边界」而是「镜头的取景框」，理由见 agents.css。
+ * ────────────────────────────────────────────────────────── */
+.reel {
+  position: relative;
+  /* 三支 reel 同一个画框：580×360。这个数写在各支里就有三份真相，
+     而它们本就该一样——两节的文字块高度也一样。 */
+  width: 580px;
+  aspect-ratio: 580 / 360;
+  max-width: 100%;
+  margin-inline: auto;
+  overflow: hidden;
+}
+
+@keyframes bt-sk {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+/* 比产品的 Skeleton 深一档：那边的骨架躺在真尺寸的界面里，这里要在
+   0.639 倍的全景镜头下仍然看得出「那边有一台在干活的机器」。 */
+/* --sk-ink 让纸面 App 各用各的墨：Design Canvas 的白板与 Fitness Log 的
+   纸都不是产品那套中性灰，套上去会读成一块脏。 */
+.sk {
+  display: block;
+  flex: none;
+  border-radius: 9999px;
+  background: var(--sk-ink, color-mix(in srgb, var(--app-muted-fg) 22%, transparent));
+  animation: bt-sk 2s ease-in-out infinite;
+}
+.sk-dot {
+  width: 12px;
+  height: 12px;
+}
+.sk-bar {
+  height: 7px;
+}
+.sk-bubble {
+  align-self: flex-end;
+  width: 132px;
+  height: 26px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── 演完之后那颗重播钮 ──────────────────────────────────────────
+ * 两支「走一次就停」的 reel 共用（形状层见 components/reels/replay-button.tsx）。
+ * 只在停住之后挂上来：演的时候就摆一颗钮，等于在一句话说到一半时递上打断
+ * 的把手；说完了再递，才是把选择权交回去。
+ * 右下角是三支 reel 的结论都不在的地方——一支停在侧栏底部，一支停在画布
+ * 中央——一颗控件不该压着结论。
+ * 它自己那下淡入只动 opacity：transform 留给 :active 那一下按压，
+ * 带 fill 的动画会把 transform 钉死，于是按下去什么都不会发生。
+ * ────────────────────────────────────────────────────────── */
+@keyframes reel-replay-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.reel-replay {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--app-bg);
+  color: var(--app-muted-fg);
+  box-shadow:
+    0 0 0 1px var(--app-border),
+    0 4px 12px -4px rgba(27, 26, 22, 0.35);
+  cursor: pointer;
+  transition:
+    color 140ms ease,
+    background 140ms ease,
+    transform 140ms ease;
+  animation: reel-replay-in 260ms ease-out both;
+}
+.reel-replay:hover {
+  background: var(--app-accent);
+  color: var(--app-fg);
+}
+.reel-replay:active {
+  transform: scale(0.92);
+}

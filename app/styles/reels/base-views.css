@@ -1,0 +1,240 @@
+/**
+ * [INPUT]: 依赖 ../tokens.css 的 --app-*
+ * [OUTPUT]: A Base under every chat 一节那台四种看法轮播的机器：明细 / 分类占比 / 票据 / 落点
+ * [POS]: 三支 reel 里唯一一支镜头不动的：主角是页签，镜头一动观众就去看镜头
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* 九秒四格：一格 2.25 秒，够读完一屏表、认出一张饼、扫一眼相册与地图。 */
+.reel:has(.vw-cam) { --dur: 9s; }
+
+/* ── 一台机器，四种看法 ────────────────────────────────────────────
+ * 725×450 在 0.8 之下正好铺满 580×360 的画框，一刀不用裁——这一镜的
+ * 动作不在镜头上，在页签上，所以镜头一动不动最好：镜头一动，观众就会
+ * 去看镜头，而不是去看「同一份行换了一种答案」。
+ * ────────────────────────────────────────────────────────── */
+.vw {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 9px;
+  background: var(--app-bg);
+  color: var(--app-fg);
+}
+/* ── 画框有多高，机器就有多高 ────────────────────────────────────
+ * 原来机器钉死 725×450，缩到 0.8 就是 580×360；而画框被网格拉到与文栏
+ * 等高（426），于是底下空出 66px——截图里那片白就是它。
+ *
+ * 与其去追文栏那个数（文案一改就又对不上），不如让机器反推：
+ * 画框的高由网格给，这一层按 1/0.8 = 125% 反推回自然尺寸，缩放之后
+ * 正好铺满。文案再改几行，两边仍然齐——齐这件事由比例保证，
+ * 不由某个抄下来的数保证。
+ * ────────────────────────────────────────────────────────── */
+.reel:has(.vw-cam) {
+  aspect-ratio: auto;
+  height: 100%;
+}
+.vw-cam {
+  /* 一个数管两件事：缩放比，以及「画框有多高就反推多少自然高度」。
+     写成两个数迟早分叉，而分叉的表现是机器比画框高出或矮下去一截。 */
+  --s: 0.644;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 900px;
+  height: calc(100% / var(--s));
+  transform-origin: 0 0;
+  transform: scale(var(--s));
+}
+
+/* ── 左边那栏对话 ────────────────────────────────────────────────
+ * 产品里 Base 不是独立开的一扇窗，它是 chat 的**第三栏**
+ * （侧栏 | 对话 | Base 面板，见 components/chat/side-panel）。
+ * 只画右边那半，这一节的标题「每个 chat 底下都有一张表」就没有主语——
+ * 表在哪儿？旁边那栏对话就是答案。
+ *
+ * 对话本身留骨架：此刻要看的不是它说了什么，是它旁边长出了一张表。
+ * 但输入框必须画实——骨架能表示「这里有过对话」，表示不了「你还能接着说」，
+ * 而后者正是这一节要许的诺。
+ * ────────────────────────────────────────────────────────── */
+.vw-chat {
+  display: flex;
+  flex-direction: column;
+  width: 262px;
+  flex: none;
+  border-right: 1px solid var(--app-border);
+}
+.vw-chat-head {
+  display: flex; align-items: center; gap: 8px;
+  height: 40px; flex: none; padding: 0 12px;
+  border-bottom: 1px solid var(--app-border);
+}
+.vw-chat-body {
+  display: flex; flex-direction: column; gap: 10px;
+  flex: 1; min-height: 0; padding: 14px 12px; overflow: hidden;
+}
+/* 提问靠右、成块，回答靠左、成行——产品里两者本就不是同一种形状。
+   气泡的宽度必须由外面给：`max-width` 加上里面按百分比算的骨架条，
+   两者互相等对方定宽，最后一起塌成一颗小药丸。 */
+.vw-ask {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 9px 11px;
+  border-radius: 12px 12px 4px 12px;
+  background: var(--app-accent);
+}
+.vw-ask .vw-sk { background: color-mix(in srgb, var(--app-muted-fg) 30%, transparent); }
+.vw-reply { display: flex; flex-direction: column; gap: 7px; }
+.vw-turn { display: flex; flex-direction: column; gap: 10px; }
+.vw-chat-foot { flex: none; padding: 0 12px 12px; }
+.vw-composer {
+  display: flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 0 8px 0 12px;
+  border: 1px solid var(--app-border); border-radius: 12px;
+}
+.vw-send {
+  display: grid; place-items: center; margin-left: auto;
+  width: 26px; height: 26px; flex: none;
+  border-radius: 8px; background: var(--app-primary); color: var(--app-primary-fg);
+}
+.vw-send svg { width: 13px; height: 13px; }
+/* Base 那一栏：原来的工具条与舞台整体退到这里面。 */
+.vw-work { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+
+.vw-bar {
+  display: flex; align-items: center; gap: 4px;
+  height: 40px; flex: none; padding: 0 8px;
+  border-bottom: 1px solid var(--app-border);
+}
+.vw-tabs { display: flex; align-items: center; gap: 2px; }
+.vw-tab {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 24px; padding: 0 8px;
+  border-radius: 6px; font-size: 12px; color: var(--app-muted-fg);
+}
+.vw-tab svg { width: 12px; height: 12px; flex: none; }
+/* 落选那一格自己不动，动的是它底下那块底色——产品里也是换个类名，
+   不是让药丸滑过去。 */
+.vw-tab i {
+  position: absolute; inset: 0; z-index: -1;
+  border-radius: 6px; background: var(--app-accent);
+  opacity: 0;
+}
+.vw-act { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.vw-icon {
+  display: grid; place-items: center;
+  width: 28px; height: 28px; flex: none;
+  border-radius: 6px; color: var(--app-muted-fg);
+}
+.vw-icon svg { width: 14px; height: 14px; }
+
+.vw-stage { position: relative; flex: 1; min-height: 0; }
+.vw-pane { position: absolute; inset: 0; display: flex; flex-direction: column; opacity: 0; }
+
+/* ── 明细：表头 36 粘顶、行 36、逐格 border-r ──────────────────────── */
+.vw-head { display: flex; height: 36px; flex: none; border-bottom: 1px solid var(--app-border); background: color-mix(in srgb, var(--app-accent) 85%, transparent); font-size: 12px; }
+.vw-head > * { display: flex; align-items: center; padding: 0 8px; border-right: 1px solid var(--app-border); font-weight: 500; }
+.vw-row { display: flex; height: 36px; border-bottom: 1px solid var(--app-border); font-size: 12px; }
+.vw-row > * { display: flex; align-items: center; min-width: 0; padding: 0 8px; border-right: 1px solid var(--app-border); }
+.k-num { width: 36px; flex: none; justify-content: center; color: var(--app-muted-fg); font-variant-numeric: tabular-nums; }
+.k-date { width: 104px; flex: none; font-variant-numeric: tabular-nums; }
+.k-amt { width: 118px; flex: none; font-variant-numeric: tabular-nums; }
+.k-cat { width: 150px; flex: none; justify-content: space-between; padding-right: 12px; }
+.k-cat svg { width: 12px; height: 12px; flex: none; color: var(--app-muted-fg); }
+.k-note { flex: 1; min-width: 0; }
+.k-plus { width: 36px; flex: none; justify-content: center; color: var(--app-muted-fg); border-right: 0; }
+.k-plus svg { width: 14px; height: 14px; }
+.vw-sk { display: block; height: 10px; border-radius: 4px; background: color-mix(in srgb, var(--app-muted-fg) 22%, transparent); }
+/* 汇总条钉在底边——这一节说的就是它：一句话进来，一个总数出去。 */
+.vw-foot { display: flex; height: 36px; flex: none; margin-top: auto; border-top: 1px solid var(--app-border); font-size: 12px; }
+.vw-foot > * { display: flex; align-items: center; gap: 6px; padding: 0 8px; }
+.vw-foot .lbl { color: var(--app-muted-fg); font-size: 11px; }
+
+/* ── 分析：栅格 auto-rows-180 gap-3 p-3，卡片 rounded-xl + border ──── */
+.vw-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 12px; }
+.ch { display: flex; flex-direction: column; height: 180px; overflow: hidden; border: 1px solid var(--app-border); border-radius: 12px; }
+.ch-h { display: flex; align-items: center; height: 40px; flex: none; padding: 0 10px; border-bottom: 1px solid var(--app-border); font-size: 14px; font-weight: 500; }
+.ch-b { display: flex; align-items: center; gap: 10px; flex: 1; min-height: 0; padding: 10px; }
+.ch-lg { display: flex; flex-direction: column; gap: 5px; flex: none; font-size: 10px; color: var(--app-muted-fg); }
+.ch-lg span { display: flex; align-items: center; gap: 5px; }
+.ch-lg i { display: block; width: 7px; height: 7px; flex: none; border-radius: 2px; }
+.ch-bars { display: flex; align-items: flex-end; gap: 6px; width: 100%; height: 100%; }
+.ch-bars i { display: block; flex: 1; border-radius: 2px 2px 0 0; background: #3b82f6; }
+
+/* ── 相册：缩略图 aspect-square + rounded-lg，栅格 gap-3 px-3 ───────── */
+.vw-gal { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; padding: 12px; align-content: start; }
+.gl { display: flex; flex-direction: column; gap: 6px; }
+.gl-t { aspect-ratio: 1; border-radius: 8px; background: color-mix(in srgb, var(--app-muted-fg) 16%, transparent); }
+.gl-c { font-size: 10.5px; color: var(--app-muted-fg); font-variant-numeric: tabular-nums; }
+
+/* ── 地图：视图配置条 + 一整幅地图 ────────────────────────────────
+ * 底图画得克制：一层地色、两条水、几条路、七枚落点。真机跑的是瓦片，
+ * 这里不去仿一张假的街道图——仿得越像，越是在替产品许一个它没许的诺。
+ * ────────────────────────────────────────────────────────── */
+.vw-cfg { display: flex; align-items: center; gap: 22px; height: 36px; flex: none; padding: 0 12px; border-bottom: 1px solid var(--app-border); font-size: 11.5px; color: var(--app-muted-fg); }
+.vw-cfg b { display: inline-flex; align-items: center; gap: 5px; margin-left: 6px; font-weight: 400; color: var(--app-fg); }
+.vw-cfg svg { width: 11px; height: 11px; }
+.vw-map { position: relative; flex: 1; min-height: 0; background: color-mix(in srgb, var(--app-muted-fg) 8%, transparent); overflow: hidden; }
+.vw-map svg.plate { position: absolute; inset: 0; width: 100%; height: 100%; }
+.vw-map .pin { position: absolute; transform: translate(-50%, -100%); color: #c94f2f; }
+.vw-map .pin svg { width: 20px; height: 20px; fill: color-mix(in srgb, #c94f2f 18%, transparent); }
+
+/* ── 同一份行，四种看法 ────────────────────────────────────────────
+ * 哪一格露脸由右栏那份换挡杆决定（见 base-section.tsx），样式这边只回答
+ * 「露脸的是哪一格」。原来这里是四条 keyframes 自己轮播——换成换挡杆之后
+ * 那四条必须删干净：一边按 data-active 显隐、一边还有 keyframes 在跑，
+ * 谁赢取决于谁写在后面，而那不是一个能读出来的答案。
+ *
+ * 叠着改透明度，不用 display:none——那样每次切换都要重排一次 450px 的版面。
+ * ────────────────────────────────────────────────────────── */
+.vw-pane { transition: opacity 320ms ease; }
+.reel[data-active="0"] .vw-pane:nth-child(1),
+.reel[data-active="1"] .vw-pane:nth-child(2),
+.reel[data-active="2"] .vw-pane:nth-child(3),
+.reel[data-active="3"] .vw-pane:nth-child(4) { opacity: 1; }
+/* 页签的字跟着底色一起变实，否则选中的那一格只有底没有字。 */
+.reel[data-active="0"] .vw-tab:nth-child(1) i,
+.reel[data-active="1"] .vw-tab:nth-child(2) i,
+.reel[data-active="2"] .vw-tab:nth-child(3) i,
+.reel[data-active="3"] .vw-tab:nth-child(4) i { opacity: 1; }
+.reel[data-active="0"] .vw-tab:nth-child(1),
+.reel[data-active="1"] .vw-tab:nth-child(2),
+.reel[data-active="2"] .vw-tab:nth-child(3),
+.reel[data-active="3"] .vw-tab:nth-child(4) { color: var(--app-fg); font-weight: 500; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vw-pane { transition: none; }
+}
+
+/* ── 十六枚类型标记 ────────────────────────────────────────────────
+ * 与 Agents 一节那四枚 agent logo 同一个位置、同一件差事：那四枚是
+ * 「有谁」的全部证据，这十六枚是「能改成什么」的全部证据。
+ * 名字不画在旁边——一行标记读得比一行名字快，读不出来的人一 hover 就有。
+ * ────────────────────────────────────────────────────────── */
+.type-marks {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 16px;
+  row-gap: 14px;
+  margin-top: 30px;
+  color: var(--ink-2);
+}
+.type-marks dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.type-marks dd {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin: 0;
+}

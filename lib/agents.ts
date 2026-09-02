@@ -238,10 +238,25 @@ export const CHATS: Chat[] = [
           ],
         },
         {
+          heading: "Sequence",
+          items: [
+            "Group the 18 merged PRs by the surface a user touches, not by the package they landed in.",
+            "Write each entry as what changed — the PR number is provenance, not news.",
+            "Mirror the file into `docs/`, then read both back so the two can never disagree.",
+          ],
+        },
+        {
           heading: "Files",
           items: [
             "`CHANGELOG.md` — six entries, newest first, absolute dates.",
             "`docs/changelog/README.md` — the public mirror, same six entries.",
+          ],
+        },
+        {
+          heading: "Not in this pass",
+          items: [
+            "The `0.1.x` backfill — older entries are a separate decision about how far back the record goes.",
+            "Release tagging and the download page; they read this file, they do not write it.",
           ],
         },
       ],
@@ -566,6 +581,84 @@ export const KANBAN_LANES: KanbanLane[] = [
  * 0 不是「没数据」而是「一直在被跳过」——臀与腘绳留在 0 上，正是这只 App
  * 要说的那句话：告诉你哪块你一直没练。
  * ────────────────────────────────────────────────────────── */
+/* ── 那扇独立 App 窗口的「···」菜单 ────────────────────────────────
+ * 逐条抄自 components/apps/base-app-detail.tsx 的 titleAdornment，文案取自
+ * shared/i18n/locales 的英文档。独立窗口里「Open in a new window」按真规则
+ * 不出现（standalone）；Import 与 Version history 是 Design Canvas 才有的两条。
+ *
+ * 第一条是 Edit App——而它打开的不是代码编辑器，是一个绑定这只 App 的 chat
+ * （openAppEditor → app-editor-chat）。这一条事实撑起了整节文案。
+ * ────────────────────────────────────────────────────────── */
+export type AppMenuItem = { name: string; icon: string; sub?: boolean; sep?: false } | { sep: true };
+
+export const APP_MENU: AppMenuItem[] = [
+  { name: "Edit App", icon: "pencilLine" },
+  { sep: true },
+  { name: "App Workbench", icon: "flask" },
+  { name: "About this App", icon: "info" },
+  { sep: true },
+  { name: "Import", icon: "importDown", sub: true },
+  { name: "Version history", icon: "history" },
+  { sep: true },
+  { name: "Share to GitHub", icon: "share" },
+];
+
+/** 那扇窗里装的是哪只 App。图标读目录，不另写一份。 */
+export const DESIGN_APP = APPS.find((app) => app.id === "design-canvas")!;
+
+/* 窗口标题栏上的名字。它与 APPS 里那条短名不同，而这个不同是有理由的：
+   目录那条是站点为了排版起的短名，标题栏这条是 app.json 里 manifest 自己
+   的 `name`——产品的页头拼的就是 `${icon} ${displayName}`。把两者合成一个
+   常量，就等于说站点的排版偏好可以改写产品的事实。 */
+export const DESIGN_APP_WINDOW_TITLE = "Bottega Design Canvas";
+
+/* ── 列与视图的两份目录 ──────────────────────────────────────────
+ * 逐条抄自 bases/chrome 的 COLUMN_TYPES 与 base-view-tabs 的 VIEW_TYPES，
+ * 顺序即产品里菜单的顺序，名字取自 shared/i18n/locales/bases/en.ts。
+ * 它们是「能改成什么」这句话的全部证据，所以数目不能凑：十种列、六种视图。
+ * ────────────────────────────────────────────────────────── */
+export const COLUMN_TYPES: { name: string; icon: string }[] = [
+  { name: "Text", icon: "type" },
+  { name: "Number", icon: "hash" },
+  { name: "Date", icon: "calendar" },
+  { name: "Select", icon: "check" },
+  { name: "Checkbox", icon: "squareCheck" },
+  { name: "URL", icon: "link" },
+  { name: "Location", icon: "mapPin" },
+  { name: "Attachment", icon: "images" },
+  { name: "Formula", icon: "sigma" },
+  { name: "Relation", icon: "gitFork" },
+];
+
+export const VIEW_TYPES: { name: string; icon: string }[] = [
+  { name: "Table", icon: "table" },
+  { name: "List", icon: "list" },
+  { name: "Kanban", icon: "kanban" },
+  { name: "Map", icon: "map" },
+  { name: "Chart", icon: "chartPie" },
+  { name: "Gallery", icon: "images" },
+];
+
+/* ── 一份行，四种看法 ────────────────────────────────────────────
+ * 类型取自 base-view-tabs.tsx 的 VIEW_TYPES。按钮上写的是**类型**而不是
+ * 「Ledger」「Receipts」这类用户起的名字：那些名字在演示里是编的，
+ * 而「这是哪一种视图、它能干什么」才是这一节要交代的事实。
+ * `tab` 是机器页签上的短名，`blurb` 说这种视图支持什么。
+ * 这四种是 Base 一节那台机器轮播的四格：明细、分类占比、票据、落点。
+ * ────────────────────────────────────────────────────────── */
+export const BASE_VIEWS: { name: string; tab: string; icon: string; blurb: string }[] = [
+  { name: "Table view", tab: "Table", icon: "table", blurb: "Typed columns, sorts, filters, a sum on any of them" },
+  { name: "Chart view", tab: "Chart", icon: "chartPie", blurb: "Share by category, spend by day" },
+  { name: "Gallery view", tab: "Gallery", icon: "images", blurb: "The attachment column, as thumbnails" },
+  { name: "Map view", tab: "Map", icon: "map", blurb: "The location column, as pins" },
+];
+
+/* 地图上的落点，百分比坐标。位置是编的，形状不是——location 是产品里
+   真有的一种列类型，地图视图读的就是它。 */
+export const BASE_PINS: [number, number][] = [
+  [22, 34], [38, 58], [57, 27], [69, 62], [46, 44], [80, 40], [31, 72],
+];
+
 export const MUSCLE_HEAT: Record<string, number> = {
   chest: 4,
   anterior_lateral_deltoids: 3,

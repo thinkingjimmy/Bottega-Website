@@ -53,6 +53,6 @@ App 各自的表面。
 第二块表面。**全站只有这一处**，其余都是一台机器的一屏。
 
 数据都住在 `@/lib/agents` 与 `@/lib/body-map.json`，样式都住在
-`app/globals.css` 的第 4 节。这一层只负责形状。
+`app/styles/apps/` 那四支。这一层只负责形状。
 
 [PROTOCOL]: 变更时更新此头部，然后检查 README.md

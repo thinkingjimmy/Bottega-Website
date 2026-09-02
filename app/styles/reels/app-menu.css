@@ -1,0 +1,293 @@
+/**
+ * [INPUT]: 依赖 ../tokens.css 的 --app-*、--dc-paper 与 --dc-line
+ * [OUTPUT]: Fully customizable 一节那扇独立 App 窗口、它的「···」菜单、那条 chat
+ *           输入框与它落地之后画布上多出来的第三块板
+ * [POS]: 三支 reel 里唯一一支镜头走两段的：先贴着窗口左上角，右移到「···」拍下那一按，
+ *        再回拉到全景——因为结论（输入框里那句话生效）发生在整扇窗口上
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* 十一秒一镜：左上角静息 → 右移到「···」→ 它亮起、菜单掉出来 → 落焦 Edit App →
+   回拉、压暗、输入框升起 → 一个字一个字打完 → 发送 → 输入框退场，
+   画布上长出第三块板。 */
+.reel:has(.aw-cam) { --dur: 11s; }
+
+/* 镜头的原点钉死在 0 0，位移与缩放一起算——与 Agents 那台同一套写法。
+   静息这一格与 keyframes 的 0% 逐位相同：脚本没跑、等着起播，
+   两种时刻看到的都是同一格，一次跳变都没有。
+   首帧不是全景而是窗口左上角：一台机器先让人看清它是谁（返回、图标、
+   全名），再让人看它被怎么改——全景开场等于把这两件事同时说，
+   而同时说出口的两件事，观众一件也没听见。
+   26/20/1.7 三个数逐字取自 Agents 那台（见 agents.css 的 --cam-in-*）：
+   左边与上边各留一条桌面，「镜头开在这台机器的一角」这句话才自己说得
+   出口——贴着边裁的一格读起来是「图放歪了」，不是取景。两节首帧同一套
+   取景，等于告诉观众这两台是同一间屋子里的机器。 */
+.aw-cam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  transform: translate(26px, 20px) scale(1.7);
+}
+
+/* ── 一扇独立的 App 窗口 ──────────────────────────────────────────
+ * 页头 40（page-shell 的 --page-shell-header-height: 2.5rem）、
+ * 标题 14/500、「···」是 icon-lg（32，图标 16）、返回是 icon-sm（24，图标 12）。
+ * 底色用 App 自己的暖纸：这只 App 是 Design Canvas，它不跟着产品的中性灰走。
+ * 画框不再垫桌面板：镜头 1.5 倍开场，机器本就盖满整格，露不出底色来。
+ * ────────────────────────────────────────────────────────── */
+.appwin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 720px;
+  height: 440px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: var(--dc-paper);
+  color: var(--app-fg);
+  box-shadow: 0 0 0 1px var(--app-border), 0 12px 32px -10px rgba(27, 26, 22, 0.3);
+}
+.is-dark .appwin { box-shadow: 0 0 0 1px var(--app-border), 0 12px 32px -10px rgba(0, 0, 0, 0.6); }
+.aw-head {
+  display: flex; align-items: center; gap: 8px;
+  height: 40px; flex: none; padding: 0 8px;
+  border-bottom: 1px solid var(--app-border);
+  background: var(--app-bg);
+}
+.aw-back, .aw-more {
+  display: grid; place-items: center; flex: none;
+  border-radius: 6px; color: var(--app-fg);
+}
+.aw-back { width: 24px; height: 24px; }
+.aw-back svg { width: 12px; height: 12px; }
+/* 「···」自己带一格按下态。画面上没有鼠标，于是「有人按了这里」这句话
+   全靠它说：先缩一格（按下），再亮起来并一直亮到菜单收起——产品里
+   触发器就是这么待着的。少了这一格，菜单就成了自己开的。 */
+.aw-more {
+  width: 32px; height: 32px;
+  background-color: transparent;
+  transform-origin: 50% 50%;
+}
+.aw-more svg { width: 16px; height: 16px; }
+.aw-title { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 500; }
+.aw-title i { font-style: normal; font-size: 13px; }
+
+/* 窗口里那张画布：Agent 写的 HTML，不可信内容只画骨架——它不该被读，
+   只该被认出「那是一页」。 */
+.aw-body { position: relative; flex: 1; min-height: 0; padding: 26px 34px; }
+.aw-board {
+  display: flex; flex-direction: column; gap: 18px;
+  height: 100%; padding: 22px 26px;
+  border: 1px solid var(--dc-line); border-radius: 2px; background: #fff;
+  box-shadow: 0 2px 6px rgba(18, 18, 15, 0.08), 0 24px 64px rgba(18, 18, 15, 0.16);
+}
+.aw-sk { display: block; border-radius: 4px; background: rgba(30, 31, 27, 0.1); }
+/* 板子横着排而不是三列网格：因为要长出来的那一块得让另外两块自己让位，
+   而网格的列数是跳变的，flex 的余量不是。 */
+.aw-cards { display: flex; gap: 16px; flex: 1; min-height: 0; }
+.aw-card {
+  display: flex; flex-direction: column; gap: 9px;
+  flex: 1 1 0; min-width: 0; overflow: hidden;
+  padding: 14px; border: 1px solid rgba(30, 31, 27, 0.08); border-radius: 6px;
+}
+/* 第三块板的静息态就是「不存在」：余量为零。塌到零宽之后它仍占 30px
+   （左右各 14 内距、两条边），加上 16 的间距——负 46 把这一截也收掉，
+   于是它是从第二块板背后长出来的，不是本来就杵在那儿只是透明。 */
+.aw-pane3 { flex-grow: 0; flex-basis: 0; margin-left: -46px; opacity: 0; }
+
+/* ── App 菜单 ────────────────────────────────────────────────────
+ * w-48（192）、align start；外壳 rounded-lg + p-1 + ring-1 + shadow-md，
+ * 条目 min-h-7 + gap-2 + rounded-md + px-2 py-1 + 12px，图标 size-3.5，
+ * 分隔线 -mx-1 my-1 h-px bg-border/50——全部取自 packages/ui。
+ * 左边缘 218 与「···」的左边缘同线：产品里这颗钮是 titleAdornment（贴着
+ * 标题，不在页头右端），菜单 align="start"——菜单从哪颗按钮里掉出来，
+ * 这条对齐线是唯一的说明。
+ * ────────────────────────────────────────────────────────── */
+.aw-menu {
+  position: absolute;
+  top: 44px; left: 218px;
+  width: 192px;
+  padding: 4px;
+  border-radius: 8px;
+  background: var(--app-bg);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--app-fg) 10%, transparent),
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  transform-origin: 0 0;
+  opacity: 0;
+  transform: scale(0.95);
+}
+.aw-item {
+  position: relative;
+  display: flex; align-items: center; gap: 8px;
+  min-height: 28px; padding: 4px 8px;
+  border-radius: 6px; font-size: 12px; line-height: 1.625;
+  color: var(--app-fg);
+}
+.aw-item svg { width: 14px; height: 14px; flex: none; }
+.aw-item .tail { margin-left: auto; }
+.aw-sep { height: 1px; margin: 4px -0.5px; background: color-mix(in srgb, var(--app-border) 50%, transparent); }
+/* 落焦那一格自己不动，动的是它底下那块底色。 */
+.aw-focus {
+  position: absolute;
+  left: 4px; right: 4px; top: 4px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--app-accent);
+  opacity: 0;
+}
+
+/* ── 中场：一扇 App 编辑 chat 的输入框 ────────────────────────────
+ * 「编辑 App」在产品里打开的是 openAppEditor → app-editor-chat：一个
+ * 绑定这只 App 的会话。所以这一镜的中场不是「有个编辑按钮」，
+ * 而是「你在跟一个 Agent 改这只 App」——输入框里那颗芯片就是绑定本身。
+ * 窄而高、钉在右下角：横贯画面的一条会被读成「这台机器的底栏」，
+ * 而它其实是浮在这只 App 上的一扇会话，与 App 各自为政。
+ * 280 是从那句话倒推的：文字量出来 217，加两边 12 的内距与两条边正好
+ * 落在 254 的可写宽度里——再窄一格，这句话就得折行，而折行的字数会随
+ * 字体渲染漂移，打字的步数却是钉死的 35。
+ * ────────────────────────────────────────────────────────── */
+.aw-veil { position: absolute; inset: 0; background: rgba(18, 18, 15, 0.28); opacity: 0; }
+.aw-chat {
+  position: absolute;
+  right: 22px; bottom: 22px;
+  width: 280px;
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--app-border); border-radius: 12px;
+  background: var(--app-bg);
+  box-shadow: 0 2px 6px rgba(27, 26, 22, 0.08), 0 20px 44px -14px rgba(27, 26, 22, 0.38);
+  opacity: 0;
+  transform: translateY(14px);
+}
+.aw-chip {
+  display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+  height: 22px; padding: 0 8px;
+  border-radius: 6px; background: var(--app-accent);
+  font-size: 11.5px; color: var(--app-fg);
+}
+.aw-chip i { font-style: normal; }
+/* 文字区自己占住高度，发送键落在它下面那一行的右端——composer 的形状。
+   把发送键塞回文字那一行，这扇会话就又塌回一条搜索栏。 */
+.aw-ask {
+  display: flex; align-items: flex-start;
+  flex: 1; min-height: 46px;
+  font-size: 13px; color: var(--app-fg);
+}
+/* 打字：裁掉溢出、定宽推进，右边框就是光标。光标跟着字尾走是免费的——
+   另摆一根竖线去跟文字对齐，则是一笔迟早会错的账。 */
+.aw-typed {
+  flex: none;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-right: 2px;
+  border-right: 1.5px solid var(--app-fg);
+}
+.aw-send {
+  display: grid; place-items: center; align-self: flex-end;
+  width: 26px; height: 26px; flex: none;
+  border-radius: 7px; background: var(--app-fg); color: var(--app-bg);
+}
+.aw-send svg { width: 14px; height: 14px; }
+
+/* ── 一镜到底 ────────────────────────────────────────────────────
+ * 每一支动画都跑满 --dur 并 forwards，节拍全写进各自的百分比里：
+ * 用 delay 的话八支各有各的总时长，一支改了时长就与其余错位。
+ * 不循环：一段永动的循环在说「我是个装饰」，而这台机器在做的是一次陈述。
+ * 画面上没有鼠标，所以每一次「点」都由被点的那一格自己说出口：
+ * 「···」缩一下再亮着，Edit App 底下浮起一条底色，发送键压下去。
+ * 节拍表（占 --dur 的百分比）：
+ *   00–10 左上角静息 · 10–22 右移到「···」· 23 按下「···」· 25–29 菜单落下
+ *   34 落焦 Edit App · 40–44 菜单收起 · 42–50 回拉全景 · 43–51 输入框升起
+ *   53–70 打字 · 73 按下发送 · 76–82 输入框退场 · 82–92 第三块板长出来
+ * ────────────────────────────────────────────────────────── */
+/* 三站：左上角 → 右移到菜单 → 回拉全景。中间那一站的数是从菜单倒推的：
+   菜单在窗内 x 218…410、y 44…247，1.32 倍之后是 288…541、58…326；
+   左移 100 让它落在画框的 188…441，底下还剩 24px——再多推一点，
+   菜单的最后一条就被画框咬掉了，而「能改成什么」全在那几条上。
+   这一站会把 App 的名字切掉一截，而这不再是损失：名字在首帧已经
+   完整说过一遍了——那正是首帧钉在左上角的理由。 */
+@keyframes aw-cam {
+  0%, 10% { transform: translate(26px, 20px) scale(1.7); }
+  22%, 42% { transform: translate(-100px, 8px) scale(1.32); }
+  50%, 100% { transform: translate(2px, 4px) scale(0.8); }
+}
+.reel[data-play] .aw-cam { animation: aw-cam var(--dur) cubic-bezier(0.45, 0, 0.55, 1) forwards; }
+
+/* 那一按：先缩，再亮，亮到菜单收起为止。 */
+@keyframes aw-more {
+  0%, 22% { background-color: transparent; transform: scale(1); }
+  23.5% { background-color: var(--app-accent); transform: scale(0.88); }
+  25%, 41% { background-color: var(--app-accent); transform: scale(1); }
+  44%, 100% { background-color: transparent; transform: scale(1); }
+}
+.reel[data-play] .aw-more { animation: aw-more var(--dur) ease-out forwards; }
+
+@keyframes aw-menu {
+  0%, 24.5% { opacity: 0; transform: scale(0.95); }
+  29%, 40% { opacity: 1; transform: scale(1); }
+  44%, 100% { opacity: 0; transform: scale(0.95); }
+}
+.reel[data-play] .aw-menu { animation: aw-menu var(--dur) ease-out forwards; }
+/* 落焦那一格自己不动，动的是它底下那块底色——那块底色就是「这一条被点了」。 */
+@keyframes aw-focus {
+  0%, 33% { opacity: 0; }
+  35%, 41% { opacity: 1; }
+  44%, 100% { opacity: 0; }
+}
+.reel[data-play] .aw-focus { animation: aw-focus var(--dur) ease-out forwards; }
+
+@keyframes aw-veil {
+  0%, 43% { opacity: 0; }
+  49%, 76% { opacity: 1; }
+  82%, 100% { opacity: 0; }
+}
+.reel[data-play] .aw-veil { animation: aw-veil var(--dur) ease-out forwards; }
+@keyframes aw-chat {
+  0%, 43% { opacity: 0; transform: translateY(14px); }
+  51%, 76% { opacity: 1; transform: translateY(0); }
+  82%, 100% { opacity: 0; transform: translateY(10px); }
+}
+.reel[data-play] .aw-chat { animation: aw-chat var(--dur) cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+/* 35 个字符 35 步。221 = 量出来的 217.5 文字 + 2 内距 + 1.5 光标（border-box）。
+   写死一个量出来的数，好过写死一个 ch——ch 量的是「0」的宽度，
+   而这句话里一个 0 也没有。 */
+@keyframes aw-type {
+  0%, 53% { width: 0; }
+  70%, 100% { width: 221px; }
+}
+.reel[data-play] .aw-typed { animation: aw-type var(--dur) steps(35, end) forwards; }
+/* 发送键压下去那一下，就是「这句话被送出去了」。 */
+@keyframes aw-send {
+  0%, 72.5% { transform: scale(1); }
+  73.5% { transform: scale(0.86); }
+  75.5%, 100% { transform: scale(1); }
+}
+.reel[data-play] .aw-send { animation: aw-send var(--dur) ease-out forwards; }
+
+/* 结论：那句话生效了。第三块板长出来，另外两块自己让位。 */
+@keyframes aw-pane3 {
+  0%, 82% { flex-grow: 0; opacity: 0; margin-left: -46px; }
+  92%, 100% { flex-grow: 1; opacity: 1; margin-left: 0; }
+}
+.reel[data-play] .aw-pane3 { animation: aw-pane3 var(--dur) cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+/* 关掉动效之后只剩一格，而一格只说得出一句话——那就说结论那句：
+   你对着这只 App 说了句话，板子就多了一块。首帧（窗口左上角）在这里
+   不能用：它说的是「这是谁」，而不动的图需要说的是「所以呢」。 */
+@media (prefers-reduced-motion: reduce) {
+  .reel[data-play] .aw-cam,
+  .reel[data-play] .aw-more,
+  .reel[data-play] .aw-menu,
+  .reel[data-play] .aw-focus,
+  .reel[data-play] .aw-veil,
+  .reel[data-play] .aw-chat,
+  .reel[data-play] .aw-typed,
+  .reel[data-play] .aw-send,
+  .reel[data-play] .aw-pane3 { animation: none; }
+  .aw-cam { transform: translate(2px, 4px) scale(0.8); }
+  .aw-chat { opacity: 1; transform: none; }
+  .aw-typed { width: auto; }
+  .aw-pane3 { flex-grow: 1; margin-left: 0; opacity: 1; }
+}

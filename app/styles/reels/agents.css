@@ -1,7 +1,7 @@
 /**
- * [INPUT]: 依赖 ./tokens.css 的 --app-* 与 --ground-2
- * [OUTPUT]: Agents 一节那台一镜到底的示意图、它的画框、骨架条 .sk、四枚 agent 标记与 .sr-only
- * [POS]: 正文里唯一一台示意图。.sk 与 .sr-only 住在这里是因为它们最早为它而生，如今也被 apps/ 那四台机器消费——要动先看那四支
+ * [INPUT]: 依赖 ../tokens.css 的 --app-* 与 --ground-2
+ * [OUTPUT]: Agents 一节那台一镜到底的示意图
+ * [POS]: 三支 reel 里的第一支，也是全站最早那一台。画框与骨架条已挪到 ./shared.css——三支都吃它
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
@@ -28,6 +28,20 @@
  * 不写 will-change：那会把这一层钉成一张固定分辨率的位图，推近之后字就
  * 糊了。让浏览器自己在停顿里重新栅格化，停住时才是清楚的。
  * ────────────────────────────────────────────────────────── */
+/* ── 桌面是取景框的证据 ────────────────────────────────────────────
+ * 这台机器是 720×420 推到 1.7 倍再裁，画框是**取景框**而不是机器的边界
+ * ——左边 26、上边 20 那两条留白正是「镜头开在这台机器的一角」这句话的
+ * 全部证据。底色一撤，那两条就成了页面地色，于是右下两边被裁、
+ * 左上两边悬空，读起来不像取景，像放歪了。
+ * 这三个数也借给了 App 菜单那一支的首帧（见 app-menu.css）：两节都从
+ * 一台机器的左上角开镜，取景一致，读起来才是同一间屋子里的两台机器。
+ * 只有 Base 那一支不需要——它的画框恰好等于机器本身，镜头也不动。
+ * ────────────────────────────────────────────────────────── */
+.reel:has(.reel-cam) {
+  border-radius: 14px;
+  background: var(--ground-2);
+}
+
 .reel {
   /* 四个数钉住整段镜头，都是从画框 580×360 与机器 720×420 推出来的：
        --cam-in     1.7，侧栏 200px 占到画框的六成，10px 的字读得出来。
@@ -44,26 +58,6 @@
   --cam-in-x: 26px;
   --cam-in-y: 20px;
   --cam-pan-y: -374px;
-  width: 580px;
-  aspect-ratio: 580 / 360;
-}
-
-/* ── 两台会动的图共用的画框 ──────────────────────────────────────
- * 共用的是形状（圆角、桌面底色、定宽居中、溢出裁掉），不是尺寸：
- * 每台图的宽高都得跟自己那一栏文字对，而两节的文字一节 359px、
- * 一节 509px——共用一个尺寸只能保证其中一节是错的。
- * 定宽而非吃满：镜头那几个数按定宽算，栏一变宽变窄它们就全不作数；
- * 堆叠时居中，只有窄到定宽以下才退回 100%。
- * 底色是桌面色，不是机器色——两者同色时读起来是「一台机器浮在白里」，
- * 画框与机身分不出边界，于是它既不像一台机器，也不像一张图。
- * ────────────────────────────────────────────────────────── */
-.reel {
-  position: relative;
-  max-width: 100%;
-  margin-inline: auto;
-  overflow: hidden;
-  border-radius: 14px;
-  background: var(--ground-2);
 }
 
 /* 两格，六秒：
@@ -95,6 +89,7 @@
 .reel[data-play] .reel-cam {
   animation: bt-reel 6s cubic-bezier(0.45, 0, 0.55, 1) forwards;
 }
+
 
 .reel-app {
   display: flex;
@@ -229,41 +224,6 @@
   border-radius: 10px;
 }
 
-@keyframes bt-sk {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-/* 比产品的 Skeleton 深一档：那边的骨架躺在真尺寸的界面里，这里要在
-   0.639 倍的全景镜头下仍然看得出「那边有一台在干活的机器」。 */
-/* --sk-ink 让纸面 App 各用各的墨：Design Canvas 的白板与 Fitness Log 的
-   纸都不是产品那套中性灰，套上去会读成一块脏。 */
-.sk {
-  display: block;
-  flex: none;
-  border-radius: 9999px;
-  background: var(--sk-ink, color-mix(in srgb, var(--app-muted-fg) 22%, transparent));
-  animation: bt-sk 2s ease-in-out infinite;
-}
-.sk-dot {
-  width: 12px;
-  height: 12px;
-}
-.sk-bar {
-  height: 7px;
-}
-.sk-bubble {
-  align-self: flex-end;
-  width: 132px;
-  height: 26px;
-  margin-bottom: 4px;
-  border-radius: 8px;
-}
-
 /* 四枚标记就是「有谁」的全部证据。名字不画在旁边：一行 logo 读得比一行
    名字快，读不出来的人 hover 就有，读屏器走 .sr-only。 */
 .agent-marks {
@@ -277,39 +237,4 @@
 }
 .agent-marks li {
   display: flex;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-}
-
-
-.band {
-  border-radius: 20px;
-  padding: clamp(56px, 5vw, 76px) clamp(48px, 5vw, 80px);
-  background: var(--ink);
-  color: var(--ground);
-}
-.band h2 {
-  color: var(--ground);
-}
-.fork-layout {
-  grid-template-columns: minmax(0, 1fr) minmax(340px, 400px);
-  gap: clamp(56px, 6vw, 90px);
-}
-.fork-title {
-  margin-bottom: 22px;
-  font-size: clamp(38px, 2.85vw, 54px);
-  line-height: 1.02;
-  letter-spacing: -0.04em;
-  font-kerning: normal;
-  white-space: nowrap;
 }

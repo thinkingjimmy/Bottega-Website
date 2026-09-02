@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 ../tokens.css 的全部 token
- * [OUTPUT]: 首屏跑道与舞台（.hero-pin/.stage/.scene）、站点 header 的两层皮、产品窗口的外壳与侧栏
+ * [OUTPUT]: 首屏跑道与舞台（.hero-pin/.stage/.scene）、站点 header 的两层皮、产品窗口的外壳与侧栏、第三栏的开合
  * [POS]: 首屏那一屏的骨架。header 住在这里不是归类失手：它的 stage 皮（高度与显影跟着收缩走）本就是首屏的一部分，framed 皮只是同一段 DOM 的另一面
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
@@ -274,6 +274,18 @@
    `flex: none` 子项会向两头同时溢出——溢出的上半截正好压在菜单栏上。
    压扁之后内容由 `.chat` 自己滚，所以压扁不等于截断。 */
 .window {
+  /* ── 第三栏的宽度由这只窗自己算 ────────────────────────────────
+   * 产品的规矩是主栏不得低于 360（lib/side-panel-layout.ts 的
+   * CHAT_MAIN_COLUMN_MIN_WIDTH），第三栏在余量里取。分母必须是这台机器
+   * 而不是视口：首屏收缩时窗宽会掉两百多像素，按视口算出来的那一栏
+   * 会在收缩末尾把聊天挤成一条缝。`container-type: inline-size` 就是
+   * 为了让 cqw 有意义——这只窗的宽高都是自己写死的，内容影响不了它，
+   * 所以加了它一处布局都不改变。
+   * ──────────────────────────────────────────────────────── */
+  container-type: inline-size;
+  --sidebar-w: 256px;
+  --chat-min: 360px;
+
   position: relative;
   z-index: 2;
   flex: 0 1 auto;
@@ -303,7 +315,7 @@
   --sidebar-gutter: 8px;
 
   flex: none;
-  width: 256px;
+  width: var(--sidebar-w);
   display: flex;
   flex-direction: column;
   background: var(--app-sidebar);
@@ -357,6 +369,26 @@
   flex: none;
   border-radius: 6px;
   color: var(--app-muted-fg);
+}
+
+/* 按得下去的那一档：同一个 28px 槽，多一层悬停底色与手型。产品里它们是
+   `variant="ghost"` 的图标钮——反馈不是装饰，是「这颗真能按」这句话本身。
+   静态那几颗（搜索、通知、折叠）继续用裸 .icon-slot：给按不动的东西
+   悬停反馈，等于许一个兑现不了的诺。 */
+.icon-btn {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.icon-btn:hover {
+  background: var(--app-accent);
+  color: var(--app-fg);
+}
+.icon-btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--app-fg) 32%, transparent);
+  outline-offset: -1px;
 }
 
 .sidebar-nav {
@@ -468,6 +500,69 @@ button.row:hover,
   text-overflow: ellipsis;
   font-size: 14px;
   font-weight: 500;
+}
+
+/* ── 第三栏：Plan 的全文 ──────────────────────────────────────────
+ * 抄自 chat/side-panel 的 side-panel.tsx：**外层只管宽度，里层那张脸定宽
+ * 绝对定位并从右边滑进来**。两件事分开是有代价才这么做的——若让文档自己
+ * 跟着宽度长，开合的那 200ms 里每一帧都要重排一次段落，字会抖成一团。
+ * 现在抖的是聊天区（它本来就在让位），文档一个字都不动。
+ * 200ms linear 与产品的 SIDE_PANEL_TRANSITION_MS 同一个数。
+ * ────────────────────────────────────────────────────────── */
+.win-panel {
+  /* ── 两种模式，没有中间态 ──────────────────────────────────────
+   * 窗够宽：并列一栏，主栏保住 360，第三栏在余量里取，封顶 320——
+   * 那正是产品的 SIDE_PANEL_MIN_WIDTH：这台机器只有 960 宽，产品里那条
+   * 「视口 × 0.42」在这里给不出更多，索性就停在产品自己的下限上。
+   * 窗不够宽：文档整只顶掉主栏，聊天退到它后面——换一屏，而不是把
+   * 两边都挤到读不了。中间态（比如两边各 280）看着是折中，实则两件事
+   * 一件也没做成。
+   * 876 = 256 侧栏 + 360 主栏下限 + 260 第三栏还读得下去的最小值；容器
+   * 查询的条件里用不了自定义属性，故这一个数只能写死，加数就在上一行。
+   * ──────────────────────────────────────────────────────── */
+  --panel-w: calc(100cqw - var(--sidebar-w));
+
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 0;
+  /* 滑进来的那张脸有一半还在窗外——必须由这一栏自己剪掉。剪不掉，
+     .window 里就永远躺着一段横向溢出的内容：它不显示滚动条（overflow
+     hidden），却仍然滚得动，于是浏览器一次「把焦点滚进视野」就能把整台
+     机器往左推走几十像素，侧栏第一个字被吃掉，谁也看不出是谁干的。 */
+  overflow: hidden;
+  transition: width 200ms linear;
+}
+@container (min-width: 876px) {
+  .win-panel {
+    --panel-w: min(320px, calc(100cqw - var(--sidebar-w) - var(--chat-min)));
+  }
+}
+.win-panel[data-state="open"] {
+  width: var(--panel-w);
+}
+.win-panel-face {
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  width: var(--panel-w);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--app-border);
+  background: var(--app-bg);
+  transform: translateX(100%);
+  transition: transform 200ms linear;
+  /* 关着的时候它整只让开：不接事件，也不该被 Tab 停一脚（inert 在 tsx 里）。 */
+  pointer-events: none;
+}
+.win-panel[data-state="open"] .win-panel-face {
+  transform: none;
+  pointer-events: auto;
+}
+/* 页头借主栏那条 .win-head，但关闭钮要贴右缘：16px 的行内边距是为文字留的,
+   一颗 28px 的钮贴着它就离边太远。 */
+.win-panel-face .win-head {
+  padding-right: 8px;
 }
 
 /* 真聊天窗里消息压在输入框上方，不是顶在标题下——顶对齐会在

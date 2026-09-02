@@ -9,13 +9,16 @@
  */
 
 import { AppsStage } from "./apps/apps-stage";
+import { Reveal } from "./reveal";
 
 export function AppsSection() {
   return (
     <section className="section" id="apps">
-      <div className="wrap">
-        <AppsStage />
-      </div>
+      <Reveal>
+        <div className="wrap">
+          <AppsStage />
+        </div>
+      </Reveal>
     </section>
   );
 }

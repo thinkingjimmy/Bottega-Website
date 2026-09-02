@@ -8,7 +8,7 @@ app/styles/ - 全站样式，按关注点拆成 7 项 (tokens / base / hero/ / a
 components/ - 页面构件 (8 个: hero / agents-section / apps-section / fork-band / site-header / site-footer / theme / icons)
 components/reels/ - 正文里那台会动的示意图 (1 个: agents；见其 README)
 components/apps/ - Apps 一节的四台真机与那只换挡杆 (6 个；见其 README)
-components/window/ - 首屏那台机器 (4 个: 外壳 / 对话 / 输入框 / 模型面板；见其 README)
+components/window/ - 首屏那台机器 (5 个: 外壳 / 对话 / 输入框 / 模型面板 / Plan 第三栏；见其 README)
 lib/ - 数据与解析 (3 个: agents 演示数据, body-map.json 人体路径, changelog 解析)
 content/ - 构建期内容快照 (changelog.md)
 scripts/ - 构建前置 (sync-changelog.mjs)

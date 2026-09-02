@@ -4,7 +4,7 @@
 
 Member list
 
-`globals.css`: 全站样式的唯一入口，只剩一份十一行的 `@import` 清单——那份清单的顺序就是级联本身，不是审美排列。
+`globals.css`: 全站样式的唯一入口，只剩一份十五行的 `@import` 清单——那份清单的顺序就是级联本身，不是审美排列。
 
 `styles/`: 拆开后的全站样式（7 项：tokens / base / hero/ / apps/ / reel / bands / motion）；见其 README。
 

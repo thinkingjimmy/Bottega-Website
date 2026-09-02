@@ -5,6 +5,28 @@
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
+.band {
+  border-radius: 20px;
+  padding: clamp(56px, 5vw, 76px) clamp(48px, 5vw, 80px);
+  background: var(--ink);
+  color: var(--ground);
+}
+.band h2 {
+  color: var(--ground);
+}
+.fork-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 400px);
+  gap: clamp(56px, 6vw, 90px);
+}
+.fork-title {
+  margin-bottom: 22px;
+  font-size: clamp(38px, 2.85vw, 54px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  font-kerning: normal;
+  white-space: nowrap;
+}
+
 /* ── 代码不是一块灰卡，是一次真实构建 ───────────────────────────
  * titlebar、交通灯、提示符与输出各司其职；终端比外层带子再暗一层，边与影
  * 只负责把两个深色表面分开，不把它画成一张浮在上面的亮卡片。
