@@ -1,15 +1,9 @@
 "use client";
 
 /**
- * [INPUT]: 依赖 react 的 useEffect/useRef/useState，依赖 @/lib/agents 的
- *          BACKENDS/MODELS/backendLabel/effortLabel/compactModelLabel/Chat，
- *          依赖 ./product-model-menu 的 ProductModelMenu，
- *          依赖 ../icons 的 AgentLogo/Stroke/D
- * [OUTPUT]: 对外提供 ProductComposer 组件
- * [POS]: 产品窗口底部那只输入框。两行几何抄自 apps/desktop 的
- *        chat/composer：上行是编辑区，下行左侧工具、右侧 agent/模型/发送。
- *        agent 在等你回话时，输入框整只让位给问题卡——那是 chat-user-input-
- *        selector.tsx 的规矩：能做的只有回话，就别摆着一个能打字的框
+ * [INPUT]: Uses React state/effects, Agent/model capability data, ProductModelMenu, and shared product icons
+ * [OUTPUT]: Exports ProductComposer with optional persistent Agent or model menu disclosure
+ * [POS]: Canonical two-row product Composer used inside every ProductWindow presentation
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
@@ -32,11 +26,13 @@ import { ProductModelMenu } from "./product-model-menu";
  * 菜单向上向右开：这一行贴着窗口底边，向下没有地方可去。
  * ────────────────────────────────────────────────────────── */
 function Menu({
+  dismissible = true,
   open,
   onOpenChange,
   trigger,
   children,
 }: {
+  dismissible?: boolean;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   trigger: React.ReactNode;
@@ -45,7 +41,7 @@ function Menu({
   const host = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || !dismissible) return;
     const dismiss = (event: Event) => {
       if (!host.current?.contains(event.target as Node)) onOpenChange(false);
     };
@@ -58,7 +54,7 @@ function Menu({
       document.removeEventListener("pointerdown", dismiss);
       document.removeEventListener("keydown", escape);
     };
-  }, [open, onOpenChange]);
+  }, [dismissible, open, onOpenChange]);
 
   return (
     <div className="menu-host" ref={host}>
@@ -70,14 +66,20 @@ function Menu({
 
 export function ProductComposer({
   chat,
+  pinnedMenu,
   onAgent,
   onPatch,
 }: {
   chat: Chat;
+  pinnedMenu?: "agent" | "model";
   onAgent: (agent: AgentId) => void;
   onPatch: (turn: Partial<Chat>) => void;
 }) {
   const [openMenu, setOpenMenu] = useState<"agent" | "model" | "">("");
+  const visibleMenu = pinnedMenu ?? openMenu;
+  const changeMenu = (menu: "agent" | "model" | "") => {
+    if (!pinnedMenu) setOpenMenu(menu);
+  };
 
   if (chat.question) return <UserInputCard question={chat.question} />;
 
@@ -98,16 +100,17 @@ export function ProductComposer({
 
         <div className="composer-right">
           <Menu
-            open={openMenu === "agent"}
-            onOpenChange={(open) => setOpenMenu(open ? "agent" : "")}
+            dismissible={!pinnedMenu}
+            open={visibleMenu === "agent"}
+            onOpenChange={(open) => changeMenu(open ? "agent" : "")}
             trigger={
               <button
                 type="button"
-                className={`tool-round tool-btn${openMenu === "agent" ? " on" : ""}`}
+                className={`tool-round tool-btn${visibleMenu === "agent" ? " on" : ""}`}
                 aria-label={`Current agent: ${backendLabel(chat.agent)}`}
-                aria-expanded={openMenu === "agent"}
+                aria-expanded={visibleMenu === "agent"}
                 title={backendLabel(chat.agent)}
-                onClick={() => setOpenMenu(openMenu === "agent" ? "" : "agent")}
+                onClick={() => changeMenu(visibleMenu === "agent" ? "" : "agent")}
               >
                 <AgentLogo backend={chat.agent} size={16} />
               </button>
@@ -124,7 +127,7 @@ export function ProductComposer({
                     /* 换 agent 就换目录：模型、档位、Fast 一起落回新家的
                        默认值。那条规则住在数据层，此处只负责关菜单。 */
                     onAgent(backend.id);
-                    setOpenMenu("");
+                    changeMenu("");
                   }}
                 >
                   <span className="menu-item-body">
@@ -140,16 +143,17 @@ export function ProductComposer({
           </Menu>
 
           <Menu
-            open={openMenu === "model"}
-            onOpenChange={(open) => setOpenMenu(open ? "model" : "")}
+            dismissible={!pinnedMenu}
+            open={visibleMenu === "model"}
+            onOpenChange={(open) => changeMenu(open ? "model" : "")}
             trigger={
               <button
                 type="button"
-                className={`tool tool-btn${openMenu === "model" ? " on" : ""}`}
+                className={`tool tool-btn${visibleMenu === "model" ? " on" : ""}`}
                 aria-label={`Current model: ${chat.model}`}
-                aria-expanded={openMenu === "model"}
+                aria-expanded={visibleMenu === "model"}
                 title={chat.effort ? `${chat.model} · ${effortLabel(chat.effort)}` : chat.model}
-                onClick={() => setOpenMenu(openMenu === "model" ? "" : "model")}
+                onClick={() => changeMenu(visibleMenu === "model" ? "" : "model")}
               >
                 {fast ? (
                   <svg width={16} height={16} viewBox="0 0 24 24" fill="currentColor" aria-hidden
@@ -171,7 +175,7 @@ export function ProductComposer({
               fast={fast}
               onTurn={onPatch}
               onFast={(next) => onPatch({ fast: next })}
-              onClose={() => setOpenMenu("")}
+              onClose={() => changeMenu("")}
             />
           </Menu>
 

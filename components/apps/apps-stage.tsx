@@ -1,15 +1,14 @@
 "use client";
 
 /**
- * [INPUT]: 依赖 ../reels/use-carousel 与 ../reels/use-play-when-seen，依赖 @/lib/agents 的 APPS，
- *          依赖四支表面组件
- * [OUTPUT]: 对外提供 AppsStage 组件
- * [POS]: Apps 一节的整只主体：左边一台机器，右边一份目录，目录就是那台
- *        机器的换挡杆。四台机器叠在同一只画框里，一次露一台
+ * [INPUT]: Uses the shared carousel/visibility hooks, APPS catalog, four product surfaces, and the feature detail CTA
+ * [OUTPUT]: Exports the AppsStage component
+ * [POS]: Complete Apps home feature with a live surface switcher, catalog, and route into the detailed documentation
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
 import { APPS } from "@/lib/agents";
+import { FeatureLink } from "../features/feature-link";
 import { useCarousel } from "../reels/use-carousel";
 import { usePlayWhenSeen } from "../reels/use-play-when-seen";
 import { CanvasSurface } from "./surface-canvas";
@@ -69,6 +68,7 @@ export function AppsStage() {
             </li>
           ))}
         </ul>
+        <FeatureLink slug="apps" />
       </div>
     </div>
   );

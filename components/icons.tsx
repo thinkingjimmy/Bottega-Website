@@ -108,13 +108,17 @@ export function Glyph({ d, size = 16 }: { d: string; size?: number }) {
  * 104px 的 macOS 出血留白）。留白一旦烘焙进 PNG，它就成了每个消费点都看
  * 不见、却都要跟它较劲的偏移量——那是排版的职责，不是资产的。
  * 米色底两套主题下都成立，故只有一版，不必像字标那样明暗各备一张。
+ *
+ * alt 由调用方给：这枚砖旁边有没有「Bottega」那行字，只有调用方知道。
+ * header 里那行字就在它右边，于是图标是装饰（alt=""）——两处都念一遍，
+ * 读屏听到的是「Bottega Bottega」。
  * ────────────────────────────────────────────────────────── */
-export function AppIcon({ size = 28 }: { size?: number }) {
+export function AppIcon({ size = 28, alt = "Bottega" }: { size?: number; alt?: string }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src="/app-icon.png"
-      alt="Bottega"
+      alt={alt}
       width={size}
       height={size}
       style={{ width: size, height: size, display: "block", borderRadius: size * 0.23 }}
@@ -166,7 +170,13 @@ export const D = {
   zap:
     "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z",
   penLine: "M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z",
-  sparkle: "M12 3l1.7 4.8L18.5 9.5l-4.8 1.7L12 16l-1.7-4.8L5.5 9.5l4.8-1.7z",
+  /* 这一枚是逐字的 lucide（sparkle 原版本身就是单路径，不像 grid/table/pencilLine
+     那样得并成一笔）。原来那条是一枚手绘简化版：只占 13/24 且中心落在 y=9.5，
+     于是它跟同列的兄弟一比小 27%、还偏高——一排图标里就它一个不在网格上。
+     lucide 自己把星形放到 20/24 而方块放到 18/24，是因为尖角形状要多占一点
+     bbox 才读得出同样大小。这份光学补偿抄过来就有，自己缩放是补不出来的。 */
+  sparkle:
+    "M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z",
   /* 系统菜单栏最左那一枚。那条带子归 macOS 所有，摆自家的标就是拿系统的
      壳卖自己的货——illusion 一破，整台机器都不像真的了。 */
   apple:

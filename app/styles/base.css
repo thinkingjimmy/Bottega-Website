@@ -1,7 +1,7 @@
 /**
- * [INPUT]: 依赖 tokens.css 的 --ground、--ink、--font-* 与 --edge
- * [OUTPUT]: 基础排版（body / 标题 / .mono / .wrap / .btn-primary / .icon-btn）与正文骨架（.content/.section/.eyebrow/.split 三型）
- * [POS]: 每一页都在用的那几条。正文骨架从原第 5 节提到这里：.split 三型是页面的网格，与 .wrap 同属「页面怎么分块」，留在正文里只是因为它当初写在那儿
+ * [INPUT]: Uses --ground, --ink, --font-*, and --edge from tokens.css
+ * [OUTPUT]: Defines global typography, shared controls, page wraps, and the home-section grid skeletons
+ * [POS]: Foundation layer consumed by every route before feature- or section-specific presentation
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
@@ -99,12 +99,14 @@ h3 {
    写的是同一颗按钮，却各写了一遍。 */
 .nav-cta {
   display: inline-flex;
+  flex: none;
   align-items: center;
   height: 32px;
   padding: 0 16px;
   border-radius: 9999px;
   font-size: 14px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 :focus-visible {

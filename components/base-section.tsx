@@ -1,20 +1,14 @@
 "use client";
 
 /**
- * [INPUT]: 依赖 ./reels/use-play-when-seen 与 ./reels/use-carousel，
- *          依赖 ./reels/base-views-reel 的 BaseViewsReel，
- *          依赖 @/lib/agents 的 BASE_VIEWS，依赖 ./icons 的 Stroke/glyph
- * [OUTPUT]: 对外提供 BaseSection 组件
- * [POS]: Bottega-Website 讲内置 Base 那一节，也是正文最后一节。图左文右。
- *        右栏那份视图目录既是名单也是那台机器的换挡杆——与 Apps 一节同一个
- *        做法：一份名字同时干两件事，重复就不存在了。
- *        标题写 chat 而不是 App 是事实不是措辞：Base 工具的提示原话是
- *        「Base 是当前 chat 可写的本地数据表：优先使用 chat 自有 Base，
- *        无自有 Base 时使用所属 Project 的共享 Base」
+ * [INPUT]: Uses Base carousel/visibility hooks, BASE_VIEWS, icon primitives, Reveal, and the shared feature detail CTA
+ * [OUTPUT]: Exports the BaseSection component
+ * [POS]: Final home feature showing four Base projections and linking to the complete six-view data model
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
 import { BASE_VIEWS } from "@/lib/agents";
+import { FeatureLink } from "./features/feature-link";
 import { Stroke, glyph } from "./icons";
 import { BaseViewsReel } from "./reels/base-views-reel";
 import { useCarousel } from "./reels/use-carousel";
@@ -56,7 +50,7 @@ export function BaseSection() {
                 </li>
               ))}
             </ul>
-
+            <FeatureLink slug="base" />
           </div>
         </div>
       </Reveal>

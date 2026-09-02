@@ -1,41 +1,24 @@
 # styles/reels/
 
-> L2 | 父级: [styles/README.md](../README.md)
+> L2 | Parent: [styles/](../README.md)
 
-正文里三台会动的图的样式。形状层在
-[`components/reels/`](../../../components/reels/README.md)。
+Styles for the three animated demonstrations in the home narrative. Their React structure lives in [`components/reels/`](../../../components/reels/README.md).
 
-## 顺序
+## Cascade
 
-`shared.css` 必须排在三支之前——画框、骨架条 `.sk` 与 `.sr-only` 都住在它那儿。
+`shared.css` must load before the three feature-specific stylesheets. It owns the outer frame, skeleton primitive, screen-reader utility, and replay control that the others extend.
 
-## 成员清单
+## Member list
 
-- **shared.css** (119): 三支共用的画框（580×360、圆角 14、桌面底色、
-  溢出裁掉）、骨架条 `.sk`、`.sr-only`，与前两支停住之后右下角那颗重播钮。
-  共用尺寸是因为三节的文字块也一样高；这个数写在各支里就会有三份真相。
-  重播钮的淡入只动 `opacity`：`transform` 留给 `:active` 那一下按压，
-  带 fill 的动画会把 `transform` 钉死，于是按下去什么都不会发生。
-- **agents.css** (211): 那台一镜到底的镜头与机身。四个 `--cam-*` 钉住整段
-  镜头，都是从画框 580×360 与机器 720×420 推出来的——改画框只需改这四个数，
-  keyframes 一行不用动。`.agent-marks` 也在这儿。
-- **app-menu.css** (293): 独立 App 窗口、它的「···」菜单、那条 chat 输入框，
-  与那句话落地之后画布上长出来的第三块板。那扇输入框窄而高、钉在右下角：
-  横贯画面的一条会被读成「这台机器的底栏」，而它其实是浮在 App 上的一扇会话。首帧的 26/20/1.7 借自 `agents.css`
-  的 `--cam-in-*`：两节都从一台机器的左上角开镜，取景一致才读得出「同一间
-  屋子里的两台机器」。镜头三段：窗口左上角 →
-  **右移到菜单** → 退回整扇窗；退回不是过门，它有活干——结论发生在整扇窗上。
-  画面上没有鼠标，于是每一次「点」都由被点的那一格自己说出口：「···」缩一下
-  再亮着，Edit App 底下浮起底色，发送键压下去。中间那一站的位移是从菜单倒推的
-  （见文件里的算式）：再多推一点，菜单的最后一条就被画框咬掉，
-  而「能改成什么」全在那几条上。
-- **base-views.css** (156): 四种看法的轮播与那两行类型标记。交叉淡入 3%——
-  切得太硬像坏了，切得太软就成了幻灯片转场。
+- `shared.css`: Defines the shared 580x360 frame, consumes `--home-demo-radius` for its outer silhouette, and provides `.sk`, `.sr-only`, and the replay control. It paints no ground: whether the frame is a viewfinder or the machine's own edge is a per-reel answer, so each reel that needs a desktop declares it.
+- `agents.css`: Drives the one-shot sidebar camera pan and renders the Agents product shell. Its `--cam-*` values derive the crop from the shared frame and the 720x420 machine, and it fills the frame with `--ground-2` because the 26/20 margins are the only evidence that this is a crop of a machine rather than the machine itself.
+- `app-menu.css`: Animates the editable App window from its upper-left identity through the menu action and into the completed source-chat change. Its camera leaves the machine on both the opening and the closing station, so it fills the frame with the same `--ground-2` desktop as `agents.css`; page paper behind those margins would read as a screenshot mounted on a page instead of a machine sitting on a desk.
+- `base-views.css`: Renders four projections of the same Base data with a stationary camera and short opacity crossfades. The frame stretches to the copy in the two-column layout and restores the shared 580x360 ratio when the columns stack.
 
-## 一条踩过的坑
+The reels share one outer radius because they are sibling arguments in the same home narrative. Product windows inside the frames retain their native radii.
 
-四支 pane 的 keyframes 有循环版与走一次版两套。循环版最后 3% 会切回第一格；
-`forwards` 之下那 3% 会把镜头**钉死在第一格**上，等于什么都没演。
-从画布稿子搬运时必须把那一段删掉——它是稿子为了让人反复看而加的，不是设计。
+## Motion invariant
 
-[PROTOCOL]: 变更时更新此头部，然后检查 README.md
+One-shot animations must omit the loop-only return segment. With `animation-fill-mode: forwards`, retaining that segment would pin the final frame back at the beginning and erase the demonstrated conclusion.
+
+[PROTOCOL]: Update this header when changing this file, then check README.md

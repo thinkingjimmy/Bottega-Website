@@ -1,8 +1,8 @@
 /**
- * [INPUT]: 无依赖；色值与字体全部自陈
- * [OUTPUT]: 两套网站 token（暖纸 / 中性）、两只 GUI App 的纸面 token、字体栈、--bleed 与 --edge，以及 reset
- * [POS]: 级联的最底层，必须第一个被引入——它之下的每一支都在读这里的变量
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Has no dependencies; every color, font, and geometry value is self-contained
+ * [OUTPUT]: Provides site and product-surface palettes, App paper tokens, type stacks, shared layout geometry, and the reset
+ * [POS]: Foundation of the stylesheet cascade; every later stylesheet consumes these tokens
+ * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
 
 /* ============================================================
@@ -170,6 +170,9 @@ p {
   --content-max: 1286px;
   --bleed: max(min(120px, 6.5vw), (100vw - var(--content-max) - 16px) / 2);
   --gutter: 8px;
+  /* One silhouette for the four home feature demonstrations. The product windows
+     inside them keep their native radii; this token owns only the outer frame. */
+  --home-demo-radius: 14px;
   /* header 与正文落的是同一条竖线。写成一个 token，是因为原来它在 .wrap
      与 header 里各算了一遍——同一条边界有两份定义，迟早分叉。 */
   --edge: calc(var(--bleed) + var(--gutter));

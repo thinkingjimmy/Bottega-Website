@@ -1,0 +1,435 @@
+/**
+ * [INPUT]: Uses the shared site tokens, header geometry, icon primitives, and feature page class names
+ * [OUTPUT]: Styles the header dropdown, home Read More links, wiki sidebar, feature article, and responsive states
+ * [POS]: Complete presentation layer for discovering and reading the four feature detail pages
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ── Header feature menu ────────────────────────────────────────
+ * 面板始终在 DOM 里；opacity / visibility / pointer-events 决定它现不现身。
+ *
+ * 现身与否只认一个条件：details 的 open。原来 :hover 与 :focus-within 也各自
+ * 能把它打开——三个开关并联，于是「点触发器把它关掉」在鼠标还停在上面时
+ * 永远不成立：open 被取消了，hover 还举着它。触屏上更糟，第一次点同时触发
+ * 两者。开合归 FeatureMenu（点、点空白处、Esc），这里只负责画。
+ * ────────────────────────────────────────────────────────────── */
+.nav-menu {
+  position: relative;
+  height: 32px;
+}
+.nav-menu summary {
+  list-style: none;
+}
+.nav-menu summary::-webkit-details-marker {
+  display: none;
+}
+.nav-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 9999px;
+  color: var(--ink-2);
+  font-size: 14.5px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 160ms ease, color 160ms ease;
+}
+.nav-trigger:hover,
+.nav-menu[open] .nav-trigger {
+  background: var(--ground-2);
+  color: var(--ink);
+}
+.nav-trigger svg {
+  transition: transform 160ms ease;
+}
+.nav-menu[open] .nav-trigger svg {
+  transform: rotate(180deg);
+}
+
+.nav-menu-panel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  left: 0;
+  display: block;
+  width: 352px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-2);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  pointer-events: none;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition:
+    opacity 150ms ease,
+    visibility 150ms ease,
+    transform 150ms ease;
+}
+.nav-menu[open] .nav-menu-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+.nav-menu-panel ul,
+.feature-side-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.nav-menu-panel li + li {
+  margin-top: 1px;
+}
+/* 行高不再由 min-height 撑：56 里有 22 是空的。让内边距与两行字自己
+   决定高度，行落到 53——省下的不是像素，是那台机器少被盖住的一截。 */
+.nav-menu-panel a {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 11px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition: background 140ms ease;
+}
+/* hover 底色用 --surface 而不是 --ground-2。后者是为「压在 --ground 上」
+   调的——在那条带子上它是一记轻推（对比阶 1.09），可面板的地基是
+   --surface-2，高了两阶，同一个 token 落上去就成了 1.27 的一块板。
+   产品自己那只菜单是 1.10（--app-accent 压 --app-bg），这里回到 1.05。
+   敢让这一步这么轻，是因为它不是唯一的信号：下面那条让图标一并加深。
+   两个信号各喊各的，才是它读起来重的真正原因。 */
+.nav-menu-panel a:hover,
+.nav-menu-panel a:focus-visible {
+  background: var(--surface);
+}
+/* 图标不进画框。原来那只框底色 --surface 与面板 --surface-2 只差一档，
+   边框在独扛存在感——读出来是左边四个空盒子，不是四枚图标。
+   1px 下沉把 20 网格的视觉重心压回标题基线。 */
+/* 图标在整块内容里居中，不是靠着标题。它是这个 feature 的身份标记——
+   同一枚还在详情页侧栏代表整个页面——标注的是「这一项」，不是「这个词」。
+   靠标题对齐等于把它降格成标题的项目符号。
+   居中这件事交给 grid 的 align-items，不拿 margin 去凑：凑出来的对齐
+   只在写它的那一刻是对的，描述一换行它就又歪了。 */
+.nav-menu-panel a > svg {
+  color: var(--ink-2);
+  transition: color 140ms ease;
+}
+.nav-menu-panel a:hover > svg,
+.nav-menu-panel a:focus-visible > svg {
+  color: var(--ink);
+}
+.nav-menu-panel strong,
+.nav-menu-panel small {
+  display: block;
+}
+/* 标题与描述之间已经有三重区分：字号 14 对 12.5、颜色 --ink 对 --ink-2、
+   位置首行。字重是第四重，多余——产品自己那只菜单的行根本不加粗（400）。
+   落在 500 而不是 400，只因为这里的行是两行，标题得先被读到；
+   14 与 12.5 只差 1.5px，光靠字号顶不住。
+   原来那句 letter-spacing 一并删掉：-0.005em 在 14px 上是 -0.07px，
+   本就是给 560 的紧凑感配的补偿，字重让开之后它连补偿的对象都没有了。 */
+.nav-menu-panel strong {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--ink);
+}
+/* 描述换行，不再 nowrap + ellipsis。352 宽下文字列净宽 293，四句里最长的
+   那句（Base，45 字）落得下；纵使某套字体把它挤到第二行，那也只是两行——
+   而截断是把话说了一半。
+   色阶从 --ink-3 提到 --ink-2：前者压在 --surface-2 上实测 4.39:1，
+   没到 AA 的 4.5。描述是内容，不是装饰。 */
+.nav-menu-panel small {
+  margin-top: 2px;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  line-height: 1.38;
+}
+
+.feature-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--ink-2);
+}
+.nav-cta-short {
+  display: none;
+}
+
+/* ── Home section exit ────────────────────────────────────────── */
+.feature-more {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 8px;
+  min-height: 38px;
+  margin-top: 26px;
+  padding: 0 14px;
+  border: 1px solid var(--line-2);
+  border-radius: 9999px;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease;
+}
+.feature-more:hover {
+  border-color: var(--ink-3);
+  background: var(--surface);
+}
+.feature-more:active {
+  transform: translateY(1px);
+}
+.feature-more svg {
+  transition: transform 140ms ease;
+}
+.feature-more:hover svg {
+  transform: translateX(2px);
+}
+
+/* ── Wiki-style feature pages ─────────────────────────────────── */
+.feature-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 860px);
+  justify-content: center;
+  gap: clamp(56px, 6vw, 104px);
+  align-items: start;
+  padding-top: 76px;
+}
+.feature-aside {
+  position: sticky;
+  top: 30px;
+  padding-top: 4px;
+}
+.feature-aside-label {
+  margin: 0 0 12px 10px;
+  color: var(--ink-3);
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.feature-side-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.feature-side-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 5px 8px;
+  border-radius: 11px;
+  color: var(--ink-2);
+  font-size: 14px;
+  font-weight: 540;
+  transition: background 140ms ease, color 140ms ease;
+}
+.feature-side-link:hover {
+  background: var(--surface);
+  color: var(--ink);
+}
+.feature-side-link[aria-current="page"] {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.feature-side-link[aria-current="page"] .feature-icon {
+  border-color: var(--line-2);
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.feature-article {
+  min-width: 0;
+}
+.feature-article h1 {
+  max-width: 16ch;
+  font-size: clamp(44px, 4.5vw, 66px);
+  line-height: 0.99;
+  letter-spacing: -0.038em;
+}
+.feature-deck {
+  max-width: 66ch;
+  margin-top: 24px;
+  color: var(--ink-2);
+  font-size: 19px;
+  line-height: 1.62;
+}
+.feature-figure {
+  margin: 48px 0 0;
+}
+.feature-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 50px -34px rgba(27, 26, 22, 0.4);
+}
+.feature-figure figcaption {
+  margin-top: 12px;
+  color: var(--ink-3);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.feature-prose {
+  margin-top: 68px;
+}
+.feature-prose section {
+  padding: 42px 0;
+  border-top: 1px solid var(--line);
+}
+.feature-prose h2 {
+  max-width: 24ch;
+  margin-bottom: 18px;
+  font-size: 30px;
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+}
+.feature-prose p,
+.feature-prose li {
+  max-width: 72ch;
+  color: var(--ink-2);
+  font-size: 16.5px;
+  line-height: 1.72;
+}
+.feature-prose p + p {
+  margin-top: 14px;
+}
+.feature-prose ul {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.feature-prose li {
+  position: relative;
+  padding-left: 22px;
+}
+.feature-prose li::before {
+  content: "";
+  position: absolute;
+  top: 11px;
+  left: 2px;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--green);
+}
+
+@media (max-width: 900px) {
+  .nav-menu-panel {
+    position: fixed;
+    top: 50px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+    /* 整幅铺开时行距屏边要回到 16：面板 6 + 行 10。桌面那 4 是给
+       352 宽的紧面板的，照搬到全幅上字就贴边了。 */
+    padding: 6px;
+  }
+  .feature-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 42px;
+    padding-top: 38px;
+  }
+  .feature-aside {
+    position: static;
+    min-width: 0;
+    padding-top: 0;
+  }
+  .feature-aside-label {
+    margin-left: 0;
+  }
+  .feature-side-list {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 1px 1px 8px;
+    scrollbar-width: none;
+  }
+  .feature-side-list::-webkit-scrollbar {
+    display: none;
+  }
+  .feature-side-link {
+    flex: none;
+    padding-right: 13px;
+  }
+  .feature-article h1 {
+    font-size: clamp(42px, 10vw, 58px);
+  }
+  .feature-figure {
+    margin-top: 36px;
+  }
+  .feature-prose {
+    margin-top: 48px;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-header-brand {
+    flex: none;
+  }
+  .site-header .nav-trigger {
+    padding-inline: 9px;
+  }
+  .nav-cta {
+    padding-inline: 14px;
+  }
+  .nav-cta-long {
+    display: none;
+  }
+  .nav-cta-short {
+    display: inline;
+  }
+  .feature-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .feature-article h1 {
+    font-size: 40px;
+  }
+  .feature-deck {
+    font-size: 17px;
+  }
+  .feature-figure {
+    margin-inline: calc(var(--edge) * -1);
+  }
+  .feature-figure img {
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+  .feature-figure figcaption {
+    padding-inline: var(--edge);
+  }
+  .feature-prose h2 {
+    font-size: 27px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu-panel,
+  .nav-trigger svg,
+  .feature-more,
+  .feature-more svg {
+    transition: none;
+  }
+}

@@ -1,41 +1,21 @@
 # styles/apps/
 
-> L2 | 父级: [styles/README.md](../README.md)
+> L2 | Parent: [styles/](../README.md)
 
-Apps 一节那四台机器的表面。与 `../hero/` 同一条判据——**每一个数都能在仓库里
-指出它是从哪一行抄来的**；与 `../reel.css` 相反——那台是示意图，这四台是真机。
+Product-faithful surfaces for the four Apps shown in the home narrative. React structure lives in [`components/apps/`](../../../components/apps/README.md); demonstration data lives in `@/lib/agents` and `@/lib/body-map.json`.
 
-形状层在 [`components/apps/`](../../../components/apps/README.md)，
-数据在 `@/lib/agents` 与 `@/lib/body-map.json`。这一层只管长相。
+## Member list
 
-## 成员清单
+- `stage.css`: Owns the Apps frame, the four scaled pane layers, and the App switcher. The outer frame consumes the same `--home-demo-radius` token as the three reels.
+- `base.css`: Implements the shared Base App chrome and the Kanban, table, and analysis surfaces used by the bundled Base Apps.
+- `canvas.css`: Implements Design Canvas chrome, overlays, whiteboard, anchors, and dock using the App's native paper tokens.
+- `fitness.css`: Implements Fitness Log as a training-manual surface with its masthead, anatomy map, heat zones, and exercise index.
 
-- **stage.css** (192): 桌子（`.desk`）、画框与四台机器的叠放
-  （`.app-stage` / `.app-pane`）、目录即开关（`.app-switch`）。
-- **base.css** (379): Base App 的机身（工具条 / 视图页签）与三张表面：
-  看板 / 表格 / 分析那两张卡。两只 Base App 共用一套 chrome，
-  因为产品里它们本就是同一个 `BaseWorkbench` 被两份 manifest 消费。
-- **canvas.css** (271): Design Canvas 的四角浮层、舞台白板与锚点坞。
-  同心圆角 6/8/12（外 = 内 + 内边距）与控件 28（内 24）取自它自己的
-  `gui/styles.css`。
-- **fitness.css** (331): Fitness Log 的训练手册版式——衬线报头、双线图版、
-  肌群热区、动作目录。它长得像一本手册而不是一张后台界面，
-  这正是「四只 App 长得都不一样」唯一的证据。
+## Geometry invariants
 
-## 三个不能动的数
+- `.app-stage` owns `--z: 0.518`; its visible frame dimensions and every pane transform derive from that one scale.
+- Each `.app-pane` remains 1120x780 in natural coordinates. The width preserves the real wide-layout breakpoints; the height keeps the complete anatomy view and legend in frame.
+- Dimensions belong on `.app-pane`, not the individual `.dc`, `.ba`, or `.fl` surfaces, whose own `width: 100%` rules would otherwise override the canvas.
+- The frame uses the shared home-demo radius, while controls and surfaces inside it retain their product-native corner radii.
 
-- **`--z: 0.515`**：唯一的缩放比，写在 `.app-stage` 上，画框尺寸与机器缩放
-  都由它推出。「图矮一点」只有这一个旋钮——裁掉的是内容，缩掉的只是观看距离。
-- **994.29**：机器的自然宽度。`994 > 900` 触发 Fitness Log 真实的两栏展开，
-  `994 > 860` 触发 Design Canvas 真实的 `.button-label` 露出。
-  两处都不是画的，是宽度算出来的。
-- **780**：机器的自然高度，也是四台的下限。图版固定开销约 375，人体图按
-  `min(52vh, 400px)` 吃掉 400，775 就是「整幅图版连图例都在框内」的临界值。
-
-## 一条踩过的坑
-
-尺寸写在 `.app-pane` 上，**不能**写在 `.dc` / `.ba` / `.fl` 上。那三支各自
-带着 `width: 100%`，同权重、后出现，会把定宽悄悄压掉——机器缩成一团，
-画框空着一大片。`.app-pane` 是它们的画布，不是它们自己。
-
-[PROTOCOL]: 变更时更新此头部，然后检查 README.md
+[PROTOCOL]: Update this header when changing this file, then check README.md

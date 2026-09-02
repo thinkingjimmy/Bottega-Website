@@ -2,16 +2,15 @@
 
 > L2 | Parent: [project README](../README.md)
 
-Member list
+Next.js App Router pages and the ordered global style entry.
 
-`globals.css`: 全站样式的唯一入口，只剩一份十五行的 `@import` 清单——那份清单的顺序就是级联本身，不是审美排列。
+## Member list
 
-`styles/`: 拆开后的全站样式（7 项：tokens / base / hero/ / apps/ / reel / bands / motion）；见其 README。
-
-`layout.tsx`: Provides root metadata, the pre-hydration theme bootstrap, and global auto-theme runtime.
-
-`page.tsx`: Composes the home page from the hero, product sections, fork band, and footer.
-
-`changelog/`: Owns the product milestone route and its build-time content rendering.
+- `globals.css`: Imports the sixteen style concerns in cascade order; it contains no component rules of its own.
+- `layout.tsx`: Provides root metadata, the pre-hydration theme bootstrap, and global auto-theme runtime.
+- `page.tsx`: Composes the home page from the hero, four feature sections, source band, and footer.
+- `changelog/`: Owns the build-time product milestone route; see its README.
+- `features/`: Owns the four statically generated feature documentation pages; see its README.
+- `styles/`: Splits the site presentation by concern; see its README.
 
 [PROTOCOL]: 变更时更新此头部，然后检查 README.md

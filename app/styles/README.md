@@ -1,55 +1,31 @@
 # styles/
 
-> L2 | 父级: [app/README.md](../README.md)
+> L2 | Parent: [app/](../README.md)
 
-全站样式。原来是 `globals.css` 一支 3465 行——想改页脚的一行，得先滚过首屏那台
-机器的全部几何；而「这条规则归谁管」在一支三千行的文件里根本问不出答案。
-现在文件名就是地界，`globals.css` 只剩一份十五行的清单。
+The site stylesheet is split by responsibility. `globals.css` contains only the seventeen imports whose order defines the cascade.
 
-## 顺序即级联
+## Cascade order
 
-CSS 靠「谁排在后面」裁决同权重的冲突，所以 `globals.css` 里那份清单的次序
-**就是级联本身**，不是审美排列：
+- `tokens.css` must remain first because every other stylesheet consumes its variables.
+- `motion.css` must remain last because its accessibility and narrow-screen rules intentionally override earlier concerns.
+- `bands.css` must precede `motion.css` so the `1300px` layout rule yields to the `900px` mobile rule.
 
-- `tokens.css` 必须最先——它之下每一支都在读这里的变量。
-- `motion.css` 必须最后——它整支都靠「排在后面」去覆盖前面的规则。
-- `bands.css` 里那条 `≤1300` 必须排在 `motion.css` 里那条 `≤900` 之前。
-  两条同权重的媒体查询一旦掉个个儿，窄屏的 `gap` 就换了一个数。
+## Member list
 
-动清单的顺序之前，先想清楚动的是哪一条裁决。
+- `tokens.css`: Reset, theme palettes, product-surface palettes, type stacks, shared page-edge geometry, and the home-demo frame radius.
+- `base.css`: Global typography, buttons, wraps, and the mirrored home-section grids.
+- `features.css`: Header dropdown, home feature CTAs, wiki sidebar, detail article, screenshot frame, and responsive states.
+- `agents-feature.css`: Dedicated story rhythm plus standalone capability-matrix and cross-Agent handoff visuals for the Agents detail page.
+- `bands.css`: Source band, terminal, footer, changelog entries, and the wide-grid collapse rule.
+- `motion.css`: One-shot entrance behavior, reduced-motion policy, and narrow-screen hero/layout overrides.
+- `hero/`: Hero runway and product-window styles; see its README.
+- `apps/`: Product-faithful App surface styles; see its README.
+- `reels/`: Shared and feature-specific home demonstrations; see its README.
 
-## 成员清单
+## Rules
 
-- **tokens.css** (221): 两套网站 token（暖纸 / 中性）、两只带 GUI 的 App
-  各自的纸面 token、字体栈、`--bleed` 与 `--edge`，以及 reset。
-  `--bleed` 必须 `@property` 注册成 `<length>`，否则脚本读到的是记号流，
-  横向收缩**静默失效**——页面照样好看，只是那台机器再也不往里收了。
-- **base.css** (~165): 基础排版与正文骨架。`.split` 三型从原第 5 节提到这里：
-  它是页面的网格，与 `.wrap` 同属「页面怎么分块」，留在正文里只是因为当初
-  写在那儿。提前不会出事——那几条在 hero 与 chat 里没有第二处定义。
-  **两个数管全页的正文**：图宽 580、外沿距 72。四节正文于是互为镜像——
-  文左那两节与图左那两节，两栏的边缘落在同一组竖线上。
-- **hero/** (3 支): 首屏那一屏。见其 README。
-- **apps/** (4 支): Apps 一节四台机器的表面。见其 README。
-- **reels/** (4 支): 正文里三台会动的图，加一支共用层。见其 README。
-  `.sk` 与 `.sr-only` 住在 `reels/shared.css`——它们最早为 Agents 那台而生，
-  如今也被 `apps/` 那四台机器消费，要动先看那四支。
-- **bands.css** (185): Fork 那条深色带与终端框、站点页脚、changelog 的 `.entry`，
-  以及 `≤1300` 的两栏拆分。
-- **motion.css** (~200): 首屏进场、**正文每一节的滚动进场**、
-  `prefers-reduced-motion` 的总闸、`≤900` 的窄屏版。
-  那两条 `.reveal[data-reveal]` 规则没有「无属性」的兜底分支是有意的——
-  没属性就不匹配，服务端渲染出来的就是完好的一节。
+- Keep every stylesheet below 800 lines and scoped to one concern.
+- Define shared variables only in `tokens.css`; other files consume them.
+- Keep a media query beside the rules it overrides unless cascade order requires a later global gate.
 
-## 房规
-
-- **每支不超过 800 行**。`hero/chat.css` 曾经贴着这条线（777），第三栏那份
-  文档一进来就越了线，于是它按「输出侧 / 输入侧」切成了 `hero/surface.css`
-  与 `hero/composer.css`。现在最长的是 `hero/shell.css`（598）。
-  这条线不是洁癖：一支文件长到答不出「我管什么」，它就已经管了两件事。
-- **变量只在 tokens.css 里定义**，别处只读不写。一个变量有两处出生地，
-  就等于有两个真相。
-- **媒体查询跟着它要覆盖的规则走**，不集中到一处。集中看着整齐，
-  代价是每加一档断点都要回去翻「这条会不会被那条反超」。
-
-[PROTOCOL]: 变更时更新此头部，然后检查 README.md
+[PROTOCOL]: Update this header when changing this file, then check README.md

@@ -1,8 +1,8 @@
 /**
- * [INPUT]: 依赖 ../../tokens.css 的 --ground-2、--surface、--ink-* 与 --line-2
- * [OUTPUT]: 桌子（.desk）、画框与四台机器的叠放（.app-stage/.app-pane）、目录即开关（.app-switch）
- * [POS]: Apps 一节的骨架。四台机器各自的表面在同目录另外三支里
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses --home-demo-radius, --ground-2, --surface, --ink-*, and --line-2 from ../../tokens.css
+ * [OUTPUT]: Provides the Apps desk, shared frame and pane stack, plus the interactive App switcher
+ * [POS]: Structural layer for the Apps home feature; sibling stylesheets own each product surface
+ * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
 
 /* ── 一次只放一台机器 ────────────────────────────────────────────
@@ -42,9 +42,9 @@
   width: calc(1120px * var(--z));
   height: calc(780px * var(--z));
   overflow: hidden;
-  border-radius: 9px;
+  border-radius: var(--home-demo-radius);
 }
-/* 每一台机器就是一格 994.29×780 的画布，原尺寸落笔，整体缩到 0.58。
+/* 每一台机器就是一格 1120×780 的画布，原尺寸落笔，整体缩到 0.518。
    尺寸写在这一层而不是写在 .dc / .ba / .fl 上：那三支各自带着
    width:100% 的规则，同权重、后出现，会把这里的定宽悄悄压掉——
    于是机器缩成一团，画框空着一大片。这一层是它们的画布，不是它们自己。
@@ -91,7 +91,7 @@
   flex-direction: column;
 }
 .copy h2 {
-  /* 原来是 14ch（≈405px），比「Fully customizable.」这句话本身还窄，
+  /* 原来是 14ch（≈405px），比当时最短的那句标题本身还窄，
      标题永远断成两行——那不是排版决定，是一个没人核对过的数。 */
   max-width: 20ch;
   margin-bottom: 22px;

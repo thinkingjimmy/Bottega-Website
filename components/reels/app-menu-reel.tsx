@@ -5,7 +5,7 @@
  *          ReplayButton，依赖 ../icons 的 Stroke/D/glyph，
  *          依赖 @/lib/agents 的 APP_MENU/DESIGN_APP/DESIGN_APP_WINDOW_TITLE
  * [OUTPUT]: 对外提供 AppMenuReel 组件
- * [POS]: Fully customizable 一节右侧那台会动的机器。镜头开在窗口左上角，
+ * [POS]: Customize any app by chatting 一节右侧那台会动的机器。镜头开在窗口左上角，
  *        右移到「···」，它亮起来、掉出真实的 App 菜单，落焦停在 Edit App，
  *        窗口底下升起一条 chat 输入框，一个字一个字打完那句话，发送——
  *        输入框退场，画布上多出第三块板。产品里「Edit App」打开的正是一个

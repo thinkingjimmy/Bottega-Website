@@ -1,8 +1,8 @@
 /**
  * [INPUT]: Uses next/link for internal footer navigation
  * [OUTPUT]: Exports the SiteFooter component
- * [POS]: The compact text-only colophon shared by the home and changelog pages
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [POS]: The compact text-only colophon shared by home, changelog, and feature pages
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import Link from "next/link";
@@ -31,7 +31,13 @@ export function SiteFooter() {
                 {link.href.startsWith("/") ? (
                   <Link href={link.href}>{link.label}</Link>
                 ) : (
-                  <a href={link.href}>{link.label}</a>
+                  <a
+                    href={link.href}
+                    rel={link.href === REPO ? "noreferrer" : undefined}
+                    target={link.href === REPO ? "_blank" : undefined}
+                  >
+                    {link.label}
+                  </a>
                 )}
               </li>
             ))}

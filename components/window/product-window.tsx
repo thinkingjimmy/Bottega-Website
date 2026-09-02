@@ -1,14 +1,9 @@
 "use client";
 
 /**
- * [INPUT]: 依赖 react 的 useState，依赖 @/lib/agents 的
- *          CHATS/PROJECT/PINNED_APPS/LEDGER_APP/PROJECT_PAGE_SIZE/LEDGER/defaultTurn，
- *          依赖 ./product-transcript / ./product-composer / ./product-plan-panel，
- *          依赖 ../icons 的 AgentLogo/Stroke/Wordmark/D
- * [OUTPUT]: 对外提供 ProductWindow 组件
- * [POS]: Bottega-Website 首屏里那台机器。几何逐项抄自
- *        apps/desktop/src/components/sidebar 与 chat/composer、page-shell，
- *        不是眼量的近似——差 2px 就不像同一个产品
+ * [INPUT]: Uses React state, canonical demo data, transcript/composer/plan-panel modules, and shared product icons
+ * [OUTPUT]: Exports ProductWindow with optional surface control and a persistently disclosed Composer menu
+ * [POS]: Canonical product-window implementation shared by the Home Hero and the Agents feature illustration
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
@@ -67,11 +62,13 @@ function Row({
 }
 
 export function ProductWindow({
+  pinnedComposerMenu,
   surface,
   onSurface,
 }: {
+  pinnedComposerMenu?: "agent" | "model";
   surface: "chat" | "app";
-  onSurface: (surface: "chat" | "app") => void;
+  onSurface?: (surface: "chat" | "app") => void;
 }) {
   /* 一个 chat 的 agent/模型/档位是它自己的属性，不是选择器的局部状态：
      行首那枚 logo、页头那枚 logo、输入框那颗按钮读的都是这一个值，
@@ -101,7 +98,7 @@ export function ProductWindow({
 
   const pick = (id: string) => {
     setOpenId(id);
-    onSurface("chat");
+    onSurface?.("chat");
   };
 
   const chatRow = (chat: Chat, sub: boolean) => (
@@ -144,7 +141,7 @@ export function ProductWindow({
             mark={<Stroke d={D.grid} size={16} width={1.9} />}
             title="Apps"
             on={isApp}
-            onClick={() => onSurface("app")}
+            onClick={onSurface ? () => onSurface("app") : undefined}
           />
           {PINNED_APPS.map((app) => (
             <Row
@@ -153,7 +150,7 @@ export function ProductWindow({
               title={app.name}
               sub
               on={isApp && app.id === LEDGER_APP.id}
-              onClick={() => onSurface("app")}
+              onClick={onSurface ? () => onSurface("app") : undefined}
             />
           ))}
         </div>
@@ -208,6 +205,7 @@ export function ProductWindow({
             />
             <ProductComposer
               chat={open}
+              pinnedMenu={pinnedComposerMenu}
               onAgent={(agent: AgentId) => patch({ agent, ...defaultTurn(agent) })}
               onPatch={patch}
             />

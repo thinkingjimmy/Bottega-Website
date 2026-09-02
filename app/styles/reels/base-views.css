@@ -1,17 +1,18 @@
 /**
- * [INPUT]: 依赖 ../tokens.css 的 --app-*
- * [OUTPUT]: A Base under every chat 一节那台四种看法轮播的机器：明细 / 分类占比 / 票据 / 落点
- * [POS]: 三支 reel 里唯一一支镜头不动的：主角是页签，镜头一动观众就去看镜头
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses the shared reel frame and the --app-* tokens from ../tokens.css
+ * [OUTPUT]: Provides the responsive Base reel with table, chart, gallery, and map projections
+ * [POS]: Stationary-camera reel for the Base home feature; the view switch is the only motion
+ * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
 
 /* 九秒四格：一格 2.25 秒，够读完一屏表、认出一张饼、扫一眼相册与地图。 */
 .reel:has(.vw-cam) { --dur: 9s; }
 
 /* ── 一台机器，四种看法 ────────────────────────────────────────────
- * 725×450 在 0.8 之下正好铺满 580×360 的画框，一刀不用裁——这一镜的
- * 动作不在镜头上，在页签上，所以镜头一动不动最好：镜头一动，观众就会
- * 去看镜头，而不是去看「同一份行换了一种答案」。
+ * 900px 的机器在 0.644 下正好占 579.6px，贴住 580px 画框；自然高度则由
+ * 画框按同一比例反推，一刀不用裁。这一镜的动作不在镜头上，在页签上，
+ * 所以镜头一动不动最好：镜头一动，观众就会去看镜头，而不是去看
+ * 「同一份行换了一种答案」。
  * ────────────────────────────────────────────────────────── */
 .vw {
   position: relative;
@@ -25,16 +26,25 @@
 }
 /* ── 画框有多高，机器就有多高 ────────────────────────────────────
  * 原来机器钉死 725×450，缩到 0.8 就是 580×360；而画框被网格拉到与文栏
- * 等高（426），于是底下空出 66px——截图里那片白就是它。
+ * 等高时，底下会空出一截——截图里那片白就是它。
  *
  * 与其去追文栏那个数（文案一改就又对不上），不如让机器反推：
- * 画框的高由网格给，这一层按 1/0.8 = 125% 反推回自然尺寸，缩放之后
+ * 画框的高由网格给，这一层按 1/0.644 反推回自然尺寸，缩放之后
  * 正好铺满。文案再改几行，两边仍然齐——齐这件事由比例保证，
  * 不由某个抄下来的数保证。
  * ────────────────────────────────────────────────────────── */
 .reel:has(.vw-cam) {
   aspect-ratio: auto;
-  height: 100%;
+  height: auto;
+  align-self: stretch;
+}
+/* Once the feature columns stack, no sibling defines this grid row's height.
+   Restore the shared frame ratio so the absolutely positioned camera has a
+   real containing block instead of collapsing the demonstration to zero. */
+@media (max-width: 1300px) {
+  .reel:has(.vw-cam) {
+    aspect-ratio: 580 / 360;
+  }
 }
 .vw-cam {
   /* 一个数管两件事：缩放比，以及「画框有多高就反推多少自然高度」。

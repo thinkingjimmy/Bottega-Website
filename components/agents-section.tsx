@@ -1,16 +1,13 @@
 /**
- * [INPUT]: 依赖 @/lib/agents 的 BACKENDS/backendLabel，依赖 ./reels/agents-reel 的
- *          AgentsReel，依赖 ./icons 的 AgentLogo
- * [OUTPUT]: 对外提供 AgentsSection 组件
- * [POS]: Bottega-Website 唯一的功能介绍段。左文右图——图是一台会动的机器，
- *        镜头开在侧栏左上角摇下去，让四家 logo 一个一个走过，摇完才拉远
- *        给一眼整机；文字因此只需要说「有谁」和「谁付钱」，不必再解释
- *        「你怎么知道是谁干的」
+ * [INPUT]: Uses BACKENDS/backendLabel, AgentsReel, AgentLogo, Reveal, and the shared feature detail CTA
+ * [OUTPUT]: Exports the AgentsSection component
+ * [POS]: Home feature section that names the four official Agent backends and links to their documented behavior
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
 import { BACKENDS, backendLabel } from "@/lib/agents";
 import { AgentsReel } from "./reels/agents-reel";
+import { FeatureLink } from "./features/feature-link";
 import { AgentLogo } from "./icons";
 import { Reveal } from "./reveal";
 
@@ -42,6 +39,7 @@ export function AgentsSection() {
                 </li>
               ))}
             </ul>
+            <FeatureLink slug="agents" />
           </div>
 
           <AgentsReel />

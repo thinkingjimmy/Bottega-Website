@@ -1,16 +1,27 @@
 /**
- * [INPUT]: 依赖 ../tokens.css 的 --app-*、--dc-paper 与 --dc-line
- * [OUTPUT]: Fully customizable 一节那扇独立 App 窗口、它的「···」菜单、那条 chat
+ * [INPUT]: 依赖 ../tokens.css 的 --app-*、--dc-paper、--dc-line 与 --ground-2
+ * [OUTPUT]: Customize any app by chatting 一节那扇独立 App 窗口、它的「···」菜单、那条 chat
  *           输入框与它落地之后画布上多出来的第三块板
  * [POS]: 三支 reel 里唯一一支镜头走两段的：先贴着窗口左上角，右移到「···」拍下那一按，
- *        再回拉到全景——因为结论（输入框里那句话生效）发生在整扇窗口上
+ *        再回拉到整台机器（四边留着桌面）——因为结论（输入框里那句话生效）
+ *        发生在整扇窗口上
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
-/* 十一秒一镜：左上角静息 → 右移到「···」→ 它亮起、菜单掉出来 → 落焦 Edit App →
-   回拉、压暗、输入框升起 → 一个字一个字打完 → 发送 → 输入框退场，
-   画布上长出第三块板。 */
-.reel:has(.aw-cam) { --dur: 11s; }
+/* ── 这一支的画框是取景框，不是机器的边界 ────────────────────────
+ * 于是它得垫一块桌面（与 Agents 那一支同一块 --ground-2）。头两站镜头
+ * 贴在机器的一角、末站又退到机器之外，四边都会露出机器背后的东西——
+ * 露出的若是页面的纸，读到的是「一张图被裱在纸上」；露出桌面，读到的
+ * 才是「一台摆在桌面上的机器」。共用层不再统一垫底色（见 shared.css），
+ * 因为要不要桌面这件事，答案在每一支的镜头里，不在共用层。
+ * ────────────────────────────────────────────────────────── */
+.reel:has(.aw-cam) {
+  background: var(--ground-2);
+  /* 十一秒一镜：左上角静息 → 右移到「···」→ 它亮起、菜单掉出来 →
+     落焦 Edit App → 回拉到整台机器（四边留着桌面）、压暗、输入框升起 →
+     一个字一个字打完 → 发送 → 输入框退场，画布上长出第三块板。 */
+  --dur: 11s;
+}
 
 /* 镜头的原点钉死在 0 0，位移与缩放一起算——与 Agents 那台同一套写法。
    静息这一格与 keyframes 的 0% 逐位相同：脚本没跑、等着起播，
@@ -207,11 +218,15 @@
    左移 100 让它落在画框的 188…441，底下还剩 24px——再多推一点，
    菜单的最后一条就被画框咬掉了，而「能改成什么」全在那几条上。
    这一站会把 App 的名字切掉一截，而这不再是损失：名字在首帧已经
-   完整说过一遍了——那正是首帧钉在左上角的理由。 */
+   完整说过一遍了——那正是首帧钉在左上角的理由。
+   末站 0.73 不是 0.8：0.8 之下机器 576×352，四边只剩 2、4 两条缝，
+   读起来是「一张图被画框卡住了」。0.73 让 720×440 落成 526×321，
+   四周各留 27/19 的桌面——与首帧左上那两条同一条带子绕机器一圈，
+   于是它是「一台摆在桌面上的机器」，而不是一张贴满画框的截图。 */
 @keyframes aw-cam {
   0%, 10% { transform: translate(26px, 20px) scale(1.7); }
   22%, 42% { transform: translate(-100px, 8px) scale(1.32); }
-  50%, 100% { transform: translate(2px, 4px) scale(0.8); }
+  50%, 100% { transform: translate(27px, 19px) scale(0.73); }
 }
 .reel[data-play] .aw-cam { animation: aw-cam var(--dur) cubic-bezier(0.45, 0, 0.55, 1) forwards; }
 
@@ -286,7 +301,7 @@
   .reel[data-play] .aw-typed,
   .reel[data-play] .aw-send,
   .reel[data-play] .aw-pane3 { animation: none; }
-  .aw-cam { transform: translate(2px, 4px) scale(0.8); }
+  .aw-cam { transform: translate(27px, 19px) scale(0.73); }
   .aw-chat { opacity: 1; transform: none; }
   .aw-typed { width: auto; }
   .aw-pane3 { flex-grow: 1; margin-left: 0; opacity: 1; }

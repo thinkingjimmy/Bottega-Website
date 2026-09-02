@@ -1,8 +1,7 @@
 /**
- * [INPUT]: 依赖 ../tokens.css 的 --app-* 与 --font-*
- * [OUTPUT]: 产品窗口的输入侧：输入框 / 问题卡 / 模型面板的两张脸 / 档位滑轨 / 摘要行
- * [POS]: 几何逐项抄自 apps/desktop 的 chat/composer，差 2px 就不像同一个产品。
- *        与 surface.css 分家的判据是「你在对它说什么」与「机器在说什么」
+ * [INPUT]: Uses the --app-* and --font-* tokens from ../tokens.css
+ * [OUTPUT]: Styles the product Composer, question card, model panels, effort slider, and summary rows
+ * [POS]: Canonical input-side geometry shared by every ProductWindow presentation
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
@@ -11,6 +10,7 @@
  * 就得让文字与七颗控件抢同一条基线，长模型名一到位，输入区先塌。
  * ────────────────────────────────────────────────────────── */
 .composer {
+  position: relative;
   flex: none;
   margin: 0 16px 16px;
   display: flex;

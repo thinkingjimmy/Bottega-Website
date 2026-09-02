@@ -1,8 +1,8 @@
 /**
- * [INPUT]: 依赖 ../tokens.css 的 --ground-2 与 --app-*
- * [OUTPUT]: 三支 reel 共用的画框（580×360）、骨架条 .sk、.sr-only 与停住之后那颗重播钮
- * [POS]: 共用的是形状（圆角、桌面底色、定宽居中、溢出裁掉），不是尺寸——每台图的宽高得跟自己那一栏文字对
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses --home-demo-radius and the --app-* tokens from ../tokens.css
+ * [OUTPUT]: Provides the shared 580x360 reel frame, skeletons, screen-reader utility, and replay control
+ * [POS]: Shared silhouette and primitives for all three home feature reels
+ * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
 
 /* ── 三支 reel 共用的画框 ────────────────────────────────────────
@@ -10,8 +10,10 @@
  * `0 0 0 1px` 的边加一道落影已经够把它从纸面上抬起来，再垫一块桌面，
  * 读到的是「一张被裱起来的截图」，而不是「一台摆在那儿的机器」。
  *
- * 唯一的例外是 Agents 那一支，它自己把底色加回去了——那一支的画框
- * 不是「机器的边界」而是「镜头的取景框」，理由见 agents.css。
+ * 例外是镜头会走出机器之外的那两支——Agents 与 App 菜单——它们各自
+ * 把底色加了回去：那两支的画框不是「机器的边界」而是「镜头的取景框」，
+ * 画框里露出的是机器背后的桌面，不是页面的纸。理由见 agents.css 与
+ * app-menu.css。要不要桌面，答案在每一支的镜头里，共用层答不了。
  * ────────────────────────────────────────────────────────── */
 .reel {
   position: relative;
@@ -22,6 +24,7 @@
   max-width: 100%;
   margin-inline: auto;
   overflow: hidden;
+  border-radius: var(--home-demo-radius);
 }
 
 @keyframes bt-sk {

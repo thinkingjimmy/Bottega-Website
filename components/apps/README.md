@@ -1,58 +1,25 @@
 # apps/
 
-> L2 | 父级: ../README.md
+> L2 | Parent: [components/](../README.md)
 
-Apps 一节的整只主体：左边一台机器一次演一只 App 的真实表面，右边一份目录
-既是名单也是那台机器的换挡杆。
+The Apps home section pairs four product-faithful surfaces with one catalog that also acts as their switcher.
 
-这一层与 `../reels/` 分家的判据很硬：reels 是**示意图**——只保留能把一句话
-说完的那几笔；这里是**真机**——四只 App 的每一个数都能在仓库里指出它是从哪一行
-抄来的。地位与 `../window/` 相同，只是那边抄的是产品的聊天壳，这边抄的是四只
-App 各自的表面。
+## Member list
 
-## 成员清单
+- `apps-stage.tsx`: Drives the four surfaces, stops automatic rotation after user input, honors reduced motion, and links to the Apps detail page.
+- `surface-canvas.tsx`: Reconstructs the Design Canvas chrome around an intentionally unreadable Agent-authored canvas.
+- `surface-chrome.tsx`: Provides shared Base toolbar, skeleton, and Design Canvas icon primitives.
+- `surface-fitness.tsx`: Reconstructs the Fitness Log training sheet and muscle heatmap.
+- `surface-kanban.tsx`: Reconstructs the Development Kanban lanes and task cards.
+- `surface-ledger.tsx`: Reconstructs the Expense Tracker ledger with a separate overlaid analysis surface.
 
-- **apps-stage.tsx**: 唯一的客户端组件。四台机器叠在同一只画框里，一次露一台；
-  五秒自动走一格，一旦有人点过就停在他选的那只——人一伸手，机器就该让位，
-  也不设「过一会儿恢复」，那等于把观众刚做的选择判为暂时的。
-  `prefers-reduced-motion` 下一格都不走，停在第一台。
-- **surface-chrome.tsx**: 公共零件。`BaseChrome`（两只 Base App 共用的工具条与
-  视图页签——产品里它们本就是同一个 BaseWorkbench 被两份 manifest 消费）、
-  `Sk`（骨架条）、`DC`（Design Canvas 那套 20 网格图标）。
-- **surface-canvas.tsx**: Design Canvas。四角常驻浮层围着一整片画布，
-  白板里那一页留骨架——那是 Agent 写的 HTML，不可信内容本就不该被读。
-- **surface-kanban.tsx**: Development Kanban。lane 288、header 36、卡片
-  `rounded-lg + border + p-3 + shadow-xs`；lane 自己不画框，卡片是板上唯一的盒子。
-- **surface-ledger.tsx**: Expense Tracker。明细表 + 右下叠着的分析两张图。
-- **surface-fitness.tsx**: Fitness Log。衬线报头、双线图版、真实肌群路径。
+## Geometry contracts
 
-## 三个不能动的数
+- `0.58` is the single scale factor for every App miniature.
+- `994.29px` is the natural width that activates the same responsive states as the source Apps.
+- `780px` is the natural height required to preserve the complete Fitness illustration.
+- `.app-stage` must not be renamed to `.stage`; that name belongs to the sticky hero runway.
 
-- **0.58**：唯一的缩放比。缩影里冒出第二个比例，就等于说这是另一台机器。
-  「图矮一点」只能动这个数，不能动画框——裁掉的是内容，缩掉的只是观看距离。
-- **994.29**：机器的自然宽度。`994 > 900` 触发 Fitness Log 真实的两栏展开，
-  `994 > 860` 触发 Design Canvas 真实的 `.button-label` 露出。两处都不是画的，
-  是宽度算出来的。
-- **780**：机器的自然高度，也是四台的下限。图版固定开销约 375，人体图按
-  `min(52vh, 400px)` 吃掉 400，775 就是「整幅图版连图例都在框内」的临界值。
-
-## 三条踩过的坑
-
-- **`.stage` 这个类名归首屏的 sticky 跑道所有**。这一层的画框必须叫
-  `.app-stage`：撞名的后果不是样式冲突这么轻，是首屏整个塌掉。
-- **尺寸写在 `.app-pane` 上，不写在 `.dc` / `.ba` / `.fl` 上**。那三支各自带着
-  `width: 100%`，同权重、后出现，会把定宽悄悄压掉——机器缩成一团，画框空着一大片。
-- **人体图一条子路径一个 `<path>`**。并进一条 `d` 之后 nonzero 填充规则会让
-  互相叠着的子路径彼此抵消，热区画成几道细红线而不是一整块。形状对不对，
-  不取决于坐标抄没抄对。
-
-## 一处两屏同框
-
-记账本那一格是「明细 + 分析」。产品里这是同一只 App 的两个视图，不能同框——
-所以这里不去编一个不存在的版面，而是把分析那一屏原样叠在明细上，像贴在表格上的
-第二块表面。**全站只有这一处**，其余都是一台机器的一屏。
-
-数据都住在 `@/lib/agents` 与 `@/lib/body-map.json`，样式都住在
-`app/styles/apps/` 那四支。这一层只负责形状。
+Data lives in `@/lib/agents` and `@/lib/body-map.json`; presentation lives in `app/styles/apps/`.
 
 [PROTOCOL]: 变更时更新此头部，然后检查 README.md

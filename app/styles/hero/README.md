@@ -1,39 +1,23 @@
-# styles/hero/
+# hero/
 
-> L2 | 父级: [styles/README.md](../README.md)
+> L2 | Parent: [styles/](../README.md)
 
-首屏那一屏：一条 200vh 的跑道、钉在上面的舞台、以及舞台上那台产品窗口。
-判据是同一条——**这里的每一个数都抄自 `apps/desktop`，差 2px 就不像同一个产品**。
+The first-screen presentation: one sticky runway, a theme-aware desktop scene, and a product-faithful chat window.
 
-## 成员清单
+## Member list
 
-- **shell.css** (598): 跑道与舞台（`.hero-pin` / `.stage` / `.scene`）、
-  站点 header 的两层皮、产品窗口的外壳与侧栏，以及**第三栏的开合**
-  （`.win-panel`：宽度、两种模式、那张滑进来的脸）。
-  header 住在这里不是归类失手：它的 `stage` 皮（高度与显影跟着收缩走）
-  本就是首屏的一部分，`framed` 皮只是同一段 DOM 的另一面。
-- **surface.css** (336): 机器在说什么——计时头 / Plan 卡 / 第三栏里那份全文 /
-  流式状态行 / App 表面。第三栏的排版一条都没新写：`h4` / `ul` / `li` / `code`
-  与 Plan 卡预览共用同一组规则，因为它们本来就是同一份 markdown。
-- **composer.css** (485): 你在对它说什么——输入框 / 问题卡 / 模型面板的两张脸 /
-  档位滑轨 / 摘要行。
+- `shell.css`: Owns `.hero-pin`, `.stage`, `.scene`, both SiteHeader skins, product-window shell, sidebar, and third-panel geometry.
+- `surface.css`: Owns the transcript, message turns, tool activity, Plan preview, and streaming status presentation.
+- `composer.css`: Owns the positioned Composer, Agent/model menus, capability states, questions, and permission cards; feature hosts may re-anchor a disclosed menu without restyling it.
 
-三支分家的判据先是「窗壳」与「窗里」，窗里再切一刀成「输出侧」与「输入侧」。
-第二刀不是品味，是那条 800 行的线逼出来的：`chat.css` 加进第三栏那份文档就
-越了线，而这一刀的落点上一版 README 已经预告过。
+## Structural contracts
 
-## 三条不能碰的规矩
-
-- **`.stage` 这个类名归这里**。Apps 一节那只画框叫 `.app-stage`——
-  撞名的后果不是样式冲突这么轻，是首屏整个塌掉（`position: sticky` 与
-  `height: 100vh` 会被顶掉）。
-- **收缩改的是内边距，不是 `transform: scale`**。scale 会把整台机器连同
-  窗口里的文字一起重采样，字会糊；改盒子的内边距，文字始终按真实像素渲染。
-  三个 `--stage-*` 默认 0，也就是满幅——脚本没跑起来时首屏是完好的满幅，
-  而不是一个缩了一半的中间态。
-- **`.win-panel` 必须自己 `overflow: hidden`**。第三栏那张脸滑进来时有一半
-  还在窗外，剪不掉，`.window` 里就永远躺着一段横向溢出：它不显示滚动条，
-  却仍然滚得动——浏览器一次「把焦点滚进视野」，整台机器就往左推走几十像素，
-  侧栏第一个字被吃掉，而谁也看不出是谁干的。
+- Shrinking changes stage padding and radius, never `transform: scale`; product text stays on the native pixel grid.
+- `--bleed` is registered as a length and remains the shared source for stage, Header, and content alignment.
+- `.stage` belongs only to the sticky hero runway; home-section illustrations use scoped class names.
+- `.site-header--stage` sits above the scene and allows visible overflow so its Features panel can cross the desktop boundary. Its controls remain invisible and non-interactive until the top band is tall enough to contain them.
+- `.scene` owns clipping and corner radius. Individual window panels clip their own moving faces instead of clipping the shared Header.
+- The product window may shrink vertically; its transcript and panel bodies own scrolling.
+- The Agents feature embeds the same `.window` tree and Hero styles; it may change host dimensions and pin one Composer menu as inert evidence, never duplicate the Sidebar or Composer vocabulary.
 
 [PROTOCOL]: 变更时更新此头部，然后检查 README.md

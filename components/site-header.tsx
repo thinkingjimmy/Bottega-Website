@@ -1,11 +1,15 @@
 /**
- * [INPUT]: Uses next/link for the home and changelog routes
- * [OUTPUT]: Exports the SiteHeader component
+ * [INPUT]: Uses next/link, the feature catalog, the FeatureMenu client shell, and the shared AppIcon/Stroke/glyph primitives
+ * [OUTPUT]: Exports the SiteHeader component with persistent feature discovery
  * [POS]: The single navigation header shared by the shrinking home stage and framed subpages
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import Link from "next/link";
+
+import { FEATURES } from "./features/catalog";
+import { FeatureMenu } from "./features/feature-menu";
+import { AppIcon, Stroke, glyph } from "./icons";
 
 const REPO = "https://github.com/thinkingjimmy/Bottega";
 
@@ -20,21 +24,52 @@ export function SiteHeader({ variant }: { variant: "stage" | "framed" }) {
   return (
     <header className={`site-header site-header--${variant}`}>
       <Link className="site-header-brand" href="/">
+        {/* 28 是 AppIcon 自己的默认值，也正是产品里图标槽的那一档。
+            alt 留空：紧挨着的那行字已经把名字说了。 */}
+        <AppIcon size={28} alt="" />
         Bottega
       </Link>
       <nav>
+        {/* 这一层是客户端的，只为了「点空白处收起」与 Esc；里面的四条仍是
+            服务端渲染的，catalog 不进客户端包。 */}
+        <FeatureMenu>
+          <summary className="nav-trigger">
+            <span>Features</span>
+            <Stroke d={glyph("chevronDown")} size={14} width={1.8} />
+          </summary>
+          {/* 面板里落的是裸描边，不是 FeatureIcon：那只带框的图标片是 feature
+              详情页侧栏的身份，这条带子上的菜单跟产品自己那只菜单同一套语汇，
+              而那里的行不画框。共用一个组件只会让两边各让一步。 */}
+          <div className="nav-menu-panel">
+            <ul>
+              {FEATURES.map((feature) => (
+                <li key={feature.slug}>
+                  <Link href={`/features/${feature.slug}/`}>
+                    <Stroke d={glyph(feature.icon)} size={18} width={1.8} />
+                    <span>
+                      <strong>{feature.label}</strong>
+                      <small>{feature.menuCopy}</small>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </FeatureMenu>
         <Link className="nav-link" href="/changelog/">
           Changelog
         </Link>
-        <a className="nav-link" href={REPO}>
+        <a className="nav-link" href={REPO} rel="noreferrer" target="_blank">
           GitHub
         </a>
         <span className="nav-rule" aria-hidden="true" />
-        {/* 标签不拆。拆成 "Download" + " for macOS" 是为了给窄屏省地方，
-            可 390 上整句连按钮一起也只占 169px，省下来的地方没人要——
-            换来的却是一个特殊情况，和一个 flex 容器吃掉行首空格的坑。 */}
-        <a className="btn-primary nav-cta" href={`${REPO}/releases`}>
-          Download for macOS
+        <a
+          aria-label="Download for macOS"
+          className="btn-primary nav-cta"
+          href={`${REPO}/releases`}
+        >
+          <span className="nav-cta-long">Download for macOS</span>
+          <span className="nav-cta-short">Download</span>
         </a>
       </nav>
     </header>

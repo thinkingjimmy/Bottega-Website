@@ -2,7 +2,7 @@
  * [INPUT]: Uses Stroke, Glyph, and D from ./icons
  * [OUTPUT]: Exports the ForkBand closing section
  * [POS]: Closes Bottega-Website with the source pitch, download actions, and build terminal
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import { D, Glyph, Stroke } from "./icons";
@@ -81,6 +81,7 @@ export function ForkBand() {
                   </a>
                   <a
                     href={REPO}
+                    rel="noreferrer"
                     style={{
                       display: "inline-flex",
                       alignItems: "center",
@@ -93,6 +94,7 @@ export function ForkBand() {
                       fontSize: 16,
                       fontWeight: 500,
                     }}
+                    target="_blank"
                   >
                     <Glyph d={D.github} size={18} />
                     View the source

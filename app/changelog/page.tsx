@@ -5,10 +5,9 @@ import { SiteHeader } from "@/components/site-header";
 import { readEntries, renderInline } from "@/lib/changelog";
 
 /**
- * [INPUT]: 依赖 @/lib/changelog 的 readEntries/renderInline，依赖 @/components 的 SiteHeader/SiteFooter
- * [OUTPUT]: 对外提供 /changelog 页面与其 metadata
- * [POS]: Bottega-Website 唯一的子页。内容来自 Bottega 仓库
- *        docs/changelog/README.md 的构建期快照，记录产品里程碑而非内部迭代
+ * [INPUT]: Uses readEntries/renderInline from @/lib/changelog plus the shared SiteHeader and SiteFooter
+ * [OUTPUT]: Exports the /changelog page and its metadata
+ * [POS]: Product milestone subpage built from the Bottega repository's docs/changelog/README.md snapshot
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
