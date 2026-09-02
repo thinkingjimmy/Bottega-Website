@@ -1,19 +1,20 @@
 /**
- * [INPUT]: Uses next/link plus the shared arrow icon primitive
- * [OUTPUT]: Exports FeatureLink for home-section detail CTAs
- * [POS]: The single Read More action used at the end of all four home feature sections
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses locale-aware path construction, next/link, and the shared arrow icon
+ * [OUTPUT]: Exports FeatureLink for localized home-section detail CTAs
+ * [POS]: Single language-preserving detail action shared by all home feature sections
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import Link from "next/link";
+import { localizedPath, type Locale } from "@/lib/i18n/locale";
 
 import { Stroke, glyph } from "../icons";
 import type { FeatureSlug } from "./catalog";
 
-export function FeatureLink({ slug }: { slug: FeatureSlug }) {
+export function FeatureLink({ slug, locale, label }: { slug: FeatureSlug; locale: Locale; label: string }) {
   return (
-    <Link className="feature-more" href={`/features/${slug}/`}>
-      <span>Read More</span>
+    <Link className="feature-more" href={localizedPath(locale, `/features/${slug}/`)}>
+      <span>{label}</span>
       <Stroke d={glyph("arrowRight")} size={15} width={1.8} />
     </Link>
   );

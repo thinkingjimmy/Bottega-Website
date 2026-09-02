@@ -1,20 +1,13 @@
 "use client";
 
 /**
- * [INPUT]: 依赖 ./use-play-when-seen 的 usePlayWhenSeen，依赖 ./replay-button 的
- *          ReplayButton，依赖 ../icons 的 Stroke/D/glyph，
- *          依赖 @/lib/agents 的 APP_MENU/DESIGN_APP/DESIGN_APP_WINDOW_TITLE
- * [OUTPUT]: 对外提供 AppMenuReel 组件
- * [POS]: Customize any app by chatting 一节右侧那台会动的机器。镜头开在窗口左上角，
- *        右移到「···」，它亮起来、掉出真实的 App 菜单，落焦停在 Edit App，
- *        窗口底下升起一条 chat 输入框，一个字一个字打完那句话，发送——
- *        输入框退场，画布上多出第三块板。产品里「Edit App」打开的正是一个
- *        绑定这只 App 的 chat（openAppEditor → app-editor-chat），不是代码
- *        编辑器；而这一镜的结论不是「输入框出现了」，是「说的那句话生效了」
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses localized DemoData, replay/visibility primitives, and shared product icons
+ * [OUTPUT]: Exports the localized AppMenuReel component
+ * [POS]: Animated customization proof from Edit App through a source Chat to the changed canvas
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
-import { APP_MENU, DESIGN_APP, DESIGN_APP_WINDOW_TITLE } from "@/lib/agents";
+import type { DemoData } from "@/lib/agents";
 import { D, Stroke, glyph } from "../icons";
 import { ReplayButton } from "./replay-button";
 import { usePlayWhenSeen } from "./use-play-when-seen";
@@ -25,9 +18,7 @@ const PANES = ["72%", "66%"];
 
 /* 输入框里打的那句话与画布上发生的事必须是同一件事——否则这一镜演的是
    「有个输入框」，而不是「你说的话算数」。 */
-const EDIT_ASK = "Give the compare view a third pane.";
-
-export function AppMenuReel() {
+export function AppMenuReel({ demo, replayLabel }: { demo: DemoData; replayLabel: string }) {
   const { frame, play, run, ended, replay, markEnded } = usePlayWhenSeen();
 
   return (
@@ -45,8 +36,8 @@ export function AppMenuReel() {
                 产品的页头写着 `${icon} ${displayName}`，而 app.json 里
                 这只 App 就叫 Bottega Design Canvas。 */}
             <span className="aw-title">
-              <i>{DESIGN_APP.icon}</i>
-              {DESIGN_APP_WINDOW_TITLE}
+              <i>{demo.designApp.icon}</i>
+              {demo.designAppWindowTitle}
             </span>
             <span className="aw-more">
               <Stroke d={D.moreHorizontal} size={16} width={1.8} />
@@ -82,14 +73,14 @@ export function AppMenuReel() {
             <div className="aw-veil" />
             <div className="aw-chat">
               <span className="aw-chip">
-                <i>{DESIGN_APP.icon}</i>
-                {DESIGN_APP_WINDOW_TITLE} · App source
+                <i>{demo.designApp.icon}</i>
+                {demo.designAppWindowTitle} · {demo.copy.appMenu.source}
               </span>
               {/* 打字用「裁掉溢出 + 定宽推进」，右边框就是光标：它自己跟着
                   字尾走，不必再摆一根竖线去跟文字对齐——对齐是会错的，
                   而边框不会。 */}
               <span className="aw-ask">
-                <span className="aw-typed">{EDIT_ASK}</span>
+                <span className="aw-typed">{demo.copy.appMenu.ask}</span>
               </span>
               <span className="aw-send">
                 <Stroke d={D.arrowRight} size={14} width={2} />
@@ -99,7 +90,7 @@ export function AppMenuReel() {
 
           <div className="aw-menu">
             <span className="aw-focus" />
-            {APP_MENU.map((item, at) =>
+            {demo.appMenu.map((item, at) =>
               item.sep ? (
                 // eslint-disable-next-line react/no-array-index-key
                 <div className="aw-sep" key={`sep-${at}`} />
@@ -119,7 +110,7 @@ export function AppMenuReel() {
         </div>
       </div>
 
-      {ended && <ReplayButton onClick={replay} />}
+      {ended && <ReplayButton onClick={replay} label={replayLabel} />}
     </div>
   );
 }

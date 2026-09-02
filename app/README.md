@@ -2,15 +2,16 @@
 
 > L2 | Parent: [project README](../README.md)
 
-Next.js App Router pages and the ordered global style entry.
+Next.js App Router roots for Auto fallback and five canonical language trees.
 
-## Member list
+## Members
 
-- `globals.css`: Imports the sixteen style concerns in cascade order; it contains no component rules of its own.
-- `layout.tsx`: Provides root metadata, the pre-hydration theme bootstrap, and global auto-theme runtime.
-- `page.tsx`: Composes the home page from the hero, four feature sections, source band, and footer.
-- `changelog/`: Owns the build-time product milestone route; see its README.
-- `features/`: Owns the four statically generated feature documentation pages; see its README.
-- `styles/`: Splits the site presentation by concern; see its README.
+- `(auto)/`: Owns `/`, `/changelog`, and four `/features/[slug]` x-default routes with English no-JavaScript fallback.
+- `[locale]/`: Owns the thirty `/en`, `/zh-CN`, `/ja`, `/fr`, and `/es` canonical pages.
+- `globals.css`: Imports the ordered plain-CSS cascade.
+- `sitemap.ts`: Emits thirty canonical URLs and six x-default entries with full language alternates.
+- `styles/`: Splits presentation by visual concern; see its README.
 
-[PROTOCOL]: 变更时更新此头部，然后检查 README.md
+Each route is statically generated. Root layouts choose `<html lang>` at build time; no component infers its content language from the browser.
+
+[PROTOCOL]: Update this file when members or route ownership change, then verify the project README.md.

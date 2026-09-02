@@ -1,10 +1,10 @@
 "use client";
 
 /**
- * [INPUT]: Uses React state/effects, Agent/model capability data, ProductModelMenu, and shared product icons
- * [OUTPUT]: Exports ProductComposer with optional persistent Agent or model menu disclosure
- * [POS]: Canonical two-row product Composer used inside every ProductWindow presentation
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses React state, localized demo copy, stable Agent/model capabilities, and product icons
+ * [OUTPUT]: Exports ProductComposer with optional persistent Agent or model disclosure
+ * [POS]: Canonical localized two-row Composer used by every ProductWindow presentation
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -16,6 +16,7 @@ import {
   type AgentId,
   type Chat,
   type Question,
+  type DemoData,
 } from "@/lib/agents";
 import { AgentLogo, D, Stroke } from "../icons";
 import { ProductModelMenu } from "./product-model-menu";
@@ -69,11 +70,13 @@ export function ProductComposer({
   pinnedMenu,
   onAgent,
   onPatch,
+  copy,
 }: {
   chat: Chat;
   pinnedMenu?: "agent" | "model";
   onAgent: (agent: AgentId) => void;
   onPatch: (turn: Partial<Chat>) => void;
+  copy: DemoData["copy"];
 }) {
   const [openMenu, setOpenMenu] = useState<"agent" | "model" | "">("");
   const visibleMenu = pinnedMenu ?? openMenu;
@@ -81,13 +84,13 @@ export function ProductComposer({
     if (!pinnedMenu) setOpenMenu(menu);
   };
 
-  if (chat.question) return <UserInputCard question={chat.question} />;
+  if (chat.question) return <UserInputCard question={chat.question} copy={copy.chrome} />;
 
   const fast = Boolean(chat.fast);
 
   return (
     <div className="composer">
-      <p className="composer-field">Ask anything</p>
+      <p className="composer-field">{copy.chrome.askAnything}</p>
 
       <div className="composer-tools">
         <span className="tool-round" aria-hidden>
@@ -95,7 +98,7 @@ export function ProductComposer({
         </span>
         <span className="tool">
           <Stroke d={D.shieldCheck} size={16} />
-          <span className="tool-name">Approve for me</span>
+          <span className="tool-name">{copy.chrome.approveForMe}</span>
         </span>
 
         <div className="composer-right">
@@ -107,7 +110,7 @@ export function ProductComposer({
               <button
                 type="button"
                 className={`tool-round tool-btn${visibleMenu === "agent" ? " on" : ""}`}
-                aria-label={`Current agent: ${backendLabel(chat.agent)}`}
+                aria-label={copy.chrome.currentAgent.replace("{name}", backendLabel(chat.agent))}
                 aria-expanded={visibleMenu === "agent"}
                 title={backendLabel(chat.agent)}
                 onClick={() => changeMenu(visibleMenu === "agent" ? "" : "agent")}
@@ -150,9 +153,9 @@ export function ProductComposer({
               <button
                 type="button"
                 className={`tool tool-btn${visibleMenu === "model" ? " on" : ""}`}
-                aria-label={`Current model: ${chat.model}`}
+                aria-label={copy.chrome.currentModel.replace("{name}", chat.model)}
                 aria-expanded={visibleMenu === "model"}
-                title={chat.effort ? `${chat.model} · ${effortLabel(chat.effort)}` : chat.model}
+                title={chat.effort ? `${chat.model} · ${effortLabel(chat.effort, copy.model.efforts)}` : chat.model}
                 onClick={() => changeMenu(visibleMenu === "model" ? "" : "model")}
               >
                 {fast ? (
@@ -163,7 +166,7 @@ export function ProductComposer({
                 ) : null}
                 {/* 名长者让位：模型名省略，档位短且不可猜，整块保留。 */}
                 <span className="tool-name">{compactModelLabel(chat.model)}</span>
-                {chat.effort ? <span className="tool-dim">{effortLabel(chat.effort)}</span> : null}
+                {chat.effort ? <span className="tool-dim">{effortLabel(chat.effort, copy.model.efforts)}</span> : null}
                 <Stroke d={D.chevronDown} size={16} />
               </button>
             }
@@ -176,6 +179,7 @@ export function ProductComposer({
               onTurn={onPatch}
               onFast={(next) => onPatch({ fast: next })}
               onClose={() => changeMenu("")}
+              copy={copy.model}
             />
           </Menu>
 
@@ -194,7 +198,7 @@ export function ProductComposer({
  * 整行就是按钮，所以行尾不再画一枚「点了就走」的箭头——那句话整行已经
  * 说过了，再说一遍只会把每一行都拉成满宽，标题与箭头之间裂开一片空白。
  * ────────────────────────────────────────────────────────── */
-function UserInputCard({ question }: { question: Question }) {
+function UserInputCard({ question, copy }: { question: Question; copy: DemoData["copy"]["chrome"] }) {
   const [picked, setPicked] = useState("");
   return (
     <section className="ask-card">
@@ -221,7 +225,7 @@ function UserInputCard({ question }: { question: Question }) {
             </span>
             <span className="ask-label">
               <span>{option.label}</span>
-              {option.recommended ? <span className="ask-tag">Recommended</span> : null}
+              {option.recommended ? <span className="ask-tag">{copy.recommended}</span> : null}
             </span>
             <span className="ask-desc">{option.description}</span>
           </button>
@@ -230,7 +234,7 @@ function UserInputCard({ question }: { question: Question }) {
           <span className="ask-badge">
             <Stroke d={D.penLine} size={12} width={2} />
           </span>
-          <span>None of these; tell the Agent another approach</span>
+          <span>{copy.anotherApproach}</span>
         </button>
       </div>
     </section>

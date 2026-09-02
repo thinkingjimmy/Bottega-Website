@@ -14,4 +14,4 @@ Static assets copied unchanged into the exported website.
 - `wordmark.png`: Product wordmark for light product surfaces.
 - `features/`: Privacy-clean product screenshots captured for feature documentation; see its README.
 
-[PROTOCOL]: 变更时更新此头部，然后检查 README.md
+[PROTOCOL]: Update this file when members or responsibilities change, then verify the project README.md.

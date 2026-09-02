@@ -2,27 +2,32 @@
 
 > L2 | Parent: [project README](../README.md)
 
-Page components are divided into shared site chrome, independent home sections, and product-faithful visual modules.
+## Page and chrome members
 
-## Member list
-
-- `agents-section.tsx`: Names the four official Agent backends, renders their product marks, and links to the Agents detail page.
-- `apps-section.tsx`: Provides the Apps section shell; its working surface lives in `apps/`.
-- `base-section.tsx`: Drives the four-view home Base reel and links to the complete six-view Base documentation.
-- `customizable-section.tsx`: Explains the source-bound App editor chat and links to its detail page.
-- `fork-band.tsx`: Closes the home narrative with an open-source build terminal.
-- `hero.tsx`: Runs the full-viewport product stage, shrink geometry, and theme-aware desktop scene.
-- `icons.tsx`: Owns dependency-free SVG primitives, product marks, App icons, and the canonical path table.
-- `reveal.tsx`: Adds one-shot section entrance only after the server-rendered section is already visible by default.
-- `site-footer.tsx`: Renders the shared MIT colophon and verified product links.
-- `site-header.tsx`: Renders the shared stage/framed header and its always-present Features dropdown.
-- `theme.tsx`: Resolves auto/light/dark before paint and follows later system changes.
+- `hero.tsx`: Runs the localized full-viewport product stage and shrink geometry.
+- `agents-section.tsx`: Presents the four official Agents with localized copy and a focused reel.
+- `apps-section.tsx`: Wraps the localized first-party App surface switcher.
+- `customizable-section.tsx`: Presents source-bound App editing through Chat.
+- `base-section.tsx`: Drives four localized views over one Base dataset.
+- `fork-band.tsx`: Closes the home narrative with localized source copy and immutable commands.
+- `site-header.tsx`: Renders language-preserving navigation and feature discovery.
+- `site-footer.tsx`: Renders localized links and the sole language selector.
+- `site-document.tsx`: Supplies shared HTML roots with build-time `lang` and pre-paint boot scripts.
+- `disclosure.tsx`: Owns persistent-DOM outside-click and Escape dismissal behavior.
+- `language-switcher.tsx`: Writes or clears explicit language preference and preserves logical routes.
+- `language-runtime.tsx`: Follows later system-language changes while Auto remains active.
+- `theme.tsx`: Resolves and follows the local theme preference.
+- `icons.tsx`: Owns dependency-free SVG and product identity primitives.
+- `reveal.tsx`: Adds one-shot entrance without hiding server content by default.
 
 ## Child modules
 
-- `apps/`: Product-faithful surfaces and switcher for the four first-party App examples; see its README.
-- `features/`: Shared feature catalog, icons, home CTA, and documentation sidebar; see its README.
-- `reels/`: Focused Agents, App menu, and Base view demonstrations plus shared playback controls; see its README.
-- `window/`: Product-faithful hero shell, transcript, composer, model menu, and Plan panel; see its README.
+- `apps/`: Four localized product-faithful App surfaces.
+- `features/`: Stable feature identity and localized navigation/article assembly.
+- `pages/`: Locale-neutral page compositions reused by canonical and Auto routes.
+- `reels/`: Focused localized demonstrations and shared playback behavior.
+- `window/`: Canonical localized product window, transcript, Composer, and Plan panel.
 
-[PROTOCOL]: 变更时更新此头部，然后检查 README.md
+Complete catalogs enter at `pages/` and are narrowed to current-locale props before crossing client boundaries.
+
+[PROTOCOL]: Update this file when members or responsibilities change, then verify the project README.md.

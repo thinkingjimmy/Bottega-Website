@@ -1,17 +1,11 @@
 /**
- * [INPUT]: 依赖 @/lib/agents 的 LEDGER_LONG/LEDGER_LONG_SUM/CATEGORY_SHARE/DAILY_SPEND，
- *          依赖 ../icons 的 Stroke/D，依赖 ./surface-chrome 的 BaseChrome/Sk
- * [OUTPUT]: 对外提供 LedgerSurface
- * [POS]: Expense Tracker 那一台。表格几何逐项取自 bases/views/table：
- *        表头 36（h-9）粘顶、行 36、逐格 border-r、汇总条钉在底边；
- *        select 单元格在产品里是一颗无边框的 Select——文字靠左、雪佛龙靠右，
- *        不是一枚实心药丸（见 editors/cells/base-cell-editor.tsx）。
- *        右下那块是分析视图叠上来的第二块表面，全站唯一一处两屏同框，
- *        理由见 README
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses localized DemoData plus shared product icons and Base chrome primitives
+ * [OUTPUT]: Exports the localized LedgerSurface product demonstration
+ * [POS]: Expense Tracker surface with ledger and analysis views backed by one data graph
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
-import { CATEGORY_SHARE, DAILY_SPEND, LEDGER_LONG, LEDGER_LONG_SUM } from "@/lib/agents";
+import type { DemoData } from "@/lib/agents";
 import { D, Stroke } from "../icons";
 import { BaseChrome, Sk } from "./surface-chrome";
 
@@ -26,12 +20,12 @@ const NOTE_W = [
  * 角度按 CATEGORY_SHARE 真实求和算出来。画一个跟表里对不上的饼，
  * 这张图就成了装饰。
  * ────────────────────────────────────────────────────────── */
-function Pie() {
-  const total = CATEGORY_SHARE.reduce((sum, slice) => sum + slice.value, 0);
+function Pie({ slices }: { slices: DemoData["categoryShare"] }) {
+  const total = slices.reduce((sum, slice) => sum + slice.value, 0);
   let angle = -Math.PI / 2;
   return (
     <svg viewBox="0 0 80 80" style={{ height: "100%", flex: "none" }} aria-hidden="true">
-      {CATEGORY_SHARE.map((slice) => {
+      {slices.map((slice) => {
         const sweep = (slice.value / total) * Math.PI * 2;
         const x1 = 40 + 38 * Math.cos(angle);
         const y1 = 40 + 38 * Math.sin(angle);
@@ -51,13 +45,14 @@ function Pie() {
   );
 }
 
-export function LedgerSurface() {
+export function LedgerSurface({ demo }: { demo: DemoData }) {
+  const { chrome } = demo.copy;
   return (
     <div className="ba">
       <BaseChrome
         tabs={[
-          { icon: "table", name: "Ledger" },
-          { icon: "chartColumn", name: "Analysis" },
+          { icon: "table", name: chrome.ledger },
+          { icon: "chartColumn", name: chrome.analysis },
         ]}
         active={0}
       />
@@ -65,16 +60,16 @@ export function LedgerSurface() {
         <div className="tb">
           <div className="tb-head">
             <span className="tb-num" />
-            <span className="tb-date">Date</span>
-            <span className="tb-amount">Amount</span>
-            <span className="tb-cat">Category</span>
-            <span className="tb-note">Note</span>
+            <span className="tb-date">{chrome.date}</span>
+            <span className="tb-amount">{chrome.amount}</span>
+            <span className="tb-cat">{chrome.category}</span>
+            <span className="tb-note">{chrome.note}</span>
             <span className="tb-plus">
               <Stroke d={D.plus} size={14} width={1.6} />
             </span>
           </div>
           <div className="tb-rows">
-            {LEDGER_LONG.map((row, at) => (
+            {demo.ledgerLong.map((row, at) => (
               <div className="tb-row" key={row.date}>
                 <span className="tb-num">{at + 1}</span>
                 <span className="tb-date">{row.date}</span>
@@ -95,8 +90,8 @@ export function LedgerSurface() {
             <span className="tb-num" />
             <span className="tb-date" />
             <span className="tb-amount">
-              <span className="lbl">Sum</span>
-              <span className="mono">{LEDGER_LONG_SUM}</span>
+              <span className="lbl">{chrome.sum}</span>
+              <span className="mono">{demo.ledgerLongSum}</span>
             </span>
             <span className="tb-cat" />
             <span className="tb-note" />
@@ -106,11 +101,11 @@ export function LedgerSurface() {
 
       <div className="tb-charts">
         <div className="ch-card">
-          <div className="ch-head">Category share</div>
+          <div className="ch-head">{demo.copy.ledger.categoryShare}</div>
           <div className="ch-body">
-            <Pie />
+            <Pie slices={demo.categoryShare} />
             <div className="ch-legend">
-              {CATEGORY_SHARE.map((slice) => (
+              {demo.categoryShare.map((slice) => (
                 <span key={slice.label}>
                   <i style={{ background: slice.tone }} />
                   {slice.label}
@@ -120,10 +115,10 @@ export function LedgerSurface() {
           </div>
         </div>
         <div className="ch-card">
-          <div className="ch-head">Daily spend</div>
+          <div className="ch-head">{demo.copy.ledger.dailySpend}</div>
           <div className="ch-body">
             <div className="ch-bars">
-              {DAILY_SPEND.map((height, at) => (
+              {demo.dailySpend.map((height, at) => (
                 <i key={at} style={{ height: `${Math.round(height * 100)}%` }} />
               ))}
             </div>

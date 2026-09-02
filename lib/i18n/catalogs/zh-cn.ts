@@ -5,8 +5,8 @@
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
-import type { CatalogShape } from "../catalog-shape";
-import { en } from "./en";
+import type { CatalogShape } from "../catalog-shape.ts";
+import type { en } from "./en.ts";
 
 export const zhCN = {
   meta: {
@@ -204,7 +204,7 @@ export const zhCN = {
   demo: {
     chrome: {
       newChat: "新建 Chat", apps: "Apps", projects: "Projects", chats: "Chats", settings: "设置", showMore: "显示更多",
-      ledger: "账本", analysis: "分析", byMonth: "按月", date: "日期", amount: "金额", category: "分类", note: "备注", sum: "合计",
+      ledger: "账本", analysis: "分析", byMonth: "按月", date: "日期", amount: "金额", category: "分类", note: "备注", sum: "合计", records: "{count} 条记录",
       askAnything: "问任何问题", approveForMe: "替我批准", currentAgent: "当前 Agent：{name}", currentModel: "当前模型：{name}",
       recommended: "推荐", anotherApproach: "都不合适；告诉 Agent 另一种方案", workedFor: "工作了 {duration}", plan: "Plan",
       planCopied: "已复制 Plan", copyPlan: "复制 Plan", closePlan: "关闭 Plan 面板", openPlan: "打开 Plan 面板",
@@ -226,20 +226,46 @@ export const zhCN = {
       categoryShare: "分类占比", dailySpend: "每日支出", location: "位置", where: "地址", label: "标签",
     },
     kanban: {
-      tabs: ["任务", "发现", "全部"], lanes: ["进行中", "评审", "完成"], task: "任务", source: "来源",
+      tabs: ["任务", "发现", "全部"], lanes: ["进行中", "评审", "完成"], task: "任务", source: "来源", doc: "文档",
       titles: ["把设置面板移到 Agents 下", "为 CLI 导入路径补集成测试", "审计自动更新流程", "在文档中解释 ACP 握手", "重命名 /settings/backends 且不破坏书签", "把 onboarding 文案缩到 42 个词", "定义安装协议", "拆分发布身份与获取源", "发布 0.2.0 更新说明"],
     },
     canvas: {
       live: "实时", focus: "聚焦", directions: "方向", compare: "比较", browse: "浏览", element: "元素", region: "区域",
-      desktop: "桌面", tablet: "平板", mobile: "手机", fit: "适合", anchors: "锚点", stale: "已过期", clear: "清除", addToChat: "添加到 Chat",
+      desktop: "桌面", tablet: "平板", mobile: "手机", fit: "适合", anchors: "锚点", selectedCount: "已选 {count} 个", stale: "已过期", clear: "清除", addToChat: "添加到 Chat",
     },
     fitness: {
       trainingRecord: "Fitness Log · 训练记录", title: "覆盖，而非指导", subtitle: "只统计已完成的组。通过使用 Chat 或数据表记录和修正条目。",
-      revision: "Revision", createPlan: "创建训练计划", coverage: "覆盖", heatmap: "肌群热力图", body: "身体", male: "男性", timeRange: "时间范围", last30Days: "最近 30 天",
+      revision: "修订版本", createPlan: "创建训练计划", coverage: "覆盖", heatmap: "肌群热力图", body: "身体", male: "男性", timeRange: "时间范围", last30Days: "最近 30 天",
       front: "正面", back: "背面", intensity: "覆盖强度", offlineCatalog: "离线目录 · 1324 个动作", exerciseCatalog: "动作目录", clearFilters: "清除筛选",
       search: "搜索", searchHint: "名称、别名、肌群或器械", bodyPart: "身体部位", muscleRegion: "肌群区域", equipment: "器械", all: "全部", exercises: "1324 个动作", showing: "显示 1–24", groups: ["胸部", "大腿", "背部"],
     },
     appMenu: { items: ["编辑 App", "App 工作台", "关于此 App", "导入", "版本历史", "分享到 GitHub"], ask: "给比较视图增加第三个面板。", source: "App 源码" },
+    chats: {
+      releaseNotes: {
+        title: "发布 Release Notes", ask: "根据 0.1.9 之后合并的 PR 起草 0.2.0 Release Notes。", trace: ["读取 4 个 package 的 18 个 commit", "编辑 CHANGELOG.md"],
+        reply: "Plan 在上面。说开始我就写；告诉我想改哪组，我会先重新整理。",
+        plan: { title: "0.2.0 Release Notes", sections: [
+          { heading: "摘要", items: ["自 `0.1.9` 以来有六项主要变化，按用户最先感知的部分分组。", "Agent 能力对齐是头条——`Kimi` 与 `OpenCode` 现在拥有和 `Codex` 相同的权限阶梯。", "两项内部重构合并成一句；仓库之外没人感受到它们。"] },
+          { heading: "顺序", items: ["按用户触及的界面分组 18 个已合并 PR，而不是按落入的 package。", "每条写清发生了什么——PR 编号是来源，不是新闻。", "把文件镜像到 `docs/`，再读回两份，确保它们永不分叉。"] },
+          { heading: "文件", items: ["`CHANGELOG.md`——六条记录，最新优先，使用绝对日期。", "`docs/changelog/README.md`——公开镜像，同样六条。"] },
+          { heading: "本轮不做", items: ["补齐 `0.1.x`——旧记录追溯多远是另一个决定。", "Release tag 与下载页；它们读取此文件，不写入。"] },
+        ] }, status: "正在回复",
+      },
+      settingsPanel: {
+        title: "迁移设置面板", ask: "把后端设置移到 Agents 下，同时保留 deep link。", trace: ["读取 components/settings 中的 9 个文件", "找到 12 个调用点"],
+        reply: "有三种做法，差别只在用户已经保存的链接会怎样。", bullets: ["12 个调用点无论如何都只是机械修改。", "真正不能机械决定的是两个 deep link 和 command palette 入口。", "所以问题其实是：你想对旧链接作出什么承诺。"],
+        question: { eyebrow: "Main Agent · 路由策略", text: "旧设置路由已被加入书签。该怎么迁移？", options: [
+          { label: "保留重定向", description: "旧路径跳到新路径，书签与 palette 仍能到达。" }, { label: "直接重命名", description: "目录最干净，但所有已保存链接都会失效。" }, { label: "保留两个版本", description: "本版同时提供两套路由，在 0.3.0 删除旧路由。" },
+        ] },
+      },
+      changelog: { title: "起草更新日志", ask: "汇总本周 merge，写成更新日志页面。", trace: ["读取 24 条 commit message", "编辑 docs/changelog/README.md"], reply: "六条。本周读起来是一段完整故事，而不是 merge 清单。", bullets: ["六条，最新优先，每条一行。", "两项内部重构合并在一起——仓库之外没人感受到它们。", "日期使用绝对值，不用相对时间：更新日志会在数月后被阅读。"], status: "正在编辑 docs/changelog/README.md" },
+      importTests: { title: "覆盖 CLI 导入路径", ask: "为导入现有 CLI session 增加集成测试。", trace: ["读取导入模块", "运行 48 个测试"], reply: "全部通过，而且此前没有测试的一条路径现在有了。", bullets: ["48 个测试通过，包括 4 个新增用例。", "畸形 session 文件现在让导入失败，而不是让 App 崩溃。", "Fixture 与模块放在一起，下一位读者可以直接找到。"], status: "正在运行 48 个测试" },
+      onboarding: { title: "精简 Onboarding 文案", ask: "首次启动页像一本手册。把它精简到第一次 Chat 前真正需要的内容。", trace: ["读取 4 个 Onboarding 页面", "编辑 5 种语言的 onboarding.ts"], reply: "删掉的每句话，界面本身都已经说过。", bullets: ["从 140 词缩到 42 词。", "权限说明移到真正选择权限的位置。", "五种语言全部重写，不从英文机器翻译。"], status: "正在思考" },
+      updatePath: { title: "审计更新路径", ask: "走查自动更新流程，找出下载一半的 Release 会把人卡在哪里。", trace: ["追踪 3 个更新状态", "运行更新器测试套件"], reply: "有一个真实漏洞，而且网络不稳时正会撞上。", bullets: ["一个真实漏洞：安装中断后按钮会永远显示正在安装。", "其他状态都能在重启时恢复——下载会从自己的 ledger 继续。", "建议：安装进程缺失应视为失败阶段，而不是等待中。"], status: "正在读取 electron/main/updater.ts" },
+      settingsRoutes: { title: "重命名设置路由", ask: "把 /settings/backends 改成 /settings/agents，同时不破坏任何书签。", trace: ["找到 12 个调用点", "编辑 12 个文件"], reply: "所有地方都已重命名，书签毫无察觉。", bullets: ["重命名 12 个调用点，没有使用搜索替换。", "旧路由保留重定向，书签与 palette 仍能到达。", "路由测试全绿。"], status: "正在回复" },
+      iconGrid: { title: "比较两套图标网格", ask: "侧栏图标看起来比 Composer 偏了一个像素。哪套网格错了？", trace: ["测量 14 个图标槽", "读取 sidebar-row.tsx"], reply: "两套网格都没错。看起来的错位，是刻意留出的 1px 空气。", bullets: ["两套网格都没错——槽位都是 16px。", "侧栏在槽中放 14px 标记，Composer 图标填满槽位。", "你看到的是槽位，而不是图标。"], status: "正在思考" },
+      acp: { title: "解释 ACP 握手", ask: "说明从启动 CLI 到收到第一个 token 之间发生了什么。", trace: ["读取 ACP session 模块", "追踪 6 条消息"], reply: "第一个 token 前有三次往返，此后全都进入同一条 stream。", bullets: ["initialize——client 声明自己能渲染什么。", "session/new——CLI 在你的工作目录中打开 session。", "session/prompt——从此之后都在同一 channel 上流式传输。"], status: "正在回复" },
+    },
     agentsVisual: {
       pickerLabel: "Bottega 首页产品窗口，Composer 中的 Agent 选择器已展开", matrixLabel: "Codex、Claude、Kimi 与 OpenCode 能力矩阵", capability: "能力",
       rows: [

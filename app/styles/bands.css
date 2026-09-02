@@ -1,8 +1,8 @@
 /**
- * [INPUT]: 依赖 ./tokens.css 的 --ink/--ground/--line-*
- * [OUTPUT]: Fork 那条深色带与它的终端框、站点页脚、changelog 的 .entry，以及 ≤1300 的两栏拆分
- * [POS]: 正文尾部那几块。≤1300 那条媒体查询留在这里而不并进 motion.css：它必须排在 ≤900 之前，两条同权重的规则一旦掉个个儿，窄屏的 gap 就换了一个数
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses surface/text/line tokens from tokens.css and footer language disclosure markup
+ * [OUTPUT]: Styles the Fork band, terminal, localized footer/language selector, changelog, and ≤1300 layout
+ * [POS]: Presentation boundary for the final content bands and the site's language-switching entry
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 .band {
@@ -130,6 +130,117 @@
   line-height: 1.5;
   color: var(--ink-2);
 }
+.footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+  min-width: 0;
+}
+.footer-language-rule {
+  width: 1px;
+  height: 24px;
+  flex: none;
+  background: var(--line);
+}
+
+/* ── Language disclosure ───────────────────────────────────────
+ * 内容常驻 DOM；details 只切 visibility 与交互。面板向上开，避免 footer
+ * 末端产生空白或被视口裁掉。每一行 44px，鼠标、键盘和触屏共用同一落点。
+ * ────────────────────────────────────────────────────────────── */
+.language-menu {
+  position: relative;
+  flex: none;
+}
+.language-menu summary {
+  list-style: none;
+}
+.language-menu summary::-webkit-details-marker {
+  display: none;
+}
+.language-trigger {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 9px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 14.5px;
+  cursor: pointer;
+  user-select: none;
+}
+.language-trigger:hover,
+.language-menu[open] .language-trigger {
+  border-color: var(--line-2);
+  background: var(--surface-2);
+}
+.language-trigger svg {
+  color: var(--ink-3);
+  transition: transform 150ms ease;
+}
+.language-menu[open] .language-trigger svg {
+  transform: rotate(180deg);
+}
+.language-panel {
+  position: absolute;
+  z-index: 30;
+  right: 0;
+  bottom: calc(100% + 8px);
+  width: min(292px, calc(100vw - 32px));
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface-2);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity 150ms ease, visibility 150ms ease, transform 150ms ease;
+}
+.language-menu[open] .language-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+.language-panel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.language-panel a {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) 20px;
+  min-height: 44px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  border-radius: 9px;
+  color: var(--ink);
+  font-size: 15px;
+}
+.language-panel a:hover,
+.language-panel a:focus-visible,
+.language-panel a[aria-current="true"] {
+  background: var(--surface);
+}
+.language-flag {
+  font-size: 18px;
+  line-height: 1;
+}
+.language-check {
+  display: inline-flex;
+  justify-content: center;
+}
+.language-trigger:focus-visible,
+.language-panel a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
 .footer-note {
   white-space: nowrap;
 }
@@ -203,5 +314,34 @@
   }
   .split-figure-first > :first-child {
     order: 1;
+  }
+}
+
+@media (max-width: 760px) {
+  .footer-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .footer-note {
+    white-space: normal;
+  }
+  .footer-actions {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .footer-language-rule {
+    display: none;
+  }
+  .language-panel {
+    right: auto;
+    left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .language-trigger svg,
+  .language-panel {
+    transition: none;
   }
 }

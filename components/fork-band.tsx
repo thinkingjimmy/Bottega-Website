@@ -1,12 +1,13 @@
 /**
- * [INPUT]: Uses Stroke, Glyph, and D from ./icons
- * [OUTPUT]: Exports the ForkBand closing section
- * [POS]: Closes Bottega-Website with the source pitch, download actions, and build terminal
+ * [INPUT]: Uses localized SiteCatalog copy plus shared Stroke/Glyph/D icons
+ * [OUTPUT]: Exports the localized ForkBand closing section
+ * [POS]: Closes Bottega-Website with source ownership, download actions, and an immutable build command terminal
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import { D, Glyph, Stroke } from "./icons";
 import { Reveal } from "./reveal";
+import type { SiteCatalog } from "@/lib/i18n";
 
 const REPO = "https://github.com/thinkingjimmy/Bottega";
 
@@ -16,9 +17,9 @@ const STEPS = [
   "pnpm --filter desktop build",
 ];
 
-function BuildTerminal() {
+function BuildTerminal({ label }: { label: string }) {
   return (
-    <div className="terminal" role="region" aria-label="Terminal commands to build Bottega">
+    <div className="terminal" role="region" aria-label={label}>
       <div className="terminal-titlebar">
         <span className="terminal-dots" aria-hidden="true">
           <i />
@@ -44,7 +45,8 @@ function BuildTerminal() {
   );
 }
 
-export function ForkBand() {
+export function ForkBand({ catalog }: { catalog: SiteCatalog }) {
+  const copy = catalog.home.fork;
   return (
     <section className="section" id="source">
       <Reveal>
@@ -53,12 +55,10 @@ export function ForkBand() {
             <div className="split split-narrow fork-layout">
               <div>
                 <h2 className="fork-title">
-                  Fork it. Ship your own build.
+                  {copy.title}
                 </h2>
                 <p style={{ fontSize: 18, lineHeight: 1.62, opacity: 0.74, maxWidth: "54ch", marginBottom: 34 }}>
-                  Bottega is MIT-licensed, end to end. Fork the repo, change the agents, the tools, the UI —
-                  then roll your own build out to your whole team. It still runs local-first on their machines,
-                  on the subscriptions they already pay for.
+                  {copy.body}
                 </p>
                 <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
                   <a
@@ -77,7 +77,7 @@ export function ForkBand() {
                     }}
                   >
                     <Stroke d={D.download} size={18} />
-                    Download for macOS
+                    {copy.download}
                   </a>
                   <a
                     href={REPO}
@@ -97,12 +97,12 @@ export function ForkBand() {
                     target="_blank"
                   >
                     <Glyph d={D.github} size={18} />
-                    View the source
+                    {copy.source}
                   </a>
                 </div>
               </div>
 
-              <BuildTerminal />
+              <BuildTerminal label={copy.terminalLabel} />
             </div>
           </div>
         </div>

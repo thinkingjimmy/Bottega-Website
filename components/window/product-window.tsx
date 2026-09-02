@@ -1,24 +1,18 @@
 "use client";
 
 /**
- * [INPUT]: Uses React state, canonical demo data, transcript/composer/plan-panel modules, and shared product icons
- * [OUTPUT]: Exports ProductWindow with optional surface control and a persistently disclosed Composer menu
- * [POS]: Canonical product-window implementation shared by the Home Hero and the Agents feature illustration
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses React state, localized DemoData, transcript/composer/Plan modules, and product icons
+ * [OUTPUT]: Exports ProductWindow with localized surfaces and optional persistent Composer disclosure
+ * [POS]: Canonical product-window implementation shared by Home and Agents feature illustrations
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import { useState } from "react";
 import {
-  CHATS,
-  LEDGER,
-  LEDGER_SUM,
-  LEDGER_APP,
-  PINNED_APPS,
-  PROJECT,
-  PROJECT_PAGE_SIZE,
   defaultTurn,
   type AgentId,
   type Chat,
+  type DemoData,
 } from "@/lib/agents";
 import { AgentLogo, D, Stroke, Wordmark } from "../icons";
 import { ProductComposer } from "./product-composer";
@@ -65,19 +59,21 @@ export function ProductWindow({
   pinnedComposerMenu,
   surface,
   onSurface,
+  demo,
 }: {
   pinnedComposerMenu?: "agent" | "model";
   surface: "chat" | "app";
   onSurface?: (surface: "chat" | "app") => void;
+  demo: DemoData;
 }) {
   /* 一个 chat 的 agent/模型/档位是它自己的属性，不是选择器的局部状态：
      行首那枚 logo、页头那枚 logo、输入框那颗按钮读的都是这一个值，
      所以换 agent 时三处一起变，不必再有第二处去同步。 */
-  const [chats, setChats] = useState<Chat[]>(CHATS);
+  const [chats, setChats] = useState<Chat[]>(demo.chats);
   /* 默认落在 Codex 那条：它是 `modelOptions: "full"` 的唯一一家，
      首屏第一眼给出的就该是产品最完整的那张脸。 */
-  const [openId, setOpenId] = useState(CHATS[0].id);
-  const [limit, setLimit] = useState(PROJECT_PAGE_SIZE);
+  const [openId, setOpenId] = useState(demo.chats[0].id);
+  const [limit, setLimit] = useState(demo.projectPageSize);
   /* 第三栏开在哪条 chat 上——不是一个 boolean。产品里侧栏是会话自己的
      属性（SidePanelState 挂在 session 上），所以换走再换回来，它还开着；
      记成 boolean 就得在换会话、换表面两处各写一句「顺手关掉」，而两句
@@ -90,6 +86,7 @@ export function ProductWindow({
   const isApp = surface === "app";
   const planChat = chats.find((chat) => chat.id === planChatId) ?? null;
   const planOpen = !isApp && planChatId === open.id;
+  const chrome = demo.copy.chrome;
 
   const patch = (turn: Partial<Chat>) =>
     setChats((current) =>
@@ -136,20 +133,20 @@ export function ProductWindow({
         </div>
 
         <div className="sidebar-nav">
-          <Row mark={<Stroke d={D.squarePen} size={16} width={1.9} />} title="New chat" />
+          <Row mark={<Stroke d={D.squarePen} size={16} width={1.9} />} title={chrome.newChat} />
           <Row
             mark={<Stroke d={D.grid} size={16} width={1.9} />}
-            title="Apps"
+            title={chrome.apps}
             on={isApp}
             onClick={onSurface ? () => onSurface("app") : undefined}
           />
-          {PINNED_APPS.map((app) => (
+          {demo.pinnedApps.map((app) => (
             <Row
               key={app.id}
               mark={<span className="emoji">{app.icon}</span>}
               title={app.name}
               sub
-              on={isApp && app.id === LEDGER_APP.id}
+              on={isApp && app.id === demo.ledgerApp.id}
               onClick={onSurface ? () => onSurface("app") : undefined}
             />
           ))}
@@ -158,8 +155,8 @@ export function ProductWindow({
         {/* 行首那枚痕迹就是 agent 的 logo——「谁在干这活」在产品里从来
             不用问，看一眼行首就知道。这块屏最要紧的就是这件事。 */}
         <div className="sidebar-scroll">
-          <p className="group-label">Projects</p>
-          <Row mark={<Stroke d={D.folder} size={16} width={1.9} />} title={PROJECT.name} />
+          <p className="group-label">{chrome.projects}</p>
+          <Row mark={<Stroke d={D.folder} size={16} width={1.9} />} title={demo.project.name} />
           {project.slice(0, limit).map((chat) => chatRow(chat, true))}
           {/* 站在列表里当一行，而不是浮在列表外当一个控件：它的位置就是
               「下面还有」这句话本身。弱前景色说明这一行不是其中一员，
@@ -167,47 +164,49 @@ export function ProductWindow({
           {rest > 0 ? (
             <Row
               mark={<Stroke d={D.chevronDown} size={16} width={1.9} />}
-              title="Show more"
+              title={chrome.showMore}
               sub
               dim
-              onClick={() => setLimit((current) => current + PROJECT_PAGE_SIZE)}
+              onClick={() => setLimit((current) => current + demo.projectPageSize)}
             />
           ) : null}
 
-          <p className="group-label">Chats</p>
+          <p className="group-label">{chrome.chats}</p>
           {chats.filter((chat) => chat.home === "chats").map((chat) => chatRow(chat, false))}
         </div>
 
         <div className="sidebar-foot">
-          <Row mark={<Stroke d={D.settings} size={16} width={1.9} />} title="Settings" />
+          <Row mark={<Stroke d={D.settings} size={16} width={1.9} />} title={chrome.settings} />
         </div>
       </aside>
 
       <div className="win-main">
         <div className="win-head">
           <span className="mark">
-            {isApp ? <span className="emoji">{LEDGER_APP.icon}</span> : <AgentLogo backend={open.agent} />}
+            {isApp ? <span className="emoji">{demo.ledgerApp.icon}</span> : <AgentLogo backend={open.agent} />}
           </span>
-          <span className="win-title">{isApp ? LEDGER_APP.name : open.title}</span>
+          <span className="win-title">{isApp ? demo.ledgerApp.name : open.title}</span>
           <span className="icon-slot" style={{ marginLeft: "auto" }}>
             <Stroke d={D.panelRight} size={16} width={1.5} />
           </span>
         </div>
 
         {isApp ? (
-          <AppSurface />
+          <AppSurface demo={demo} />
         ) : (
           <>
             <ProductTranscript
               chat={open}
               planOpen={planOpen}
               onPlan={() => setPlanChatId((current) => (current === open.id ? null : open.id))}
+              copy={chrome}
             />
             <ProductComposer
               chat={open}
               pinnedMenu={pinnedComposerMenu}
               onAgent={(agent: AgentId) => patch({ agent, ...defaultTurn(agent) })}
               onPatch={patch}
+              copy={demo.copy}
             />
           </>
         )}
@@ -217,28 +216,30 @@ export function ProductWindow({
         plan={planChat?.plan ?? null}
         open={planOpen}
         onClose={() => setPlanChatId(null)}
+        closeLabel={chrome.closePlan}
       />
     </div>
   );
 }
 
 /** App 表面：取自 apps/desktop/src/components/bases/views/table */
-function AppSurface() {
+function AppSurface({ demo }: { demo: DemoData }) {
+  const copy = demo.copy.chrome;
   return (
     <>
       <div className="tabs">
-        <span className="on">Ledger</span>
-        <span>Analysis</span>
-        <span>By month</span>
+        <span className="on">{copy.ledger}</span>
+        <span>{copy.analysis}</span>
+        <span>{copy.byMonth}</span>
       </div>
       <div className="grid-row head">
-        <span className="c-date">Date</span>
-        <span className="c-amount">Amount</span>
-        <span className="c-cat">Category</span>
-        <span className="c-note">Note</span>
+        <span className="c-date">{copy.date}</span>
+        <span className="c-amount">{copy.amount}</span>
+        <span className="c-cat">{copy.category}</span>
+        <span className="c-note">{copy.note}</span>
       </div>
       <div style={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
-        {LEDGER.map((record) => (
+        {demo.ledger.map((record) => (
           <div className="grid-row" key={record.date}>
             <span className="c-date mono">{record.date}</span>
             <span className="c-amount mono">{record.amount}</span>
@@ -250,10 +251,10 @@ function AppSurface() {
         ))}
       </div>
       <div className="grid-row foot">
-        <span className="c-date">{LEDGER.length} records</span>
+        <span className="c-date">{copy.records.replace("{count}", String(demo.ledger.length))}</span>
         <span className="c-amount mono">
-          <span style={{ color: "var(--app-muted-fg)", fontSize: 11 }}>SUM</span>
-          {LEDGER_SUM}
+          <span style={{ color: "var(--app-muted-fg)", fontSize: 11 }}>{copy.sum.toUpperCase()}</span>
+          {demo.ledgerSum}
         </span>
         <span className="c-note" />
       </div>

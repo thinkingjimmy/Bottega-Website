@@ -3,8 +3,8 @@ import type { NextConfig } from "next";
 /**
  * [INPUT]: Uses the NextConfig type from Next.js
  * [OUTPUT]: Exports the complete website build configuration
- * [POS]: Bottega-Website build entry; all six routes are static, so deployment requires no request-time server
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [POS]: Bottega-Website build entry; all thirty canonical and six Auto routes are fully static
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 const nextConfig: NextConfig = {
   reactStrictMode: true,

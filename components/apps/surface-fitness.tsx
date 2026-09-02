@@ -1,17 +1,12 @@
 /**
- * [INPUT]: 依赖 @/lib/body-map.json 的人体路径，依赖 @/lib/agents 的 MUSCLE_HEAT，
- *          依赖 ../icons 的 Stroke/D，依赖 ./surface-chrome 的 Sk
- * [OUTPUT]: 对外提供 FitnessSurface
- * [POS]: Fitness Log 那一台。它长得像一本训练手册而不是一张后台界面——
- *        衬线标题、3px 粗横规、双线图版，逐项取自
- *        resources/apps/Bottega-app-fitness-log/gui/styles.css，文案取自
- *        gui/scripts/i18n.js 的英文档。994 > 900，按真规则 main 展成两栏：
- *        左图版，右动作目录（目录是「不关键」的那一半，条目留骨架）
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses body-map geometry, localized DemoData, product icons, and surface skeletons
+ * [OUTPUT]: Exports the localized FitnessSurface product demonstration
+ * [POS]: Fitness Log surface whose anatomical facts stay fixed while every label is translated
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import BODY from "@/lib/body-map.json";
-import { MUSCLE_HEAT } from "@/lib/agents";
+import type { DemoData } from "@/lib/agents";
 import { D, Stroke } from "../icons";
 import { Sk } from "./surface-chrome";
 
@@ -28,13 +23,13 @@ const VIEWS = BODY as Record<"front" | "back", BodyView>;
  * 里那两个单字符 flag 被一起改写——`A38 38 0 0 1 x y` 揉成了 `a.4 0 1.1.1`，
  * 浏览器静默丢掉整条子路径。省下的字节，换的是一批画错却不报错的热区。
  * ────────────────────────────────────────────────────────── */
-function Body({ view }: { view: "front" | "back" }) {
+function Body({ view, heat }: { view: "front" | "back"; heat: DemoData["muscleHeat"] }) {
   const data = VIEWS[view];
   return (
     <svg className="fl-body" viewBox={data.viewBox} preserveAspectRatio="xMidYMid meet" aria-hidden="true">
       <path className="outline" d={data.outline} />
       {data.zones.flatMap((zone) => {
-        const level = MUSCLE_HEAT[zone.id] ?? 0;
+        const level = heat[zone.id] ?? 0;
         return zone.paths.map((d, at) => (
           <path className="zone" data-level={level || undefined} d={d} key={`${zone.id}-${at}`} />
         ));
@@ -48,9 +43,9 @@ function Body({ view }: { view: "front" | "back" }) {
    而不是「下面还有」。列表要说的「还有更多」由最后一组被框裁掉那一下说，
    不由一个残缺的标题说。 */
 const GROUPS = [
-  { name: "Chest", count: 118, rows: ["72%", "54%", "63%"] },
-  { name: "Upper legs", count: 214, rows: ["66%", "48%", "58%"] },
-  { name: "Back", count: 176, rows: ["70%", "52%", "61%"] },
+  { count: 118, rows: ["72%", "54%", "63%"] },
+  { count: 214, rows: ["66%", "48%", "58%"] },
+  { count: 176, rows: ["70%", "52%", "61%"] },
 ];
 
 function Field({ label, value }: { label: string; value: string }) {
@@ -65,25 +60,24 @@ function Field({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function FitnessSurface() {
+export function FitnessSurface({ demo }: { demo: DemoData }) {
+  const copy = demo.copy.fitness;
   return (
     <div className="fl">
       <header className="fl-header">
         <div className="fl-rule" />
         <div className="fl-masthead">
           <div>
-            <p className="fl-eyebrow">Fitness Log · Training record</p>
-            <h3>Coverage, not coaching</h3>
-            <p className="fl-sub">
-              Counts completed sets only. Log and correct entries through Use chat or the data table.
-            </p>
+            <p className="fl-eyebrow">{copy.trainingRecord}</p>
+            <h3>{copy.title}</h3>
+            <p className="fl-sub">{copy.subtitle}</p>
           </div>
           <div className="fl-actions">
             <div className="fl-rev">
-              <span>Revision</span>
+              <span>{copy.revision}</span>
               <strong>41</strong>
             </div>
-            <span className="fl-cta">Create training plan</span>
+            <span className="fl-cta">{copy.createPlan}</span>
           </div>
         </div>
       </header>
@@ -92,12 +86,12 @@ export function FitnessSurface() {
         <section>
           <div className="fl-sec">
             <div>
-              <p className="fl-eyebrow">Coverage</p>
-              <h4>Muscle heatmap</h4>
+              <p className="fl-eyebrow">{copy.coverage}</p>
+              <h4>{copy.heatmap}</h4>
             </div>
             <div className="fl-controls">
-              <Field label="Body" value="Male" />
-              <Field label="Time range" value="Last 30 days" />
+              <Field label={copy.body} value={copy.male} />
+              <Field label={copy.timeRange} value={copy.last30Days} />
             </div>
           </div>
           {/* 图版：外一道 rule、内一道 line，中间夹 5px——解剖插图的做法。 */}
@@ -105,16 +99,16 @@ export function FitnessSurface() {
             <div className="fl-plate-inner">
               <div className="fl-maps">
                 <figure>
-                  <figcaption>Front</figcaption>
-                  <Body view="front" />
+                  <figcaption>{copy.front}</figcaption>
+                  <Body view="front" heat={demo.muscleHeat} />
                 </figure>
                 <figure>
-                  <figcaption>Back</figcaption>
-                  <Body view="back" />
+                  <figcaption>{copy.back}</figcaption>
+                  <Body view="back" heat={demo.muscleHeat} />
                 </figure>
               </div>
               <div className="fl-key">
-                <span className="fl-key-title">Coverage intensity</span>
+                <span className="fl-key-title">{copy.intensity}</span>
                 <div className="fl-scale">
                   {[0, 1, 2, 3, 4].map((level) => (
                     <div key={level}>
@@ -131,28 +125,28 @@ export function FitnessSurface() {
         <section>
           <div className="fl-sec">
             <div>
-              <p className="fl-eyebrow">Offline catalog · 1324 exercises</p>
-              <h4>Exercise catalog</h4>
+              <p className="fl-eyebrow">{copy.offlineCatalog}</p>
+              <h4>{copy.exerciseCatalog}</h4>
             </div>
-            <span className="fl-ghost">Clear filters</span>
+            <span className="fl-ghost">{copy.clearFilters}</span>
           </div>
           <label className="fl-search">
-            <span>Search</span>
-            <b>Name, alias, muscle, or equipment</b>
+            <span>{copy.search}</span>
+            <b>{copy.searchHint}</b>
           </label>
           <div className="fl-filters">
-            <Field label="Body part" value="All" />
-            <Field label="Muscle region" value="All" />
-            <Field label="Equipment" value="All" />
+            <Field label={copy.bodyPart} value={copy.all} />
+            <Field label={copy.muscleRegion} value={copy.all} />
+            <Field label={copy.equipment} value={copy.all} />
           </div>
           <p className="fl-result">
-            <span>1324 exercises</span>
-            <span>Showing 1–24</span>
+            <span>{copy.exercises}</span>
+            <span>{copy.showing}</span>
           </p>
-          {GROUPS.map((group) => (
-            <div className="fl-group" key={group.name}>
+          {GROUPS.map((group, index) => (
+            <div className="fl-group" key={copy.groups[index]}>
               <h5>
-                {group.name}
+                {copy.groups[index]}
                 <b>{group.count}</b>
               </h5>
               <div className="fl-cards">

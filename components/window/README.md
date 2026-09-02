@@ -1,23 +1,15 @@
-# window/
+# components/window/
 
-> L2 | Parent: [components/](../README.md)
+> L2 | Parent: [components/README.md](../README.md)
 
-The canonical Bottega product window used by the Home Hero and product-faithful documentation illustrations. Its geometry follows the desktop product rather than approximating it per marketing surface.
+## Members
 
-## Member list
+- `product-window.tsx`: Owns the Sidebar, Chat/App surface, active Chat, pagination, and optional pinned Composer menu.
+- `product-transcript.tsx`: Renders localized work traces, Plan preview, reply, and streaming state.
+- `product-plan-panel.tsx`: Projects the selected Plan into the third-column document shell.
+- `product-composer.tsx`: Renders localized Agent/model controls, permission copy, and question-card state.
+- `product-model-menu.tsx`: Renders localized labels around real backend model capabilities.
 
-- `product-window.tsx`: Owns the 256px Sidebar, 40px page header, Chat/App surface selection, active Chat identity, and optional pinned Composer menu; the Home Hero and Agents feature share this exact component.
-- `product-transcript.tsx`: Renders the scrollable conversation, Worked row, tool traces, Plan preview, final reply, and streaming status from one Chat record.
-- `product-plan-panel.tsx`: Projects the selected Plan into the product's third-column shell without duplicating document content.
-- `product-composer.tsx`: Renders the canonical two-row Composer, Agent menu, model/effort controls, permission control, send affordance, and question-card replacement state.
-- `product-model-menu.tsx`: Renders the capability-driven Codex full selector or the other backends' list-only selector.
+Agent IDs, model names, effort capabilities, command paths, and numeric facts remain stable. Every sentence and accessible label comes from the current locale's DemoData.
 
-## Interaction contract
-
-The Home Hero keeps the real demonstration interactions: Chat selection, pagination, App switching, Agent/model selection, effort/Fast controls, Plan expansion, and Plan copy. The Agents feature places the same `ProductWindow` inside an inert illustration and pins the Agent menu open. Pinned disclosure installs no outside-click or Escape listener, while the unpinned Home Hero keeps both dismissal paths. Only host dimensions and disclosure policy differ; Sidebar, transcript, Composer, menu DOM, and all canonical Hero styles remain shared.
-
-## State and data
-
-Conversation ownership is explicit: Agent, model, effort, Fast state, and Plan-panel ownership live with the selected Chat. Demo data comes only from `@/lib/agents`. Presentation comes only from `app/styles/hero/`: `shell.css` owns the frame, `surface.css` owns Agent output, and `composer.css` owns user input.
-
-[PROTOCOL]: 变更时更新此头部，然后检查 README.md
+[PROTOCOL]: Update this file when members or responsibilities change, then verify the parent README.md.

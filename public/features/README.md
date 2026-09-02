@@ -11,4 +11,4 @@ Product screenshots captured from the local Bottega development build on 2026-09
 - `apps-library.jpg`: Apps library with an installed Design Canvas in the Ready state.
 - `base-data.jpg`: App Data tab showing the Base table workbench and its controls.
 
-[PROTOCOL]: 变更时更新此头部，然后检查 README.md
+[PROTOCOL]: Update this file when members or responsibilities change, then verify the parent README.md.

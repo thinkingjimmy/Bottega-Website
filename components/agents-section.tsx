@@ -1,8 +1,8 @@
 /**
- * [INPUT]: Uses BACKENDS/backendLabel, AgentsReel, AgentLogo, Reveal, and the shared feature detail CTA
- * [OUTPUT]: Exports the AgentsSection component
- * [POS]: Home feature section that names the four official Agent backends and links to their documented behavior
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses localized SiteCatalog/DemoData, Agent identities, AgentsReel, Reveal, and FeatureLink
+ * [OUTPUT]: Exports the localized AgentsSection component
+ * [POS]: Home feature naming four official Agent backends and linking to their localized documentation
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import { BACKENDS, backendLabel } from "@/lib/agents";
@@ -10,23 +10,24 @@ import { AgentsReel } from "./reels/agents-reel";
 import { FeatureLink } from "./features/feature-link";
 import { AgentLogo } from "./icons";
 import { Reveal } from "./reveal";
+import type { DemoData } from "@/lib/agents";
+import type { SiteCatalog } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n/locale";
 
-export function AgentsSection() {
+export function AgentsSection({ demo, catalog, locale }: { demo: DemoData; catalog: SiteCatalog; locale: Locale }) {
   return (
     <section className="section" id="agents">
       <Reveal>
         <div className="wrap split">
           <div>
             <h1 style={{ fontSize: 56, lineHeight: 1.03, maxWidth: "16ch", marginBottom: 22 }}>
-              Every agent you pay for, in one sidebar.
+              {catalog.home.agents.title}
             </h1>
             <p style={{ fontSize: 18, lineHeight: 1.62, color: "var(--ink-2)", marginBottom: 18, maxWidth: "56ch" }}>
-              Codex, Claude, Kimi and OpenCode all live in Bottega — the official CLIs you already have
-              installed, nothing reimplemented.
+              {catalog.home.agents.paragraphs[0]}
             </p>
             <p style={{ fontSize: 18, lineHeight: 1.62, color: "var(--ink-2)", marginBottom: 30, maxWidth: "56ch" }}>
-              Each runs on your own subscription: the plan you already pay for, billed by the provider, not
-              by us.
+              {catalog.home.agents.paragraphs[1]}
             </p>
 
             {/* 四枚标记就是那句「有谁」的全部证据。名字写在 title 里而不是画在
@@ -39,10 +40,10 @@ export function AgentsSection() {
                 </li>
               ))}
             </ul>
-            <FeatureLink slug="agents" />
+            <FeatureLink slug="agents" locale={locale} label={catalog.common.readMore} />
           </div>
 
-          <AgentsReel />
+          <AgentsReel demo={demo} replayLabel={catalog.common.replay} />
         </div>
       </Reveal>
     </section>

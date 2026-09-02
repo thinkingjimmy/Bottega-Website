@@ -1,32 +1,43 @@
 /**
- * [INPUT]: Uses next/link for internal footer navigation
- * [OUTPUT]: Exports the SiteFooter component
- * [POS]: The compact text-only colophon shared by home, changelog, and feature pages
+ * [INPUT]: Uses localized copy/path props, next/link, and LanguageSwitcher
+ * [OUTPUT]: Exports SiteFooter with localized navigation and language preference control
+ * [POS]: Shared colophon and sole language-switching entry for every website page
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import Link from "next/link";
+import type { SiteCatalog } from "@/lib/i18n";
+import { localizedPath, type Locale } from "@/lib/i18n/locale";
+import { LanguageSwitcher } from "./language-switcher";
 
 const REPO = "https://github.com/thinkingjimmy/Bottega";
 
-const LINKS = [
-  { label: "Changelog", href: "/changelog/" },
-  { label: "Docs", href: `${REPO}/tree/main/docs` },
-  { label: "GitHub", href: REPO },
-  { label: "Issues", href: `${REPO}/issues` },
-  { label: "Download", href: `${REPO}/releases` },
-];
-
-export function SiteFooter() {
+export function SiteFooter({
+  locale,
+  catalog,
+  logicalPath,
+}: {
+  locale: Locale;
+  catalog: SiteCatalog;
+  logicalPath: string;
+}) {
+  const links = [
+    { label: catalog.footer.links.changelog, href: localizedPath(locale, "/changelog/") },
+    { label: catalog.footer.links.docs, href: `${REPO}/tree/main/docs` },
+    { label: catalog.footer.links.github, href: REPO },
+    { label: catalog.footer.links.issues, href: `${REPO}/issues` },
+    { label: catalog.footer.links.download, href: `${REPO}/releases` },
+  ];
   return (
     <footer className="site-footer">
       <div className="wrap footer-row">
         <p className="footer-note">
-          Bottega is free and open source (<a href={`${REPO}/blob/main/LICENSE`}>MIT</a>).
+          {catalog.footer.noteBefore}<a href={`${REPO}/blob/main/LICENSE`}>MIT</a>{catalog.footer.noteAfter}
         </p>
-        <nav aria-label="Footer navigation">
-          <ul className="footer-links">
-            {LINKS.map((link) => (
+        <div className="footer-actions">
+          <nav aria-label={catalog.footer.navigation}>
+            <ul className="footer-links">
+            {links.map((link) => (
               <li key={link.label}>
                 {link.href.startsWith("/") ? (
                   <Link href={link.href}>{link.label}</Link>
@@ -41,8 +52,11 @@ export function SiteFooter() {
                 )}
               </li>
             ))}
-          </ul>
-        </nav>
+            </ul>
+          </nav>
+          <span className="footer-language-rule" aria-hidden="true" />
+          <LanguageSwitcher locale={locale} copy={catalog.language} logicalPath={logicalPath} />
+        </div>
       </div>
     </footer>
   );

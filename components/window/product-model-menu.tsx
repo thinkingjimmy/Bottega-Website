@@ -1,15 +1,10 @@
 "use client";
 
 /**
- * [INPUT]: 依赖 react 的 useState，依赖 @/lib/agents 的 MODELS/MODEL_OPTIONS/
- *          effortLabel/compactModelLabel/AgentId，依赖 ../icons 的 Stroke/D
- * [OUTPUT]: 对外提供 ProductModelMenu 组件
- * [POS]: 输入框上模型那颗按钮的面板。两张脸，因为产品有两张脸：
- *        Codex 是 `modelOptions: "full"`（一条蓝色档位滑轨 + Fast 开关，
- *        Advanced 之后才是列表），其余三家是 `list-only`（Model / Effort
- *        两行摘要，点进去才是列表）。抄自 chat/composer 的
- *        chat-model-selector.tsx 与 chat-model-list-selector.tsx
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses React state, stable model capabilities, localized model copy, and shared icons
+ * [OUTPUT]: Exports the localized ProductModelMenu component
+ * [POS]: Composer model disclosure preserving each backend's real capability shape
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import { useState } from "react";
@@ -20,6 +15,7 @@ import {
   effortLabel,
   type AgentId,
 } from "@/lib/agents";
+import type { DemoData } from "@/lib/agents";
 import { D, Stroke } from "../icons";
 
 /* 真产品里这是四个视图：quick（只有 Codex 有）、advanced、model、effort。
@@ -35,6 +31,7 @@ export function ProductModelMenu({
   onTurn,
   onFast,
   onClose,
+  copy,
 }: {
   agent: AgentId;
   model: string;
@@ -43,6 +40,7 @@ export function ProductModelMenu({
   onTurn: (turn: { model: string; effort: string }) => void;
   onFast: (fast: boolean) => void;
   onClose: () => void;
+  copy: DemoData["copy"]["model"];
 }) {
   const full = MODEL_OPTIONS[agent] === "full";
   const [view, setView] = useState<View>(full ? "quick" : "root");
@@ -65,15 +63,15 @@ export function ProductModelMenu({
       <div className="menu-panel menu-quick">
         <div className="quick-head">
           <button type="button" className="quick-link" onClick={() => setView("root")}>
-            <span>Advanced</span>
+            <span>{copy.advanced}</span>
             <Stroke d={D.chevronRight} size={16} />
           </button>
           <button
             type="button"
             className={`quick-zap${fast ? " on" : ""}`}
             aria-pressed={fast}
-            aria-label={fast ? "Disable Fast speed" : "Enable Fast speed"}
-            title={fast ? "Disable Fast speed" : "Enable Fast speed"}
+            aria-label={fast ? copy.disableFast : copy.enableFast}
+            title={fast ? copy.disableFast : copy.enableFast}
             disabled={!current.fast}
             onClick={() => onFast(!fast)}
           >
@@ -88,6 +86,7 @@ export function ProductModelMenu({
           effort={effort}
           fast={fast}
           onPick={(next) => onTurn({ model, effort: next })}
+          copy={copy}
         />
       </div>
     );
@@ -96,12 +95,12 @@ export function ProductModelMenu({
   if (view === "root") {
     return (
       <div className="menu-panel">
-        <SummaryRow label="Model" value={compactModelLabel(model)} onClick={() => setView("model")} />
+        <SummaryRow label={copy.model} value={compactModelLabel(model)} onClick={() => setView("model")} />
         {/* 档位是模型的属性：没有档位的模型不给这一行开门，而不是开一扇
             空门。Fable 5 与 Haiku 4.5 在产品里就是这个待遇。 */}
         <SummaryRow
-          label="Effort"
-          value={effort ? effortLabel(effort) : "Not available"}
+          label={copy.effort}
+          value={effort ? effortLabel(effort, copy.efforts) : copy.unavailable}
           onClick={current.efforts.length > 1 ? () => setView("effort") : undefined}
         />
       </div>
@@ -112,7 +111,7 @@ export function ProductModelMenu({
     <div className="menu-panel">
       <button type="button" className="menu-back" onClick={() => setView(full ? "quick" : "root")}>
         <Stroke d={D.chevronLeft} size={16} />
-        <span>{view === "model" ? "Model" : "Effort"}</span>
+        <span>{view === "model" ? copy.model : copy.effort}</span>
       </button>
       {view === "model"
         ? models.map((entry) => (
@@ -127,7 +126,7 @@ export function ProductModelMenu({
             <ChoiceItem
               key={entry}
               on={entry === effort}
-              label={effortLabel(entry)}
+              label={effortLabel(entry, copy.efforts)}
               onClick={() => {
                 onTurn({ model, effort: entry });
                 onClose();
@@ -186,11 +185,13 @@ function EffortSlider({
   effort,
   fast,
   onPick,
+  copy,
 }: {
   efforts: string[];
   effort: string;
   fast: boolean;
   onPick: (effort: string) => void;
+  copy: DemoData["copy"]["model"];
 }) {
   const index = Math.max(0, efforts.indexOf(effort));
   const last = Math.max(1, efforts.length - 1);
@@ -207,8 +208,8 @@ function EffortSlider({
         max={efforts.length - 1}
         step={1}
         value={index}
-        aria-label="Quick model tier"
-        aria-valuetext={effortLabel(effort)}
+        aria-label={copy.quickTier}
+        aria-valuetext={effortLabel(effort, copy.efforts)}
         style={{ ["--fill" as string]: fill }}
         onChange={(event) => onPick(efforts[Number(event.target.value)])}
       />

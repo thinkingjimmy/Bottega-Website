@@ -3,23 +3,23 @@
 Next.js 16 App Router + React 19 + TypeScript + plain CSS + static export
 
 <directory>
-app/ - Six static routes: home, changelog, and four feature detail pages
+app/ - Thirty localized routes plus six unprefixed Auto fallback routes
 app/styles/ - Presentation split by tokens, base, shared/Agents features, hero, Apps, reels, bands, and motion
 components/ - Shared site chrome, home sections, feature navigation, and product-faithful visuals
 components/apps/ - Four first-party App surfaces and their shared switcher
 components/features/ - Feature catalog, navigation, document article, and code-drawn Agents story
 components/reels/ - Focused animated demonstrations for Agents, App editing, and Base views
 components/window/ - Hero product shell, transcript, composer, model menu, and Plan panel
-content/ - Build-time changelog snapshot
-lib/ - Product-faithful demonstration data, body-map paths, and changelog parsing
+content/ - Five locale-specific build-time Changelog snapshots
+lib/ - Typed i18n, localized demo assembly, body-map paths, and Changelog parsing
 public/ - Brand assets, theme-aware hero backgrounds, and privacy-clean product screenshots
-scripts/ - Build-time changelog synchronization
+scripts/ - Build-time Changelog synchronization and static i18n audit
 </directory>
 
 <config>
 design-qa.md - Latest source-to-implementation visual verification for the Agents feature visuals
-next.config.ts - Static export with no request-time data
-package.json - Development, typecheck, changelog-sync, and production-build commands
+next.config.ts - Thirty-six-page static export with no request-time data
+package.json - Development, i18n tests/audit, typecheck, sync, and production-build commands
 postcss.config.mjs - Empty PostCSS pipeline; the site uses plain CSS
 tsconfig.json - Strict TypeScript with the `@/*` path alias
 </config>
@@ -32,15 +32,17 @@ owned by the Bottega desktop repository.
 
 Each concept has one source of truth:
 
-- `lib/agents.ts` owns Agent and first-party App identities used by the demonstrations.
-- `components/features/catalog.ts` owns the four feature identities, navigation labels, Agents
-  headline, and screenshot-backed document content.
+- `lib/i18n/catalogs/en.ts` defines the complete content shape; four translated catalogs must match it.
+- `lib/agents.ts` combines stable Agent/App facts with the current locale's demonstration copy.
+- `components/features/catalog.ts` combines stable feature identity with the current locale's content.
 - `--bleed` and `--edge` own horizontal alignment across the shrinking hero, shared header, and
   page content.
 - `SiteHeader` and `SiteFooter` are the only site chrome implementations.
 
-The App Router generates `/`, `/changelog`, and the four `/features/[slug]` pages as static HTML.
-No route requires server data or client-side content fetching.
+The App Router generates six logical pages under `/en`, `/zh-CN`, `/ja`, `/fr`, and `/es`.
+The same six unprefixed URLs are x-default Auto entries: pre-paint JavaScript resolves the target
+language, while the static English document remains complete when JavaScript is disabled. No route
+requires server data or client-side content fetching.
 
 ## Styling
 
@@ -63,9 +65,10 @@ transform or opacity, starts only when its argument enters the viewport, and has
 as the desktop shrinks, while content pages use the fixed-height `framed` variant. The controls use
 a shared 32px height and preserve brand, Features, and Download on narrow screens.
 
-The Features control is native `details/summary`. Its four icon-and-copy entries remain in the
+The Features and language controls use native `details/summary`. Their entries remain in the
 initial DOM, so the menu works with pointer, keyboard, and assistive technology without a client
-state machine. The footer is a compact colophon, not a duplicated site map.
+state machine. The footer language selector stores only explicit choices; Auto clears storage and
+follows `navigator.languages` without mapping Traditional Chinese to Simplified Chinese.
 
 ## Hero and home narrative
 
@@ -90,8 +93,8 @@ argument in reading order.
 
 ## Feature documentation
 
-`app/features/[slug]/page.tsx` generates Agents, Apps, Customizable, and Base from one catalog and
-one wiki-style route shell with a current-page-aware icon sidebar. Agents has a dedicated article:
+`app/[locale]/features/[slug]/page.tsx` generates Agents, Apps, Customizable, and Base from one
+localized catalog and one wiki-style shell with a current-page-aware icon sidebar. Agents has a dedicated article:
 three static, code-built visuals explain official CLI support, capability-aware conversation
 adaptation, and persistent cross-Agent Chat handoffs. The Agent picker embeds the
 canonical Home Hero `ProductWindow` itself with its menu pinned open; the illustration is inert,
@@ -118,8 +121,9 @@ otherwise come from local primitives.
 
 ## Changelog
 
-The source of truth is Bottega's `docs/changelog/README.md`. This repository stores a build-time
-snapshot at `content/changelog.md` so it can clone and build independently.
+English and Simplified Chinese are synchronized from Bottega's public Changelog documentation.
+Japanese, French, and Spanish are maintained by this repository. Five snapshots under `content/`
+let the site clone and build independently; tests enforce matching dates, order, and item counts.
 
 When developing as the Bottega-Dev submodule, run `pnpm sync:changelog` to refresh the snapshot.
 `pnpm build` attempts the same sync with `--if-present` and keeps the committed snapshot when the
@@ -130,20 +134,22 @@ source repository is unavailable.
 ```bash
 pnpm install --ignore-workspace
 pnpm dev
-pnpm typecheck
+pnpm test:i18n
 pnpm build
+pnpm audit:i18n
+pnpm typecheck
 ```
 
 The site is an independent Git repository nested inside Bottega-Dev. The `--ignore-workspace` flag
 keeps a direct install from binding its dependencies to the parent workspace. The development server
 runs at `http://localhost:3000`; the static production output is written to `out/`.
 
-If the local Turbopack build stalls while tracing the nested repository, the equivalent verification
-path is:
+The production command deliberately uses Webpack. Next.js 16's default Turbopack trace can stall
+when this independent repository is checked out inside Bottega-Dev; selecting the stable builder
+keeps the documented gate deterministic:
 
 ```bash
-pnpm sync:changelog
-pnpm exec next build --webpack
+pnpm build
 ```
 
 ## Deployment

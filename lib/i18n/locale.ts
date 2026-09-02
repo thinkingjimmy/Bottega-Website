@@ -66,9 +66,17 @@ export function resolveLocale(
 }
 
 export function stripLocale(pathname: string): string {
-  const [path, suffix = ""] = pathname.split(/(?=[?#])/u, 2);
+  const suffixAt = pathname.search(/[?#]/u);
+  const path = suffixAt < 0 ? pathname : pathname.slice(0, suffixAt);
+  const suffix = suffixAt < 0 ? "" : pathname.slice(suffixAt);
   const segments = path.split("/").filter(Boolean);
-  if (segments.length > 0 && isLocale(decodeURIComponent(segments[0]))) {
+  let first = segments[0] ?? "";
+  try {
+    first = decodeURIComponent(first);
+  } catch {
+    // 非法转义不是 locale；保留原路径并交给路由层处理。
+  }
+  if (segments.length > 0 && isLocale(first)) {
     segments.shift();
   }
   const logical = `/${segments.join("/")}${path.endsWith("/") || segments.length === 0 ? "/" : ""}`;
@@ -83,13 +91,16 @@ export function localizedPath(locale: Locale, pathname: string): string {
 export function localeFromPath(pathname: string): Locale | null {
   const segment = pathname.split("/").filter(Boolean)[0];
   if (!segment) return null;
-  const decoded = decodeURIComponent(segment);
+  let decoded = segment;
+  try {
+    decoded = decodeURIComponent(segment);
+  } catch {
+    return null;
+  }
   return isLocale(decoded) ? decoded : null;
 }
 
 /** Runs before body parsing on unprefixed routes, so Auto never paints the wrong language. */
-export const AUTO_LOCALE_BOOT = `(function(){var d=${JSON.stringify(
+export const AUTO_LOCALE_BOOT = `(function(){var k=${JSON.stringify(
   LANGUAGE_STORAGE_KEY
-)},p="auto";try{var s=localStorage.getItem(d);if(${JSON.stringify(
-  LOCALES
-)}.indexOf(s)>-1)p=s}catch(e){}var ls=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language],r=${resolveLocale.toString()},l=r(p,ls),u=new URL(location.href);u.pathname=("/"+l+u.pathname).replace(/\\/{2,}/g,"/");location.replace(u.href)})();`;
+)},a=${JSON.stringify(LOCALES)},p="auto";try{var s=localStorage.getItem(k);if(a.indexOf(s)>-1)p=s}catch(e){}function d(v){try{var l=new Intl.Locale(v).maximize();if(l.language==="zh")return l.script==="Hans"?"zh-CN":null;if(a.indexOf(l.language)>-1)return l.language}catch(e){}return null}var x=p;if(p==="auto"){x="en";var n=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language];for(var i=0;i<n.length;i++){var m=d(n[i]);if(m){x=m;break}}}var u=new URL(location.href);u.pathname=("/"+x+u.pathname).replace(/\\/{2,}/g,"/");location.replace(u.href)})();`;

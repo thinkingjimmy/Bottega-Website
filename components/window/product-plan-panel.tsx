@@ -1,13 +1,10 @@
 "use client";
 
 /**
- * [INPUT]: 依赖 @/lib/agents 的 Plan，依赖 ./product-transcript 的 Rich，
- *          依赖 ../icons 的 Stroke/D
- * [OUTPUT]: 对外提供 ProductPlanPanel 组件（产品窗口的第三栏）
- * [POS]: Plan 卡那颗放大钮的落点。抄自 chat/side-panel 的 side-panel.tsx：
- *        外层只管宽度，里层那张脸定宽绝对定位、从右侧滑入——聊天区在这
- *        200ms 里被挤窄，文档本身却一个字都不重排
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses Plan data, localized close copy, Rich text rendering, and shared icons
+ * [OUTPUT]: Exports ProductPlanPanel for the product window's third column
+ * [POS]: Expanded full-document destination for the transcript Plan card
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import type { Plan } from "@/lib/agents";
@@ -18,12 +15,14 @@ export function ProductPlanPanel({
   plan,
   open,
   onClose,
+  closeLabel,
 }: {
   /** 开着第三栏的那条 chat 的 plan。关上之后它仍留在这里，
       于是收拢的那 200ms 里读者看到的是文档退场，而不是内容先被抽空。 */
   plan: Plan | null;
   open: boolean;
   onClose: () => void;
+  closeLabel: string;
 }) {
   return (
     <div className="win-panel" data-state={open ? "open" : "closed"}>
@@ -36,7 +35,7 @@ export function ProductPlanPanel({
             type="button"
             className="icon-slot icon-btn"
             style={{ marginLeft: "auto" }}
-            aria-label="Close plan panel"
+            aria-label={closeLabel}
             onClick={onClose}
           >
             <Stroke d={D.x} size={16} width={1.9} />

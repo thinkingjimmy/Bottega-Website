@@ -1,19 +1,14 @@
 /**
- * [INPUT]: 无运行时依赖；后端目录、模型目录与档位文案逐项取自
- *          apps/desktop/src/lib/settings-client.ts 与 chat-model-selection.ts
- * [OUTPUT]: 对外提供 AgentId/BACKENDS/MODELS/MODEL_OPTIONS/CHATS/PROJECT/
- *           APPS/PINNED_APPS/LEDGER_APP、defaultTurn 与
- *           effortLabel/compactModelLabel，以及四只 App 的表面数据：
- *           LEDGER/LEDGER_SUM/LEDGER_LONG/CATEGORY_SHARE/DAILY_SPEND/KANBAN_LANES/MUSCLE_HEAT
- * [POS]: Bottega-Website 的演示数据唯一真相源，被 hero、agents 与 apps 三处消费
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses SiteCatalog demo copy while keeping product identities, metrics, and icons locale-neutral
+ * [OUTPUT]: Exports Agent/model contracts, createDemoData, and the localized DemoData graph
+ * [POS]: Typed boundary between stable product facts and translated website demonstrations
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
+
+import type { SiteCatalog } from "./i18n";
 
 export type AgentId = "codex" | "claude" | "kimi" | "opencode";
 
-/* 名字是产品里的名字，不是 CLI 的名字：产品的选择器上写着 Claude 与 Kimi，
-   官网若写 Claude Code / Kimi Code，人点开产品会以为选错了地方。
-   （散文里仍可写 CLI 全名——那是在说另一件东西。） */
 export const BACKENDS: { id: AgentId; label: string }[] = [
   { id: "codex", label: "Codex" },
   { id: "claude", label: "Claude" },
@@ -24,30 +19,13 @@ export const BACKENDS: { id: AgentId; label: string }[] = [
 export const backendLabel = (id: AgentId) =>
   BACKENDS.find((backend) => backend.id === id)!.label;
 
-/* ── 模型目录 ────────────────────────────────────────────────────
- * 逐项抄自 settings-client.ts 的 browserModels。每家自带几档 effort 是
- * 事实而非装饰：Fable 5 与 Haiku 4.5 一档都没有，K3 有三档，Sol 有三档
- * 且默认最高。切 agent 之后模型与档位一起换掉，正是产品里发生的事。
- *
- * 默认项排在首位，于是「默认是哪个」不必再记一列布尔——`MODELS[a][0]`
- * 就是答案。一列能被算出来的数据，不该被存下来等着和事实漂移。
- * ────────────────────────────────────────────────────────── */
 export type Model = {
-  /** 展示名。OpenCode 的展示名就是 slug 本身，与真机一致。 */
   name: string;
   efforts: string[];
-  /** 默认档位；无档位的模型给空串，触发器随之只剩模型名。 */
   effort: string;
-  /** 这只模型有没有 Fast 服务档（codex/models.ts 的 serviceTiers）。 */
   fast?: boolean;
 };
 
-/* ── 模型选择器的两种脸 ────────────────────────────────────────────
- * `full` 是 Codex 独有的那一套：一条蓝色档位滑轨 + Fast 开关，Advanced
- * 之后才是列表。其余三家是 `list-only`：Model / Effort 两行摘要，点进去
- * 才是列表。这不是两种设计口味，是 capabilities.modelOptions 这一位的
- * 直接后果——各家给得出什么，选择器就长什么样。
- * ────────────────────────────────────────────────────────── */
 export const MODEL_OPTIONS: Record<AgentId, "full" | "list-only"> = {
   codex: "full",
   claude: "list-only",
@@ -76,64 +54,16 @@ export const MODELS: Record<AgentId, Model[]> = {
   ],
 };
 
-/** 档位文案表取自 chat-model-selection.ts——low 在产品里读作 Light，不是 Low。 */
-const EFFORT_LABELS: Record<string, string> = {
-  low: "Light",
-  medium: "Medium",
-  high: "High",
-  xhigh: "Extra High",
-  max: "Max",
-};
+export const effortLabel = (
+  effort: string,
+  labels: SiteCatalog["demo"]["model"]["efforts"]
+) => labels[effort as keyof typeof labels] ?? effort;
 
-export const effortLabel = (effort: string) => EFFORT_LABELS[effort] ?? effort;
-
-/* 触发器上的短名。产品里这条规则只喂给 Codex 的目录，因为只有那一家的
-   名字带 GPT- 前缀；其余三家的展示名照原样上屏，OpenCode 更是连 slug 本身
-   就是展示名。所以这里只去前缀，不动连字符——顺手把 `opencode/grok-code`
-   改成 `grok code`，就把一个真实的模型名说成了一个不存在的模型名。 */
 export const compactModelLabel = (name: string) => name.replace(/^GPT-/i, "");
 
-/** 换 agent 即换目录：模型、档位、Fast 一起落回新家的默认值，不留上一家的残影。 */
 export const defaultTurn = (agent: AgentId) => {
   const model = MODELS[agent][0];
   return { model: model.name, effort: model.effort, fast: false };
-};
-
-/* ── 演示会话 ────────────────────────────────────────────────────
- * 九条 chat，四家 agent 混住在同一个 Project 里——这正是产品要说的那句话：
- * 「谁在干这活」从不用问，看一眼行首那枚 logo 就知道。
- * ────────────────────────────────────────────────────────── */
-const I_READ = "M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20";
-const I_EDIT = "M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z";
-const I_TEST = "M9 2v6l-5 9a2 2 0 0 0 1.7 3h12.6a2 2 0 0 0 1.7-3l-5-9V2M8 2h8M7 15h10";
-const I_SEARCH = "M21 21l-4.34-4.34M19 11a8 8 0 1 1-16 0 8 8 0 0 1 16 0";
-
-export type Chat = {
-  id: string;
-  title: string;
-  agent: AgentId;
-  model: string;
-  effort: string;
-  /** 住在 Project 折叠区里，还是根级 Chats 分组里。 */
-  home: "project" | "chats";
-  ask: string;
-  worked: string;
-  trace: { icon: string; label: string }[];
-  reply: string;
-  /* 回答里的要点。产品里的答复大多是这个形状，不是一整块散文——
-     除非这一轮已经交出了 Plan：结构在卡里，正文再列一遍就是列两遍。 */
-  bullets?: string[];
-  /* 流式状态行那一句。产品里它不是自由发挥的文案，只有三种来源：
-     正在跑的那件工具的标题、`Responding`、`Thinking`——见
-     shared/chat-turn-reducer.ts 的 shimmerLabel。 */
-  status?: string;
-  /** Fast 服务档（产品里的 serviceTier: "priority"）。 */
-  fast?: boolean;
-  /** Plan 卡。有 plan 的 turn，卡片排在最终回复之前。 */
-  plan?: Plan;
-  /* 待答问题。产品里它不是加在输入框旁边的一块，而是整只顶掉输入框：
-     agent 在等你回话时，你能做的就只有回话。 */
-  question?: Question;
 };
 
 export type Plan = {
@@ -142,519 +72,90 @@ export type Plan = {
 };
 
 export type Question = {
-  /** 来源 · 主题：只说问题正文没说过的事实。 */
   eyebrow: string;
   question: string;
   options: { label: string; description: string; recommended?: boolean }[];
 };
 
-export const PROJECT = { name: "Bottega Site" };
+export type Chat = {
+  id: string;
+  title: string;
+  agent: AgentId;
+  model: string;
+  effort: string;
+  home: "project" | "chats";
+  ask: string;
+  worked: string;
+  trace: { icon: string; label: string }[];
+  reply: string;
+  bullets?: string[];
+  status?: string;
+  fast?: boolean;
+  plan?: Plan;
+  question?: Question;
+};
 
-/* ── App 目录 ────────────────────────────────────────────────────
- * 四条逐项抄自 public/awesome-bottega-app 的 README，包括那句「是哪一种
- * App」的限定语——`Base App` 与 `workspace-artifact App` 是产品里两种真实
- * 的形状，不是营销上的分类。图标是 App manifest 自己的 emoji：全站不用
- * emoji 装饰，但这四枚不是装饰，是这四只 App 在产品里的身份。
- * ────────────────────────────────────────────────────────── */
 export type App = {
   id: string;
   icon: string;
   name: string;
-  blurb: string;
   shape: string;
 };
 
-export const APPS: App[] = [
-  {
-    id: "design-canvas",
-    icon: "✦",
-    name: "Design Canvas",
-    blurb:
-      "The Agent writes self-contained HTML into your workspace; the App is where you preview it, compare two directions or two versions, and append numbered element anchors to the next message.",
-    shape: "Workspace-artifact App · isolated GUI Surface",
-  },
-  {
-    id: "dev-kanban",
-    icon: "🧭",
-    name: "Development Kanban",
-    blurb:
-      "Implementation work and review findings as two kinds of structured record, so planning, building and closure stay traceable. The board is the source of truth; chats coordinate the work.",
-    shape: "Base App · 9 columns · task / findings / ledger",
-  },
-  {
-    id: "expense-tracker",
-    icon: "💰",
-    name: "Expense Tracker",
-    blurb:
-      "Say “lunch 25” or “taxi yesterday 38” and it lands as one normalized row — date, amount, category, note. Detail is the ledger; analysis is category share and daily spend.",
-    shape: "Base App · 4 columns · detail / analysis views",
-  },
-  {
-    id: "fitness-log",
-    icon: "🏋️",
-    name: "Fitness Log",
-    blurb:
-      "Tell it what you trained and it writes the sets down, then shows which muscles you have actually been hitting — and which you have been quietly skipping.",
-    shape: "Base App with GUI Surface · muscle heatmap",
-  },
-];
-
-/** hero 侧栏里置顶的那两只。一份目录，两处消费，图标与名字不会各写各的。 */
-export const PINNED_APPS = APPS.filter((app) =>
-  ["expense-tracker", "dev-kanban"].includes(app.id)
-);
-
-/** hero 窗口的 App 表面画的就是记账本：页头与置顶行都读这一个值。 */
-export const LEDGER_APP = APPS.find((app) => app.id === "expense-tracker")!;
-
-/** Project 折叠区的初始页长。多出来的由「Show more」放进来，与产品同构。 */
-export const PROJECT_PAGE_SIZE = 5;
-
-export const CHATS: Chat[] = [
-  {
-    id: "release-notes",
-    title: "Ship the release notes",
-    agent: "codex",
-    model: "GPT-5.6 Sol",
-    effort: "xhigh",
-    home: "project",
-    ask: "Draft the 0.2.0 release notes from the merged PRs since 0.1.9.",
-    worked: "1m 12s",
-    trace: [
-      { icon: I_READ, label: "Read 18 commits across 4 packages" },
-      { icon: I_EDIT, label: "Edited CHANGELOG.md" },
-    ],
-    reply:
-      "Plan above. Say go and I will write it; say which grouping you want changed and I will redraw it first.",
-    plan: {
-      title: "0.2.0 release notes",
-      sections: [
-        {
-          heading: "Summary",
-          items: [
-            "Six headline changes since `0.1.9`, grouped by what a user notices first.",
-            "Agent parity is the lede — `Kimi` and `OpenCode` now reach the same permission ladder as `Codex`.",
-            "Two internal refactors fold into one line; nobody outside the repo felt them.",
-          ],
-        },
-        {
-          heading: "Sequence",
-          items: [
-            "Group the 18 merged PRs by the surface a user touches, not by the package they landed in.",
-            "Write each entry as what changed — the PR number is provenance, not news.",
-            "Mirror the file into `docs/`, then read both back so the two can never disagree.",
-          ],
-        },
-        {
-          heading: "Files",
-          items: [
-            "`CHANGELOG.md` — six entries, newest first, absolute dates.",
-            "`docs/changelog/README.md` — the public mirror, same six entries.",
-          ],
-        },
-        {
-          heading: "Not in this pass",
-          items: [
-            "The `0.1.x` backfill — older entries are a separate decision about how far back the record goes.",
-            "Release tagging and the download page; they read this file, they do not write it.",
-          ],
-        },
-      ],
-    },
-    status: "Responding",
-  },
-  {
-    id: "settings-panel",
-    title: "Port the settings panel",
-    agent: "claude",
-    model: "Opus 5",
-    effort: "high",
-    home: "project",
-    ask: "Move the backend settings under Agents and keep the deep links working.",
-    worked: "22s",
-    trace: [
-      { icon: I_READ, label: "Read 9 files in components/settings" },
-      { icon: I_SEARCH, label: "Found 12 call sites" },
-    ],
-    reply:
-      "Three ways to do it, and they differ only in what happens to links people already saved.",
-    bullets: [
-      "The 12 call sites are mechanical either way.",
-      "What is not mechanical is the two deep links and the command palette entry.",
-      "So the question is really what you want to promise about old links.",
-    ],
-    question: {
-      eyebrow: "Main Agent · Route strategy",
-      question: "The old settings routes are bookmarked. How should I move them?",
-      options: [
-        {
-          label: "Keep them as redirects",
-          description: "Old paths resolve to the new ones; bookmarks and the palette keep landing.",
-          recommended: true,
-        },
-        {
-          label: "Hard rename",
-          description: "Cleanest tree, but every link anyone saved stops working.",
-        },
-        {
-          label: "Ship both for one release",
-          description: "Two live routes now, drop the old pair in 0.3.0.",
-        },
-      ],
-    },
-  },
-  {
-    id: "changelog",
-    title: "Draft the changelog",
-    agent: "kimi",
-    model: "K3",
-    effort: "high",
-    home: "project",
-    ask: "Summarise this week's merges for the changelog page.",
-    worked: "19s",
-    trace: [
-      { icon: I_READ, label: "Read 24 commit messages" },
-      { icon: I_EDIT, label: "Edited docs/changelog/README.md" },
-    ],
-    reply:
-      "Six entries. The week reads as one story, not as a list of merges.",
-    bullets: [
-      "Six entries, newest first, each one line.",
-      "The two internal refactors are folded together — nobody outside the repo felt them.",
-      "Dates are absolute, not relative: a changelog is read months later.",
-    ],
-    status: "Editing docs/changelog/README.md",
-  },
-  {
-    id: "import-tests",
-    title: "Cover the CLI import path",
-    agent: "opencode",
-    model: "opencode/grok-code",
-    effort: "",
-    home: "project",
-    ask: "Add integration tests for importing existing CLI sessions.",
-    worked: "2m 4s",
-    trace: [
-      { icon: I_READ, label: "Read the import module" },
-      { icon: I_TEST, label: "Ran 48 tests" },
-    ],
-    reply:
-      "All green, and one path that had no test before now has one.",
-    bullets: [
-      "48 tests pass, including the four new ones.",
-      "A malformed session file now fails the import, not the app.",
-      "Fixtures live beside the module, so the next reader finds them.",
-    ],
-    status: "Running 48 tests",
-  },
-  {
-    id: "onboarding-copy",
-    title: "Trim the onboarding copy",
-    agent: "codex",
-    model: "GPT-5.6 Codex",
-    effort: "high",
-    home: "project",
-    ask: "The first-run screen reads like a manual. Cut it to what someone needs before their first chat.",
-    worked: "36s",
-    trace: [
-      { icon: I_READ, label: "Read 4 onboarding screens" },
-      { icon: I_EDIT, label: "Edited onboarding.ts in 5 locales" },
-    ],
-    reply:
-      "Everything I cut was something the interface already says on its own.",
-    bullets: [
-      "140 words down to 42.",
-      "The permission explainer moved to the place where permission is chosen.",
-      "All five locales rewritten, not machine-translated from the English.",
-    ],
-    status: "Thinking",
-  },
-  {
-    id: "update-path",
-    title: "Audit the update path",
-    agent: "claude",
-    model: "Sonnet 5",
-    effort: "high",
-    home: "project",
-    ask: "Walk the auto-update flow and tell me where a half-downloaded release can strand someone.",
-    worked: "1m 31s",
-    trace: [
-      { icon: I_SEARCH, label: "Traced 3 update states" },
-      { icon: I_TEST, label: "Ran the updater suite" },
-    ],
-    reply:
-      "One real hole, and it is the one you would hit on a flaky connection.",
-    bullets: [
-      "One real hole: an interrupted install leaves the button reading Installing forever.",
-      "Everything else recovers on relaunch — the download resumes from its own ledger.",
-      "Suggested fix: treat a missing installer process as a failed phase, not a pending one.",
-    ],
-    status: "Reading electron/main/updater.ts",
-  },
-  {
-    id: "settings-routes",
-    title: "Rename the settings routes",
-    agent: "kimi",
-    model: "K3-256k",
-    effort: "high",
-    home: "project",
-    ask: "Rename /settings/backends to /settings/agents without breaking anyone's bookmarks.",
-    worked: "27s",
-    trace: [
-      { icon: I_SEARCH, label: "Found 12 call sites" },
-      { icon: I_EDIT, label: "Edited 12 files" },
-    ],
-    reply:
-      "Renamed everywhere, and nobody's bookmark notices.",
-    bullets: [
-      "12 call sites renamed, none of them by search-and-replace.",
-      "The old route is a redirect, so bookmarks and the palette both still land.",
-      "Route tests green.",
-    ],
-    status: "Responding",
-  },
-  {
-    id: "icon-grid",
-    title: "Compare the two icon grids",
-    agent: "codex",
-    model: "GPT-5.6 Sol",
-    effort: "xhigh",
-    home: "chats",
-    ask: "The sidebar icons look a pixel off from the composer's. Which grid is wrong?",
-    worked: "22s",
-    trace: [
-      { icon: I_SEARCH, label: "Measured 14 icon slots" },
-      { icon: I_READ, label: "Read sidebar-row.tsx" },
-    ],
-    reply:
-      "Neither grid is wrong. What looks like a misalignment is a deliberate 1px of air.",
-    bullets: [
-      "Neither grid is wrong — both slots are 16px.",
-      "The sidebar puts a 14px mark inside its slot; the composer's icon fills it.",
-      "What you are seeing is the slot, not the icon.",
-    ],
-    status: "Thinking",
-  },
-  {
-    id: "acp-handshake",
-    title: "Explain the ACP handshake",
-    agent: "claude",
-    model: "Haiku 4.5",
-    effort: "",
-    home: "chats",
-    ask: "Walk me through what happens between launching a CLI and the first token arriving.",
-    worked: "11s",
-    trace: [
-      { icon: I_READ, label: "Read the ACP session module" },
-      { icon: I_SEARCH, label: "Traced 6 messages" },
-    ],
-    reply:
-      "Three round trips before the first token. Everything after them is one stream.",
-    bullets: [
-      "initialize — the client states what it can render.",
-      "session/new — the CLI opens a session against your working directory.",
-      "session/prompt — everything after this is streaming on the same channel.",
-    ],
-    status: "Responding",
-  },
-];
-
-/* ── 记账本 App 的示例账 ──────────────────────────────────────────
- * 列取自 Bottega-app-expense-tracker 的 base.json：日期 / 金额 / 分类 / 备注。
- * 八行这一份是 hero 那台机器的账——它整份上屏，页脚的记录数与合计都按它算。
- * Apps 一节那台机器高得多，装得下十八行，于是在下面接着长，而不是另起一份：
- * 两份账各写各的，改一笔就要改两处，第三处必然漏掉。
- * ────────────────────────────────────────────────────────── */
-export const LEDGER = [
-  { date: "08-26", amount: "43.20", category: "Transit", note: "Didi, airport run" },
-  { date: "08-25", amount: "1,299.00", category: "Equipment", note: "Apple Store" },
-  { date: "08-24", amount: "286.50", category: "Groceries", note: "Hema Fresh" },
-  { date: "08-23", amount: "360.00", category: "Health", note: "Gym, quarterly" },
-  { date: "08-22", amount: "49.50", category: "Eating out", note: "Ramen Ikkousha" },
-  { date: "08-21", amount: "128.00", category: "Transit", note: "High-speed rail" },
-  { date: "08-20", amount: "96.00", category: "Groceries", note: "Corner market" },
-  { date: "08-19", amount: "121.00", category: "Eating out", note: "Team lunch" },
-];
-
-export const LEDGER_SUM = "2,383.20";
-
-/** Apps 一节那台机器 780 高，表格区正好装得下十八行加一条汇总。 */
-export const LEDGER_LONG = [
-  ...LEDGER,
-  { date: "08-18", amount: "55.00", category: "Transit", note: "Airport express" },
-  { date: "08-17", amount: "238.00", category: "Groceries", note: "Weekend run" },
-  { date: "08-16", amount: "680.00", category: "Equipment", note: "Monitor arm" },
-  { date: "08-15", amount: "32.00", category: "Eating out", note: "Coffee, twice" },
-  { date: "08-14", amount: "164.00", category: "Health", note: "Pharmacy" },
-  { date: "08-13", amount: "72.00", category: "Transit", note: "Metro top-up" },
-  { date: "08-12", amount: "415.00", category: "Equipment", note: "Mechanical keyboard" },
-  { date: "08-11", amount: "188.00", category: "Groceries", note: "Hema Fresh" },
-  { date: "08-10", amount: "64.00", category: "Eating out", note: "Noodles, late" },
-  { date: "08-09", amount: "240.00", category: "Health", note: "Dentist" },
-];
-
-/** 十八行逐行加出来的合计。写一个对不上的数，账本就不再是账本。 */
-export const LEDGER_LONG_SUM = "4,531.20";
-
-/* ── 分析视图的两张图 ────────────────────────────────────────────
- * base.json 的 analysis 视图写着两张：分类占比（饼）与每日支出（柱）。
- * 两组数都是从 LEDGER_LONG 那十八行算出来的，不是画着好看的形状——图与表对不上，
- * 这张图就成了装饰。配色取 kanban-fields.ts 的序位配色，与产品同口径。
- * ────────────────────────────────────────────────────────── */
-export const CATEGORY_SHARE = [
-  { label: "Equipment", value: 2394, tone: "#8b5cf6" },
-  { label: "Groceries", value: 620.5, tone: "#22c55e" },
-  { label: "Health", value: 600, tone: "#ef4444" },
-  { label: "Transit", value: 298.2, tone: "#f59e0b" },
-  { label: "Eating out", value: 234.5, tone: "#3b82f6" },
-];
-
-/** 每日支出：按日分桶求和，取最近九天，归一到当期峰值。 */
-export const DAILY_SPEND = [0.08, 0.62, 0.14, 0.24, 0.05, 1, 0.36, 0.4, 0.19];
-
-/* ── 开发看板 App 的示例板 ────────────────────────────────────────
- * 列与选项取自 Bottega-app-dev-kanban 的 base.json：任务看板按 status 分组，
- * 六个状态里露出中间三个——994 宽的机器正好装得下三条 288 的 lane。
- * 三列长短不一是有意的：真的板子本就长短不一，排成一样高读起来是一张
- * 示意图，不是一块在跑的板。9 / 3 / 6 自己也在说话——在做的最多，
- * 等评审的最少，做完的攒着。
- *
- * `title` 与 `skeleton` 二选一：写满字的板会把读者拽去读字，而这一节要
- * 他看的是「两类结构化记录在列之间流动」这个形状。骨架条的宽度是
- * 「这张卡本来会有多长」的示意，不是随机数。
- * ────────────────────────────────────────────────────────── */
 export type KanbanChip = { label?: string; text: string; tone?: KanbanTone };
 export type KanbanTone = "blue" | "amber" | "green" | "violet" | "red" | "teal";
 export type KanbanCard = { title?: string; skeleton?: string[]; chips: KanbanChip[] };
-export type KanbanLane = { id: string; name: string; tone: KanbanTone; count: number; cards: KanbanCard[] };
+export type KanbanLane = {
+  id: string;
+  name: string;
+  tone: KanbanTone;
+  count: number;
+  cards: KanbanCard[];
+};
 
-const TASK: KanbanChip = { text: "Task", tone: "blue" };
-const FROM_SITE: KanbanChip = { label: "Source", text: "Bottega" };
+export type AppMenuItem =
+  | { name: string; icon: string; sub?: boolean; sep?: false }
+  | { sep: true };
 
-export const KANBAN_LANES: KanbanLane[] = [
-  {
-    id: "in_progress",
-    name: "In progress",
-    tone: "green",
-    count: 9,
-    cards: [
-      { title: "Port the settings panel under Agents", chips: [TASK, FROM_SITE] },
-      { skeleton: ["88%", "64%"], chips: [TASK, { text: "+2" }] },
-      { title: "Cover the CLI import path with integration tests", chips: [TASK, { label: "Doc", text: "todo/08-19-acp.md" }] },
-      { skeleton: ["76%"], chips: [TASK] },
-      { skeleton: ["94%", "52%"], chips: [TASK, { text: "+1" }] },
-      { title: "Audit the auto-update flow", chips: [TASK, FROM_SITE] },
-      { skeleton: ["82%", "58%"], chips: [TASK] },
-      { skeleton: ["68%"], chips: [TASK, { text: "+3" }] },
-      { title: "Explain the ACP handshake in the docs", chips: [TASK, FROM_SITE] },
-    ],
-  },
-  {
-    id: "review",
-    name: "Review",
-    tone: "violet",
-    count: 3,
-    cards: [
-      { title: "Rename /settings/backends without breaking bookmarks", chips: [TASK, FROM_SITE] },
-      { skeleton: ["92%", "58%"], chips: [TASK, { text: "+1" }] },
-      { title: "Trim the onboarding copy to 42 words", chips: [TASK] },
-    ],
-  },
-  {
-    id: "done",
-    name: "Done",
-    tone: "red",
-    count: 6,
-    cards: [
-      { title: "Define the install protocol", chips: [TASK, FROM_SITE] },
-      { skeleton: ["84%", "50%"], chips: [TASK] },
-      { skeleton: ["70%"], chips: [TASK, { text: "+2" }] },
-      { title: "Split publish identity from fetch source", chips: [TASK, FROM_SITE] },
-      { skeleton: ["90%"], chips: [TASK] },
-      { title: "Ship the 0.2.0 release notes", chips: [TASK, { label: "Doc", text: "CHANGELOG.md" }] },
-    ],
-  },
-];
+const I_READ = "M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20";
+const I_EDIT = "M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z";
+const I_TEST = "M9 2v6l-5 9a2 2 0 0 0 1.7 3h12.6a2 2 0 0 0 1.7-3l-5-9V2M8 2h8M7 15h10";
+const I_SEARCH = "M21 21l-4.34-4.34M19 11a8 8 0 1 1-16 0 8 8 0 0 1 16 0";
 
-/* ── 健身日志的肌群热度 ──────────────────────────────────────────
- * 键是 gui/data/body-map.json 里真实的肌群 id，值是那四档热度。
- * 0 不是「没数据」而是「一直在被跳过」——臀与腘绳留在 0 上，正是这只 App
- * 要说的那句话：告诉你哪块你一直没练。
- * ────────────────────────────────────────────────────────── */
-/* ── 那扇独立 App 窗口的「···」菜单 ────────────────────────────────
- * 逐条抄自 components/apps/base-app-detail.tsx 的 titleAdornment，文案取自
- * shared/i18n/locales 的英文档。独立窗口里「Open in a new window」按真规则
- * 不出现（standalone）；Import 与 Version history 是 Design Canvas 才有的两条。
- *
- * 第一条是 Edit App——而它打开的不是代码编辑器，是一个绑定这只 App 的 chat
- * （openAppEditor → app-editor-chat）。这一条事实撑起了整节文案。
- * ────────────────────────────────────────────────────────── */
-export type AppMenuItem = { name: string; icon: string; sub?: boolean; sep?: false } | { sep: true };
+const CHAT_SHELLS = [
+  ["releaseNotes", "release-notes", "codex", "GPT-5.6 Sol", "xhigh", "project", "1m 12s", [I_READ, I_EDIT]],
+  ["settingsPanel", "settings-panel", "claude", "Opus 5", "high", "project", "22s", [I_READ, I_SEARCH]],
+  ["changelog", "changelog", "kimi", "K3", "high", "project", "19s", [I_READ, I_EDIT]],
+  ["importTests", "import-tests", "opencode", "opencode/grok-code", "", "project", "2m 4s", [I_READ, I_TEST]],
+  ["onboarding", "onboarding-copy", "codex", "GPT-5.6 Codex", "high", "project", "36s", [I_READ, I_EDIT]],
+  ["updatePath", "update-path", "claude", "Sonnet 5", "high", "project", "1m 31s", [I_SEARCH, I_TEST]],
+  ["settingsRoutes", "settings-routes", "kimi", "K3-256k", "high", "project", "27s", [I_SEARCH, I_EDIT]],
+  ["iconGrid", "icon-grid", "codex", "GPT-5.6 Sol", "xhigh", "chats", "22s", [I_SEARCH, I_READ]],
+  ["acp", "acp-handshake", "claude", "Haiku 4.5", "", "chats", "11s", [I_READ, I_SEARCH]],
+] as const;
 
-export const APP_MENU: AppMenuItem[] = [
-  { name: "Edit App", icon: "pencilLine" },
-  { sep: true },
-  { name: "App Workbench", icon: "flask" },
-  { name: "About this App", icon: "info" },
-  { sep: true },
-  { name: "Import", icon: "importDown", sub: true },
-  { name: "Version history", icon: "history" },
-  { sep: true },
-  { name: "Share to GitHub", icon: "share" },
-];
+const APP_SHELLS = [
+  { id: "design-canvas", icon: "✦", name: "Design Canvas" },
+  { id: "dev-kanban", icon: "🧭", name: "Development Kanban" },
+  { id: "expense-tracker", icon: "💰", name: "Expense Tracker" },
+  { id: "fitness-log", icon: "🏋️", name: "Fitness Log" },
+] as const;
 
-/** 那扇窗里装的是哪只 App。图标读目录，不另写一份。 */
-export const DESIGN_APP = APPS.find((app) => app.id === "design-canvas")!;
+const LEDGER_ROWS = [
+  ["08-26", "43.20", 0], ["08-25", "1,299.00", 1], ["08-24", "286.50", 2],
+  ["08-23", "360.00", 3], ["08-22", "49.50", 4], ["08-21", "128.00", 0],
+  ["08-20", "96.00", 2], ["08-19", "121.00", 4], ["08-18", "55.00", 0],
+  ["08-17", "238.00", 2], ["08-16", "680.00", 1], ["08-15", "32.00", 4],
+  ["08-14", "164.00", 3], ["08-13", "72.00", 0], ["08-12", "415.00", 1],
+  ["08-11", "188.00", 2], ["08-10", "64.00", 4], ["08-09", "240.00", 3],
+] as const;
 
-/* 窗口标题栏上的名字。它与 APPS 里那条短名不同，而这个不同是有理由的：
-   目录那条是站点为了排版起的短名，标题栏这条是 app.json 里 manifest 自己
-   的 `name`——产品的页头拼的就是 `${icon} ${displayName}`。把两者合成一个
-   常量，就等于说站点的排版偏好可以改写产品的事实。 */
-export const DESIGN_APP_WINDOW_TITLE = "Bottega Design Canvas";
+const CATEGORY_METRICS = [
+  [1, 2394, "#8b5cf6"], [2, 620.5, "#22c55e"], [3, 600, "#ef4444"],
+  [0, 298.2, "#f59e0b"], [4, 234.5, "#3b82f6"],
+] as const;
 
-/* ── 列与视图的两份目录 ──────────────────────────────────────────
- * 逐条抄自 bases/chrome 的 COLUMN_TYPES 与 base-view-tabs 的 VIEW_TYPES，
- * 顺序即产品里菜单的顺序，名字取自 shared/i18n/locales/bases/en.ts。
- * 它们是「能改成什么」这句话的全部证据，所以数目不能凑：十种列、六种视图。
- * ────────────────────────────────────────────────────────── */
-export const COLUMN_TYPES: { name: string; icon: string }[] = [
-  { name: "Text", icon: "type" },
-  { name: "Number", icon: "hash" },
-  { name: "Date", icon: "calendar" },
-  { name: "Select", icon: "check" },
-  { name: "Checkbox", icon: "squareCheck" },
-  { name: "URL", icon: "link" },
-  { name: "Location", icon: "mapPin" },
-  { name: "Attachment", icon: "images" },
-  { name: "Formula", icon: "sigma" },
-  { name: "Relation", icon: "gitFork" },
-];
-
-export const VIEW_TYPES: { name: string; icon: string }[] = [
-  { name: "Table", icon: "table" },
-  { name: "List", icon: "list" },
-  { name: "Kanban", icon: "kanban" },
-  { name: "Map", icon: "map" },
-  { name: "Chart", icon: "chartPie" },
-  { name: "Gallery", icon: "images" },
-];
-
-/* ── 一份行，四种看法 ────────────────────────────────────────────
- * 类型取自 base-view-tabs.tsx 的 VIEW_TYPES。按钮上写的是**类型**而不是
- * 「Ledger」「Receipts」这类用户起的名字：那些名字在演示里是编的，
- * 而「这是哪一种视图、它能干什么」才是这一节要交代的事实。
- * `tab` 是机器页签上的短名，`blurb` 说这种视图支持什么。
- * 这四种是 Base 一节那台机器轮播的四格：明细、分类占比、票据、落点。
- * ────────────────────────────────────────────────────────── */
-export const BASE_VIEWS: { name: string; tab: string; icon: string; blurb: string }[] = [
-  { name: "Table view", tab: "Table", icon: "table", blurb: "Typed columns, sorts, filters, a sum on any of them" },
-  { name: "Chart view", tab: "Chart", icon: "chartPie", blurb: "Share by category, spend by day" },
-  { name: "Gallery view", tab: "Gallery", icon: "images", blurb: "The attachment column, as thumbnails" },
-  { name: "Map view", tab: "Map", icon: "map", blurb: "The location column, as pins" },
-];
-
-/* 地图上的落点，百分比坐标。位置是编的，形状不是——location 是产品里
-   真有的一种列类型，地图视图读的就是它。 */
+export const DAILY_SPEND = [0.08, 0.62, 0.14, 0.24, 0.05, 1, 0.36, 0.4, 0.19];
 export const BASE_PINS: [number, number][] = [
   [22, 34], [38, 58], [57, 27], [69, 62], [46, 44], [80, 40], [31, 72],
 ];
@@ -678,3 +179,120 @@ export const MUSCLE_HEAT: Record<string, number> = {
   glutes: 0,
   hamstrings: 0,
 };
+
+const APP_MENU_ICONS = ["pencilLine", "flask", "info", "importDown", "history", "share"];
+const VIEW_ICONS = ["table", "chartPie", "images", "map"];
+
+function createChats(copy: SiteCatalog["demo"]["chats"]): Chat[] {
+  return CHAT_SHELLS.map((shell) => {
+    const [key, id, agent, model, effort, home, worked, icons] = shell;
+    const value = copy[key];
+    const question = "question" in value
+      ? {
+          eyebrow: value.question.eyebrow,
+          question: value.question.text,
+          options: value.question.options.map((option, index) => ({
+            ...option,
+            recommended: index === 0,
+          })),
+        }
+      : undefined;
+    return {
+      id,
+      title: value.title,
+      agent: agent as AgentId,
+      model,
+      effort,
+      home,
+      ask: value.ask,
+      worked,
+      trace: value.trace.map((label, index) => ({ icon: icons[index], label })),
+      reply: value.reply,
+      bullets: "bullets" in value ? [...value.bullets] : undefined,
+      status: "status" in value ? value.status : undefined,
+      plan: "plan" in value
+        ? { ...value.plan, sections: value.plan.sections.map((section) => ({ ...section, items: [...section.items] })) }
+        : undefined,
+      question,
+    };
+  });
+}
+
+function createKanban(copy: SiteCatalog["demo"]["kanban"]): KanbanLane[] {
+  const task = (): KanbanChip => ({ text: copy.task, tone: "blue" });
+  const source = (): KanbanChip => ({ label: copy.source, text: "Bottega" });
+  const title = (index: number, extras: KanbanChip[] = []): KanbanCard => ({
+    title: copy.titles[index],
+    chips: [task(), ...extras],
+  });
+  return [
+    {
+      id: "in_progress", name: copy.lanes[0], tone: "green", count: 9,
+      cards: [
+        title(0, [source()]), { skeleton: ["88%", "64%"], chips: [task(), { text: "+2" }] },
+        title(1, [{ label: copy.doc, text: "todo/08-19-acp.md" }]), { skeleton: ["76%"], chips: [task()] },
+        { skeleton: ["94%", "52%"], chips: [task(), { text: "+1" }] }, title(2, [source()]),
+        { skeleton: ["82%", "58%"], chips: [task()] }, { skeleton: ["68%"], chips: [task(), { text: "+3" }] },
+        title(3, [source()]),
+      ],
+    },
+    {
+      id: "review", name: copy.lanes[1], tone: "violet", count: 3,
+      cards: [title(4, [source()]), { skeleton: ["92%", "58%"], chips: [task(), { text: "+1" }] }, title(5)],
+    },
+    {
+      id: "done", name: copy.lanes[2], tone: "red", count: 6,
+      cards: [title(6, [source()]), { skeleton: ["84%", "50%"], chips: [task()] },
+        { skeleton: ["70%"], chips: [task(), { text: "+2" }] }, title(7, [source()]),
+        { skeleton: ["90%"], chips: [task()] }, title(8, [{ label: copy.doc, text: "CHANGELOG.md" }])],
+    },
+  ];
+}
+
+export function createDemoData(copy: SiteCatalog["demo"]) {
+  const apps: App[] = APP_SHELLS.map((app, index) => ({ ...app, shape: copy.apps.shapes[index] }));
+  const ledgerLong = LEDGER_ROWS.map(([date, amount, category], index) => ({
+    date,
+    amount,
+    category: copy.ledger.categories[category],
+    note: copy.ledger.notes[index],
+  }));
+  const categoryShare = CATEGORY_METRICS.map(([category, value, tone]) => ({
+    label: copy.ledger.categories[category],
+    value,
+    tone,
+  }));
+  const appMenu: AppMenuItem[] = [
+    { name: copy.appMenu.items[0], icon: APP_MENU_ICONS[0] }, { sep: true },
+    { name: copy.appMenu.items[1], icon: APP_MENU_ICONS[1] },
+    { name: copy.appMenu.items[2], icon: APP_MENU_ICONS[2] }, { sep: true },
+    { name: copy.appMenu.items[3], icon: APP_MENU_ICONS[3], sub: true },
+    { name: copy.appMenu.items[4], icon: APP_MENU_ICONS[4] }, { sep: true },
+    { name: copy.appMenu.items[5], icon: APP_MENU_ICONS[5] },
+  ];
+  const baseViews = copy.baseViews.map((view, index) => ({ ...view, icon: VIEW_ICONS[index] }));
+  return {
+    copy,
+    project: { name: "Bottega Site" },
+    projectPageSize: 5,
+    apps,
+    pinnedApps: apps.filter((app) => ["expense-tracker", "dev-kanban"].includes(app.id)),
+    ledgerApp: apps.find((app) => app.id === "expense-tracker")!,
+    designApp: apps.find((app) => app.id === "design-canvas")!,
+    designAppWindowTitle: "Bottega Design Canvas",
+    chats: createChats(copy.chats),
+    ledger: ledgerLong.slice(0, 8),
+    ledgerSum: "2,383.20",
+    ledgerLong,
+    ledgerLongSum: "4,531.20",
+    categoryShare,
+    dailySpend: DAILY_SPEND,
+    kanbanLanes: createKanban(copy.kanban),
+    appMenu,
+    baseViews,
+    basePins: BASE_PINS,
+    muscleHeat: MUSCLE_HEAT,
+  };
+}
+
+export type DemoData = ReturnType<typeof createDemoData>;

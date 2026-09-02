@@ -1,18 +1,17 @@
-# features/
+# components/features/
 
-> L2 | Parent: [components/](../README.md)
+> L2 | Parent: [components/README.md](../README.md)
 
-Feature navigation primitives, shared content catalog, and route-specific article presentations.
+## Members
 
-## Member list
+- `catalog.ts`: Combines four stable feature slugs/icons/screenshots with one locale's copy.
+- `feature-link.tsx`: Preserves locale in every home-to-feature action.
+- `feature-sidebar.tsx`: Renders localized current-page-aware feature navigation.
+- `feature-icon.tsx`: Draws the framed identity mark used by sidebar links.
+- `document-feature-article.tsx`: Renders screenshot-backed Apps, Customizable, and Base documents.
+- `agents-feature-article.tsx`: Renders three localized evidence-led Agents stories.
+- `agents-feature-visuals.tsx`: Draws localized Agent picker, capability matrix, and handoff evidence.
 
-- `agents-feature-article.tsx`: Composes the three evidence-led stories unique to the Agents route.
-- `agents-feature-visuals.tsx`: Reuses the canonical Home Hero ProductWindow for the inert Agent picker, then renders standalone capability-matrix and persistent-Chat handoff visuals.
-- `catalog.ts`: Defines the four feature identities, menu summaries, Agents headline, and screenshot-backed document content.
-- `document-feature-article.tsx`: Renders the shared screenshot-and-prose article used by Apps, Customizable, and Base.
-- `feature-icon.tsx`: Wraps a catalog icon in the framed tile used by the feature documentation sidebar.
-- `feature-menu.tsx`: Client `<details>` shell for the header dropdown; owns click-outside and Escape dismissal while its content stays server-rendered.
-- `feature-link.tsx`: Renders the canonical home-section `Read More` link.
-- `feature-sidebar.tsx`: Renders the current-page-aware sidebar shared by all feature detail routes.
+Behavioral disclosure logic lives in `components/disclosure.tsx`; feature copy lives only in `lib/i18n/catalogs/`.
 
-[PROTOCOL]: 变更时更新此头部，然后检查 README.md
+[PROTOCOL]: Update this file when members or responsibilities change, then verify the parent README.md.

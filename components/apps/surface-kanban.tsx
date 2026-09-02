@@ -1,16 +1,11 @@
 /**
- * [INPUT]: 依赖 @/lib/agents 的 KANBAN_LANES，依赖 ../icons 的 Stroke/D，
- *          依赖 ./surface-chrome 的 BaseChrome/Sk
- * [OUTPUT]: 对外提供 KanbanSurface
- * [POS]: Development Kanban 那一台。几何逐项取自
- *        bases/views/kanban：lane 宽 288（w-72）、header 36（h-9）、
- *        卡片槽下留 8（pb-2）、卡面 rounded-lg + border + p-3 + shadow-xs。
- *        lane 自己不画框——产品里卡片是这块板上唯一的盒子，给 lane 再画一圈
- *        就成了卡片套卡片
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses localized DemoData plus shared product icons and Base chrome primitives
+ * [OUTPUT]: Exports the localized KanbanSurface product demonstration
+ * [POS]: Development Kanban surface whose stable geometry is filled with locale-specific records
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
-import { KANBAN_LANES, type KanbanChip, type KanbanTone } from "@/lib/agents";
+import type { DemoData, KanbanChip, KanbanTone } from "@/lib/agents";
 import { D, Stroke } from "../icons";
 import { BaseChrome, Sk } from "./surface-chrome";
 
@@ -41,20 +36,20 @@ function Chip({ chip }: { chip: KanbanChip }) {
   );
 }
 
-export function KanbanSurface() {
+export function KanbanSurface({ demo }: { demo: DemoData }) {
   return (
     <div className="ba">
       <BaseChrome
         tabs={[
-          { icon: "kanban", name: "Tasks" },
-          { icon: "kanban", name: "Findings" },
-          { icon: "table", name: "All" },
+          { icon: "kanban", name: demo.copy.kanban.tabs[0] },
+          { icon: "kanban", name: demo.copy.kanban.tabs[1] },
+          { icon: "table", name: demo.copy.kanban.tabs[2] },
         ]}
         active={0}
       />
       <div className="ba-body">
         <div className="kb-board">
-          {KANBAN_LANES.map((lane) => (
+          {demo.kanbanLanes.map((lane) => (
             <section className="kb-lane" key={lane.id}>
               <header className="kb-head">
                 <span className="kb-dot-slot">

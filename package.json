@@ -6,11 +6,13 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/sync-changelog.mjs --if-present && next build",
+    "build": "node scripts/sync-changelog.mjs --if-present && next build --webpack",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "sync:changelog": "node scripts/sync-changelog.mjs"
+    "sync:changelog": "node scripts/sync-changelog.mjs",
+    "test:i18n": "node --experimental-strip-types --test lib/i18n/*.test.mjs",
+    "audit:i18n": "node scripts/audit-static-i18n.mjs"
   },
   "dependencies": {
     "next": "16.3.3",

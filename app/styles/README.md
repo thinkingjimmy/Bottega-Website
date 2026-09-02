@@ -16,7 +16,7 @@ The site stylesheet is split by responsibility. `globals.css` contains only the 
 - `base.css`: Global typography, buttons, wraps, and the mirrored home-section grids.
 - `features.css`: Header dropdown, home feature CTAs, wiki sidebar, detail article, screenshot frame, and responsive states.
 - `agents-feature.css`: Dedicated story rhythm plus standalone capability-matrix and cross-Agent handoff visuals for the Agents detail page.
-- `bands.css`: Source band, terminal, footer, changelog entries, and the wide-grid collapse rule.
+- `bands.css`: Source band, terminal, localized footer/language disclosure, changelog entries, and wide-grid collapse.
 - `motion.css`: One-shot entrance behavior, reduced-motion policy, and narrow-screen hero/layout overrides.
 - `hero/`: Hero runway and product-window styles; see its README.
 - `apps/`: Product-faithful App surface styles; see its README.

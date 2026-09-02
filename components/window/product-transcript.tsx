@@ -1,31 +1,28 @@
 "use client";
 
 /**
- * [INPUT]: 依赖 react 的 useEffect/useRef/useState，依赖 thinking-orbs 的 ThinkingOrb，
- *          依赖 @/lib/agents 的 Chat/Plan，依赖 ../icons 的 Stroke/D
- * [OUTPUT]: 对外提供 ProductTranscript 组件、planText（Plan 的纯文本全文）与 Rich（行内反引号）
- * [POS]: 产品窗口里那段对话。三件东西逐项抄自 chat/transcript：
- *        计时头（WorkedForRow：标签在前、箭头在后、下缘一条全宽发丝线）、
- *        Plan 卡（chat-plan-card.tsx——复制、放大开第三栏、预览整块可按）、
- *        流式状态行（ThinkingShimmer——orb 与扫光文字，orb 就是产品用的
- *        那个 thinking-orbs 包）
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses React state, ThinkingOrb, localized demo copy, Chat/Plan contracts, and icons
+ * [OUTPUT]: Exports ProductTranscript, planText, and inline-code Rich rendering
+ * [POS]: Localized product transcript covering elapsed work, Plan review, and streaming state
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import { useEffect, useRef, useState } from "react";
 import { ThinkingOrb } from "thinking-orbs";
-import type { Chat, Plan } from "@/lib/agents";
+import type { Chat, DemoData, Plan } from "@/lib/agents";
 import { D, Stroke } from "../icons";
 
 export function ProductTranscript({
   chat,
   planOpen,
   onPlan,
+  copy,
 }: {
   chat: Chat;
   /** 第三栏此刻是否为这条 chat 开着——放大钮的脸由它决定。 */
   planOpen: boolean;
   onPlan: () => void;
+  copy: DemoData["copy"]["chrome"];
 }) {
   const scroller = useRef<HTMLDivElement>(null);
 
@@ -39,8 +36,8 @@ export function ProductTranscript({
   return (
     <div className="chat" ref={scroller}>
       <div className="bubble">{chat.ask}</div>
-      <WorkedFor chat={chat} />
-      {chat.plan ? <PlanCard plan={chat.plan} open={planOpen} onToggle={onPlan} /> : null}
+      <WorkedFor chat={chat} label={copy.workedFor} />
+      {chat.plan ? <PlanCard plan={chat.plan} open={planOpen} onToggle={onPlan} copy={copy} /> : null}
       <div className="reply">
         <p>{chat.reply}</p>
         {chat.bullets ? (
@@ -72,14 +69,14 @@ export function ProductTranscript({
  * 线不是装饰，它是「过程到此为止，下面是结论」这句话。
  * 展开与否是真开关：过程不是被藏起来了，只是折起来了。
  * ────────────────────────────────────────────────────────── */
-function WorkedFor({ chat }: { chat: Chat }) {
+function WorkedFor({ chat, label }: { chat: Chat; label: string }) {
   /* 默认折叠，与产品的 useFoldState 一致（`useState(false)`）。
      过程不是被藏了，是折起来了——展开这个动作本身也是要演的东西之一。 */
   const [open, setOpen] = useState(false);
   return (
     <div className="turn">
       <button type="button" className="worked" aria-expanded={open} onClick={() => setOpen(!open)}>
-        <span>Worked for {chat.worked}</span>
+        <span>{label.replace("{duration}", chat.worked)}</span>
         <span className={`worked-caret${open ? " on" : ""}`}>
           <Stroke d={D.chevronRight} size={14} width={1.9} />
         </span>
@@ -106,7 +103,17 @@ function WorkedFor({ chat }: { chat: Chat }) {
  * 那里放的是同一份 plan 的全文。一道说「还有」的渐变若点不开，它就只是
  * 一道装饰。
  * ────────────────────────────────────────────────────────── */
-function PlanCard({ plan, open, onToggle }: { plan: Plan; open: boolean; onToggle: () => void }) {
+function PlanCard({
+  plan,
+  open,
+  onToggle,
+  copy,
+}: {
+  plan: Plan;
+  open: boolean;
+  onToggle: () => void;
+  copy: DemoData["copy"]["chrome"];
+}) {
   /* 复制成功后钩子顶两秒班再交回——按钮按下去若毫无回声，人只会再按一次。 */
   const [copied, setCopied] = useState(false);
   useEffect(() => {
@@ -119,12 +126,12 @@ function PlanCard({ plan, open, onToggle }: { plan: Plan; open: boolean; onToggl
     <section className="plan-card">
       <div className="plan-head">
         <Stroke d={D.lightbulb} size={16} width={1.7} />
-        <span>Plan</span>
+        <span>{copy.plan}</span>
         <span className="plan-actions">
           <button
             type="button"
             className="icon-slot icon-btn"
-            aria-label={copied ? "Plan copied" : "Copy plan"}
+            aria-label={copied ? copy.planCopied : copy.copyPlan}
             onClick={() =>
               void navigator.clipboard?.writeText(planText(plan)).then(
                 () => setCopied(true),
@@ -137,7 +144,7 @@ function PlanCard({ plan, open, onToggle }: { plan: Plan; open: boolean; onToggl
           <button
             type="button"
             className="icon-slot icon-btn"
-            aria-label={open ? "Close plan panel" : "Open plan panel"}
+            aria-label={open ? copy.closePlan : copy.openPlan}
             aria-pressed={open}
             onClick={onToggle}
           >
@@ -151,7 +158,7 @@ function PlanCard({ plan, open, onToggle }: { plan: Plan; open: boolean; onToggl
         className="plan-body"
         role="button"
         tabIndex={0}
-        aria-label={open ? "Close plan panel" : "Open plan panel"}
+        aria-label={open ? copy.closePlan : copy.openPlan}
         onClick={onToggle}
         onKeyDown={(event) => {
           if (event.key !== "Enter" && event.key !== " ") return;

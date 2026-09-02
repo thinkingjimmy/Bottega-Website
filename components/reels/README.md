@@ -1,77 +1,16 @@
-# reels/
+# components/reels/
 
-> L2 | 父级: ../README.md
+> L2 | Parent: [components/README.md](../README.md)
 
-正文里三台会动的图。它们不是首屏那台机器的复制品（那台在 `../window/`）——
-这三台各演**一句话**：判据始终是同一条，**这一节要讲的话，能不能由这个动作
-本身说出口**。说得出口，文字里就不必再解释一遍。
+## Members
 
-## 成员清单
+- `agents-reel.tsx`: Moves through one localized sidebar to show mixed Agent ownership.
+- `app-menu-reel.tsx`: Shows Edit App opening a localized source Chat and changing the canvas.
+- `base-views-reel.tsx`: Projects one localized ledger through Table, Chart, Gallery, and Map views.
+- `replay-button.tsx`: Exposes a translated replay label after one-shot reels complete.
+- `use-carousel.ts`: Shares timed view selection and stops after user input.
+- `use-play-when-seen.ts`: Starts motion only after the evidence enters the viewport.
 
-- **use-carousel.ts**: 两处轮播共用的换挡逻辑——Apps 一节的四只 App、
-  Base 一节的四种看法。五秒走一格，**点过即停**：人一伸手机器就该让位，
-  不设「过一会儿恢复」，那等于把观众刚做的选择判为暂时的。
-  `armed` 参数交给需要「被看见才开始」的那一处。
-- **replay-button.tsx**: 前两支停住之后，画框右下角那颗重播钮。演的时候不挂
-  ——一句话说到一半递上打断的把手，不是体贴。右下角是两支的结论都不在的
-  地方（一支停在侧栏底部，一支停在画布中央），控件不该压着结论。
-  动效被关掉时它自己不出现：没有 `animationend`，也就没有「演完了」这回事，
-  而一颗对着静止画面的重播钮本就无话可说。
-- **use-play-when-seen.ts**: 三支 reel 与 Apps 轮播共用的起播闸，也是**一遍的
-  生命周期**：什么时候开始、什么时候算演完（`markEnded` 收 `animationend` 的
-  冒泡，不抄时长——抄一遍就是把同一个事实写两份）、怎么再来一遍
-  （`run` 当 `key` 用，整台机器重挂一次；CSS 动画没有「回到 0%」，只有
-  「重新开始」）。十来行
-  IntersectionObserver，把「首帧」从时间轴的 0% 赎回给观众的第一眼；
-  第一次相交之后 observer 自己退场。相交之后**再等 720ms** 才开演——
-  这一节自己正在淡进来（见 `../reveal.tsx`），两件事叠在一起，
-  观众两件都看不清。
-  抽出来不是为了省行数——「什么时候开始」四处的答案必须一样，
-  各写一份迟早有一处被改回「一加载就转」。
-- **agents-reel.tsx**: 一镜到底。镜头开在侧栏左上角自上而下摇到底，让每一行
-  行首那枚 agent logo 一个一个走过镜头。要讲的是「谁在干这活，看一眼行首
-  就知道」。画框 580×360。
-- **app-menu-reel.tsx**: Customize any app by chatting 一节。镜头开在窗口左上角（先说清
-  「这是谁」），取景与 Agents 那台同一套——左上各留一条桌面（26/20/1.7），
-  贴边裁的一格读起来是「图放歪了」而不是取景。然后右移到「···」拍下那一按，菜单落下、落焦 Edit App，然后窗口
-  底下升起一条 chat 输入框——因为产品里「Edit App」打开的正是一个绑定这只
-  App 的 chat（`openAppEditor` → `app-editor-chat`），不是代码编辑器。
-  一个字一个字打完那句话、按发送，输入框退场，**画布上长出第三块板**：
-  说的话与画面上发生的事是同一件事，否则演的只是「有个输入框」。
-  三支里唯一一支镜头有**回拉**的：结论在整扇窗口上，不退回就看不见。
-  末站留着四边的桌面（0.73 而不是 0.8）——贴满画框的一格读起来是截图，
-  留一条桌面才是「一台摆在那儿的机器」。桌面用的是与 Agents 那一支同一块
-  `--ground-2`（各支自己垫，共用层不管，见 `app/styles/reels/shared.css`）：
-  两支镜头都会走到机器之外，露出的若不是同一块桌面，两节就成了两间屋子。
-  画面上不出现鼠标——每一次「点」由被点的那一格自己说出口（按下态、
-  落焦底色、发送键压下），一枚画出来的指针只会多一层假。
-- **base-views-reel.tsx**: A Base under every chat 一节。同一份行四种看法——
-  明细 / 分类占比 / 票据 / 落点。三支里唯一一支**镜头不动**的：主角是页签，
-  镜头一动观众就去看镜头，不看那句话。也是唯一一支**自己不决定演哪一格**的：
-  它只画形状，哪一格露脸由 `base-section.tsx` 那份换挡杆经 `data-active` 决定
-  ——与 Apps 一节同构，右栏那份目录同时是名单和换挡杆。
+The machine in each reel is decorative; interactive replay remains keyboard-visible. Reduced motion leaves each reel in a legible resting state.
 
-## 共用的约定
-
-- **画框共用形状与尺寸**：580×360，三支一样，因为三节的文字块也一样高。
-  形状（圆角、桌面底色、定宽居中、溢出裁掉）住在 `app/styles/reels/shared.css`。
-- **底色是桌面色**（`--ground-2`）而不是机器色。两者同色时读起来是
-  「一台机器浮在白里」，画框与机身分不出边界。
-- **动作全是 CSS keyframes，形状全部服务端渲染**。脚本只管起播时机——
-  它不循环，所以「什么时候开始」成了一个必须回答的问题，而纯 CSS 答不了
-  「等被看见」。
-- **一支镜头一个 `--dur`，节拍写进各自的百分比**，不用 `delay`：用 delay 的话
-  一支镜头里几条动画各有各的总时长，改一条就与其余错位。
-- **前两支不循环，都停在结论上**：一段永动的循环在说「我是个装饰」，
-  而它们在做的是两次陈述。停住之后右下角浮起一颗重播钮——不循环不等于
-  「只准看一遍」，把「再来一遍」交给观众自己按，那是选择，不是噪音。
-  `aria-hidden` 因此挂在**机器**上而不是画框上：画框里除了机器还有一颗
-  真按钮，藏起一颗能被 Tab 停住的按钮，比不给按钮更坏。第三支不同——它是一台可以被按的机器，
-  轮播只是「你还没伸手时它替你翻」，所以它循环，但你一点就停。
-- **不写 `will-change`**：那会把图层钉成固定分辨率的位图，推近之后字就糊了。
-- **`prefers-reduced-motion` 下都停在首帧**，而首帧 = 静息 transform =
-  keyframes 的 0%。于是「脚本没跑」「动效被关掉」「等着起播」三处看到的
-  是同一格，一次跳变都没有。
-- 样式住在 `app/styles/reels/`，数据住在 `@/lib/agents`。这一层只负责形状。
-
-[PROTOCOL]: 变更时更新此头部，然后检查 README.md
+[PROTOCOL]: Update this file when members or responsibilities change, then verify the parent README.md.

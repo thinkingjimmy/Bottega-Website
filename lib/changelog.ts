@@ -1,14 +1,13 @@
 /**
- * [INPUT]: 依赖 node:fs/node:path 读取 content/changelog.md
- * [OUTPUT]: 对外提供 Entry 类型、readEntries()、renderInline()
- * [POS]: Bottega-Website 的 changelog 数据层。真相源是 Bottega 仓库的
- *        docs/changelog/README.md，此处只读构建期快照——站点必须能独立
- *        clone、独立构建，跨仓库读文件在 Vercel 上根本不存在那个目录
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses node:fs/node:path and one locale-specific content/changelog.*.md snapshot
+ * [OUTPUT]: Exports Entry, readEntries(locale), and renderInline()
+ * [POS]: Build-time Changelog data layer; every locale reads an independent static snapshot
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import type { Locale } from "./i18n/locale";
 
 export type Entry = {
   date: string;
@@ -21,8 +20,8 @@ export type Entry = {
  * 不引 markdown 库是有意的：这份文件的格式由我们自己写、自己约束，
  * 为三种语法装一个解析器，等于把一个已知的小问题换成一个未知的大依赖。
  */
-export function readEntries(): Entry[] {
-  const raw = readFileSync(join(process.cwd(), "content", "changelog.md"), "utf8");
+export function readEntries(locale: Locale): Entry[] {
+  const raw = readFileSync(join(process.cwd(), "content", `changelog.${locale}.md`), "utf8");
   const entries: Entry[] = [];
   let current: Entry | null = null;
 

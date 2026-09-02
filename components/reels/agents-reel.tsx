@@ -1,31 +1,25 @@
 "use client";
 
 /**
- * [INPUT]: 依赖 ./use-play-when-seen 的 usePlayWhenSeen，依赖 ./replay-button 的
- *          ReplayButton，依赖 @/lib/agents 的 CHATS/PROJECT，
- *          依赖 ../icons 的 AgentLogo/Stroke/Wordmark/D
- * [OUTPUT]: 对外提供 AgentsReel 组件
- * [POS]: Agents 一节左侧那台会动的机器。一镜到底：镜头开在侧栏左上角，
- *        自上而下摇到底，让每一行行首那枚 logo 一个一个走过镜头，然后停住
- *        （对话区是骨架屏，因为此刻要看的不是它）。这一节要讲的话就是这个
- *        动作本身——四家 agent 混住在同一列 chat 里，看一眼就完了。
- *        起播时机与另外两支 reel 共用一个 hook，理由见那支文件
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses localized DemoData, visibility/replay primitives, and shared product icons
+ * [OUTPUT]: Exports the localized AgentsReel component
+ * [POS]: Animated Agents proof showing four official backends inside one translated sidebar
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
-import { CHATS, PROJECT } from "@/lib/agents";
+import type { DemoData } from "@/lib/agents";
 import { ReplayButton } from "./replay-button";
 import { usePlayWhenSeen } from "./use-play-when-seen";
 import { AgentLogo, D, Stroke, Wordmark } from "../icons";
 
-const PROJECT_CHATS = CHATS.filter((chat) => chat.home === "project");
-const ROOT_CHATS = CHATS.filter((chat) => chat.home === "chats");
-
 /* 骨架条：宽度是这一行"本来会有多长"的示意，不是随机数。 */
 const REPLY_LINES = ["96%", "88%", "72%", "90%", "54%"];
 
-export function AgentsReel() {
+export function AgentsReel({ demo, replayLabel }: { demo: DemoData; replayLabel: string }) {
   const { frame, play, run, ended, replay, markEnded } = usePlayWhenSeen();
+  const projectChats = demo.chats.filter((chat) => chat.home === "project");
+  const rootChats = demo.chats.filter((chat) => chat.home === "chats");
+  const chrome = demo.copy.chrome;
 
   return (
     /* aria-hidden 挂在机器上而不是画框上：画框里除了机器还有一颗真按钮，
@@ -48,23 +42,23 @@ export function AgentsReel() {
               <span className="reel-mark">
                 <Stroke d={D.squarePen} size={11} width={1.9} />
               </span>
-              <span className="reel-title">New chat</span>
+              <span className="reel-title">{chrome.newChat}</span>
             </div>
             <div className="reel-row">
               <span className="reel-mark">
                 <Stroke d={D.grid} size={11} width={1.9} />
               </span>
-              <span className="reel-title">Apps</span>
+              <span className="reel-title">{chrome.apps}</span>
             </div>
 
-            <p className="reel-label">Projects</p>
+            <p className="reel-label">{chrome.projects}</p>
             <div className="reel-row">
               <span className="reel-mark">
                 <Stroke d={D.folder} size={11} width={1.9} />
               </span>
-              <span className="reel-title">{PROJECT.name}</span>
+              <span className="reel-title">{demo.project.name}</span>
             </div>
-            {PROJECT_CHATS.map((chat, index) => (
+            {projectChats.map((chat, index) => (
               <div className={`reel-row sub${index === 0 ? " on" : ""}`} key={chat.id}>
                 <span className="reel-mark">
                   <AgentLogo backend={chat.agent} size={11} />
@@ -73,8 +67,8 @@ export function AgentsReel() {
               </div>
             ))}
 
-            <p className="reel-label">Chats</p>
-            {ROOT_CHATS.map((chat) => (
+            <p className="reel-label">{chrome.chats}</p>
+            {rootChats.map((chat) => (
               <div className="reel-row" key={chat.id}>
                 <span className="reel-mark">
                   <AgentLogo backend={chat.agent} size={11} />
@@ -87,7 +81,7 @@ export function AgentsReel() {
               <span className="reel-mark">
                 <Stroke d={D.settings} size={11} width={1.9} />
               </span>
-              <span className="reel-title">Settings</span>
+              <span className="reel-title">{chrome.settings}</span>
             </div>
           </aside>
 
@@ -112,7 +106,7 @@ export function AgentsReel() {
         </div>
       </div>
 
-      {ended && <ReplayButton onClick={replay} />}
+      {ended && <ReplayButton onClick={replay} label={replayLabel} />}
     </div>
   );
 }

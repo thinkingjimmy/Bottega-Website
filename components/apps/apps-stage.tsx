@@ -1,13 +1,15 @@
 "use client";
 
 /**
- * [INPUT]: Uses the shared carousel/visibility hooks, APPS catalog, four product surfaces, and the feature detail CTA
- * [OUTPUT]: Exports the AppsStage component
- * [POS]: Complete Apps home feature with a live surface switcher, catalog, and route into the detailed documentation
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses localized SiteCatalog/DemoData, carousel hooks, four product surfaces, and FeatureLink
+ * [OUTPUT]: Exports the localized AppsStage component
+ * [POS]: Complete Apps home feature with one language-specific surface switcher and detail route
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
-import { APPS } from "@/lib/agents";
+import type { DemoData } from "@/lib/agents";
+import type { SiteCatalog } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n/locale";
 import { FeatureLink } from "../features/feature-link";
 import { useCarousel } from "../reels/use-carousel";
 import { usePlayWhenSeen } from "../reels/use-play-when-seen";
@@ -19,11 +21,21 @@ import { FitnessSurface } from "./surface-fitness";
 /* 顺序即 APPS 的顺序：一份目录驱动一台机器，不会各排各的。 */
 const SURFACES = [CanvasSurface, KanbanSurface, LedgerSurface, FitnessSurface];
 
-export function AppsStage() {
+export function AppsStage({
+  demo,
+  copy,
+  readMore,
+  locale,
+}: {
+  demo: DemoData;
+  copy: SiteCatalog["home"]["apps"];
+  readMore: string;
+  locale: Locale;
+}) {
   /* 被看见了才开始换挡。原来它一挂载就转，等人滚到这儿，跑马灯早已在
      视口外走了不知多少格——「第一眼看到哪一只 App」于是交给了随机数。 */
   const { frame, play } = usePlayWhenSeen();
-  const { active, auto, pick } = useCarousel(APPS.length, play);
+  const { active, auto, pick } = useCarousel(demo.apps.length, play);
 
   return (
     <div className="split split-figure-first">
@@ -32,25 +44,21 @@ export function AppsStage() {
       <div className="desk">
         <div className="app-stage" data-active={active} ref={frame} aria-hidden="true">
           {SURFACES.map((Surface, at) => (
-            <div className="app-pane" key={APPS[at].id}>
-              <Surface />
+            <div className="app-pane" key={demo.apps[at].id}>
+              <Surface demo={demo} />
             </div>
           ))}
         </div>
       </div>
 
       <div className="copy">
-        <h2>Build AI-native apps.</h2>
-        <p>
-          Build an AI fitness coach, an AI expense tracker, or something entirely your own. 
-          Describe the idea—Bottega turns it into a working app, from data to interface.
-          Here are the four apps that come with Bottega:
-        </p>
+        <h2>{copy.title}</h2>
+        <p>{copy.body}</p>
 
         {/* 目录即开关。四只 App 是一组同辈，摆成方阵读起来是「就这四只」；
             竖着排一列则暗示「还能往下接」——而这一节要说的恰恰是数目已定。 */}
         <ul className="app-switch" data-active={active} data-auto={auto ? "on" : "off"}>
-          {APPS.map((app, at) => (
+          {demo.apps.map((app, at) => (
             <li key={app.id}>
               <button
                 type="button"
@@ -68,7 +76,7 @@ export function AppsStage() {
             </li>
           ))}
         </ul>
-        <FeatureLink slug="apps" />
+        <FeatureLink slug="apps" locale={locale} label={readMore} />
       </div>
     </div>
   );

@@ -20,4 +20,4 @@ The first-screen presentation: one sticky runway, a theme-aware desktop scene, a
 - The product window may shrink vertically; its transcript and panel bodies own scrolling.
 - The Agents feature embeds the same `.window` tree and Hero styles; it may change host dimensions and pin one Composer menu as inert evidence, never duplicate the Sidebar or Composer vocabulary.
 
-[PROTOCOL]: 变更时更新此头部，然后检查 README.md
+[PROTOCOL]: Update this file when members or responsibilities change, then verify the parent README.md.

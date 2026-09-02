@@ -1,15 +1,12 @@
 /**
- * [INPUT]: 依赖 ./surface-chrome 的 DC/Sk
- * [OUTPUT]: 对外提供 CanvasSurface
- * [POS]: Design Canvas 那一台。四角常驻浮层围着一整片画布——几何逐项取自
- *        resources/apps/Bottega-app-design-canvas/gui/styles.css：
- *        同心圆角 12/8/6、控件 28（内 24）、字 12、图标 14 stroke 1.5。
- *        白板里那一页留骨架，不是为了省事：那是 Agent 写的 HTML，
- *        不可信内容本就不该被读，只该被认出「那是一页」
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses localized Design Canvas copy and shared surface chrome primitives
+ * [OUTPUT]: Exports the localized CanvasSurface product demonstration
+ * [POS]: Design Canvas surface with stable product geometry and translated controls
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import { DC, Sk } from "./surface-chrome";
+import type { DemoData } from "@/lib/agents";
 
 /** 锚点坞里那三条。编号锚点是这只 App 唯一不可替代的那件事。 */
 const PINS = [
@@ -18,7 +15,8 @@ const PINS = [
   { n: 3, sel: "footer .newsletter", stale: true },
 ];
 
-export function CanvasSurface() {
+export function CanvasSurface({ demo }: { demo: DemoData }) {
+  const copy = demo.copy.canvas;
   return (
     <div className="dc">
       {/* 舞台里那块白板：Fit 之后是 16:10，下面露出的那截是纸面本身，
@@ -76,7 +74,7 @@ export function CanvasSurface() {
         </span>
         <span className="dc-sep" />
         <span className="dc-sel w-ver">
-          <span>Live</span>
+          <span>{copy.live}</span>
           {DC.chevron}
         </span>
       </div>
@@ -84,29 +82,29 @@ export function CanvasSurface() {
       {/* 右上：三态视图组 + 三态选择模式。994 > 860，按真规则标签是露出来的。 */}
       <div className="dc-float dc-view">
         <span className="dc-group">
-          <span className="dc-btn on">{DC.focus}<b>Focus</b></span>
-          <span className="dc-btn">{DC.directions}<b>Directions</b></span>
-          <span className="dc-btn">{DC.compare}<b>Compare</b></span>
+          <span className="dc-btn on">{DC.focus}<b>{copy.focus}</b></span>
+          <span className="dc-btn">{DC.directions}<b>{copy.directions}</b></span>
+          <span className="dc-btn">{DC.compare}<b>{copy.compare}</b></span>
         </span>
         <span className="dc-sep" />
         <span className="dc-group">
-          <span className="dc-btn">{DC.browse}<b>Browse</b></span>
-          <span className="dc-btn on">{DC.element}<b>Element</b></span>
-          <span className="dc-btn">{DC.region}<b>Region</b></span>
+          <span className="dc-btn">{DC.browse}<b>{copy.browse}</b></span>
+          <span className="dc-btn on">{DC.element}<b>{copy.element}</b></span>
+          <span className="dc-btn">{DC.region}<b>{copy.region}</b></span>
         </span>
       </div>
 
       {/* 右下：视口与缩放，只在有画布可看时存在。 */}
       <div className="dc-float dc-port">
         <span className="dc-group">
-          <span className="dc-btn on">{DC.desktop}<b>Desktop</b></span>
-          <span className="dc-btn">{DC.tablet}<b>Tablet</b></span>
-          <span className="dc-btn">{DC.mobile}<b>Mobile</b></span>
+          <span className="dc-btn on">{DC.desktop}<b>{copy.desktop}</b></span>
+          <span className="dc-btn">{DC.tablet}<b>{copy.tablet}</b></span>
+          <span className="dc-btn">{DC.mobile}<b>{copy.mobile}</b></span>
         </span>
         <span className="dc-sep" />
         <span className="dc-btn">{DC.minus}</span>
         <span className="dc-sel w-zoom">
-          <span>Fit</span>
+          <span>{copy.fit}</span>
           {DC.chevron}
         </span>
         <span className="dc-btn">{DC.plus}</span>
@@ -117,8 +115,8 @@ export function CanvasSurface() {
       <div className="dc-float dc-pins">
         <div className="dc-pins-head">
           <span className="dc-pin-mark">{DC.pin}</span>
-          <h4>Anchors</h4>
-          <span className="dc-tally">3 selected</span>
+          <h4>{copy.anchors}</h4>
+          <span className="dc-tally">{copy.selectedCount.replace("{count}", "3")}</span>
           <span className="dc-collapse">{DC.chevron}</span>
         </div>
         <ol className="dc-pin-list">
@@ -126,14 +124,14 @@ export function CanvasSurface() {
             <li key={pin.n}>
               <span className="dc-badge">{pin.n}</span>
               <code>{pin.sel}</code>
-              {pin.stale && <span className="dc-state">stale</span>}
+              {pin.stale && <span className="dc-state">{copy.stale}</span>}
             </li>
           ))}
         </ol>
         <div className="dc-pin-actions">
           <span className="dc-budget">3 / 32</span>
-          <span className="dc-quiet">Clear</span>
-          <span className="dc-primary">Add to chat</span>
+          <span className="dc-quiet">{copy.clear}</span>
+          <span className="dc-primary">{copy.addToChat}</span>
         </div>
       </div>
     </div>

@@ -1,10 +1,10 @@
 "use client";
 
 /**
- * [INPUT]: Uses React state/effects plus ProductWindow, SiteHeader, ThemeToggle, and icons
- * [OUTPUT]: Exports the interactive Hero component
- * [POS]: The pinned product desktop and the only visible theme control on Bottega-Website
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses React state, localized SiteCatalog/DemoData, ProductWindow, SiteHeader, and theme controls
+ * [OUTPUT]: Exports the localized interactive Hero component
+ * [POS]: Pinned product desktop and the only visible theme control on Bottega-Website
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -12,6 +12,10 @@ import { D, Glyph, Stroke } from "./icons";
 import { SiteHeader } from "./site-header";
 import { ThemeToggle } from "./theme";
 import { ProductWindow } from "./window/product-window";
+import type { DemoData } from "@/lib/agents";
+import type { SiteCatalog } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n/locale";
+import type { FeatureRecord } from "./features/catalog";
 
 /** 收缩终点。上缘让得比下缘多，让出来的那条正好装下 header。 */
 const MAX_T = 92;
@@ -22,7 +26,19 @@ const MAX_B = 44;
 const MAX_R = 14;
 const MAX_SH = 26;
 
-export function Hero() {
+export function Hero({
+  demo,
+  copy,
+  nav,
+  features,
+  locale,
+}: {
+  demo: DemoData;
+  copy: SiteCatalog["home"]["hero"];
+  nav: SiteCatalog["nav"];
+  features: FeatureRecord[];
+  locale: Locale;
+}) {
   const pinRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const [surface, setSurface] = useState<"chat" | "app">("chat");
@@ -91,7 +107,7 @@ export function Hero() {
   return (
     <div className="hero-pin" ref={pinRef}>
       <div className="stage" ref={stageRef}>
-        <SiteHeader variant="stage" />
+        <SiteHeader variant="stage" locale={locale} copy={nav} features={features} />
 
         <section className="scene" id="top">
           {/* 真 macOS 的菜单栏不放产品 CTA。放了就是拿系统的壳卖自己的货，
@@ -99,20 +115,15 @@ export function Hero() {
           <div className="scene-bar">
             <Glyph d={D.apple} size={15} />
             <span style={{ fontWeight: 600 }}>Bottega</span>
-            <span className="menu">File</span>
-            <span className="menu">Edit</span>
-            <span className="menu">View</span>
-            <span className="menu">Chat</span>
-            <span className="menu">Window</span>
-            <span className="menu">Help</span>
+            {copy.menu.map((item) => <span className="menu" key={item}>{item}</span>)}
             <div className="scene-status">
               <ThemeToggle />
-              <span className="mono menu">Tue Sep 1&nbsp;&nbsp;9:36</span>
+              <span className="mono menu">{copy.date}</span>
             </div>
           </div>
 
           <div className="scene-body">
-            <ProductWindow surface={surface} onSurface={setSurface} />
+            <ProductWindow surface={surface} onSurface={setSurface} demo={demo} />
 
             {/* 两颗并列而不是一个开关：chat 与 App 是产品的两种表面，
                 开关会把其中一种说成「另一种的反面」，并列才说得对。
@@ -126,7 +137,7 @@ export function Hero() {
                 aria-pressed={surface === "chat"}
               >
                 <Stroke d={D.message} size={15} />
-                <span>Chat, just like your CLI</span>
+                <span>{copy.chatChip}</span>
               </button>
               <button
                 type="button"
@@ -135,7 +146,7 @@ export function Hero() {
                 aria-pressed={surface === "app"}
               >
                 <Stroke d={D.grid} size={15} />
-                <span>Apps your agent builds</span>
+                <span>{copy.appChip}</span>
               </button>
             </div>
           </div>
