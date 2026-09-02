@@ -1,8 +1,7 @@
 /**
- * [INPUT]: 依赖 ./icons 的 Stroke/Glyph/D
- * [OUTPUT]: 对外提供 ForkBand 组件
- * [POS]: Bottega-Website 的收尾。Fork 与「去下载」原本是两条深色带，
- *        说的却是同一句话——它是你的，去拿。并成一条
+ * [INPUT]: Uses Stroke, Glyph, and D from ./icons
+ * [OUTPUT]: Exports the ForkBand closing section
+ * [POS]: Closes Bottega-Website with the source pitch, download actions, and build terminal
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
@@ -16,17 +15,42 @@ const STEPS = [
   "pnpm --filter desktop build",
 ];
 
+function BuildTerminal() {
+  return (
+    <div className="terminal" role="region" aria-label="Terminal commands to build Bottega">
+      <div className="terminal-titlebar">
+        <span className="terminal-dots" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </span>
+        <span className="terminal-title">Bottega — zsh</span>
+        <span aria-hidden="true" />
+      </div>
+      <div className="terminal-body mono">
+        {STEPS.map((line) => (
+          <div className="terminal-line" key={line}>
+            <span className="terminal-prompt" aria-hidden="true">$</span>
+            <code>{line}</code>
+          </div>
+        ))}
+        <div className="terminal-line terminal-output">
+          <span aria-hidden="true">→</span>
+          <code>out/Bottega.app</code>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ForkBand() {
   return (
     <section className="section" id="source">
       <div className="wrap">
         <div className="band">
-          <div className="split split-narrow">
+          <div className="split split-narrow fork-layout">
             <div>
-              <p className="mono eyebrow" style={{ color: "inherit", opacity: 0.55 }}>
-                Free · MIT · Local-first
-              </p>
-              <h2 style={{ fontSize: 52, lineHeight: 1.04, maxWidth: "15ch", marginBottom: 22 }}>
+              <h2 className="fork-title">
                 Fork it. Ship your own build.
               </h2>
               <p style={{ fontSize: 18, lineHeight: 1.62, opacity: 0.74, maxWidth: "54ch", marginBottom: 34 }}>
@@ -74,14 +98,7 @@ export function ForkBand() {
               </div>
             </div>
 
-            <div className="mono term">
-              {STEPS.map((line) => (
-                <p key={line}>
-                  <span style={{ opacity: 0.5 }}>$</span> {line}
-                </p>
-              ))}
-              <p style={{ opacity: 0.55 }}>→ out/Bottega.app</p>
-            </div>
+            <BuildTerminal />
           </div>
         </div>
       </div>

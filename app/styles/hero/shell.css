@@ -1,0 +1,505 @@
+/**
+ * [INPUT]: 依赖 ../tokens.css 的全部 token
+ * [OUTPUT]: 首屏跑道与舞台（.hero-pin/.stage/.scene）、站点 header 的两层皮、产品窗口的外壳与侧栏
+ * [POS]: 首屏那一屏的骨架。header 住在这里不是归类失手：它的 stage 皮（高度与显影跟着收缩走）本就是首屏的一部分，framed 皮只是同一段 DOM 的另一面
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ============================================================
+ * 3 · 首屏：跑道 → 舞台 → 桌面
+ *
+ * 收缩不用 transform: scale——scale 会把整台机器连同窗口里的文字
+ * 一起重采样，字会糊。改盒子的内边距，文字始终按真实像素渲染。
+ * 三个变量默认 0，也就是满幅：脚本没跑起来时首屏是完好的满幅，
+ * 而不是一个缩了一半的中间态。
+ * ============================================================ */
+.hero-pin {
+  position: relative;
+  z-index: 0;
+  /* 200vh = 一屏桌面 + 一屏跑道：收缩恰好在正文压上来之前走完。
+     再长就变成「滚了半天什么也没发生」，再短则收缩来不及被看见。 */
+  height: 200vh;
+  background: var(--ground);
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: var(--stage-t, 0px) var(--stage-x, 0px) var(--stage-b, 0px);
+  will-change: padding;
+}
+
+/* ── 站点 header：一个组件，两层皮 ────────────────────────────────
+ * 两层皮共用同一段 DOM（components/site-header.tsx）。原来首页与 changelog
+ * 各内联了一份，于是同一条导航长出了两副骨架：92px 无边 vs 78px 有底线。
+ *
+ * 标记与右边一排之间不设 gap：那排控件自带内边距，间距由它们自己给出。
+ * 原来那句 "the workshop that builds itself" 也在这条带子上——一句散文卡在
+ * 一排标签中间，跟左右两族都不同族，何况下面那台机器正在说同一句话。
+ * ────────────────────────────────────────────────────────── */
+.site-header {
+  display: flex;
+  align-items: center;
+}
+.site-header-brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+.site-header-brand:hover {
+  color: var(--ink-2);
+}
+.site-header nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* 高度直接等于上缘让出的量，于是「带子多高、header 多高」永远成立，
+   不必再拿第二个数去对齐。进度为 0 时带子高 0、透明度 0——满幅状态下
+   它是不存在，而不是被盖住。 */
+.site-header--stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--stage-t, 0px);
+  /* 横向跟着收缩走。收缩到位时 --stage-x 正好等于 --bleed，
+     于是这条带子最终落在 --edge 那条竖线上，与正文同边。 */
+  padding: 0 calc(var(--stage-x, 0px) + var(--gutter));
+  opacity: var(--stage-p, 0);
+  /* 现身时顺带落 7px：一条凭空亮起来的横条读起来像闪了一下，
+     让它从上缘滑下来，人才看得出「这条带子是刚让出来的」。 */
+  transform: translateY(calc((var(--stage-p, 0) - 1) * 7px));
+  pointer-events: var(--stage-pe, none);
+  overflow: hidden;
+}
+
+/* 子页没有那台钉住的桌面，于是定高、下缘一条发丝线。 */
+.site-header--framed {
+  height: 78px;
+  padding: 0 var(--edge);
+  border-bottom: 1px solid var(--line);
+}
+
+.scene {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--stage-r, 0px);
+  /* 一层贴地的接触影 + 一层散开的环境影。单层又大又浓的投影在浅底上
+     永远是一坨灰，因为它只携带「暗」，不携带「接触」。 */
+  box-shadow:
+    0 calc(var(--stage-sh, 0px) * 0.08) calc(var(--stage-sh, 0px) * 0.24) rgba(27, 26, 22, 0.07),
+    0 calc(var(--stage-sh, 0px) * 0.5) calc(var(--stage-sh, 0px) * 1.7)
+      calc(var(--stage-sh, 0px) * -0.72) rgba(27, 26, 22, 0.15);
+  background: var(--ground-2) url("/hero-bg-light.png") center / cover no-repeat;
+}
+
+[data-theme="dark"] .scene {
+  background-image: url("/hero-bg-dark.png");
+}
+
+/* 真 macOS 的菜单栏随壁纸明暗反转文字，故按主题给两套半透明底。
+   小字号不能再叠一层低字重与低透明度：壁纸有了真实纹理以后，三者相乘
+   会把菜单磨成灰雾。中等字重与更实的玻璃一起承担可读性。 */
+.scene-bar {
+  position: relative;
+  z-index: 3;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 19px;
+  height: 28px;
+  /* 右边多让 16px：mac 与新版 Chrome 的滚动条是**覆盖式**的——不占布局宽度，
+     直接浮在内容上，于是这条带子最右端的时钟正好被压在它下面。经典滚动条
+     会挤窄视口、内容自己就让开了，覆盖式不会，只能由内容自己退一步。
+     左 16 右 32 看着不对称，但那一侧本来就没有东西贴着边。 */
+  padding: 0 32px 0 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  border-bottom: 1px solid rgba(27, 26, 22, 0.12);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.35);
+}
+[data-theme="dark"] .scene-bar {
+  background: rgba(4, 10, 24, 0.62);
+  border-bottom-color: rgba(237, 233, 222, 0.14);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+.scene-bar .menu {
+  opacity: 0.9;
+}
+.scene-status {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.scene-theme-toggle {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background 140ms ease, transform 140ms ease;
+}
+.scene-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+[data-theme="dark"] .scene-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.scene-theme-toggle:active {
+  transform: scale(0.92);
+}
+.scene-theme-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -3px;
+}
+.scene-theme-toggle[data-mode="auto"]::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--green-lit);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.42);
+}
+
+.scene-body {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  /* 上缘多让 20px：居中只保证两头等分，而这一头顶着的是系统菜单栏，
+     等分下来仍然贴得太近——那条带子需要一点自己的空气。
+     下缘 28 而非 40：封顶抬到 780 之后余量本就不多，再多让 12px，
+     切换那两颗芯片下面就空出一条比机器本身还显眼的白。 */
+  padding: 20px 0 20px;
+}
+
+/* 玻璃必须先是一块稳定的表面，再谈透明。草地与溪流都是高频纹理，原来
+   0.34 的底色会让字直接落在纹理上；更实的底、发丝边与分层影把 tabs 从
+   壁纸里托出来，仍保留玻璃质感。 */
+.chip-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 9999px;
+  background: rgba(12, 18, 16, 0.72);
+  backdrop-filter: blur(24px) saturate(1.15);
+  -webkit-backdrop-filter: blur(24px) saturate(1.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.24),
+    0 14px 32px -18px rgba(0, 0, 0, 0.72);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 32px;
+  padding: 0 15px;
+  border-radius: 9999px;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease;
+}
+.chip:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+/* 选中态必须是类而不是内联底色：内联会压过 :hover，
+   两颗按钮就都变成按不动的死样子。 */
+.chip.on {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+.chip.on:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* ============================================================
+ * 4 · 产品窗口
+ *
+ * 几何逐项抄自 apps/desktop，不是眼量的近似值——差 2px 就不像同一个产品：
+ *   侧栏宽 256px（lib/sidebar-layout 的 SIDEBAR_DEFAULT_WIDTH）；
+ *   侧栏左缘 10px = 容器 2px（p-0.5）+ 药丸内 8px（p-2），字标那行的
+ *     pl-2 同在这个容器里，所以字标与行首痕迹是同一条线；
+ *   行高 32px、内边距 8px、行首 16px 等宽槽内放 14px 痕迹（sidebar-row.tsx）；
+ *   子行缩进 24px（SIDEBAR_SUB_ROW_INDENT = pl-6）；
+ *   分组标签 12px、/70 弱对比（ui 的 SidebarGroupLabel）；
+ *   页头 40px（page-shell 的 --page-shell-header-height），标题 14px/500；
+ *   输入框圆角 18px（rounded-2xl）、发送钮 28px（InputGroupButton 的 icon-sm）。
+ *
+ * 侧栏 12px、聊天与输入框 14px：产品里这两处本就是 text-xs 与 text-sm。
+ * 统一成一个字号会让边栏抢走正文的位置——密度也是层级的一部分。
+ * ============================================================ */
+/* `flex: 0 1 auto` + `min-height: 0`：视口一矮，窗口先被压扁，而不是
+   顶穿上面那条系统菜单栏。`justify-content: center` 的容器里，超长的
+   `flex: none` 子项会向两头同时溢出——溢出的上半截正好压在菜单栏上。
+   压扁之后内容由 `.chat` 自己滚，所以压扁不等于截断。 */
+.window {
+  position: relative;
+  z-index: 2;
+  flex: 0 1 auto;
+  min-height: 0;
+  width: min(960px, 73%);
+  height: min(780px, calc(100vh - 200px));
+  display: flex;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  box-shadow:
+    0 0 0 1px rgba(27, 26, 22, 0.1),
+    0 2px 6px rgba(27, 26, 22, 0.1),
+    0 44px 90px -30px rgba(27, 26, 22, 0.55);
+}
+
+.win-sidebar {
+  /* ── 侧栏只有一条左缘 ────────────────────────────────────────
+   * 10px = 容器 2px + 药丸内 8px。产品里 SidebarHeader / SidebarGroup /
+   * SidebarFooter 一律 `p-0.5`，SidebarMenuButton 一律 `p-2`，字标那行的
+   * `pl-2` 也落在同一个容器里——字标、New chat、分组标签、每条 chat 的
+   * 行首痕迹共用这一条线，于是「对齐」不是量出来的，是推导出来的。
+   * 两个数就有两条线，而两条线里必有一条是错的。
+   * ────────────────────────────────────────────────────── */
+  --sidebar-pad: 2px;
+  --sidebar-gutter: 8px;
+
+  flex: none;
+  width: 256px;
+  display: flex;
+  flex-direction: column;
+  background: var(--app-sidebar);
+  border-right: 1px solid var(--app-border);
+}
+
+/* mac 把折叠钮浮在红绿灯旁，字标因此让到下一行——那条 40px 是窗口的
+   拖拽带，不是产品的地界。 */
+.traffic {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 12px;
+  flex: none;
+}
+.traffic i {
+  width: 11px;
+  height: 11px;
+  border-radius: 9999px;
+  display: block;
+}
+.traffic .icon-slot {
+  margin-left: 6px;
+}
+
+/* 真值：`flex h-12 items-center px-2` 里放一张 `h-8 w-auto` 的字标
+   （app-sidebar.tsx + lib/brand.ts）。48px 的行配 32px 的图——字标是这块屏
+   上唯一的品牌落点，缩到 19px 就成了一行小字，而不是一个标识。 */
+.brand {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 48px;
+  /* 字标是容器的直接子级而非行，所以两段自己相加——落点仍是那一条线。 */
+  padding: 0 calc(var(--sidebar-pad) + var(--sidebar-gutter));
+}
+.brand img {
+  margin-right: auto;
+}
+
+/* 28px 命中区里放 16px 痕迹：搜索、通知、折叠、第三栏开合共用这一档，
+   它们同处一条基线，尺寸各写各的肉眼立刻看得出台阶。 */
+.icon-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border-radius: 6px;
+  color: var(--app-muted-fg);
+}
+
+.sidebar-nav {
+  flex: none;
+  padding: 0 var(--sidebar-pad) 4px;
+}
+/* 真侧栏是滚的。滚动条藏起来是因为这是一张产品照，不是因为列表到此为止——
+   Show more 放进来的两行仍然到得了。 */
+.sidebar-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 0 var(--sidebar-pad);
+}
+.sidebar-scroll::-webkit-scrollbar {
+  display: none;
+}
+.sidebar-foot {
+  flex: none;
+  padding: 4px var(--sidebar-pad) 6px;
+}
+
+.group-label {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 var(--sidebar-gutter);
+  font-size: 12px;
+  color: var(--app-muted-fg);
+}
+
+/* ── 行：一套词汇，三个宿主 ────────────────────────────────────────
+ * 根级导航、Project 折叠区里的 chat、根级 Chats 里的 chat 共用这一条。
+ * 缩进已经把「我是子行」说完了，行高再说一遍就是第二种说法。
+ * 行首那一格不改颜色：agent 的 logo 要自陈其色（claude 通体品牌橙、
+ * kimi 一点品牌蓝），一旦在这里统一涂灰，四家就成了同一家。
+ * ────────────────────────────────────────────────────────── */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 32px;
+  padding: 0 var(--sidebar-gutter);
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--app-fg);
+  font-size: 12px;
+  text-align: left;
+}
+.row.sub {
+  padding-left: 24px;
+}
+.row.dim {
+  color: var(--app-muted-fg);
+}
+button.row {
+  cursor: pointer;
+}
+button.row:hover,
+.row.on {
+  background: var(--app-accent);
+}
+.row.on {
+  font-weight: 500;
+}
+.mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.emoji {
+  font-size: 13px;
+  line-height: 1;
+}
+.row .title {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.win-main {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.win-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--app-border);
+}
+.win-title {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 真聊天窗里消息压在输入框上方，不是顶在标题下——顶对齐会在
+   中间留一块死白，那块白不是留白，是「这里本该有内容却没有」。 */
+/* 真聊天窗里消息压在输入框上方，不是顶在标题下——顶对齐会在中间留一块
+   死白，那块白不是留白，是「这里本该有内容却没有」。
+   贴底用 `margin-top: auto` 而不是 `justify-content: flex-end`：后者一旦
+   溢出，顶部那几条会被滚动条够不着（flex 溢出的老毛病），于是「压在底部」
+   与「滚得动」二者只能得一。滚动条藏起来是因为这是一张产品照。 */
+.chat {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 20px 24px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.chat::-webkit-scrollbar {
+  display: none;
+}
+.chat > :first-child {
+  margin-top: auto;
+}
+
+.bubble {
+  margin-left: auto;
+  max-width: 74%;
+  border-radius: 12px;
+  background: var(--app-accent);
+  padding: 11px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+}

@@ -4,13 +4,15 @@ Next.js 16 (App Router, static export) + plain CSS + TypeScript
 
 <directory>
 app/ - 路由与页面 (2 页: `/` 首页, `/changelog` 更新日志)
-components/ - 页面构件 (7 个: hero / agents-section / apps-section / fork-band / site-footer / theme / icons)
-components/reels/ - 正文里两台会动的示意图 (2 个: agents / apps；见其 README)
+app/styles/ - 全站样式，按关注点拆成 7 项 (tokens / base / hero/ / apps/ / reel / bands / motion；见其 README)
+components/ - 页面构件 (8 个: hero / agents-section / apps-section / fork-band / site-header / site-footer / theme / icons)
+components/reels/ - 正文里那台会动的示意图 (1 个: agents；见其 README)
+components/apps/ - Apps 一节的四台真机与那只换挡杆 (6 个；见其 README)
 components/window/ - 首屏那台机器 (4 个: 外壳 / 对话 / 输入框 / 模型面板；见其 README)
-lib/ - 数据与解析 (2 个: agents 演示数据, changelog 解析)
+lib/ - 数据与解析 (3 个: agents 演示数据, body-map.json 人体路径, changelog 解析)
 content/ - 构建期内容快照 (changelog.md)
 scripts/ - 构建前置 (sync-changelog.mjs)
-public/ - 品牌资产 (app-icon.png, mark.png, wordmark.png, wordmark-dark.png)
+public/ - Brand assets (app-icon.png, mark.png, wordmark.png, wordmark-dark.png, hero-bg-light.png, hero-bg-dark.png)
 </directory>
 
 <config>
@@ -48,7 +50,9 @@ postcss.config.mjs - 空管道；本站不用 Tailwind
 这件事没有发生的余地：它们本来就靠的是同一个数。
 
 正文相对舞台边缘再让 `--gutter`（8px）：卡片是一块表面，文字不该贴着它的
-圆角起头；header 与正文让的是同一个量，所以共用同一条竖线。
+圆角起头；header 与正文让的是同一个量，所以共用同一条竖线。这条竖线写成
+`--edge = --bleed + --gutter`，`.wrap` 与 `.site-header--framed` 都读它——
+原来两处各算了一遍 `calc(...)`，同一条边界有两份定义，迟早分叉。
 
 `--bleed` 必须用 `@property` 注册成 `<length>`。未注册的自定义属性在
 `getComputedStyle` 里原样返回记号流（拿到 `"min(120px, 6.5vw)"` 而不是
@@ -56,9 +60,37 @@ postcss.config.mjs - 空管道；本站不用 Tailwind
 好看，只是那台机器再也不往里收了。不支持 `@property` 的浏览器取到字符串，
 `parseFloat` 落回 0：不收缩，但不塌。
 
-正文因此没有 `max-width` 上限，宽度随视口走。行长改由文字自己封顶
-（`.entry` 第二栏 72ch、几段正文 56ch）——容器宽了不等于句子该变长，
-这两件事本来就该分开管。
+正文因此没有 `max-width` 上限，宽度随视口走。首页的长段落仍由文字角色控制
+行长；Changelog 的简介与条目正文则占满可用栏宽，因为它们是短句与逐条扫描的
+产品记录，提前封顶只会制造空白并造成不必要的换行。
+
+## 站点 chrome：一个组件，两层皮
+
+`site-header.tsx` 是全站唯一的 header。首页那条随桌面收缩浮出的带子
+（`--stage`）与 changelog 那条常驻的横条（`--framed`）是同一段 DOM 的两层皮：
+前者高度等于上缘让出的量、跟着收缩显影，后者定高 78px、下缘一条发丝线。
+原来这两处各内联了一份，于是同一条导航长出了两副骨架——而先过时的那份
+没人会发现。
+
+一条带子上只允许一种控件高度：文字链、品牌文字与 CTA 一律 **32px**。
+32 不是新数，产品自己那两颗 chip 就是 32（`.chip`），站点 chrome 跟着它走，
+「网站」与「产品」于是落在同一条基线上。原来那一排是 30 / 21.75 / 34 / 36
+四种高度，四个数里没有两个对得上，眼睛读出来的是一堆东西，不是一条导航。
+
+导航与动作之间隔一条 `1×16` 的发丝线：左边是「去哪」，右边是「做什么」。
+没有它，四样东西只是排成一行，而不是分成两族。
+
+带子上不再挂那句 "the workshop that builds itself"——一句散文卡在一排标签
+中间，跟左右两族都不同族，何况下面那台机器正在说同一句话。它现在只活在
+`metadata` 里，那是它该在的地方。
+
+窄屏（≤900px）不再把这条带子 `display: none`。桌面隐喻在 390 上不成立，
+但「回到顶 / 去下载」这件事仍然成立：同一段 DOM 改成一条 56px 的普通横条，
+两条文字链让位，CTA 整句留着（连按钮只占 169px，放得下）。
+
+The footer is a compact text colophon, not a second site map. The MIT statement anchors the
+left edge; Changelog, Docs, GitHub, Issues, and Download sit in one dot-separated row on the
+right. On narrow screens the two groups stack intact, preserving reading order and touch clarity.
 
 ## 首屏
 
@@ -66,12 +98,21 @@ postcss.config.mjs - 空管道；本站不用 Tailwind
 钉住并从满幅收成一张内嵌卡片，上缘让出来的带子里浮出站点 header，
 正文从它上面滑过去。
 
+The desktop wallpaper follows the active theme: `hero-bg-light.png` in light mode and
+`hero-bg-dark.png` in dark mode. Both images cover the scene from the center so the
+window remains framed by the open sky across viewport sizes.
+
+Theme mode defaults to `auto`: the boot script resolves the system preference before first
+paint, and the root runtime follows later OS changes. Manual light/dark choices remain stored;
+returning to auto removes that override. The single visible toggle lives in the demo menu bar,
+immediately left of the date, where theme is part of the simulated desktop rather than site nav.
+
 收缩改的是盒子的内边距与圆角，不是 `transform: scale`——scale 会把整台
 机器连同窗口里的文字一起重采样，字会糊。三个 CSS 变量默认 0，也就是满幅：
 脚本没跑起来时首屏是完好的，而不是一个缩了一半的中间态。
 
-header 的显影不跟收缩进度走，跟「带子装不装得下它」走：带子矮于 48px
-（那颗 36px 的 CTA 加一点呼吸）时它一个字都不露，装下了才在 22px 的行程里
+header 的显影不跟收缩进度走，跟「带子装不装得下它」走：带子矮于 44px
+（那一排 32px 控件加一点呼吸）时它一个字都不露，装下了才在 22px 的行程里
 落定，顺带落 7px 滑进来。原来那条随进度线性显影的斜坡，会让一条被切掉上下
 沿的横条正压在系统菜单栏上——两样东西都读不成。透明的那一段同时把
 `pointer-events` 关掉：看不见不等于点不到。
@@ -101,15 +142,18 @@ header 的显影不跟收缩进度走，跟「带子装不装得下它」走：�
 它下面。经典滚动条会挤窄视口、内容自己就让开了，覆盖式不会，只能由内容
 自己退一步。
 
+The wallpaper adds real texture behind the menu bar, so its small type uses a medium
+weight, near-solid menu labels, and theme-aware glass. Legibility comes from the surface
+and type together rather than a heavy text shadow.
+
 Plan 预览的高度跟着窗口一起长（`clamp(150px, 100vh − 750px, 280px)`）。
 窗口在高屏上长到 780，转录的内容却是固定的那几行，于是空出两百多像素
 ——等于把外面的空白搬进了里面。把多出来的高度还给 Plan：它本来就是个
 带渐变的预览，能多露几行只是更诚实。
 
-站点自己的 header 与 footer（首页与 changelog 两处）挂的是应用图标那枚
-圆角方章（`app-icon.png`，自 `apps/desktop/resources/icon.png` 裁掉四周
-104px 的 macOS 出血留白）。
-字标只留在窗口里的侧栏——那本来就是产品自己在那个位置显示的东西。
+站点 header 直接渲染原生文字 `Bottega`，不依赖图标或字标图片；主题变化只切换
+文字颜色。窗口侧栏继续显示产品自身的图片字标——它属于 demo 的界面内容，
+不与站点 chrome 混用。
 
 四家 agent 的标记连同填色一并抄自 `packages/model-logos/inline.ts`：
 claude 通体品牌橙，kimi 主体随语境、右上一点品牌蓝。行首那一格因此不许
@@ -150,47 +194,79 @@ slug 本身。这些都是 `browserModels` 与 `capabilities.modelOptions` 里�
 builds"），底下不再挂一行注解——注解要说的话，上面那台机器正在演，
 写下来只是把演过的再讲一遍。
 
+The switcher sits over the landscape's highest-detail area. Its dark glass therefore has
+an explicit alpha border and layered shadow, while the selected tab gets the brighter
+inner surface; the labels stay readable without turning the control into an opaque bar.
+
 ## Agents 一节
 
-右侧那台机器是会动的，一镜到底：先给整台机器（对话区是骨架屏，此刻要看
-的不是它），推近到侧栏，再自上而下摇下去，让每一行行首那枚 agent logo
-一个一个走过镜头。这一节要讲的话就是这个动作本身，所以右侧文字只需要说
+右侧那台机器是会动的，一镜到底：镜头开在侧栏左上角，自上而下摇到底，让
+每一行行首那枚 agent logo 一个一个走过镜头，然后停住（对话区是骨架屏，此刻
+要看的不是它）。这一节要讲的话就是这个动作本身，所以右侧文字只需要说
 「有谁」和「谁付钱」，不必再解释「你怎么知道是谁干的」——原来那三条勾选
 清单因此整块撤掉了。
 
-镜头由七个 CSS 变量钉住（`--cam-out` / `--cam-out-x` / `--cam-out-y` /
-`--cam-in` / `--cam-in-x` / `--cam-in-y` / `--cam-pan-y`），都是从画框的
-540×400 与机器的 720×420 推出来的；改画框只改这七个数，`@keyframes` 一行
-都不用动。
+**首帧即论点**。开场不给全景：全景在第一眼上读不出一个字，却要占掉近四秒。
+更要紧的是，「首帧」从来不是时间轴的 0%，是**观众看见的第一帧**——一段
+`infinite` 从页面加载起就在视口外空转，等人滚到这儿，镜头停在哪一格全看
+随机数。所以这一段破了 reels 的「无脚本」成规：十来行 IntersectionObserver，
+镜头在被看见的那一刻才走，第一次相交之后 observer 自己退场。用十来行赎回
+「这一节第一眼说什么」，这笔买卖划算。
+
+**不循环**。摇到底就停在那儿（`forwards`）。一段永动的循环在说「我是个
+装饰」，而这台机器在做的是一次陈述——说完该停在结论上，而不是把人拽回
+开头再演一遍；演第二遍不会多说出一个字。原来那段「拉远给一眼整机」是
+循环回开头前的过门，循环一去，过门就是纯粹的多余动作，三个 `--cam-out-*`
+也随之一并删掉：没人读的变量比没人跑的代码更坏，它看起来还像个真值。
+
+静息 `transform` 就是 `@keyframes` 的 0%。脚本没跑（SSR、hydrate 之前、JS
+挂了）、`prefers-reduced-motion` 关掉动效、等着起播——三种时刻留下的都是
+同一格，一次跳变都没有。降级不是退到一张坏图，是退到首帧。
+
+镜头由四个 CSS 变量钉住（`--cam-in` / `--cam-in-x` / `--cam-in-y` /
+`--cam-pan-y`），都是从画框的 580×360 与机器的 720×420 推出来的；改画框只改
+这四个数，`@keyframes` 一行都不用动。画框加宽时 `--cam-in` 不跟着涨：涨了
+只是整体放大，不涨才是真的把视野放宽——右边多露出的那截对话区，正是
+「侧栏只是这台机器的一栏」这句话的证据。
 
 画框底色是**桌面色**（`--ground-2`）而不是机器色，机身自己带一圈边与影。
-两者同色时全景那一格读起来是「一台机器浮在白里」——letterbox 与机身分不出
-边界，于是它既不像一台机器，也不像一张图。
+两者同色时读起来是「一台机器浮在白里」——letterbox 与机身分不出边界，
+于是它既不像一台机器，也不像一张图。
 
-推近落在机器的**左上角**上（`--cam-in-x` 26px、`--cam-in-y` 20px）：左边与
-上边各留一条桌面，于是「镜头推到了那台机器的一角」这件事自己说得出口。
-满幅的侧栏说不出这句话——人看不出镜头此刻在哪儿，那就不是一次推近，
-只是换了一张图。往下摇的全程这条桌面都留着，方向感因此不断线。
+镜头开在机器的**左上角**上（`--cam-in-x` 26px、`--cam-in-y` 20px）：左边与
+上边各留一条桌面，于是「镜头就在那台机器的一角」这件事自己说得出口。
+满幅的侧栏说不出这句话——人看不出镜头此刻在哪儿，那就不是一台机器的一角，
+只是一张图。往下摇的全程这条桌面都留着，方向感因此不断线。
 
-文在左、图在右：文吃余量，图定宽 540px。460 那一版里图只占内容宽的 38%、
-高度又比文矮四分之一，两边分量对不上，读起来像文字旁边配了一张缩略图。
-图定宽的另一个原因是镜头那七个数按 540 算，栏一浮动它们就全不作数。
+**这台缩影只有一个缩放比：0.75**（行高 32→24、行首槽 16→12）。字标那行
+原本自己写了 28px 的行与 13px 的字标——0.583 与 0.5，两个谁也不认识谁的
+比例，于是缩影里最该被认出来的那个标识反倒缩得最狠，与首屏那台机器对不上。
+归队之后是 36px 的行装 20px 的字标，上下各留 8px：与产品「48px 行装 32px
+字标」的留白一字不差。
+
+文在左、图在右：文吃余量，图定宽 **580×360**。540×400 那一版分量够了，却比
+左边那栏文字高出 41px——图与文各站各的高度，两栏就没有共同的下缘，读起来
+是两块拼在一起而不是一件事的两面。580×360 是从文字块量出来的：段落封在
+56ch，所以文字栏只要不窄于 565px，这块文字就恒是 359px 高；1440 视口下 580
+的图恰好给文字栏留 567px，于是图高 360 与文高 359 落在同一条线上。图定宽的
+另一个原因是镜头那四个数按 580 算，栏一浮动它们就全不作数。
 DOM 顺序即阅读顺序（文在前、图在后），不靠 `order` 把两栏倒回来——
 堆叠之后先读到的仍该是标题。
 
+两张图不共用尺寸，只共用形状（圆角、桌面底色、定宽居中、溢出裁掉）：
+Agents 那栏文字 359px 高，Apps 那栏 509px，共用一个尺寸只能保证其中一节
+是错的。
+
 两栏只在 1300px 以上成立，这个数是从标题倒推的：内容宽 ≈ 0.87vw − 16，
-减去 540 + 90 之后要给 56px/16ch 的标题留下约 520px。1250px 上文字栏只剩
-427px，标题会碎成四行；1000px 上更只剩 220px，一行放不下四个词。堆叠不是
+减去图栏与 90 之后要给 56px/16ch 的标题留下足够宽度。1250px 上文字栏只剩
+四百多，标题会碎成四行；1000px 上更只剩 220px，一行放不下四个词。堆叠不是
 降级，是这个宽度下唯一还给两边留着呼吸的排法。
 
 列宽写在样式表里（`.split` / `.split-narrow`）而不是内联——内联会压过窄屏
 那条 `1fr`，于是手机上两栏永远拆不开，Fork 带原来就是这个毛病。
 
-整段是一条 keyframes，没有 hook 也没有脚本，服务端渲染即可。不写
-`will-change`：那会把这一层钉成一张固定分辨率的位图，推近之后字就糊了；
-让浏览器在每段停顿里自己重新栅格化，停住时才是清楚的。
-`prefers-reduced-motion` 下动效整个停掉，静息态就是「推近到侧栏」那一格
-——留下的该是这一节要说的话，而不是一张什么都看不清的全景。
+不写 `will-change`：那会把这一层钉成一张固定分辨率的位图，推近之后字就糊了；
+让浏览器在停顿里自己重新栅格化，停住时才是清楚的。
 
 ## Apps 一节
 
@@ -218,6 +294,17 @@ delay 各自错开一格（`-20s / -15s / -10s / -5s`）：写四条各自的 ke
 
 图在左而 DOM 里图也排在前——它 `aria-hidden`，本就不在阅读顺序里；堆叠时由
 一条 `order: 1` 把它退到标题之后，手机上先读到的仍是那句话。
+
+## Fork band
+
+The closing headline stays on one line wherever the desktop and tablet canvas can support
+it, then returns to natural wrapping below 640px. The former “Free · MIT · Local-first”
+eyebrow repeated the body copy and has been removed, leaving the claim as the section's
+single visual anchor.
+
+The build steps live in a recognizable terminal rather than a generic code card: a restrained
+titlebar, macOS traffic lights, aligned prompts, and a separate output row establish the command
+hierarchy without competing with the download action.
 
 ## Changelog
 

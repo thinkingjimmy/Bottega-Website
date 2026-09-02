@@ -3,8 +3,9 @@
  *          apps/desktop/src/lib/settings-client.ts 与 chat-model-selection.ts
  * [OUTPUT]: 对外提供 AgentId/BACKENDS/MODELS/MODEL_OPTIONS/CHATS/PROJECT/
  *           APPS/PINNED_APPS/LEDGER_APP、defaultTurn 与
- *           effortLabel/compactModelLabel，以及 LEDGER
- * [POS]: Bottega-Website 的演示数据唯一真相源，被 hero 与 agents 两处消费
+ *           effortLabel/compactModelLabel，以及四只 App 的表面数据：
+ *           LEDGER/LEDGER_SUM/LEDGER_LONG/CATEGORY_SHARE/DAILY_SPEND/KANBAN_LANES/MUSCLE_HEAT
+ * [POS]: Bottega-Website 的演示数据唯一真相源，被 hero、agents 与 apps 三处消费
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
@@ -443,7 +444,12 @@ export const CHATS: Chat[] = [
   },
 ];
 
-/** 记账本 App 的示例行。列取自 Bottega-app-expense-tracker 的 base.json。 */
+/* ── 记账本 App 的示例账 ──────────────────────────────────────────
+ * 列取自 Bottega-app-expense-tracker 的 base.json：日期 / 金额 / 分类 / 备注。
+ * 八行这一份是 hero 那台机器的账——它整份上屏，页脚的记录数与合计都按它算。
+ * Apps 一节那台机器高得多，装得下十八行，于是在下面接着长，而不是另起一份：
+ * 两份账各写各的，改一笔就要改两处，第三处必然漏掉。
+ * ────────────────────────────────────────────────────────── */
 export const LEDGER = [
   { date: "08-26", amount: "43.20", category: "Transit", note: "Didi, airport run" },
   { date: "08-25", amount: "1,299.00", category: "Equipment", note: "Apple Store" },
@@ -456,3 +462,126 @@ export const LEDGER = [
 ];
 
 export const LEDGER_SUM = "2,383.20";
+
+/** Apps 一节那台机器 780 高，表格区正好装得下十八行加一条汇总。 */
+export const LEDGER_LONG = [
+  ...LEDGER,
+  { date: "08-18", amount: "55.00", category: "Transit", note: "Airport express" },
+  { date: "08-17", amount: "238.00", category: "Groceries", note: "Weekend run" },
+  { date: "08-16", amount: "680.00", category: "Equipment", note: "Monitor arm" },
+  { date: "08-15", amount: "32.00", category: "Eating out", note: "Coffee, twice" },
+  { date: "08-14", amount: "164.00", category: "Health", note: "Pharmacy" },
+  { date: "08-13", amount: "72.00", category: "Transit", note: "Metro top-up" },
+  { date: "08-12", amount: "415.00", category: "Equipment", note: "Mechanical keyboard" },
+  { date: "08-11", amount: "188.00", category: "Groceries", note: "Hema Fresh" },
+  { date: "08-10", amount: "64.00", category: "Eating out", note: "Noodles, late" },
+  { date: "08-09", amount: "240.00", category: "Health", note: "Dentist" },
+];
+
+/** 十八行逐行加出来的合计。写一个对不上的数，账本就不再是账本。 */
+export const LEDGER_LONG_SUM = "4,531.20";
+
+/* ── 分析视图的两张图 ────────────────────────────────────────────
+ * base.json 的 analysis 视图写着两张：分类占比（饼）与每日支出（柱）。
+ * 两组数都是从 LEDGER_LONG 那十八行算出来的，不是画着好看的形状——图与表对不上，
+ * 这张图就成了装饰。配色取 kanban-fields.ts 的序位配色，与产品同口径。
+ * ────────────────────────────────────────────────────────── */
+export const CATEGORY_SHARE = [
+  { label: "Equipment", value: 2394, tone: "#8b5cf6" },
+  { label: "Groceries", value: 620.5, tone: "#22c55e" },
+  { label: "Health", value: 600, tone: "#ef4444" },
+  { label: "Transit", value: 298.2, tone: "#f59e0b" },
+  { label: "Eating out", value: 234.5, tone: "#3b82f6" },
+];
+
+/** 每日支出：按日分桶求和，取最近九天，归一到当期峰值。 */
+export const DAILY_SPEND = [0.08, 0.62, 0.14, 0.24, 0.05, 1, 0.36, 0.4, 0.19];
+
+/* ── 开发看板 App 的示例板 ────────────────────────────────────────
+ * 列与选项取自 Bottega-app-dev-kanban 的 base.json：任务看板按 status 分组，
+ * 六个状态里露出中间三个——994 宽的机器正好装得下三条 288 的 lane。
+ * 三列长短不一是有意的：真的板子本就长短不一，排成一样高读起来是一张
+ * 示意图，不是一块在跑的板。9 / 3 / 6 自己也在说话——在做的最多，
+ * 等评审的最少，做完的攒着。
+ *
+ * `title` 与 `skeleton` 二选一：写满字的板会把读者拽去读字，而这一节要
+ * 他看的是「两类结构化记录在列之间流动」这个形状。骨架条的宽度是
+ * 「这张卡本来会有多长」的示意，不是随机数。
+ * ────────────────────────────────────────────────────────── */
+export type KanbanChip = { label?: string; text: string; tone?: KanbanTone };
+export type KanbanTone = "blue" | "amber" | "green" | "violet" | "red" | "teal";
+export type KanbanCard = { title?: string; skeleton?: string[]; chips: KanbanChip[] };
+export type KanbanLane = { id: string; name: string; tone: KanbanTone; count: number; cards: KanbanCard[] };
+
+const TASK: KanbanChip = { text: "Task", tone: "blue" };
+const FROM_SITE: KanbanChip = { label: "Source", text: "Bottega" };
+
+export const KANBAN_LANES: KanbanLane[] = [
+  {
+    id: "in_progress",
+    name: "In progress",
+    tone: "green",
+    count: 9,
+    cards: [
+      { title: "Port the settings panel under Agents", chips: [TASK, FROM_SITE] },
+      { skeleton: ["88%", "64%"], chips: [TASK, { text: "+2" }] },
+      { title: "Cover the CLI import path with integration tests", chips: [TASK, { label: "Doc", text: "todo/08-19-acp.md" }] },
+      { skeleton: ["76%"], chips: [TASK] },
+      { skeleton: ["94%", "52%"], chips: [TASK, { text: "+1" }] },
+      { title: "Audit the auto-update flow", chips: [TASK, FROM_SITE] },
+      { skeleton: ["82%", "58%"], chips: [TASK] },
+      { skeleton: ["68%"], chips: [TASK, { text: "+3" }] },
+      { title: "Explain the ACP handshake in the docs", chips: [TASK, FROM_SITE] },
+    ],
+  },
+  {
+    id: "review",
+    name: "Review",
+    tone: "violet",
+    count: 3,
+    cards: [
+      { title: "Rename /settings/backends without breaking bookmarks", chips: [TASK, FROM_SITE] },
+      { skeleton: ["92%", "58%"], chips: [TASK, { text: "+1" }] },
+      { title: "Trim the onboarding copy to 42 words", chips: [TASK] },
+    ],
+  },
+  {
+    id: "done",
+    name: "Done",
+    tone: "red",
+    count: 6,
+    cards: [
+      { title: "Define the install protocol", chips: [TASK, FROM_SITE] },
+      { skeleton: ["84%", "50%"], chips: [TASK] },
+      { skeleton: ["70%"], chips: [TASK, { text: "+2" }] },
+      { title: "Split publish identity from fetch source", chips: [TASK, FROM_SITE] },
+      { skeleton: ["90%"], chips: [TASK] },
+      { title: "Ship the 0.2.0 release notes", chips: [TASK, { label: "Doc", text: "CHANGELOG.md" }] },
+    ],
+  },
+];
+
+/* ── 健身日志的肌群热度 ──────────────────────────────────────────
+ * 键是 gui/data/body-map.json 里真实的肌群 id，值是那四档热度。
+ * 0 不是「没数据」而是「一直在被跳过」——臀与腘绳留在 0 上，正是这只 App
+ * 要说的那句话：告诉你哪块你一直没练。
+ * ────────────────────────────────────────────────────────── */
+export const MUSCLE_HEAT: Record<string, number> = {
+  chest: 4,
+  anterior_lateral_deltoids: 3,
+  biceps: 2,
+  abs: 3,
+  quadriceps: 4,
+  obliques: 1,
+  forearms: 2,
+  triceps: 1,
+  calves: 1,
+  neck: 0,
+  upper_back_traps: 2,
+  adductors_hip_flexors: 0,
+  lats: 3,
+  posterior_deltoids: 2,
+  lower_back: 1,
+  glutes: 0,
+  hamstrings: 0,
+};

@@ -1,0 +1,173 @@
+/**
+ * [INPUT]: 依赖前面每一支定义的类名
+ * [OUTPUT]: 进场动效、prefers-reduced-motion 的总闸，以及 ≤900 的窄屏版
+ * [POS]: 必须最后被引入：它靠「排在后面」去覆盖前面的规则，换个位置就有一半不生效
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ============================================================
+ * 6 · 动效
+ * 进场一次，然后留一点活气。不做滚动驱动的显隐——那类写法一旦
+ * 没触发，元素就永久停在 opacity:0，是「看起来更高级反而全白」。
+ * ============================================================ */
+@keyframes bt-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: bt-rise 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.rise-2 {
+  animation-delay: 0.12s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .shimmer,
+  .spark,
+  .reel-cam,
+  .sk {
+    animation: none !important;
+  }
+  .rise {
+    opacity: 1;
+    transform: none;
+  }
+  /* 换页与那条进度线一并停。脚本在 apps-stage.tsx 里也会读同一条查询，
+     于是「不再自动走」与「不再有动画」是同一个决定的两半。 */
+  .app-pane {
+    transition: none;
+  }
+  .app-switch button::after {
+    animation: none !important;
+  }
+  .stage {
+    will-change: auto;
+  }
+}
+
+/* ============================================================
+ * 7 · 窄屏
+ * 首屏在手机上不再演「一台桌面」——桌面这个隐喻在 390px 宽的
+ * 屏幕上不成立，硬演只会得到一个看不清的缩略图。改为：跑道收成
+ * 一屏、不再收缩，窗口竖过来只留聊天区。
+ * ============================================================ */
+@media (max-width: 900px) {
+  :root {
+    --bleed: 16px;
+  }
+  .hero-pin {
+    height: auto;
+  }
+  .stage {
+    position: relative;
+    height: auto;
+    padding: 0 !important;
+  }
+  /* 桌面隐喻在 390 上不成立，但「回到顶 / 去下载」这件事仍然成立。
+     原来这条带子在窄屏是 display: none——手机上于是既没有导航，
+     也没有下载入口。这里不再让它是「让出来的那条」，而是一条普通横条。 */
+  .site-header--stage {
+    position: static;
+    height: 56px;
+    padding: 0 var(--edge);
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .site-header--framed {
+    height: 56px;
+  }
+  /* 390 上塞不下两条文字链加一颗长按钮。留下真正要按的那两样——
+     CTA 整句连按钮只占 169px，窄屏放得下，不必改口。 */
+  .site-header .nav-link,
+  .site-header .nav-rule {
+    display: none;
+  }
+  .scene {
+    height: auto;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .scene-body {
+    padding: 32px 16px 40px;
+    gap: 20px;
+  }
+  .window {
+    width: 100%;
+    height: 460px;
+  }
+  .win-sidebar {
+    display: none;
+  }
+  .split,
+  .split-figure-first,
+  .split-narrow {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  /* ── 窄屏：裁，不是缩 ────────────────────────────────────────
+   * 342 宽把 994 的机器整台塞进去要缩到 0.34，产品里的 12px 落成 4px——
+   * 那已经不是「小一点的界面」，是一张认不出内容的缩略图。
+   * 所以窄屏保住 0.58 这个比例，只把窗开小：342×450 的窗在机器坐标系里
+   * 是 590×776，整台几乎正好装下，一刀不用裁。
+   * 目录用 order 提到图前面：图 aria-hidden，本就不在阅读顺序里，
+   * 手机上先读到的仍该是那句话。
+   * ──────────────────────────────────────────────────────── */
+  .split-figure-first {
+    gap: 32px;
+  }
+  .desk {
+    margin-inline: calc(var(--edge) * -1);
+    padding: 16px var(--edge);
+    border-radius: 0;
+  }
+  /* --z 一个字不动：窄屏若跟着缩，994 的机器要落到 0.34，产品里的 12px
+     就成了 4px——那已经不是「小一点的界面」，是一张认不出内容的缩略图。
+     只把画框收窄，机器照旧按 0.515 画，于是窗小了、字没小：
+     读得出的三分之二台机器，比读不出的整台说得多。 */
+  .app-stage {
+    width: 100%;
+  }
+  .app-switch {
+    padding-top: 24px;
+    gap: 6px;
+  }
+  /* 方阵留住，限定语收起：167 宽的格子里那句 mono 要断成三行，
+     方阵就变成了一堵字墙。名字留住，限定语交还给正文。 */
+  .app-switch-shape {
+    display: none;
+  }
+  .section {
+    padding: 88px 0 0;
+  }
+  .band {
+    padding: 48px 28px;
+  }
+  .band .split {
+    gap: 32px;
+  }
+  .entry {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .footer-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .footer-links {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .fork-title {
+    white-space: normal;
+  }
+}

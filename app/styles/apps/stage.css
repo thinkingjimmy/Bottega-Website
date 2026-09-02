@@ -1,0 +1,193 @@
+/**
+ * [INPUT]: 依赖 ../../tokens.css 的 --ground-2、--surface、--ink-* 与 --line-2
+ * [OUTPUT]: 桌子（.desk）、画框与四台机器的叠放（.app-stage/.app-pane）、目录即开关（.app-switch）
+ * [POS]: Apps 一节的骨架。四台机器各自的表面在同目录另外三支里
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ── 一次只放一台机器 ────────────────────────────────────────────
+ * 四只 App 的表面全部按真值画在 994.29×830 的自然尺寸上，由画框统一缩到
+ * 0.58——产品里的 12px 在这里仍是 12px，只是一起退后了四成。
+ *
+ * 三个数都不是凑的：
+ *   994 > 900 → Fitness Log 按真规则展成两栏（图版 + 动作目录）
+ *   994 > 860 → Design Canvas 按真规则把 .button-label 放出来
+ *   780       → 图版固定开销约 375，人体图按 min(52vh, 400px) 吃掉 400，
+ *               775 就是「整幅图版连图例都在框内」的临界值。再矮一格，
+ *               热力图就得滚动，图例落到框外
+ * 于是「图矮一点」只能由缩放比去收，不能由画框去裁：裁掉的是内容，
+ * 缩掉的只是观看距离。
+ *
+ * 四台叠在同一只画框里靠透明度换页，不用 display:none——那样每次切换
+ * 都要重排一次 830px 的版面，改透明度只花一次合成。
+ * ────────────────────────────────────────────────────────── */
+.desk {
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  border-radius: 16px;
+  background: var(--ground-2);
+}
+/* 画框：机器按 1:1 画，只在这里退后一步。裁切与圆角归画框，
+   缩放归里面那一层——两件事写在同一个元素上，改一处就会动到另一处。
+   名字带 app- 前缀不是修辞：.stage 在这张表里已经归首屏那条 sticky 跑道所有，
+   撞名的后果不是样式冲突这么轻，是首屏整个塌掉。 */
+.app-stage {
+  /* 「图矮一点」只有这一个旋钮：画框尺寸与里面那台机器的缩放都由它推出，
+     于是两者不可能对不上。裁掉的是内容，缩掉的只是观看距离——所以是缩不是裁。 */
+  --z: 0.515;
+  position: relative;
+  width: calc(994.29px * var(--z));
+  height: calc(780px * var(--z));
+  overflow: hidden;
+  border-radius: 9px;
+}
+/* 每一台机器就是一格 994.29×780 的画布，原尺寸落笔，整体缩到 0.58。
+   尺寸写在这一层而不是写在 .dc / .ba / .fl 上：那三支各自带着
+   width:100% 的规则，同权重、后出现，会把这里的定宽悄悄压掉——
+   于是机器缩成一团，画框空着一大片。这一层是它们的画布，不是它们自己。
+   994.29×780 是四台的自然尺寸：994 > 900 触发 Fitness Log 真实的两栏展开，
+   994 > 860 触发 Design Canvas 真实的标签露出，780 是整幅图版连图例都留在
+   框内的下限——所以这两个数不动，动的只有 --z。
+   不画边也不落影：桌面色已经把机器托起来了，再套一圈框，读到的是
+   「一张被裱起来的截图」，而不是「一台摆在那儿的机器」。 */
+.app-pane {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 994.29px;
+  height: 780px;
+  transform: scale(var(--z));
+  transform-origin: 0 0;
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+.app-stage[data-active="0"] > .app-pane:nth-child(1),
+.app-stage[data-active="1"] > .app-pane:nth-child(2),
+.app-stage[data-active="2"] > .app-pane:nth-child(3),
+.app-stage[data-active="3"] > .app-pane:nth-child(4) {
+  opacity: 1;
+}
+
+/* ── 目录即开关 ────────────────────────────────────────────────────
+ * 正文尾巴上那份目录还在，但它不再只是目录——它是那台机器的换挡杆。
+ * 这一并解决了「四只 App 的名字该印在哪」：印在图下面就与目录重复，
+ * 只印在目录里图又认不出自己是谁；让目录去驱动图，一份名字同时干两件事。
+ *
+ * 目录钉在底边（margin-top: auto），于是两栏不只是「一样高」，而是上下
+ * 两条边都对齐——题与机器的上缘齐平，目录与机器的下缘齐平。中间那口气
+ * 是留白，不是没算准：文案改一行、字体换一档，它自己伸缩。
+ *
+ * 图标与名字并排一行、限定语独占一行铺满整格：图标若另占一列，限定语
+ * 就只剩 156px，四条里有两条要断成三行，方阵当场不齐。
+ * ────────────────────────────────────────────────────────── */
+.copy {
+  display: flex;
+  flex-direction: column;
+}
+.copy h2 {
+  /* 原来是 14ch（≈405px），比「Fully customizable.」这句话本身还窄，
+     标题永远断成两行——那不是排版决定，是一个没人核对过的数。 */
+  max-width: 20ch;
+  margin-bottom: 22px;
+  font-size: 52px;
+  line-height: 1.04;
+}
+.copy p {
+  max-width: 56ch;
+  font-size: 18px;
+  line-height: 1.62;
+  color: var(--ink-2);
+}
+.copy p + p {
+  margin-top: 18px;
+}
+
+/* 目录紧跟在正文后面，不再被 margin-top: auto 推到底边。
+   推到底边是为了让两栏共用下缘，可正文收短之后那口气长到了 136——
+   与其留一口读不出意思的气，不如把两栏的高度真正算齐（见上面 556 的来历），
+   于是目录只需要一个正常的段间距。 */
+.app-switch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 26px 0 0;
+  list-style: none;
+}
+.app-switch li {
+  display: flex;
+}
+.app-switch button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  padding: 12px 12px 15px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 160ms ease;
+}
+.app-switch button:hover {
+  background: color-mix(in srgb, var(--ground-2) 70%, transparent);
+}
+.app-switch button:focus-visible {
+  outline: 2px solid var(--ink-3);
+  outline-offset: 2px;
+}
+.app-switch-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.app-switch-icon {
+  font-size: 15px;
+  line-height: 1.4;
+}
+.app-switch-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ink-2);
+  transition: color 160ms ease;
+}
+.app-switch-shape {
+  font-size: 11.5px;
+  letter-spacing: 0.03em;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+.app-switch button[aria-pressed="true"] {
+  background: var(--surface);
+}
+.app-switch button[aria-pressed="true"] .app-switch-name {
+  color: var(--ink);
+}
+/* 进度那条发丝线靠选择器换位重启动画：data-active 一变，上一条规则失配、
+   动画随之撤销，新的一条重新起跑。不写在 button 上而写在 ::after 上，
+   是因为它是状态的旁注，不是按钮的一部分。 */
+@keyframes bt-tick {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.app-switch button::after {
+  content: "";
+  position: absolute;
+  inset: auto 12px 6px 12px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--line-2);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+.app-switch[data-auto="on"] button[aria-pressed="true"]::after {
+  animation: bt-tick 5s linear forwards;
+}
+
+/* ════════════════════════════════════════════════════════════════
+ * 四只 App 各自的表面。以下全部是 1:1 的真值，由上面那条 scale 统一缩小。
+ * ════════════════════════════════════════════════════════════════ */

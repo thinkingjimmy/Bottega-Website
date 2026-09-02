@@ -1,0 +1,221 @@
+/**
+ * [INPUT]: 无依赖；色值与字体全部自陈
+ * [OUTPUT]: 两套网站 token（暖纸 / 中性）、两只 GUI App 的纸面 token、字体栈、--bleed 与 --edge，以及 reset
+ * [POS]: 级联的最底层，必须第一个被引入——它之下的每一支都在读这里的变量
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ============================================================
+ * 0 · reset
+ * ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+/* ── --bleed 必须注册 ────────────────────────────────────────────
+ * 未注册的自定义属性在 getComputedStyle 里原样返回记号流（拿到的是字符串
+ * "min(120px, 6.5vw)" 而不是 "93.6px"），hero.tsx 读它算收缩终点会得到
+ * NaN，横向收缩于是整个失效——而且是静默失效：页面照样好看，只是那台机器
+ * 再也不往里收了。注册成 <length> 之后它在计算值阶段就落成 px。
+ * 不支持 @property 的浏览器仍取到字符串，parseFloat 落回 0：不收缩，
+ * 但不塌——降级而非损坏。
+ * ────────────────────────────────────────────────────────── */
+@property --bleed {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+/* ============================================================
+ * 1 · token
+ *
+ * 两套调色板并存，各管各的地界：
+ *   --ground/--ink/--line…  是「网站」的暖纸色系；
+ *   --app-*                 是「产品窗口」的中性色系，取值与
+ *                           packages/ui/src/styles/globals.css 的
+ *                           oklch 中性阶一一对应（1 0 0 → #FFFFFF，
+ *                           0.985 → #FAFAFA，0.922 → #E5E5E5，
+ *                           0.145 → #252525，0.556 → #737373）。
+ * 分成两套是有意的：首屏那台机器必须长得跟真产品一样，它不该
+ * 跟着营销页的暖色走；而营销页也不该被产品的中性灰拖成一张
+ * 后台管理界面。混成一套的那一刻，两边都会输。
+ * ============================================================ */
+:root {
+  color-scheme: light;
+
+  --ground: #ede9de;
+  --ground-2: #e5e0d1;
+  --surface: #f7f4ec;
+  --surface-2: #fcfaf5;
+
+  --ink: #1b1a16;
+  --ink-2: #514c42;
+  --ink-3: #7b7568;
+
+  --line: #dad3c2;
+  --line-2: #c7bea8;
+
+  --green: #4e9430;
+  --green-lit: #6ec84c;
+  --amber: #a96c05;
+  --amber-lit: #f5a000;
+
+  --shadow: 0 1px 2px rgba(27, 26, 22, 0.05), 0 18px 44px -18px rgba(27, 26, 22, 0.22);
+
+  --app-bg: #ffffff;
+  --app-sidebar: #fafafa;
+  --app-border: #e5e5e5;
+  --app-fg: #252525;
+  --app-muted-fg: #737373;
+  --app-accent: #f5f5f5;
+  --app-primary: #343434;
+  --app-primary-fg: #fafafa;
+
+  /* ── 两只带 GUI 的 App 自带的纸面 ──────────────────────────────
+   * Design Canvas 是暖中性的工作台，Fitness Log 是一本训练手册，取值各自
+   * 逐项抄自它们自己的 gui/styles.css。它们不跟产品的中性灰走，也不跟
+   * 营销页的暖纸走——四只 App 长得都不一样，正是这一节唯一的证据，
+   * 把它们的纸统一成一种色，这句话当场作废。
+   * ────────────────────────────────────────────────────── */
+  --dc-paper: #e9e8e2;
+  --dc-chrome: #f7f6f2;
+  --dc-panel: #ffffff;
+  --dc-recessed: #eeede7;
+  --dc-ink: #1e1f1b;
+  --dc-muted: #67685f;
+  --dc-disabled: #9b9c94;
+  --dc-line: rgba(30, 31, 27, 0.12);
+  --dc-accent: #c94f2f;
+  --dc-accent-ink: #fffaf7;
+  --dc-warning: #8b5b13;
+
+  --fl-bg: oklch(96.5% 0.014 84);
+  --fl-panel: oklch(99.2% 0.006 84);
+  --fl-ink: oklch(24% 0.022 60);
+  --fl-muted: oklch(51% 0.024 64);
+  --fl-dim: oklch(62% 0.022 66);
+  --fl-line: oklch(86% 0.02 78);
+  --fl-rule: oklch(32% 0.022 62);
+  --fl-accent: oklch(56% 0.19 27);
+  --fl-neutral: oklch(88% 0.012 74);
+  --fl-figure: oklch(95% 0.008 78);
+  --fl-figure-line: oklch(70% 0.02 72);
+  --fl-zone-line: oklch(62% 0.02 70);
+  /* 热度四档。深浅两档各自单调：浅色档「越练越深」，深色档「越练越亮」——
+     直接把浅色那套搬到深色底上，热度就反着读了。 */
+  --h1c: oklch(86% 0.07 35);
+  --h2c: oklch(75% 0.12 32);
+  --h3c: oklch(65% 0.17 29);
+  --h4c: oklch(54% 0.21 26);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Helvetica Neue",
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --font-serif: ui-serif, "Iowan Old Style", Charter, "Songti SC", "Source Han Serif SC",
+    "Noto Serif SC", SimSun, Georgia, serif;
+
+  /* ── 全页左右边界的唯一真相源 ────────────────────────────────
+   * 首屏那台机器收缩到位后左右各让出的量。这一个数同时决定三件事：
+   * 舞台的收缩终点（hero.tsx 读它，不再自己算一遍）、站点 header 的
+   * 内缩、以及正文每一节的边界——于是「header 与正文对不齐」这件事
+   * 没有发生的余地。
+   *
+   * 正文相对舞台边缘再让 --gutter：卡片是一块表面，文字不该贴着它的
+   * 圆角起头。header 与正文让的是同一个量，所以它们共用一条竖线。
+   * ────────────────────────────────────────────────────────── */
+  --bleed: min(120px, 6.5vw);
+  --gutter: 8px;
+  /* header 与正文落的是同一条竖线。写成一个 token，是因为原来它在 .wrap
+     与 header 里各算了一遍——同一条边界有两份定义，迟早分叉。 */
+  --edge: calc(var(--bleed) + var(--gutter));
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ground: #141310;
+  --ground-2: #0e0d0b;
+  --surface: #1d1b17;
+  --surface-2: #232019;
+
+  --ink: #ede9de;
+  --ink-2: #b3ad9e;
+  --ink-3: #877f72;
+
+  --line: #2e2a23;
+  --line-2: #423c31;
+
+  --green: #7cd65c;
+  --green-lit: #7cd65c;
+  --amber: #e9a83c;
+  --amber-lit: #f5a000;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 24px 60px -20px rgba(0, 0, 0, 0.7);
+
+  --app-bg: #252525;
+  --app-sidebar: #343434;
+  --app-border: rgba(255, 255, 255, 0.1);
+  --app-fg: #fafafa;
+  --app-muted-fg: #a1a1a1;
+  --app-accent: #3f3f3f;
+  --app-primary: #fafafa;
+  --app-primary-fg: #252525;
+
+  --dc-paper: #11120f;
+  --dc-chrome: #1b1c18;
+  --dc-panel: #242520;
+  --dc-recessed: #2a2b25;
+  --dc-ink: #f4f2ea;
+  --dc-muted: #aaaba1;
+  --dc-disabled: #707168;
+  --dc-line: #383a33;
+  --dc-accent: #ff8867;
+  --dc-accent-ink: #fffaf7;
+  --dc-warning: #f2bd63;
+
+  --fl-bg: oklch(18% 0.018 65);
+  --fl-panel: oklch(22.5% 0.018 65);
+  --fl-ink: oklch(94% 0.01 75);
+  --fl-muted: oklch(72% 0.02 70);
+  --fl-dim: oklch(60% 0.02 68);
+  --fl-line: oklch(34% 0.025 65);
+  --fl-rule: oklch(58% 0.025 65);
+  --fl-accent: oklch(70% 0.17 40);
+  --fl-neutral: oklch(32% 0.018 65);
+  --fl-figure: oklch(26% 0.014 65);
+  --fl-figure-line: oklch(43% 0.02 65);
+  --fl-zone-line: oklch(52% 0.022 65);
+  --h1c: oklch(40% 0.06 34);
+  --h2c: oklch(52% 0.11 32);
+  --h3c: oklch(65% 0.16 30);
+  --h4c: oklch(78% 0.19 40);
+}

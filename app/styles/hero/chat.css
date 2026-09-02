@@ -1,0 +1,773 @@
+/**
+ * [INPUT]: 依赖 ../tokens.css 的 --app-* 与 --font-*
+ * [OUTPUT]: 产品窗口对话那一侧：计时头 / Plan 卡 / 流式状态行 / 输入框 / 问题卡 / 模型面板 / 档位滑轨
+ * [POS]: 几何逐项抄自 apps/desktop，差 2px 就不像同一个产品。与 shell.css 分家的判据是「窗壳」与「窗里在发生什么」
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ── 计时头：标签在前，箭头紧随其后，下缘一条全宽发丝线 ────────────
+ * 抄自 chat/transcript 的 WorkedForRow：`w-full border-b pb-2` +
+ * `Marker`（14px 弱对比一行）+ 尾随的 `ChevronRight`，展开时旋 90°。
+ * 那条线不是装饰，它说的是「过程到此为止，下面是结论」。
+ * 箭头不推到行尾：推过去，标签与它之间会裂开一片空白，整行读成两栏表格。
+ * ────────────────────────────────────────────────────────── */
+.turn {
+  width: 100%;
+}
+.worked {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0 0 8px;
+  border: 0;
+  border-bottom: 1px solid var(--app-border);
+  background: transparent;
+  color: var(--app-muted-fg);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+.worked:hover {
+  color: var(--app-fg);
+}
+.worked-caret {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  transition: transform 160ms ease;
+}
+.worked-caret.on {
+  transform: rotate(90deg);
+}
+/* 痕迹不额外缩进：行首那格图标槽已经把「我是过程」说清楚了，
+   再加一段左padding 就成了第二种说法。 */
+.turn-parts {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 16px;
+  font-size: 14px;
+  color: var(--app-muted-fg);
+}
+.trace {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
+}
+.trace .mark {
+  margin-top: 3px;
+}
+
+/* ── Plan 卡：抄自 chat/transcript 的 chat-plan-card.tsx ────────────
+ * 预览有上限，够不着的部分由底部那道渐变自陈——截断若不留痕迹，
+ * 人会以为已经读完了。
+ * ────────────────────────────────────────────────────────── */
+.plan-card {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--app-border);
+  border-radius: 18px;
+  background: var(--app-bg);
+}
+.plan-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--app-muted-fg);
+}
+.plan-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.plan-body {
+  position: relative;
+  /* 预览高度跟着窗口一起长。窗口封顶 780、矮屏时按 100vh−250 收缩，转录
+     的内容却是固定的那几行——高窗口里于是空出两百多像素，等于把外面的
+     空白搬进了里面。这一条把多出来的高度还给 Plan：它本来就是个带渐变
+     的预览，能多露几行只是更诚实。
+     150 是矮屏的底，280 是高屏的顶——再高，预览就不像预览了。 */
+  max-height: clamp(150px, calc(100vh - 750px), 280px);
+  overflow: hidden;
+  padding-top: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.62;
+}
+.plan-body h3 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+.plan-body h4 {
+  margin: 14px 0 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.plan-fade {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 80px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--app-bg) 78%);
+}
+
+/* 反引号即 code。演示里出现的行内标记只有它，为剩下的九成 markdown
+   语法装一个解析器不划算。 */
+.chat code {
+  padding: 1px 5px;
+  border-radius: 5px;
+  background: var(--app-accent);
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+}
+
+.reply {
+  font-size: 14px;
+  line-height: 1.62;
+}
+.reply ul,
+.plan-body ul {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.plan-body ul {
+  margin-top: 0;
+}
+.reply li,
+.plan-body li {
+  position: relative;
+  padding-left: 18px;
+}
+.reply li::before,
+.plan-body li::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--app-muted-fg);
+}
+
+/* ── 流式状态行：orb + 扫光文字 ────────────────────────────────────
+ * 抄自 ai-elements 的 ThinkingShimmer / Shimmer：orb 与工具图标同槽同号
+ * （16px 槽里 14px 字形），文字是 text-transparent + background-clip 的
+ * 扫动渐变，两端同色故瓦片接缝无痕。
+ * 恒为一行：它表达的是「此刻在做什么」这一瞬态事实，占多少高度不该由
+ * 内容长度决定，否则每换一个工具整条流就抖一次。
+ * ────────────────────────────────────────────────────────── */
+@keyframes bt-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+.shimmer-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 4px 0;
+}
+.shimmer {
+  display: inline-block;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  user-select: none;
+  background-image: linear-gradient(
+    90deg,
+    var(--app-muted-fg) 40%,
+    var(--app-fg) 50%,
+    var(--app-muted-fg) 60%
+  );
+  background-size: 200% 100%;
+  background-repeat: repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: bt-shimmer 2s linear infinite;
+}
+
+/* ── 输入框：两行，不是一行 ────────────────────────────────────────
+ * 上行只管写字，下行左侧是这一轮怎么跑、右侧是谁来跑。把它们挤进一行
+ * 就得让文字与七颗控件抢同一条基线，长模型名一到位，输入区先塌。
+ * ────────────────────────────────────────────────────────── */
+.composer {
+  flex: none;
+  margin: 0 16px 16px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--app-border);
+  border-radius: 18px;
+  background: var(--app-bg);
+}
+.composer-field {
+  padding: 13px 14px 6px;
+  font-size: 14px;
+  color: var(--app-muted-fg);
+}
+.composer-tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px 8px;
+}
+.composer-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.tool,
+.tool-round {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--app-muted-fg);
+  font-size: 14px;
+  white-space: nowrap;
+}
+.tool {
+  min-width: 0;
+  padding: 0 6px;
+}
+.tool-round {
+  width: 32px;
+  flex: none;
+}
+/* 按得下去的才给手型与底色。静态那两颗是这张照片的一部分，
+   给它们悬停反馈等于许一个按不动的诺。 */
+.tool-btn {
+  cursor: pointer;
+  color: var(--app-fg);
+  transition: background 120ms ease;
+}
+.tool-btn:hover,
+.tool-btn.on {
+  background: var(--app-accent);
+}
+.tool .tool-name {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* 名长者让位：模型名省略，档位短且不可猜，整块保留。 */
+.tool-dim {
+  flex: none;
+  color: var(--app-muted-fg);
+}
+
+.send {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: var(--app-primary);
+  color: var(--app-primary-fg);
+  flex: none;
+}
+
+/* 菜单向上向右开：这一行贴着窗口底边，向下没有地方可去。 */
+.menu-host {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+.menu-panel {
+  position: absolute;
+  z-index: 6;
+  right: 0;
+  bottom: calc(100% + 4px);
+  min-width: 240px;
+  padding: 4px;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  background: var(--app-bg);
+  box-shadow:
+    0 1px 2px rgba(27, 26, 22, 0.08),
+    0 16px 40px -12px rgba(27, 26, 22, 0.3);
+}
+[data-theme="dark"] .menu-panel {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.5),
+    0 16px 40px -12px rgba(0, 0, 0, 0.7);
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 34px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--app-fg);
+  font-size: 14px;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.menu-item:hover {
+  background: var(--app-accent);
+}
+.menu-item-body {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+.menu-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+/* ── 问题卡：agent 在等你回话时，输入框整只让位 ──────────────────────
+ * 抄自 chat/composer 的 chat-user-input-selector.tsx。让位而不是并排，
+ * 是因为此刻你能做的就只有回话——摆着一个能打字的框，是让人去猜。
+ *
+ * 徽章直径 = 它对齐的那一行的行高（20px 徽章对 20px 标题行）：上下沿正好
+ * 扣在标题行盒上，越不进描述行。数不是拍的，是这条律推出来的。
+ * 行尾不画「点了就走」的箭头：整行就是按钮，hover 有底色，这句话已经说过。
+ * ────────────────────────────────────────────────────────── */
+.ask-card {
+  flex: none;
+  margin: 0 16px 16px;
+  padding: 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 18px;
+  background: var(--app-bg);
+}
+.ask-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 32px;
+}
+.ask-title {
+  min-width: 0;
+  flex: 1;
+}
+.ask-eyebrow {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  color: var(--app-muted-fg);
+}
+.ask-head h2 {
+  padding-top: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+.ask-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 20px;
+}
+.ask-option {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: start;
+  column-gap: 10px;
+  width: 100%;
+  padding: 6px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--app-fg);
+  text-align: left;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+.ask-option:hover,
+.ask-option.lit {
+  background: var(--app-accent);
+}
+.ask-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border: 1px solid var(--app-border);
+  border-radius: 9999px;
+  background: var(--app-bg);
+  color: var(--app-muted-fg);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.ask-option[aria-pressed="true"] .ask-badge {
+  border-color: transparent;
+  background: var(--app-primary);
+  color: var(--app-primary-fg);
+}
+.ask-label {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-weight: 500;
+}
+.ask-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+  flex: none;
+  padding: 0 6px;
+  border: 1px solid var(--app-border);
+  border-radius: 9999px;
+  background: var(--app-bg);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--app-muted-fg);
+}
+.ask-desc {
+  grid-column: 2;
+  color: var(--app-muted-fg);
+}
+.ask-other {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 6px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--app-muted-fg);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+.ask-other:hover {
+  color: var(--app-fg);
+}
+
+/* ── 模型面板：两张脸，因为产品有两张脸 ────────────────────────────
+ * Codex 是 `modelOptions: "full"`——一条蓝色档位滑轨 + Fast 开关，
+ * Advanced 之后才是列表；其余三家是 `list-only`——Model / Effort 两行
+ * 摘要，点进去才是列表。这不是两种设计口味，是能力位的直接后果。
+ * ────────────────────────────────────────────────────────── */
+.menu-quick {
+  min-width: 288px;
+  padding: 12px;
+}
+.quick-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.quick-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--app-muted-fg);
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+.quick-link:hover {
+  color: var(--app-fg);
+}
+.quick-zap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--app-muted-fg);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.quick-zap:hover:not(:disabled) {
+  background: var(--app-accent);
+  color: var(--app-fg);
+}
+.quick-zap.on {
+  color: #3598f6;
+}
+.quick-zap:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── 档位滑轨 ────────────────────────────────────────────────────
+ * 28px 胶囊，蓝色填到当前档，每档钉一颗点。用原生 range 而不是自己造：
+ * 拖拽、键盘、无障碍三件事它天生就对。
+ * 填充边界写成 calc(14px + (100% − 28px) × p)，而不是裸的 p%——把手travel
+ * 的两端各让了半个把手，裸百分比会让色界与把手中心一路错开。
+ * ────────────────────────────────────────────────────────── */
+.slider-shell {
+  position: relative;
+  margin-top: 12px;
+  height: 28px;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  margin: 0;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    #3598f6 var(--fill),
+    var(--app-accent) var(--fill)
+  );
+  cursor: pointer;
+  outline: none;
+}
+.slider:disabled {
+  cursor: default;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--app-border);
+  border-radius: 9999px;
+  background: var(--app-bg);
+  box-shadow: 0 1px 3px rgba(27, 26, 22, 0.24);
+}
+.slider::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--app-border);
+  border-radius: 9999px;
+  background: var(--app-bg);
+}
+.slider-dots {
+  position: absolute;
+  z-index: 2;
+  left: 14px;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.slider-dots i {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--app-muted-fg) 50%, transparent);
+}
+.slider-dots i.on {
+  background: rgba(255, 255, 255, 0.45);
+}
+@keyframes bt-spark {
+  from {
+    transform: translateX(15rem) scale(0.65);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.85;
+  }
+  to {
+    transform: translateX(-2rem) scale(1);
+    opacity: 0;
+  }
+}
+.slider-sparks {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.8);
+}
+.spark {
+  position: absolute;
+  left: 0;
+  animation: bt-spark 1.7s linear infinite;
+}
+
+/* 摘要行：标签吃掉全部余量，值列与箭头各自定宽——否则箭头会与值平分
+   空隙，值于是浮在行中间。 */
+.summary-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 32px;
+  padding: 8px 6px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--app-fg);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+.summary-row:disabled {
+  cursor: default;
+}
+.summary-row:not(:disabled):hover {
+  background: var(--app-accent);
+}
+.summary-label {
+  flex: 1;
+  font-weight: 500;
+}
+.summary-value {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--app-muted-fg);
+}
+.menu-back {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+  padding: 4px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--app-fg);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* App 表面：取自 apps/desktop/src/components/bases/views/table */
+.tabs {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 36px;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--app-border);
+  background: var(--app-accent);
+  font-size: 12.5px;
+}
+.tabs span {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 6px;
+  color: var(--app-muted-fg);
+}
+.tabs span.on {
+  background: var(--app-bg);
+  border: 1px solid var(--app-border);
+  color: var(--app-fg);
+}
+
+.grid-row {
+  display: flex;
+  height: 36px;
+  font-size: 12.5px;
+  border-bottom: 1px solid var(--app-border);
+}
+.grid-row.head,
+.grid-row.foot {
+  background: var(--app-accent);
+  font-weight: 500;
+  font-size: 12px;
+}
+.grid-row.foot {
+  border-bottom: 0;
+  border-top: 1px solid var(--app-border);
+  font-weight: 400;
+}
+.grid-row > * {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  border-right: 1px solid var(--app-border);
+  overflow: hidden;
+  white-space: nowrap;
+}
+.grid-row > *:last-child {
+  border-right: 0;
+}
+.c-date {
+  flex: none;
+  width: 104px;
+  color: var(--app-muted-fg);
+}
+.c-amount {
+  flex: none;
+  width: 116px;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.c-cat {
+  flex: none;
+  width: 132px;
+}
+.c-note {
+  flex: 1;
+  min-width: 0;
+  color: var(--app-muted-fg);
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: 19px;
+  padding: 0 8px;
+  border-radius: 9999px;
+  background: var(--app-accent);
+  font-size: 11.5px;
+}

@@ -3,8 +3,9 @@
  *          AgentsReel，依赖 ./icons 的 AgentLogo
  * [OUTPUT]: 对外提供 AgentsSection 组件
  * [POS]: Bottega-Website 唯一的功能介绍段。左文右图——图是一台会动的机器，
- *        镜头推近侧栏再摇下去，让四家 logo 一个一个走过；文字因此只需要说
- *        「有谁」和「谁付钱」，不必再解释「你怎么知道是谁干的」
+ *        镜头开在侧栏左上角摇下去，让四家 logo 一个一个走过，摇完才拉远
+ *        给一眼整机；文字因此只需要说「有谁」和「谁付钱」，不必再解释
+ *        「你怎么知道是谁干的」
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
@@ -22,8 +23,7 @@ export function AgentsSection() {
           </h1>
           <p style={{ fontSize: 18, lineHeight: 1.62, color: "var(--ink-2)", marginBottom: 18, maxWidth: "56ch" }}>
             Codex, Claude, Kimi and OpenCode all live in Bottega — the official CLIs you already have
-            installed, nothing reimplemented. Give a job to whichever one fits; every chat carries the mark
-            of the agent running it.
+            installed, nothing reimplemented.
           </p>
           <p style={{ fontSize: 18, lineHeight: 1.62, color: "var(--ink-2)", marginBottom: 30, maxWidth: "56ch" }}>
             Each runs on your own subscription: the plan you already pay for, billed by the provider, not

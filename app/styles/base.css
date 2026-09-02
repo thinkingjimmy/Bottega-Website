@@ -1,0 +1,168 @@
+/**
+ * [INPUT]: 依赖 tokens.css 的 --ground、--ink、--font-* 与 --edge
+ * [OUTPUT]: 基础排版（body / 标题 / .mono / .wrap / .btn-primary / .icon-btn）与正文骨架（.content/.section/.eyebrow/.split 三型）
+ * [POS]: 每一页都在用的那几条。正文骨架从原第 5 节提到这里：.split 三型是页面的网格，与 .wrap 同属「页面怎么分块」，留在正文里只是因为它当初写在那儿
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ============================================================
+ * 2 · 基础排版
+ * ============================================================ */
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1;
+}
+
+.wrap {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--edge);
+}
+
+/* 明暗两版字标都在 DOM 里，靠这两条让其中一版让位。
+   显示与否只能由这里裁决——元素上一旦写了内联 display，
+   类选择器就再也压不过它，两版会同时画出来。 */
+.img-light {
+  display: block;
+}
+.img-dark {
+  display: none;
+}
+[data-theme="dark"] .img-light {
+  display: none;
+}
+[data-theme="dark"] .img-dark {
+  display: block;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--ground);
+  border: 0;
+  cursor: pointer;
+  transition: opacity 140ms ease;
+}
+.btn-primary:hover {
+  opacity: 0.86;
+}
+
+/* ── 一条带子，一种高度 ──────────────────────────────────────────
+ * 32 不是新数：产品自己那两颗 chip 就是 32（见下面的 .chip）。站点 chrome
+ * 跟着它走，「网站」与「产品」于是落在同一条基线上。
+ * 原来那一排是 30 / 21.75 / 34 / 36 四种高度——四个数里没有两个对得上，
+ * 眼睛读出来的是一堆东西，不是一条导航。
+ * ────────────────────────────────────────────────────────── */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 9999px;
+  font-size: 14.5px;
+  color: var(--ink-2);
+  transition: background 160ms ease, color 160ms ease;
+}
+.nav-link:hover {
+  background: var(--ground-2);
+  color: var(--ink);
+}
+
+/* 这条线是整条带子的语法：左边是「去哪」，右边是「做什么」。
+   没有它，四样东西只是排成一行，而不是分成两族。 */
+.nav-rule {
+  flex: none;
+  width: 1px;
+  height: 16px;
+  margin: 0 10px;
+  background: var(--line);
+}
+
+/* 几何从两处内联搬到这里。内联那两份本来就已经分叉：首页与 changelog
+   写的是同一颗按钮，却各写了一遍。 */
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 16px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+:focus-visible {
+  outline: 2px solid var(--amber-lit);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+ * 5 · 正文
+ * ============================================================ */
+.content {
+  position: relative;
+  z-index: 1;
+  background: var(--ground);
+}
+
+.section {
+  padding: 132px 0 0;
+}
+
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 18px;
+}
+
+/* 文吃余量、图定宽 580（Agents 一节）：460 那一版里图只占内容宽的 38%、
+   高度又比文矮四分之一，两边分量对不上，读起来像文字旁边配了一张缩略图。
+   540 那一版分量够了，却比左边那栏文字高出 41px——图与文各站各的高度，
+   两栏就没有共同的下缘，读起来是两块拼在一起而不是一件事的两面。
+   580×360 是从文字块量出来的：段落封在 56ch，所以文字栏只要不窄于 565px，
+   这块文字就恒是 359px 高；1440 视口下 580 的图恰好给文字栏留 567px，
+   于是图高 360 与文高 359 落在同一条线上。
+   图定宽的另一个原因是镜头那四个数按 580 算，栏一浮动它们就全不作数。
+   列宽写在样式表里而不是内联：内联会压过下面窄屏那条 1fr，于是手机上
+   两栏永远拆不开——fork-band 原来就是这个毛病。 */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 580px;
+  gap: 90px;
+  align-items: center;
+}
+/* 图在左那一版（Apps 一节），与上一节的图在右交替。
+   DOM 里图仍排在前——它 aria-hidden，本就不在阅读顺序里；堆叠时由下面
+   那条 order 把它退到标题之后，手机上先读到的仍是那句话。 */
+/* 620 / 545 这一对被两件事一起顶出来：标题「Fully customizable.」在 52px 下
+   要 421px 才说得完一行，文栏至少 465；而正文收短之后文栏本身也变矮了——
+   图栏若还占 700，两栏之间那口气就有 136。图栏让到 620，机器随之矮 63，
+   那口气收到 73，文栏还多拿了 80 的行宽。
+   stretch 而不是 center：两栏同高必须由网格保证，不能靠「机器正好这么高」
+   这种算出来的巧合——文案改一行、字体换一档，巧合就没了。 */
+.split-figure-first {
+  grid-template-columns: 556px 1fr;
+  align-items: stretch;
+}
+/* 图那一栏窄一些的那一版（Fork 带的终端框）。 */
+.split-narrow {
+  grid-template-columns: 1fr 400px;
+}

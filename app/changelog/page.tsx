@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import { AppIcon } from "@/components/icons";
 import { SiteFooter } from "@/components/site-footer";
-import { ThemeToggle } from "@/components/theme";
+import { SiteHeader } from "@/components/site-header";
 import { readEntries, renderInline } from "@/lib/changelog";
 
 /**
- * [INPUT]: 依赖 @/lib/changelog 的 readEntries/renderInline，依赖 @/components 的 AppIcon/ThemeToggle/SiteFooter
+ * [INPUT]: 依赖 @/lib/changelog 的 readEntries/renderInline，依赖 @/components 的 SiteHeader/SiteFooter
  * [OUTPUT]: 对外提供 /changelog 页面与其 metadata
  * [POS]: Bottega-Website 唯一的子页。内容来自 Bottega 仓库
  *        docs/changelog/README.md 的构建期快照，记录产品里程碑而非内部迭代
@@ -19,50 +17,12 @@ export const metadata: Metadata = {
   description: "Product milestones for Bottega — when each capability reached its first coherent form.",
 };
 
-const REPO = "https://github.com/thinkingjimmy/Bottega";
-
 export default function ChangelogPage() {
   const entries = readEntries();
 
   return (
     <div className="content">
-      {/* 子页没有那台钉住的桌面，所以 header 是常驻的普通导航，
-          而不是首页那条随收缩浮出来的带子。 */}
-      <header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 16,
-          height: 78,
-          borderBottom: "1px solid var(--line)",
-        }}
-        className="wrap"
-      >
-        <Link href="/" aria-label="Bottega" style={{ display: "flex", alignItems: "center" }}>
-          <AppIcon size={30} />
-        </Link>
-        <nav style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 20, fontSize: 14.5 }}>
-          <a href={REPO} style={{ color: "var(--ink-2)" }}>
-            GitHub
-          </a>
-          <ThemeToggle />
-          <a
-            className="btn-primary"
-            href={`${REPO}/releases`}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              height: 36,
-              padding: "0 17px",
-              borderRadius: 9999,
-              fontSize: 14,
-              fontWeight: 500,
-            }}
-          >
-            Download for macOS
-          </a>
-        </nav>
-      </header>
+      <SiteHeader variant="framed" />
 
       <section className="section" style={{ paddingTop: 96 }}>
         <div className="wrap">
@@ -70,7 +30,7 @@ export default function ChangelogPage() {
           <h1 style={{ fontSize: 56, lineHeight: 1.03, maxWidth: "18ch", marginBottom: 22 }}>
             What actually shipped.
           </h1>
-          <p style={{ fontSize: 18, lineHeight: 1.62, color: "var(--ink-2)", maxWidth: "62ch" }}>
+          <p style={{ fontSize: 18, lineHeight: 1.62, color: "var(--ink-2)" }}>
             Product milestones, not internal iterations. Each date is when that capability first reached a
             coherent shape a person could use.
           </p>

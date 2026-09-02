@@ -1,29 +1,34 @@
 /**
- * [INPUT]: 依赖 react 的 JSX，依赖 @/lib/agents 的 AgentId
- * [OUTPUT]: 对外提供 Stroke（描边图标）、AgentLogo（四家 agent 的官方标记）、
- *           Glyph（实心单路径）、AppIcon（圆角方章）、Wordmark 与 D（路径表）
- * [POS]: Bottega-Website 的图标底座。全站不用 emoji 也不装图标库——
- *        两个组件就够，装一个包反而多一份要跟着升级的东西
+ * [INPUT]: Uses React JSX and AgentId from @/lib/agents
+ * [OUTPUT]: Exports Stroke (24 grid by default, `box` for other grids), Glyph, AgentLogo, AppIcon, Wordmark, and the D path table
+ * [POS]: The dependency-free icon foundation shared by every Bottega-Website surface
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
 import type { AgentId } from "@/lib/agents";
 
-/** 描边图标：24 网格、2px 线宽，与产品里的 lucide 同口径。 */
+/* ── 描边图标：24 网格、2px 线宽，与产品里的 lucide 同口径 ──────────
+ * `box` 是给 Design Canvas 那只 App 留的口子：它的 GUI 自带一套 20 网格、
+ * 1.5px 线宽的图标（见 resources/apps/Bottega-app-design-canvas/gui）。
+ * 把 20 的路径换算到 24 再画，得到的就不再是产品里那一枚了——
+ * 换个近似的图形，「这是同一个产品」这句话就少了一份证据。
+ * ────────────────────────────────────────────────────────── */
 export function Stroke({
   d,
   size = 16,
   width = 2,
+  box = 24,
 }: {
   d: string;
   size?: number;
   width?: number;
+  box?: number;
 }) {
   return (
     <svg
       width={size}
       height={size}
-      viewBox="0 0 24 24"
+      viewBox={`0 0 ${box} ${box}`}
       fill="none"
       stroke="currentColor"
       strokeWidth={width}
@@ -167,11 +172,19 @@ export const D = {
     "M17.05 12.536c-.024-2.69 2.196-3.982 2.296-4.045-1.25-1.83-3.196-2.081-3.888-2.109-1.655-.168-3.23.974-4.07.974-.838 0-2.132-.95-3.505-.924-1.803.026-3.466 1.048-4.394 2.662-1.874 3.25-.479 8.061 1.345 10.698.891 1.29 1.954 2.74 3.35 2.688 1.344-.053 1.852-.868 3.477-.868 1.626 0 2.083.868 3.505.842 1.447-.026 2.363-1.316 3.247-2.61 1.024-1.497 1.446-2.947 1.47-3.022-.032-.014-2.82-1.083-2.846-4.286M14.47 4.66c.742-.9 1.243-2.15 1.106-3.396-1.07.043-2.365.712-3.132 1.61-.688.797-1.29 2.07-1.128 3.29 1.194.093 2.412-.607 3.154-1.504",
   message: "M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z",
   table: "M3 3h18v18H3zM3 9h18M9 21V9",
+  /* Base 视图页签与工具条那一排（bases/chrome 与 views/ 里用的就是这几枚）。 */
+  kanban: "M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8 7v7M12 7v4M16 7v9",
+  chartColumn: "M3 3v16a2 2 0 0 0 2 2h16M8 17v-5M13 17V8M18 17v-3",
+  funnel: "M3 4h18l-7 8v7l-4 2v-9z",
+  sortAsc: "M4 7h13M4 12h9M4 17h5",
+  moreHorizontal: "M5 12h.01M12 12h.01M19 12h.01",
+  columns3: "M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM9 3v18M15 3v18",
   columns: "M4 4h4v16H4zM10 4h4v10h-4zM16 4h4v7h-4z",
   importDown: "M12 3v12m-4-4 4 4 4-4M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4",
   github:
     "M12 2A10 10 0 0 0 8.84 21.5c.5.08.66-.23.66-.5v-1.69C6.73 19.91 6.14 18 6.14 18A2.69 2.69 0 0 0 5 16.5c-.91-.62.07-.6.07-.6a2.1 2.1 0 0 1 1.53 1 2.15 2.15 0 0 0 2.91.83 2.16 2.16 0 0 1 .64-1.35c-2.22-.25-4.55-1.11-4.55-4.92a3.86 3.86 0 0 1 1-2.69 3.58 3.58 0 0 1 .1-2.64s.84-.27 2.75 1a9.63 9.63 0 0 1 5 0c1.91-1.29 2.75-1 2.75-1a3.58 3.58 0 0 1 .1 2.64 3.86 3.86 0 0 1 1 2.69c0 3.82-2.34 4.66-4.57 4.91a2.39 2.39 0 0 1 .69 1.85V21c0 .27.16.59.67.5A10 10 0 0 0 12 2z",
   download: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3",
+  monitor: "M4 3h16a2 2 0 0 1 2 2v12H2V5a2 2 0 0 1 2-2zM8 21h8M12 17v4",
   sun: "M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0",
   moon: "M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9",
 };

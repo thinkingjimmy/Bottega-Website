@@ -1,0 +1,185 @@
+/**
+ * [INPUT]: 依赖 ./tokens.css 的 --ink/--ground/--line-*
+ * [OUTPUT]: Fork 那条深色带与它的终端框、站点页脚、changelog 的 .entry，以及 ≤1300 的两栏拆分
+ * [POS]: 正文尾部那几块。≤1300 那条媒体查询留在这里而不并进 motion.css：它必须排在 ≤900 之前，两条同权重的规则一旦掉个个儿，窄屏的 gap 就换了一个数
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ── 代码不是一块灰卡，是一次真实构建 ───────────────────────────
+ * titlebar、交通灯、提示符与输出各司其职；终端比外层带子再暗一层，边与影
+ * 只负责把两个深色表面分开，不把它画成一张浮在上面的亮卡片。
+ * ────────────────────────────────────────────────────────── */
+.terminal {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(237, 233, 222, 0.14);
+  border-radius: 14px;
+  background: #0f1115;
+  color: rgba(247, 244, 236, 0.9);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.35),
+    0 22px 44px -28px rgba(0, 0, 0, 0.9);
+}
+.terminal-titlebar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 38px;
+  padding: 0 14px;
+  border-bottom: 1px solid rgba(237, 233, 222, 0.1);
+  background: rgba(255, 255, 255, 0.055);
+}
+.terminal-dots {
+  display: flex;
+  gap: 7px;
+}
+.terminal-dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+}
+.terminal-dots i:nth-child(1) {
+  background: #ff5f57;
+}
+.terminal-dots i:nth-child(2) {
+  background: #febc2e;
+}
+.terminal-dots i:nth-child(3) {
+  background: #28c840;
+}
+.terminal-title {
+  font-size: 11.5px;
+  line-height: 1;
+  color: rgba(247, 244, 236, 0.5);
+}
+.terminal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 22px 24px 24px;
+  font-size: 13px;
+  line-height: 1.55;
+  font-variant-ligatures: none;
+}
+.terminal-line {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 8px;
+}
+.terminal-line code {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font: inherit;
+  color: inherit;
+}
+.terminal-prompt {
+  color: color-mix(in srgb, var(--green-lit) 78%, white);
+}
+.terminal-output {
+  margin-top: 3px;
+  color: rgba(247, 244, 236, 0.48);
+}
+
+/* ── 文字落款 ──────────────────────────────────────────────────
+ * 左边一句开源声明，右边一行真正可用的出口。链接之间的中点由列表生成，
+ * 不进入无障碍名称；窄屏整组换行，不为某一个链接编写特殊情况。
+ * ────────────────────────────────────────────────────────── */
+.site-footer {
+  margin-top: 120px;
+  border-top: 1px solid var(--line);
+  padding: 42px 0 48px;
+}
+.site-footer a {
+  color: inherit;
+}
+.site-footer a:hover {
+  color: var(--ink);
+}
+
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px 48px;
+}
+.footer-note,
+.footer-links {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.footer-note {
+  white-space: nowrap;
+}
+.footer-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.footer-links li + li::before {
+  content: "·";
+  margin: 0 8px;
+  color: var(--ink-3);
+}
+
+/* changelog
+ * 日期列保持固定，正文列接管其余空间。Changelog 是逐条扫描的产品记录，
+ * 不是长篇阅读栏；在宽屏上主动封顶会留下大片无意义空白，也让短句过早换行。 */
+.entry {
+  display: grid;
+  grid-template-columns: 172px minmax(0, 1fr);
+  gap: 40px;
+  padding: 38px 0;
+  border-top: 1px solid var(--line);
+}
+.entry ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.entry li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 15.5px;
+  line-height: 1.62;
+  color: var(--ink-2);
+}
+.entry li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 10px;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--line-2);
+}
+.entry strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* 两栏只在图那一栏（540px）旁边还剩得下一栏文字时才成立。1300 是从标题
+   倒推的：内容宽 ≈ 0.87vw − 16，减去 540 + 90 之后要给 56px/16ch 的标题
+   留下约 520px，解出 vw ≥ 1340；取 1300 收在这一档上。
+   没有这条时，1000px 宽的窗口上文字栏只剩 220px——一行放不下四个词；
+   1250 上也才 427px，标题会碎成四行。堆叠不是降级，是这个宽度下唯一
+   还给两边留着呼吸的排法。 */
+@media (max-width: 1300px) {
+  .split,
+  .split-figure-first,
+  .split-narrow {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .split-figure-first > :first-child {
+    order: 1;
+  }
+}

@@ -1,0 +1,332 @@
+/**
+ * [INPUT]: 依赖 ../../tokens.css 的 --fl-* 与 --h1c…--h4c
+ * [OUTPUT]: Fitness Log 的训练手册版式：衬线报头、双线图版、肌群热区、动作目录
+ * [POS]: 它长得像一本手册而不是一张后台界面——这正是「四只 App 长得都不一样」唯一的证据
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ── Fitness Log：一台长得像训练手册的 App ────────────────────────
+ * 衬线标题、3px 粗横规、双线图版、按周烧深的肌群热区——逐项取自
+ * Bottega-app-fitness-log/gui/styles.css，文案取自 gui/scripts/i18n.js。
+ * 994 > 900，于是 main 按真规则展成两栏：左图版，右动作目录。
+ * ────────────────────────────────────────────────────────── */
+.fl {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--fl-bg);
+  color: var(--fl-ink);
+  font-size: 15px;
+  line-height: 1.6;
+  --sk-ink: color-mix(in srgb, var(--fl-muted) 26%, transparent);
+}
+/* clamp(20px, 4vw, 40px) 在 994 宽处落到 39.8。 */
+.fl-header { padding: 30px 39.8px 0; }
+.fl-rule {
+  height: 3px;
+  margin-bottom: 16px;
+  background: var(--fl-rule);
+}
+.fl-masthead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
+.fl-eyebrow {
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fl-accent);
+}
+.fl-masthead h3 {
+  margin-top: 10px;
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.16;
+  letter-spacing: 0.01em;
+}
+.fl-sub {
+  margin-top: 9px;
+  max-width: 480px;
+  color: var(--fl-muted);
+  font-size: 13.5px;
+}
+.fl-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 22px;
+}
+.fl-rev {
+  display: grid;
+  justify-items: end;
+  text-align: right;
+}
+.fl-rev span {
+  font-size: 9.5px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fl-dim);
+}
+.fl-rev strong {
+  margin-top: 4px;
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+/* 44px 触控底线是产品硬约束，一格不让。 */
+.fl-cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--fl-accent);
+  background: var(--fl-accent);
+  color: #fffaf7;
+  font-size: 14px;
+}
+.fl-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: 36px;
+  align-items: start;
+  padding: 22px 39.8px 0;
+}
+.fl-sec {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--fl-rule);
+  margin-bottom: 14px;
+}
+.fl-sec h4 {
+  margin-top: 5px;
+  font-family: var(--font-serif);
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+.fl-controls {
+  display: flex;
+  gap: 22px;
+}
+.fl-field {
+  display: grid;
+  gap: 5px;
+  min-width: 108px;
+}
+.fl-field > span,
+.fl-search > span {
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fl-dim);
+}
+/* 边框只留底线，盒子交给版面。 */
+.fl-field b {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--fl-line);
+  font-size: 14px;
+  font-weight: 400;
+}
+.fl-field b svg {
+  flex: none;
+  color: var(--fl-dim);
+}
+/* 图版：外一道 rule、内一道 line，中间夹 5px——解剖插图的做法。 */
+.fl-plate {
+  margin-top: 14px;
+  padding: 5px;
+  border: 1px solid var(--fl-rule);
+  background: var(--fl-panel);
+}
+.fl-plate-inner {
+  padding: 14px 14px 10px;
+  border: 1px solid var(--fl-line);
+}
+.fl-maps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.fl-maps figure {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  margin: 0;
+}
+/* 图注在图下面：order 把它推到第二位，DOM 里它仍排在前。 */
+.fl-maps figcaption {
+  order: 2;
+  font-family: var(--font-serif);
+  font-size: 12px;
+  line-height: 1;
+  color: var(--fl-muted);
+}
+/* 真值是 max-height: min(52vh, 400px)。机器 780 高，52vh = 405，于是落在 400。 */
+.fl-body {
+  display: block;
+  width: 100%;
+  height: 400px;
+}
+.fl-body .outline {
+  fill: var(--fl-figure);
+  stroke: var(--fl-figure-line);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.fl-body .zone {
+  fill: var(--fl-neutral);
+  stroke: var(--fl-zone-line);
+  stroke-width: 0.9;
+  vector-effect: non-scaling-stroke;
+}
+.fl-body .zone[data-level="1"] { fill: var(--h1c); }
+.fl-body .zone[data-level="2"] { fill: var(--h2c); }
+.fl-body .zone[data-level="3"] { fill: var(--h3c); }
+.fl-body .zone[data-level="4"] { fill: var(--h4c); }
+.fl-key {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--fl-line);
+}
+.fl-key-title {
+  flex: none;
+  font-family: var(--font-serif);
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--fl-muted);
+}
+.fl-scale {
+  display: flex;
+  flex: 1;
+  min-width: 130px;
+}
+.fl-scale div {
+  flex: 1;
+  text-align: center;
+}
+.fl-scale i {
+  display: block;
+  height: 11px;
+  border: 1px solid var(--fl-zone-line);
+  border-right: 0;
+  background: var(--fl-neutral);
+}
+.fl-scale div:last-child i {
+  border-right: 1px solid var(--fl-zone-line);
+}
+.fl-scale i[data-level="1"] { background: var(--h1c); }
+.fl-scale i[data-level="2"] { background: var(--h2c); }
+.fl-scale i[data-level="3"] { background: var(--h3c); }
+.fl-scale i[data-level="4"] { background: var(--h4c); }
+.fl-scale span {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-serif);
+  font-size: 10.5px;
+  line-height: 1;
+  color: var(--fl-dim);
+  font-variant-numeric: tabular-nums;
+}
+/* 目录那一栏是「不关键」的那一半：分组标题与筛选器是真的，条目留骨架。 */
+.fl-ghost {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  color: var(--fl-muted);
+  font-size: 13px;
+}
+.fl-search {
+  display: grid;
+  gap: 5px;
+  margin-top: 16px;
+}
+.fl-search b {
+  display: block;
+  min-height: 30px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--fl-line);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--fl-dim);
+}
+.fl-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 16px;
+}
+.fl-result {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 20px 0 6px;
+  font-family: var(--font-serif);
+  font-size: 12.5px;
+  line-height: 1;
+  color: var(--fl-muted);
+}
+.fl-group {
+  margin-top: 16px;
+}
+.fl-group:first-of-type {
+  margin-top: 8px;
+}
+.fl-group h5 {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin: 0;
+  padding-bottom: 7px;
+  border-bottom: 1.5px solid var(--fl-rule);
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.fl-group h5 b {
+  margin-left: auto;
+  font-family: var(--font-serif);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--fl-dim);
+  font-variant-numeric: tabular-nums;
+}
+.fl-cards {
+  display: grid;
+}
+.fl-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 5px 18px;
+  min-height: 44px;
+  padding: 10px 8px 10px 0;
+  border-bottom: 1px solid var(--fl-line);
+}
+.fl-card > :last-child {
+  grid-column: 1 / -1;
+}

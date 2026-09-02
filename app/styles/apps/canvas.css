@@ -1,0 +1,272 @@
+/**
+ * [INPUT]: 依赖 ../../tokens.css 的 --dc-*
+ * [OUTPUT]: Design Canvas 的四角浮层、舞台白板与锚点坞
+ * [POS]: 同心圆角 6/8/12、控件 28（内 24）逐项取自该 App 自己的 gui/styles.css
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ── Design Canvas：四角常驻浮层围着一整片画布 ──────────────────────
+ * 同心圆角 6 / 8 / 12（外 = 内 + 内边距，一条约束贯穿三层）、控件 28（内 24）、
+ * 字 12、图标 14 stroke 1.5——逐项取自 Bottega-app-design-canvas/gui/styles.css。
+ * 994 > 860，于是视图组按真规则把 .button-label 放出来。
+ * ────────────────────────────────────────────────────────── */
+.dc {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--dc-paper);
+  color: var(--dc-ink);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.dc-stage {
+  width: 100%;
+  height: 100%;
+  padding: 68px 32px 60px;
+}
+/* Fit 的真实结果：1440×900 等比缩进舞台的内容盒，宽度受限，于是白板是
+   16:10，下面露出的那截是纸面本身——不是把白板拉长。 */
+.dc-viewport {
+  width: 100%;
+  aspect-ratio: 1440 / 900;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--dc-line);
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(18, 18, 15, 0.08), 0 24px 64px rgba(18, 18, 15, 0.16);
+}
+/* 白板里那一页是 Agent 写的 HTML——不可信内容，所以只画骨架：
+   它不该被读，只该被认出「那是一页」。 */
+.dc-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  padding: 22px 26px;
+  --sk-ink: rgba(30, 31, 27, 0.11);
+}
+.dc-page-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(30, 31, 27, 0.08);
+}
+.dc-page-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+}
+.dc-page-card {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 14px;
+  border: 1px solid rgba(30, 31, 27, 0.08);
+  border-radius: 8px;
+}
+.dc-page-foot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(30, 31, 27, 0.08);
+}
+.dc-float {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid var(--dc-line);
+  border-radius: 12px;
+  background: color-mix(in oklch, var(--dc-chrome) 92%, transparent);
+  box-shadow: 0 1px 2px rgba(18, 18, 15, 0.08), 0 10px 28px rgba(18, 18, 15, 0.12);
+  backdrop-filter: blur(14px);
+}
+.dc-doc { top: 12px; left: 12px; }
+.dc-view { top: 12px; right: 12px; }
+.dc-port { right: 12px; bottom: 12px; }
+/* 锚点坞：收起是一颗胶囊，展开向上长成面板——横铺整条底边会把
+   「画布铺满」这个前提当场作废，所以它只能向上生长。 */
+.dc-pins {
+  bottom: 12px;
+  left: 12px;
+  width: 392px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.dc-group {
+  display: flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--dc-recessed);
+}
+.dc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 24px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--dc-muted);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.dc-btn b {
+  font-weight: 500;
+}
+.dc-btn.on {
+  border-color: var(--dc-line);
+  background: var(--dc-panel);
+  color: var(--dc-ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+.dc-btn svg,
+.dc-sel svg,
+.dc-collapse svg,
+.dc-pin-mark svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+.dc-sel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 9px;
+  border-radius: 8px;
+  color: var(--dc-ink);
+  font-size: 12px;
+}
+.dc-sel.w-file { width: 168px; }
+.dc-sel.w-ver { width: 116px; }
+.dc-sel.w-zoom { width: 74px; }
+.dc-sel > span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.dc-sep {
+  width: 1px;
+  height: 16px;
+  flex: none;
+  margin: 0 3px;
+  background: var(--dc-line);
+}
+.dc-pins-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 6px 7px 11px;
+  border-bottom: 1px solid var(--dc-line);
+}
+.dc-pins-head h4 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 650;
+}
+.dc-pin-mark {
+  display: flex;
+  color: var(--dc-accent);
+}
+.dc-tally {
+  color: var(--dc-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.dc-collapse {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-left: auto;
+  color: var(--dc-muted);
+}
+.dc-pin-list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+}
+.dc-pin-list li {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 4px 0 6px;
+  border-radius: 6px;
+}
+.dc-badge {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--dc-accent);
+  color: var(--dc-accent-ink);
+  font-size: 10px;
+  font-weight: 760;
+  font-variant-numeric: tabular-nums;
+}
+.dc-pin-list code {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--dc-muted);
+}
+.dc-state {
+  padding: 1px 6px;
+  border: 1px solid color-mix(in oklch, var(--dc-warning) 45%, transparent);
+  border-radius: 999px;
+  color: var(--dc-warning);
+  font-size: 10px;
+}
+.dc-pin-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 8px 8px 11px;
+  border-top: 1px solid var(--dc-line);
+  background: color-mix(in oklch, var(--dc-recessed) 50%, transparent);
+}
+.dc-budget {
+  color: var(--dc-disabled);
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+}
+.dc-quiet,
+.dc-primary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 9px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.dc-quiet {
+  margin-left: auto;
+  color: var(--dc-muted);
+}
+.dc-primary {
+  background: var(--dc-accent);
+  color: var(--dc-accent-ink);
+}

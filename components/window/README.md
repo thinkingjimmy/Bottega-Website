@@ -11,7 +11,10 @@
   New chat / Apps + 置顶 App / Projects 折叠区 + Show more / Chats / Settings）
   与主区（40px 页头 + 会话或 App 表面）。整只窗口可被压扁（`flex: 0 1 auto`），
   矮视口下先压窗口再交给内部滚动，而不是顶穿系统菜单栏。
-  字标 26px 是全站唯一一处有意偏离产品真值（产品是 32px），理由见站点 README。会话的 agent / 模型 / 档位 / Fast 是 chat 自己的属性而非
+  字标 26px 是全站唯一一处有意偏离产品真值（产品是 32px），理由见站点 README。
+  侧栏只有一条左缘——`--sidebar-pad`（容器 2px）+ `--sidebar-gutter`（药丸内 8px）= 10px，
+  字标、New chat、分组标签、每条 chat 的行首痕迹全从这两个数推导；谁私自写死一个数，
+  谁就多造一条对不齐的线。会话的 agent / 模型 / 档位 / Fast 是 chat 自己的属性而非
   选择器的局部状态——行首 logo、页头 logo、输入框按钮读的是同一个值，所以换
   agent 时三处一起改口。抄自 `components/sidebar/` 与 `components/page-shell.tsx`。
 - **product-transcript.tsx**: 一段对话，自带内滚并在换会话时落到最新一句上。计时头（标签在前、箭头紧随、下缘一条

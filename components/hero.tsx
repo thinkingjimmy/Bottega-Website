@@ -1,25 +1,23 @@
 "use client";
 
 /**
- * [INPUT]: 依赖 react 的 useEffect/useRef/useState，依赖 ./window/product-window、./theme、./icons
- * [OUTPUT]: 对外提供 Hero 组件
- * [POS]: Bottega-Website 的首屏。页面不以一张讲产品的海报开场，
- *        而是直接给出产品本身；滚动时这台机器钉住并收成一张卡片，
- *        正文从它上面滑过去
+ * [INPUT]: Uses React state/effects plus ProductWindow, SiteHeader, ThemeToggle, and icons
+ * [OUTPUT]: Exports the interactive Hero component
+ * [POS]: The pinned product desktop and the only visible theme control on Bottega-Website
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { AppIcon, D, Glyph, Stroke } from "./icons";
-import { ProductWindow } from "./window/product-window";
+import { D, Glyph, Stroke } from "./icons";
+import { SiteHeader } from "./site-header";
 import { ThemeToggle } from "./theme";
+import { ProductWindow } from "./window/product-window";
 
 /** 收缩终点。上缘让得比下缘多，让出来的那条正好装下 header。 */
 const MAX_T = 92;
-/* header 内容的净高（那颗 36px 的 CTA）再加一点呼吸。带子矮于这个数时
-   它一个字都不该露：淡入一条被上下切掉的横条，比什么都不显示更糟。 */
-const HEADER_ROOM = 48;
+/* header 内容的净高（那一排统一 32px 的控件）再加一点呼吸。带子矮于这个数
+   时它一个字都不该露：淡入一条被上下切掉的横条，比什么都不显示更糟。 */
+const HEADER_ROOM = 44;
 const MAX_B = 44;
 const MAX_R = 14;
 const MAX_SH = 26;
@@ -93,36 +91,7 @@ export function Hero() {
   return (
     <div className="hero-pin" ref={pinRef}>
       <div className="stage" ref={stageRef}>
-        <header className="stage-header">
-          <Link href="/" aria-label="Bottega" style={{ display: "flex", alignItems: "center" }}>
-            <AppIcon size={30} />
-          </Link>
-          <span style={{ fontSize: 15, color: "var(--ink-3)" }}>the workshop that builds itself</span>
-          <nav>
-            <Link href="/changelog/" style={{ color: "var(--ink-2)" }}>
-              Changelog
-            </Link>
-            <a href="https://github.com/thinkingjimmy/Bottega" style={{ color: "var(--ink-2)" }}>
-              GitHub
-            </a>
-            <ThemeToggle />
-            <a
-              className="btn-primary"
-              href="https://github.com/thinkingjimmy/Bottega/releases"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                height: 36,
-                padding: "0 17px",
-                borderRadius: 9999,
-                fontSize: 14,
-                fontWeight: 500,
-              }}
-            >
-              Download for macOS
-            </a>
-          </nav>
-        </header>
+        <SiteHeader variant="stage" />
 
         <section className="scene" id="top">
           {/* 真 macOS 的菜单栏不放产品 CTA。放了就是拿系统的壳卖自己的货，
@@ -136,9 +105,10 @@ export function Hero() {
             <span className="menu">Chat</span>
             <span className="menu">Window</span>
             <span className="menu">Help</span>
-            <span className="mono menu" style={{ marginLeft: "auto" }}>
-              Tue Sep 1&nbsp;&nbsp;9:36
-            </span>
+            <div className="scene-status">
+              <ThemeToggle />
+              <span className="mono menu">Tue Sep 1&nbsp;&nbsp;9:36</span>
+            </div>
           </div>
 
           <div className="scene-body">

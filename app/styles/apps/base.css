@@ -1,0 +1,380 @@
+/**
+ * [INPUT]: 依赖 ../../tokens.css 的 --app-*
+ * [OUTPUT]: Base App 的机身（工具条 / 视图页签）与三张表面：看板 / 表格 / 分析两张卡
+ * [POS]: 两只 Base App 共用一套 chrome，因为产品里它们本就是同一个 BaseWorkbench 被两份 manifest 消费
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ── Base App 的机身 ──────────────────────────────────────────────
+ * 两只 Base App 共用同一套 chrome，因为产品里它们本就是同一个
+ * BaseWorkbench 被两份 manifest 消费。数取自 bases/chrome/base-toolbar.tsx
+ * （h-10 / px-2 / gap-1）与 base-view-tabs.tsx（h-6 / rounded-md /
+ * pr-1 pl-2 / text-xs / size-3）。
+ * ────────────────────────────────────────────────────────── */
+.ba {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--app-bg);
+  color: var(--app-fg);
+}
+.ba-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 40px;
+  flex: none;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--app-border);
+}
+.ba-tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+.ba-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  max-width: 160px;
+  padding: 0 4px 0 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--app-muted-fg);
+}
+.ba-tab.on {
+  background: var(--app-accent);
+  color: var(--app-fg);
+  font-weight: 500;
+}
+.ba-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border-radius: 6px;
+  color: var(--app-muted-fg);
+}
+.ba-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+.ba-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── 看板：lane 不画框，卡片是板上唯一的盒子 ──────────────────────
+ * lane 宽 288（w-72）、header 36（h-9）、卡片槽下留 8（pb-2）、
+ * 卡面 rounded-lg + border + p-3 + text-xs + shadow-xs——逐项取自
+ * views/kanban/kanban-card.tsx 的 KANBAN_CARD_CLASS。
+ * 给 lane 画框等于「卡片套卡片」：两层圆角边框争同一件事的注意力，
+ * 而列的边界本就由标题、留白与卡片的左对齐说清楚了。
+ * ────────────────────────────────────────────────────────── */
+.kb-board {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+  padding: 12px 16px;
+  overflow: hidden;
+}
+.kb-lane {
+  display: flex;
+  flex-direction: column;
+  width: 288px;
+  flex: none;
+}
+.kb-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  flex: none;
+  padding: 0 6px;
+  font-size: 12px;
+}
+.kb-dot-slot {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+.kb-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+}
+.kb-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+.kb-count {
+  flex: none;
+  color: var(--app-muted-fg);
+  font-variant-numeric: tabular-nums;
+}
+.kb-add {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border-radius: 4px;
+  color: var(--app-muted-fg);
+}
+.kb-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 2px 4px;
+  overflow: hidden;
+}
+.kb-card {
+  padding: 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: var(--app-bg);
+  font-size: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.kb-title {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.375;
+}
+.kb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+.kb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 16px;
+}
+.kb-chip.neutral {
+  background: var(--app-accent);
+  color: var(--app-muted-fg);
+}
+.kb-chip b {
+  font-weight: 400;
+  opacity: 0.7;
+}
+.kb-chip-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.kb-skel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── 表格：一句话进来，一行规整的记录出去 ────────────────────────
+ * 表头 36（h-9）粘顶、底色 bg-muted/80；行 36、逐格 border-r；
+ * 汇总条 36 钉在底边，金额那一列写 columnAggregations 的 sum。
+ * select 单元格在产品里是一颗无边框的 Select——文字靠左、雪佛龙靠右，
+ * 不是一枚实心药丸（见 editors/cells/base-cell-editor.tsx）。
+ * ────────────────────────────────────────────────────────── */
+.tb {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  font-size: 12px;
+}
+.tb-head {
+  display: flex;
+  height: 36px;
+  flex: none;
+  border-bottom: 1px solid var(--app-border);
+  background: color-mix(in srgb, var(--app-accent) 85%, transparent);
+}
+.tb-head > * {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  border-right: 1px solid var(--app-border);
+  font-weight: 500;
+}
+.tb-rows {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.tb-row {
+  display: flex;
+  height: 36px;
+  border-bottom: 1px solid var(--app-border);
+  background: var(--app-bg);
+}
+.tb-row > * {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 0 8px;
+  border-right: 1px solid var(--app-border);
+}
+.tb-num {
+  width: 36px;
+  flex: none;
+  justify-content: center;
+  color: var(--app-muted-fg);
+  font-variant-numeric: tabular-nums;
+}
+.tb-date {
+  width: 110px;
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+.tb-amount {
+  width: 124px;
+  flex: none;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.tb-cat {
+  width: 158px;
+  flex: none;
+  justify-content: space-between;
+  padding-right: 12px;
+  color: var(--app-fg);
+}
+.tb-cat svg {
+  flex: none;
+  color: var(--app-muted-fg);
+}
+.tb-note {
+  flex: 1;
+  min-width: 0;
+}
+.tb-plus {
+  width: 36px;
+  flex: none;
+  justify-content: center;
+  color: var(--app-muted-fg);
+}
+.tb-foot {
+  display: flex;
+  height: 36px;
+  flex: none;
+  border-top: 1px solid var(--app-border);
+  background: var(--app-bg);
+}
+.tb-foot > * {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  padding: 0 8px;
+}
+.tb-foot .lbl {
+  color: var(--app-muted-fg);
+  font-size: 11px;
+}
+
+/* ── 分析视图那两张卡 ──────────────────────────────────────────────
+ * 产品里「明细」与「分析」是同一只 App 的两个视图，不能同框——所以这里
+ * 不去编一个不存在的版面，而是把分析那一屏原样叠在明细上，像一张贴在
+ * 表格上的第二块表面。卡片外壳 rounded-xl + border + bg-card、页头 h-10、
+ * 标题 14/500、栅格 auto-rows-180 gap-3 p-3，逐项取自 views/chart。
+ * 全站只有这一处是两屏叠放，其余都是一台机器的一屏。
+ * ────────────────────────────────────────────────────────── */
+.tb-charts {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, 292px);
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  background: var(--app-bg);
+  box-shadow: 0 2px 6px rgba(27, 26, 22, 0.06), 0 22px 48px -16px rgba(27, 26, 22, 0.34);
+}
+[data-theme="dark"] .tb-charts {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 22px 48px -16px rgba(0, 0, 0, 0.7);
+}
+.ch-card {
+  display: flex;
+  flex-direction: column;
+  height: 244px;
+  overflow: hidden;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  background: var(--app-bg);
+}
+.ch-head {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  flex: none;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--app-border);
+  font-size: 14px;
+  font-weight: 500;
+}
+.ch-body {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+  padding: 14px;
+}
+.ch-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: none;
+  font-size: 12px;
+  color: var(--app-muted-fg);
+}
+.ch-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ch-legend i {
+  display: block;
+  width: 9px;
+  height: 9px;
+  flex: none;
+  border-radius: 2px;
+}
+.ch-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+}
+.ch-bars i {
+  display: block;
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  background: #3b82f6;
+}
