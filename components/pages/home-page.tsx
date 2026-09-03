@@ -23,7 +23,14 @@ export function HomePageView({ locale }: { locale: Locale }) {
 
   return (
     <>
-      <Hero demo={demo} copy={catalog.home.hero} nav={catalog.nav} features={features} locale={locale} />
+      <Hero
+        demo={demo}
+        copy={catalog.home.hero}
+        nav={catalog.nav}
+        language={catalog.language}
+        features={features}
+        locale={locale}
+      />
       <div className="content">
         <AgentsSection demo={demo} catalog={catalog} locale={locale} />
         <AppsSection demo={demo} catalog={catalog} locale={locale} />

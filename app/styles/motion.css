@@ -128,6 +128,13 @@
     border-radius: 0 !important;
     box-shadow: none !important;
   }
+  /* 390 上这条带子塞不下六条菜单：它们被裁在屏幕外，连带右端的输入法、
+     主题与时钟一起挤出视口——于是窄屏上那台机器有一条读不完也按不着的
+     菜单栏。真 macOS 在窄窗口下也是先丢菜单项。留下名字与右端那一族
+     系统项，这条带子才仍然是「一台机器的菜单栏」。 */
+  .scene-bar > .menu {
+    display: none;
+  }
   .scene-body {
     padding: 32px 16px 40px;
     gap: 20px;

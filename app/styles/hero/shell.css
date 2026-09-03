@@ -161,42 +161,62 @@
 .scene-bar .menu {
   opacity: 0.9;
 }
+/* 这一族自己就是菜单的定位基准。挂在单颗控件上，菜单会跟着那颗控件
+   左右漂：窄屏时它靠左，右对齐的面板就伸到屏幕外去了。钉在带子右端这
+   一族上，面板永远从同一条边落下——两种宽度共用一条规则，不必为窄屏
+   再写一次「改成左对齐」。 */
 .scene-status {
+  position: relative;
   margin-left: auto;
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.scene-theme-toggle {
+/* 菜单栏右端那一族：输入法与主题是同一类系统项，于是共用一副形状。
+   两份各写一遍迟早分叉——那时它们看起来就不再像出自同一台机器。
+   宽度给 min-width 而非定值：图标是 16px、输入法记号可能是「拼」也可能
+   是「EN」，格子按内容长，不必为两个字母另开一条规则。 */
+.scene-theme-toggle,
+.scene-input-trigger {
   position: relative;
   flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
+  min-width: 28px;
   height: 28px;
-  padding: 0;
+  padding: 0 6px;
   border: 0;
   border-radius: 7px;
   background: transparent;
   color: inherit;
   cursor: pointer;
+  user-select: none;
   transition: background 140ms ease, transform 140ms ease;
 }
-.scene-theme-toggle:hover {
+.scene-theme-toggle:hover,
+.scene-input-trigger:hover,
+.scene-input-menu[open] .scene-input-trigger {
   background: rgba(255, 255, 255, 0.24);
 }
-[data-theme="dark"] .scene-theme-toggle:hover {
+[data-theme="dark"] .scene-theme-toggle:hover,
+[data-theme="dark"] .scene-input-trigger:hover,
+[data-theme="dark"] .scene-input-menu[open] .scene-input-trigger {
   background: rgba(255, 255, 255, 0.12);
 }
-.scene-theme-toggle:active {
+.scene-theme-toggle:active,
+.scene-input-trigger:active {
   transform: scale(0.92);
 }
-.scene-theme-toggle:focus-visible {
+.scene-theme-toggle:focus-visible,
+.scene-input-trigger:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: -3px;
 }
-.scene-theme-toggle[data-mode="auto"]::after {
+/* Auto 的那颗绿点在这条带子上只有一个意思：这一项跟着系统走。
+   主题与语言共用它，于是「自动」这件事不需要被解释第二遍。 */
+.scene-theme-toggle[data-mode="auto"]::after,
+.scene-input-trigger[data-mode="auto"]::after {
   content: "";
   position: absolute;
   top: 3px;
@@ -206,6 +226,111 @@
   border-radius: 9999px;
   background: var(--green-lit);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.42);
+}
+
+/* ── 输入法菜单 ────────────────────────────────────────────────
+ * 记号是文字不是图标：真 macOS 的菜单栏上，输入源就写着「拼」「あ」「A」。
+ * 一个字比一面国旗说得准——国旗说的是国家，语言不是国家。
+ * ────────────────────────────────────────────────────────── */
+.scene-input-menu {
+  flex: none;
+}
+.scene-input-menu summary {
+  list-style: none;
+}
+.scene-input-menu summary::-webkit-details-marker {
+  display: none;
+}
+.scene-input-trigger {
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1;
+}
+/* 面板向下开，落在桌面上。内容常驻 DOM，details 只切 visibility 与交互，
+   于是收起时它既读不到也点不着，展开也不必重建一遍。 */
+.scene-input-panel {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 5px);
+  right: 0;
+  width: 214px;
+  padding: 5px;
+  border-radius: 12px;
+  border: 1px solid rgba(27, 26, 22, 0.12);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  box-shadow:
+    0 1px 2px rgba(27, 26, 22, 0.08),
+    0 20px 46px -18px rgba(27, 26, 22, 0.38);
+  /* 菜单是一张纸，不是壁纸的一部分：带子上的那层高光到此为止。 */
+  text-shadow: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 140ms ease, visibility 140ms ease, transform 140ms ease;
+}
+[data-theme="dark"] .scene-input-panel {
+  border-color: rgba(237, 233, 222, 0.16);
+  background: rgba(22, 26, 36, 0.86);
+}
+.scene-input-menu[open] .scene-input-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+.scene-input-panel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* 勾在最左，记号居中一列，名字占余下——三列固定，切换语言时行不会跳。 */
+.scene-input-panel a {
+  display: grid;
+  grid-template-columns: 16px 22px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 8px;
+  border-radius: 7px;
+  color: inherit;
+  font-size: 13px;
+  font-weight: 500;
+}
+.scene-input-panel a:hover,
+.scene-input-panel a:focus-visible {
+  background: rgba(27, 26, 22, 0.08);
+}
+[data-theme="dark"] .scene-input-panel a:hover,
+[data-theme="dark"] .scene-input-panel a:focus-visible {
+  background: rgba(255, 255, 255, 0.1);
+}
+.scene-input-panel a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+/* 选中那行不另加底色：勾已经说完了。再上一层底，hover 与「当前项」
+   就成了同一种样子，指到哪一行都像选中了哪一行。 */
+.scene-input-check,
+.scene-input-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.scene-input-mark {
+  font-weight: 650;
+  opacity: 0.72;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-theme-toggle,
+  .scene-input-trigger,
+  .scene-input-panel {
+    transition: none;
+  }
 }
 
 .scene-body {

@@ -1,7 +1,7 @@
 /**
  * [INPUT]: Uses localized copy/path props, next/link, and LanguageSwitcher
  * [OUTPUT]: Exports SiteFooter with localized navigation and language preference control
- * [POS]: Shared colophon and sole language-switching entry for every website page
+ * [POS]: Shared colophon and the language-switching entry present on every website page
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 

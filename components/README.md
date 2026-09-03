@@ -11,10 +11,11 @@
 - `base-section.tsx`: Drives four localized views over one Base dataset.
 - `fork-band.tsx`: Closes the home narrative with localized source copy and immutable commands.
 - `site-header.tsx`: Renders language-preserving navigation and feature discovery.
-- `site-footer.tsx`: Renders localized links and the sole language selector.
+- `site-footer.tsx`: Renders localized links and the footer language selector.
 - `site-document.tsx`: Supplies shared HTML roots with build-time `lang` and pre-paint boot scripts.
 - `disclosure.tsx`: Owns persistent-DOM outside-click and Escape dismissal behavior.
-- `language-switcher.tsx`: Writes or clears explicit language preference and preserves logical routes.
+- `language-switcher.tsx`: Wears the footer skin over the shared language-preference behavior.
+- `scene-language.tsx`: Wears the hero menu-bar input-source skin over that same behavior.
 - `language-runtime.tsx`: Follows later system-language changes while Auto remains active.
 - `theme.tsx`: Resolves and follows the local theme preference.
 - `icons.tsx`: Owns dependency-free SVG and product identity primitives.

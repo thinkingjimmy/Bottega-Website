@@ -37,7 +37,14 @@ function audit(file, locale, logicalPath, auto) {
   const body = html.slice(html.indexOf("<body"));
   const hrefs = [...body.matchAll(/href="(\/[^"#?]*)/g)].map((match) => match[1]);
   const internal = hrefs.filter((href) => href === "/" || href.startsWith("/changelog/") || href.startsWith("/features/"));
-  assert.deepEqual(internal, [logicalPath], `${file}: only the Auto language option may be unprefixed`);
+  /* 页面可以带不止一个语言控件——首页的菜单栏与页脚各有一条 Auto。
+     数量从来不是不变量；「未加前缀的链接只能是 Auto 那一条」才是。 */
+  assert.ok(internal.length > 0, `${file}: missing the unprefixed Auto option`);
+  assert.deepEqual(
+    [...new Set(internal)],
+    [logicalPath],
+    `${file}: only the Auto language option may be unprefixed`
+  );
 }
 
 for (const logicalPath of logicalPaths) {

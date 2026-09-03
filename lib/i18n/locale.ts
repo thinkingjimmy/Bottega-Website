@@ -14,18 +14,35 @@ export type LanguagePreference = (typeof LANGUAGE_PREFERENCES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
 export const LANGUAGE_STORAGE_KEY = "bottega-language";
 
+/** Auto 指不向任何一种语言：地球是它在两处菜单里共用的同一颗记号。 */
+const AUTO_MARK = "🌐";
+
+/* 菜单栏上那一格只放得下一个记号。用各语言自己书写系统里的写法——
+   与 macOS 输入法菜单同一套语汇，不必先认识一面国旗才知道自己在哪。 */
+const LOCALE_MARKS: Record<Locale, string> = {
+  en: "EN",
+  "zh-CN": "拼",
+  ja: "あ",
+  fr: "FR",
+  es: "ES",
+};
+
 export const LANGUAGE_OPTIONS: ReadonlyArray<{
   value: LanguagePreference;
   emoji: string;
   label: string;
 }> = [
-  { value: "auto", emoji: "🌐", label: "Auto detect" },
+  { value: "auto", emoji: AUTO_MARK, label: "Auto detect" },
   { value: "zh-CN", emoji: "🇨🇳", label: "简体中文" },
   { value: "en", emoji: "🇺🇸", label: "English" },
   { value: "ja", emoji: "🇯🇵", label: "日本語" },
   { value: "fr", emoji: "🇫🇷", label: "Français" },
   { value: "es", emoji: "🇪🇸", label: "Español" },
 ];
+
+export function languageMark(value: LanguagePreference): string {
+  return value === "auto" ? AUTO_MARK : LOCALE_MARKS[value];
+}
 
 export function isLocale(value: unknown): value is Locale {
   return LOCALES.includes(value as Locale);

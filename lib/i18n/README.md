@@ -9,7 +9,8 @@
 - `catalogs.test.mjs`: Verifies runtime shape, non-empty values, placeholders, and Changelog parity.
 - `index.ts`: Selects one complete catalog and exports public locale types.
 - `locale.test.mjs`: Verifies storage, browser-language, Chinese-script, fallback, and path semantics.
-- `locale.ts`: Defines supported locales, preference resolution, localized paths, and pre-paint Auto boot code.
+- `locale.ts`: Defines supported locales, menu-bar marks, preference resolution, localized paths, and pre-paint Auto boot code.
+- `use-language-preference.ts`: Owns the client read/write/navigate behavior behind every language control.
 - `metadata.ts`: Builds canonical, Open Graph, and hreflang metadata.
 
 English defines the shape. A translation with a missing key, extra key, empty value, or changed placeholder fails typecheck or tests.

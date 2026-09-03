@@ -1,14 +1,15 @@
 "use client";
 
 /**
- * [INPUT]: Uses React state, localized SiteCatalog/DemoData, ProductWindow, SiteHeader, and theme controls
+ * [INPUT]: Uses React state, localized SiteCatalog/DemoData, ProductWindow, SiteHeader, and the menu-bar language/theme controls
  * [OUTPUT]: Exports the localized interactive Hero component
- * [POS]: Pinned product desktop and the only visible theme control on Bottega-Website
+ * [POS]: Pinned product desktop; its menu bar carries the only visible theme control and the second language entry
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import { useEffect, useRef, useState } from "react";
 import { D, Glyph, Stroke } from "./icons";
+import { SceneLanguage } from "./scene-language";
 import { SiteHeader } from "./site-header";
 import { ThemeToggle } from "./theme";
 import { ProductWindow } from "./window/product-window";
@@ -30,12 +31,14 @@ export function Hero({
   demo,
   copy,
   nav,
+  language,
   features,
   locale,
 }: {
   demo: DemoData;
   copy: SiteCatalog["home"]["hero"];
   nav: SiteCatalog["nav"];
+  language: SiteCatalog["language"];
   features: FeatureRecord[];
   locale: Locale;
 }) {
@@ -116,7 +119,10 @@ export function Hero({
             <Glyph d={D.apple} size={15} />
             <span style={{ fontWeight: 600 }}>Bottega</span>
             {copy.menu.map((item) => <span className="menu" key={item}>{item}</span>)}
+            {/* 输入法在真 macOS 的菜单栏上就站在主题这类系统项左边，
+                同族、同尺寸、同一颗 Auto 绿点——它不需要自我介绍。 */}
             <div className="scene-status">
+              <SceneLanguage locale={locale} copy={language} />
               <ThemeToggle />
               <span className="mono menu">{copy.date}</span>
             </div>
