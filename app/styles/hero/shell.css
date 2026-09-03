@@ -253,7 +253,12 @@
   z-index: 30;
   top: calc(100% + 5px);
   right: 0;
-  width: 214px;
+  /* 宽度由最长那一行给出，不由某一种语言给出。写死 214px 就等于拿英文
+     量出来的那把尺子去量法语——「Détection automatique」当场折成两行。
+     菜单本来就该按内容长，上下界只管住「别太窄」和「别出视口」。 */
+  width: max-content;
+  min-width: 196px;
+  max-width: min(300px, calc(100vw - 32px));
   padding: 5px;
   border-radius: 12px;
   border: 1px solid rgba(27, 26, 22, 0.12);
@@ -298,6 +303,7 @@
   color: inherit;
   font-size: 13px;
   font-weight: 500;
+  white-space: nowrap;
 }
 .scene-input-panel a:hover,
 .scene-input-panel a:focus-visible {
