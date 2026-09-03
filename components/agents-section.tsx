@@ -20,7 +20,7 @@ export function AgentsSection({ demo, catalog, locale }: { demo: DemoData; catal
       <Reveal>
         <div className="wrap split">
           <div>
-            <h1 style={{ fontSize: 56, lineHeight: 1.03, maxWidth: "16ch", marginBottom: 22 }}>
+            <h1 className="agents-title">
               {catalog.home.agents.title}
             </h1>
             <p style={{ fontSize: 18, lineHeight: 1.62, color: "var(--ink-2)", marginBottom: 18, maxWidth: "56ch" }}>

@@ -12,10 +12,10 @@ The site stylesheet is split by responsibility. `globals.css` contains only the 
 
 ## Member list
 
-- `tokens.css`: Reset, theme palettes, product-surface palettes, type stacks, shared page-edge geometry, and the home-demo frame radius.
+- `tokens.css`: Reset, theme palettes, product-surface palettes, type stacks (sans/mono/serif plus the handwriting stack), shared page-edge geometry, and the home-demo frame radius.
 - `base.css`: Global typography, buttons, wraps, and the mirrored home-section grids.
 - `features.css`: Header dropdown, home feature CTAs, wiki sidebar, detail article, screenshot frame, and responsive states.
-- `agents-feature.css`: Dedicated story rhythm plus standalone capability-matrix and cross-Agent handoff visuals for the Agents detail page.
+- `agents-feature.css`: Dedicated story rhythm plus the standalone capability matrix and the annotated cross-Agent handoff sketch for the Agents detail page.
 - `bands.css`: Source band, terminal, localized footer/language disclosure, changelog entries, and wide-grid collapse.
 - `motion.css`: One-shot entrance behavior, reduced-motion policy, and narrow-screen hero/layout overrides.
 - `hero/`: Hero runway and product-window styles; see its README.

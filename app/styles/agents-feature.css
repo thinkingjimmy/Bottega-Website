@@ -1,13 +1,13 @@
 /**
  * [INPUT]: Uses website and product-surface tokens plus the dedicated Agents article class names
- * [OUTPUT]: Sizes the shared Hero window and styles the capability matrix plus cross-Agent handoff illustrations
+ * [OUTPUT]: Sizes the shared Hero window and styles the capability matrix plus the annotated cross-Agent handoff sketch
  * [POS]: Dedicated Agents-page layer; the picker keeps canonical Hero styles while every product demo remains inert
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 /* ── Story rhythm ────────────────────────────────────────────── */
 .agents-feature-article h1 {
-  max-width: 11ch;
+  max-width: none;
   text-wrap: balance;
 }
 
@@ -82,161 +82,7 @@
   line-height: 1.55;
 }
 
-.afd-window {
-  display: grid;
-  grid-template-columns: 188px minmax(0, 1fr);
-  min-height: 520px;
-}
-
-.afd-sidebar {
-  min-width: 0;
-  padding: 12px 10px;
-  border-right: 1px solid var(--app-border);
-  background: var(--app-sidebar);
-  color: var(--app-muted-fg);
-}
-
-.afd-traffic,
-.afd-brand,
-.afd-sidebar-row,
-.afd-head,
-.afd-agent-column,
-.afd-runtime-pill,
-.afd-flow-card header,
-.afd-file,
-.afd-review-result {
-  display: flex;
-  align-items: center;
-}
-
-.afd-traffic {
-  gap: 6px;
-  height: 18px;
-  padding: 0 3px;
-}
-
-.afd-traffic i {
-  width: 7px;
-  height: 7px;
-  border: 1px solid var(--app-border);
-  border-radius: 50%;
-  background: var(--app-bg);
-}
-
-.afd-traffic svg {
-  margin-left: auto;
-}
-
-.afd-brand {
-  justify-content: space-between;
-  height: 42px;
-  padding: 0 7px;
-  color: var(--app-fg);
-}
-
-.afd-sidebar-row {
-  gap: 8px;
-  min-height: 31px;
-  margin-top: 2px;
-  padding: 5px 7px;
-  overflow: hidden;
-  border-radius: 7px;
-  white-space: nowrap;
-}
-
-.afd-sidebar-row span:last-child {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.afd-sidebar-label {
-  margin: 20px 7px 6px;
-  color: var(--app-muted-fg);
-  font-size: 9px;
-  font-weight: 650;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.afd-sidebar-chat {
-  color: var(--app-muted-fg);
-}
-
-.afd-sidebar-chat.is-active {
-  background: var(--app-accent);
-  color: var(--app-fg);
-  font-weight: 580;
-}
-
-.afd-main {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  background: var(--app-bg);
-}
-
-.afd-head {
-  flex: none;
-  gap: 8px;
-  min-height: 48px;
-  padding: 0 16px;
-  border-bottom: 1px solid var(--app-border);
-  background: color-mix(in srgb, var(--app-bg) 96%, transparent);
-}
-
-.afd-head-mark {
-  display: grid;
-  width: 24px;
-  height: 24px;
-  place-items: center;
-  border: 1px solid var(--app-border);
-  border-radius: 7px;
-  background: var(--app-sidebar);
-}
-
-.afd-head strong {
-  overflow: hidden;
-  font-size: 11.5px;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.afd-head-spacer {
-  flex: 1;
-}
-
 /* ── Capability matrix ───────────────────────────────────────── */
-.afd-collaboration {
-  display: flex;
-  min-width: 0;
-  min-height: 490px;
-  flex-direction: column;
-  color: var(--app-fg);
-  pointer-events: none;
-  user-select: none;
-}
-
-.afd-collaboration-head {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 22px;
-}
-
-.afd-collaboration-head .mono {
-  color: var(--app-muted-fg);
-  font-size: 8.5px;
-  letter-spacing: 0.12em;
-}
-
-.afd-collaboration-head h3 {
-  margin-top: 5px;
-  font-size: 17px;
-  letter-spacing: -0.02em;
-}
-
 .afd-matrix-grid {
   overflow: hidden;
   border: 1px solid var(--app-border);
@@ -252,6 +98,10 @@
   grid-template-columns: minmax(160px, 1.25fr) repeat(4, minmax(0, 1fr));
   min-height: 61px;
   border-top: 1px solid var(--app-border);
+}
+
+.afd-matrix-header {
+  min-height: 48px;
 }
 
 .afd-matrix-row:first-child {
@@ -294,178 +144,187 @@
 .afd-status {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  padding: 0 10px;
-  border-radius: 9999px;
-  font-size: 11.5px;
-  font-weight: 650;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 1;
   white-space: nowrap;
 }
 
-.afd-status.is-ready {
-  background: color-mix(in srgb, var(--green) 13%, transparent);
-  color: var(--green);
+/* ── Cross-Agent handoff sketch ───────────────────────────────
+ * 一张手账：三帧同一台机器错落摆开，两跳折线串起来，让开的半边写批注。
+ *
+ * 横向按栏宽的百分比定位、纵向定死——于是整幅随栏宽伸缩，而卡里的字始终
+ * 按真实像素渲染。用 transform: scale 整只缩会把字一起重采样，字会糊；
+ * 这一条与首屏那台机器的收缩用的是同一个理由。
+ * ────────────────────────────────────────────────────────── */
+.afd-sketch {
+  color: var(--app-fg);
+  pointer-events: none;
+  user-select: none;
 }
 
-.afd-status.is-adapted {
-  background: color-mix(in srgb, var(--amber) 14%, transparent);
-  color: var(--amber);
+.afd-scene {
+  position: relative;
+  height: 900px;
 }
 
-.afd-status.is-queued {
-  border: 1px solid var(--app-border);
-  color: var(--app-muted-fg);
+/* 笔画整幅一张，坐标用 860×900 的绝对值——每根线各住一只小 svg、各算各的
+   局部坐标时，「起点没对上、终点没落上」是迟早的：对齐若要算两遍，
+   它迟早对不上。横向伸缩交给 preserveAspectRatio，线宽交给 vector-effect。
+   它排在卡片之前，于是压在卡片底下——批注在界面旁边，不在界面上面。 */
+.afd-ink {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--ink-3);
 }
 
-/* ── Cross-Agent handoff ─────────────────────────────────────── */
-.afd-chain-budget {
-  padding: 6px 9px;
-  border: 1px solid var(--app-border);
-  border-radius: 9999px;
-  color: var(--app-muted-fg);
-  font-size: 9px;
-  white-space: nowrap;
-}
-
-.afd-flow {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 76px minmax(0, 1fr) 76px minmax(0, 1fr);
-  align-items: center;
-  margin-block: auto;
-}
-
-.afd-flow-card {
-  min-width: 0;
-  min-height: 220px;
+/* 窗口的壳整只撤掉：红绿灯、字标、设置、输入框都不是这一节要讲的事，
+   留着只是把每张卡撑宽。 */
+.afd-cd {
+  position: absolute;
+  display: flex;
+  width: 60.47%;
   overflow: hidden;
   border: 1px solid var(--app-border);
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--app-bg);
-  box-shadow: 0 12px 28px -24px rgba(0, 0, 0, 0.48);
+  box-shadow: 0 1px 2px rgba(27, 26, 22, 0.05), 0 18px 40px -28px rgba(27, 26, 22, 0.5);
 }
 
-.afd-flow-card header {
-  gap: 9px;
-  min-height: 54px;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--app-border);
+/* 三张卡高度各不相同，位置左右左错落：规整的三段竖排读起来像一张流程图，
+   拐一个弯，那个弯本身就是「换了一条 Chat」。 */
+.afd-cd--1 { top: 0; left: 0; height: 192px; }
+.afd-cd--2 { top: 300px; left: 39.53%; height: 252px; }
+.afd-cd--3 { top: 660px; left: 0; height: 224px; }
+
+.afd-cd-side {
+  flex: none;
+  width: 132px;
+  padding: 14px 6px;
+  border-right: 1px solid var(--app-border);
   background: var(--app-sidebar);
 }
 
-.afd-flow-card header > span {
-  display: grid;
-  width: 29px;
-  height: 29px;
-  flex: none;
-  place-items: center;
-  border: 1px solid var(--app-border);
-  border-radius: 8px;
-  background: var(--app-bg);
-}
-
-.afd-flow-card header small,
-.afd-flow-card header strong {
-  display: block;
-}
-
-.afd-flow-card header small {
-  margin-bottom: 2px;
-  color: var(--app-muted-fg);
-  font-size: 7.5px;
-  letter-spacing: 0.1em;
-}
-
-.afd-flow-card header strong {
-  font-size: 11px;
-}
-
-.afd-flow-body {
-  padding: 13px;
-  color: var(--app-muted-fg);
-  font-size: 9.5px;
-  line-height: 1.5;
-}
-
-.afd-flow-body > p:first-child {
-  color: var(--app-fg);
-  font-weight: 600;
-}
-
-.afd-flow-body ul {
+/* 行的词汇与产品侧栏同一套：32px 行高、8px 内边距、16px 痕迹槽。
+   行首那一格不改颜色——agent 的 logo 要自陈其色，统一涂灰四家就成了一家。 */
+.afd-cd-row {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin: 11px 0 0;
-  padding: 0;
-  list-style: none;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  font-size: 12px;
 }
 
-.afd-flow-body li {
-  position: relative;
-  padding-left: 11px;
-}
-
-.afd-flow-body li::before {
-  position: absolute;
-  top: 6px;
-  left: 1px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--app-muted-fg);
-  content: "";
-}
-
-.afd-file,
-.afd-review-result {
-  gap: 6px;
-  min-height: 29px;
-  color: var(--app-fg);
+.afd-cd-row.is-open {
+  background: var(--app-accent);
   font-weight: 500;
 }
 
-.afd-review-result {
-  color: var(--green);
+.afd-cd-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.afd-complete {
-  display: inline-flex;
-  margin-top: 14px;
-  padding: 5px 7px;
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--green) 12%, transparent);
-  color: var(--green);
-  font-size: 8px;
-  font-weight: 650;
-  text-transform: uppercase;
+/* 「在跑」只由这一颗表达。产品里那是 ThinkingOrb，这张静态照只要它的痕迹。 */
+.afd-orb {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  margin-left: auto;
+  border-radius: 9999px;
+  background: radial-gradient(circle at 34% 30%, #dbe6f0 0%, #8ea9c4 45%, #5b7f9e 100%);
 }
 
-.afd-flow-bridge {
+.afd-cd-main {
   display: flex;
   min-width: 0;
+  flex: 1;
   flex-direction: column;
-  align-items: center;
-  gap: 7px;
-  color: var(--app-muted-fg);
 }
 
-.afd-flow-bridge span {
-  display: grid;
+/* 真窗里消息压在输入框上方。这张静态照用 flex-end + 裁切复现「已滚到底」：
+   顶上那半条骨架被裁掉，正是「上面还有」这句话——留白说不出这件事。 */
+.afd-cd-chat {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+  overflow: hidden;
+  padding: 16px;
+}
+
+.afd-sk-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+/* 骨架借站点自己那一副（reels/shared.css 的 .sk），只关掉呼吸：那边的闪
+   说的是「正在加载」，这里的灰说的是「这一段不必被读」——同一副形状，
+   两句话，动的那一句在这里是错的。 */
+.afd-sketch .sk {
+  animation: none;
+}
+
+/* 入站消息照 relayInputText 的原文换行；抬头之后是真正的正文，让给骨架。 */
+.afd-cd-relay p {
+  white-space: pre-line;
+}
+
+/* 排队条：抄自 chat/composer/queue 的 message-queue-row（py-1.5、12px 正文、
+   圆钮），去掉输入框——这一节只需要「它在排着」这一件事。 */
+.afd-cd-queue {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px;
+  border-top: 1px solid var(--app-border);
+}
+
+.afd-cd-queue p {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.afd-cd-queue .icon-slot {
   width: 26px;
   height: 26px;
-  place-items: center;
-  border: 1px solid var(--app-border);
-  border-radius: 50%;
-  background: var(--app-sidebar);
+  border-radius: 9999px;
 }
 
-.afd-flow-bridge code {
-  max-width: 74px;
-  overflow: hidden;
-  font-family: var(--font-mono);
-  font-size: 7px;
-  text-overflow: ellipsis;
+/* ── 手写批注 ────────────────────────────────────────────────────
+ * 批注不是界面的一部分，它是站在界面旁边说话的那个人——所以它用手写体，
+ * 而不是把产品的字号缩小。各歪一点：齐整地贴四条手写字，看起来是排版排
+ * 出来的手写体，不是写上去的字；歪那一两度就是「有人拿笔在这儿写过」。
+ * ────────────────────────────────────────────────────────── */
+.afd-note {
+  position: absolute;
+  color: var(--ink-2);
+  font-family: var(--font-hand);
+  font-size: 21px;
+  line-height: 1.45;
+  transform-origin: 0 50%;
 }
+
+.afd-note--plan { top: 22px; left: 68.95%; width: 30.47%; transform: rotate(-1.6deg); }
+.afd-note--send { top: 228px; left: 12.67%; width: 21.98%; transform: rotate(1.2deg); }
+/* 这一条贴着折线的横段站，所以钉下缘而不是上缘：英/法/西译文比中文长，
+   钉上缘时多出来的那一行会往下长，正好压在线上——而钉下缘，它只会往上长。 */
+.afd-note--back { bottom: 302px; left: 18.26%; width: 30.5%; transform: rotate(-2deg); }
+.afd-note--review { top: 700px; left: 67.91%; width: 32.09%; transform: rotate(1.2deg); }
 
 /* ── Responsive rendering ────────────────────────────────────── */
 @media (max-width: 700px) {
@@ -491,15 +350,6 @@
     padding-inline: var(--edge);
   }
 
-  .afd-window {
-    grid-template-columns: minmax(0, 1fr);
-    min-height: 500px;
-  }
-
-  .afd-sidebar {
-    display: none;
-  }
-
   /* The Hero's Agent menu normally anchors to its trigger. In the narrower
      documentation frame it anchors to the same Composer instead, preserving
      the original 240px panel without clipping its leading logos. */
@@ -509,11 +359,6 @@
 
   .afd-visual--hero-window .composer-right > .menu-host:first-child .menu-panel {
     right: 8px;
-  }
-
-  .afd-collaboration {
-    min-height: 0;
-    padding: 20px 14px;
   }
 
   .afd-matrix-row {
@@ -548,39 +393,58 @@
   }
 
   .afd-status {
-    padding-inline: 5px;
-    font-size: 7.5px;
+    font-size: 12px;
   }
 
-  .afd-flow {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 11px;
-    width: min(330px, 100%);
-    margin-inline: auto;
-  }
-
-  .afd-flow-card {
-    min-height: 0;
-  }
-
-  .afd-flow-bridge {
-    flex-direction: row;
-    justify-content: center;
-  }
-
-  .afd-flow-bridge span svg {
-    transform: rotate(90deg);
-  }
-
-  .afd-flow-bridge code {
-    max-width: none;
-  }
-}
-
-@media (max-width: 420px) {
-  .afd-collaboration-head {
-    align-items: flex-start;
+  /* 窄屏没有让开的半边可写：卡片改成一列，批注落在它说的那张卡下面，
+     笔画整幅收起——一根按 860 算好的折线，在 360 上只会横穿三张卡。
+     卡也不再裁：这里没有「一屏之内」的压力，能全看见就全看见。 */
+  .afd-scene {
+    display: flex;
+    height: auto;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
+    padding-inline: var(--edge);
   }
+
+  .afd-ink {
+    display: none;
+  }
+
+  .afd-cd,
+  .afd-note {
+    position: static;
+    width: 100%;
+    transform: none;
+  }
+
+  .afd-cd {
+    height: auto;
+  }
+
+  .afd-cd-side {
+    width: 116px;
+  }
+
+  .afd-cd-chat {
+    justify-content: flex-start;
+  }
+
+  /* 省略号说的是「上面还有」，而这里没有「上面」——一整块灰只剩噪音。 */
+  .afd-cd-chat > .afd-sk-stack:first-child {
+    display: none;
+  }
+
+  .afd-note {
+    font-size: 19px;
+  }
+
+  .afd-cd--1 { order: 1; }
+  .afd-note--plan { order: 2; }
+  .afd-note--send { order: 3; }
+  .afd-cd--2 { order: 4; }
+  .afd-note--back { order: 5; }
+  .afd-cd--3 { order: 6; }
+  .afd-note--review { order: 7; }
 }
+

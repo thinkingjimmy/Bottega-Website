@@ -4,9 +4,9 @@
 
 ## Members
 
-- `agents.ts`: Combines locale-neutral product facts with one catalog's demo copy.
+- `agents.ts`: Combines locale-neutral product facts with localized demo and App-switch copy.
 - `body-map.json`: Stores immutable Fitness Log anatomical paths.
-- `changelog.ts`: Parses one locale-specific build-time Changelog snapshot.
+- `changelog.ts`: Parses one locale-specific build-time Changelog snapshot; renders bold, inline code, and link labels.
 - `i18n/`: Owns locale contracts, catalogs, path resolution, metadata, and content tests.
 
 Client modules may import `i18n/locale.ts`; complete catalogs remain on the server side of route composition.

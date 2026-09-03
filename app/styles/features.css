@@ -2,7 +2,7 @@
  * [INPUT]: Uses the shared site tokens, header geometry, icon primitives, and feature page class names
  * [OUTPUT]: Styles the header dropdown, home Read More links, wiki sidebar, feature article, and responsive states
  * [POS]: Complete presentation layer for discovering and reading the four feature detail pages
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 /* ── Header feature menu ────────────────────────────────────────

@@ -10,7 +10,7 @@
 - `feature-icon.tsx`: Draws the framed identity mark used by sidebar links.
 - `document-feature-article.tsx`: Renders screenshot-backed Apps, Customizable, and Base documents.
 - `agents-feature-article.tsx`: Renders three localized evidence-led Agents stories.
-- `agents-feature-visuals.tsx`: Draws localized Agent picker, capability matrix, and handoff evidence.
+- `agents-feature-visuals.tsx`: Draws the localized Agent picker, capability matrix, and the annotated cross-Agent handoff sketch — three staggered Chat cards, two elbow handoffs, four handwritten notes.
 
 Behavioral disclosure logic lives in `components/disclosure.tsx`; feature copy lives only in `lib/i18n/catalogs/`.
 

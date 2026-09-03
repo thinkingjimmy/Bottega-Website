@@ -2,14 +2,14 @@
   "name": "bottega-website",
   "version": "0.1.0",
   "private": true,
-  "description": "Marketing site for Bottega — the workshop that builds itself.",
+  "description": "Marketing site for Bottega \u2014 the workshop that builds itself.",
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/sync-changelog.mjs --if-present && next build --webpack",
     "start": "next start",
-    "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "check": "pnpm typecheck && pnpm test:i18n && pnpm audit:i18n",
     "sync:changelog": "node scripts/sync-changelog.mjs",
     "test:i18n": "node --experimental-strip-types --test lib/i18n/*.test.mjs",
     "audit:i18n": "node scripts/audit-static-i18n.mjs"

@@ -23,8 +23,6 @@ export const en = {
     downloadMac: "Download for macOS",
   },
   footer: {
-    noteBefore: "Bottega is free and open source (",
-    noteAfter: ").",
     navigation: "Footer navigation",
     links: {
       changelog: "Changelog",
@@ -42,35 +40,35 @@ export const en = {
     hero: {
       menu: ["File", "Edit", "View", "Chat", "Window", "Help"],
       date: "Tue Sep 1  9:36",
-      chatChip: "Chat, just like your CLI",
+      chatChip: "Use it like Codex",
       appChip: "Apps your Agent builds",
     },
     agents: {
-      title: "Every Agent you pay for, in one sidebar.",
+      title: "Your Agents, one sidebar.",
       paragraphs: [
-        "Codex, Claude, Kimi and OpenCode all live in Bottega — the official CLIs you already have installed, nothing reimplemented.",
-        "Each runs on your own subscription: the plan you already pay for, billed by the provider, not by us.",
+        "Codex, Claude, Kimi and OpenCode all run in Bottega — directly through the official CLIs you already have installed, with no additional Agent service required.",
+        "Every Agent also uses your own subscription, at no extra cost.",
       ],
     },
     apps: {
       title: "Build AI-native Apps.",
       body:
-        "Build an AI fitness coach, an AI expense tracker, or something entirely your own. Describe the idea—Bottega turns it into a working App, from data to interface. Here are the four Apps that come with Bottega:",
+        "Build an AI fitness coach, an AI expense tracker, or something entirely your own. Describe the idea—Bottega turns it into a working App, from data to interface. Here are four Apps built with Bottega:",
     },
     customizable: {
       title: "Customize any App by chatting.",
       body:
-        "Every Bottega App has editable source—not a black box. Choose Edit App and describe what you want to change. Your Agent works directly with the source to update features, data, and interface—no code editor required.",
+        "Every Bottega App has editable source. Click Edit App and describe what you want to change. Your Agent modifies the code directly to update features, data, and interface—no separate code editor required.",
     },
     base: {
-      title: "Every Chat comes with a Base.",
+      title: "Every Chat, one data space.",
       body:
-        "Bottega uses it to structure, analyze, and visualize your data. Ask for totals, summaries, category breakdowns, or trends—then explore the same data as a table, chart, gallery, or map. No exports required.",
+        "Information from each conversation is captured in Base. Let your Agent organize, summarize, and analyze it directly, then view the same data as a table, chart, gallery, or map—no exports required.",
     },
     fork: {
-      title: "Fork it. Ship your own build.",
+      title: "Release your own version.",
       body:
-        "Bottega is MIT-licensed, end to end. Fork the repo, change the Agents, the tools, the UI — then roll your own build out to your whole team. It still runs local-first on their machines, on the subscriptions they already pay for.",
+        "Bottega is licensed under the MIT License. You’re free to fork the repository, modify the code, and share your own version with others.",
       download: "Download for macOS",
       source: "View the source",
       terminalLabel: "Terminal commands to build Bottega",
@@ -92,9 +90,9 @@ export const en = {
     agents: {
       label: "Agents",
       menuCopy: "Codex, Claude, Kimi, and OpenCode",
-      title: "Multiple Agents. One workspace.",
+      title: "Switch Agents, keep your workspace.",
       deck:
-        "Run Codex, Claude Code, Kimi Code, and OpenCode in one local workspace—using their official CLIs, your existing provider access, and one shared conversation experience.",
+        "Run Codex, Claude Code, Kimi Code, and OpenCode in the same local workspace—using their official CLIs and the subscriptions you already have, with no extra fees.",
     },
     apps: {
       label: "Apps",
@@ -230,18 +228,18 @@ export const en = {
         },
         {
           index: "02 · Conversation parity",
-          title: "One conversation experience, adapted—not flattened.",
+          title: "One interaction model, not one Agent.",
           paragraphs: [
-            "Streaming replies, tool activity, Plan review, questions, permissions, model controls, and queued messages share one visual system. Bottega translates each backend's protocol into that system without pretending their capabilities are identical.",
-            "The matrix shows the current product contract. “Shared” means the Bottega surface is the same; Native and Adapted show where the implementation differs. Missing runtime capabilities do not render as dead controls.",
+            "Each Agent Harness has its own runtime model. To keep the experience consistent, Bottega provides one interaction layer and adapts streaming replies, tool status, Plan mode, queued messages, and more to each backend.",
+            "Here is the current capability coverage, which continues to evolve:",
           ],
         },
         {
           index: "03 · Cross-Agent collaboration",
-          title: "Let one Agent hand work to another.",
+          title: "Beyond a unified experience, Agents finish the work together.",
           paragraphs: [
-            "A Claude conversation can prepare a Plan, send the bounded context to a Codex conversation, and ask Codex to implement it. Codex can return the result to the original conversation for review.",
-            "The handoff uses Bottega's persistent Chat communication tools: the target Chat keeps its own Agent and workspace, the message starts or queues there, and the result remains visible and reusable instead of disappearing inside a hidden run.",
+            "Let Claude frame the problem and create a Plan, then pass the necessary context to Codex for implementation. When it is done, the result returns automatically to the original Chat for review, revision, or handoff to the next Agent.",
+            "Each Chat keeps its own Agent, workspace, and task history. Messages can run immediately or wait in a queue; the process stays visible, and every result remains traceable and reusable.",
           ],
         },
       ],
@@ -294,11 +292,11 @@ export const en = {
       },
     },
     apps: {
-      shapes: [
-        "Workspace-artifact App · isolated GUI surface",
-        "Base App · 9 columns · task / findings / ledger",
-        "Base App · 4 columns · detail / analysis views",
-        "Base App with GUI surface · muscle heatmap",
+      items: [
+        { name: "Design Canvas", description: "Turn ideas into an editable visual canvas" },
+        { name: "Development Kanban", description: "Plan tasks, progress, and findings on one board" },
+        { name: "Expense Tracker", description: "Track spending by category and over time" },
+        { name: "Fitness Log", description: "Log workouts and see which muscles worked" },
       ],
     },
     baseViews: [
@@ -471,27 +469,29 @@ export const en = {
       matrixLabel: "Capability matrix for Codex, Claude, Kimi, and OpenCode",
       capability: "Capability",
       rows: [
-        { label: "Streaming replies", values: ["Shared", "Shared", "Shared", "Shared"] },
-        { label: "Tool activity", values: ["Shared", "Shared", "Shared", "Shared"] },
-        { label: "Plan + review", values: ["Native", "Native", "Native", "Adapted"] },
-        { label: "Questions", values: ["Shared UI", "Shared UI", "Shared UI", "Shared UI"] },
-        { label: "Model picker", values: ["Full", "List", "List", "List"] },
-        { label: "Permissions", values: ["3 levels", "2 levels", "2 levels", "2 levels"] },
-        { label: "Mid-turn message", values: ["Live", "Live", "Next turn", "Next turn"] },
+        { label: "Streaming replies", values: ["✅", "✅", "✅", "✅"] },
+        { label: "Model / Thinking selection", values: ["✅", "✅", "✅", "✅"] },
+        { label: "Tool status", values: ["✅", "✅", "✅", "✅"] },
+        { label: "Plan mode", values: ["✅", "✅", "✅", "✅"] },
+        { label: "Queue mode", values: ["✅", "✅", "✅", "✅"] },
+        { label: "User approvals", values: ["✅", "✅", "✅", "✅"] },
+        { label: "@ mentions", values: ["✅", "✅", "✅", "✅"] },
+        { label: "Browser Use", values: ["✅", "✅", "✅", "✅"] },
+        { label: "Edit previous message", values: ["✅", "✅", "✅", "✅"] },
       ],
-      collaborationLabel: "Claude plans, Codex implements, and Claude reviews through persistent Chat handoffs",
-      persistentChats: "PERSISTENT CHATS",
-      flowTitle: "Plan → implement → review",
-      visibleHandoff: "Visible handoff",
-      phases: ["01 · PLAN", "02 · IMPLEMENT", "03 · REVIEW"],
-      planSummary: "Navigation implementation plan",
-      planItems: ["Use the shared header boundary", "Preserve mobile behavior", "Verify static routes"],
-      filesChanged: "3 files changed",
-      typecheckPassed: "Typecheck passed",
-      implementationComplete: "Implementation complete",
-      noIssues: "No blocking issues",
-      reviewMatch: "Plan intent and implementation match.",
-      reviewReturned: "Review returned",
+      collaborationLabel: "Claude drafts the Plan, Codex implements it, and the result returns to the original Chat for Claude to review",
+      chatPlan: "Unify the nav bar",
+      chatImpl: "Nav implementation",
+      planLabel: "Plan",
+      planTitle: "Navigation implementation plan",
+      relayFrom: "[From Section @{name} (source_section_id={id})]",
+      queueItem: "@{name} · also verify the mobile breakpoints",
+      reviewLine: "Plan intent and implementation match; no blocking issues.",
+      notePlan: "First let Claude turn the problem\ninto a Plan",
+      noteSend: "Drop the work into\nanother Chat's queue",
+      noteBack: "When it finishes, the result returns on its own",
+      noteReview: "Back in the original Chat — review it,\nor hand it to the next Agent",
+      handoffCaption: "Three frames of one machine. Everything outside the skeleton is the product's own text — the Plan title, the inbound message header, the review verdict; the two handoffs call send_to_section and expect_reply.",
     },
   },
 } as const;

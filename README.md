@@ -134,11 +134,13 @@ source repository is unavailable.
 ```bash
 pnpm install --ignore-workspace
 pnpm dev
-pnpm test:i18n
+pnpm check   # typecheck + test:i18n + audit:i18n
 pnpm build
-pnpm audit:i18n
-pnpm typecheck
 ```
+
+`pnpm check` chains the three gates that actually exist here. There is no `lint` script: Next.js 16
+removed `next lint`, and this repository never carried an ESLint configuration of its own — a script
+that cannot run is worse than no script, because it reads like a gate that is holding.
 
 The site is an independent Git repository nested inside Bottega-Dev. The `--ignore-workspace` flag
 keeps a direct install from binding its dependencies to the parent workspace. The development server

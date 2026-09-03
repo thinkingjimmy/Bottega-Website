@@ -6,7 +6,7 @@ Product-faithful surfaces for the four Apps shown in the home narrative. React s
 
 ## Member list
 
-- `stage.css`: Owns the Apps frame, the four scaled pane layers, and the App switcher. The outer frame consumes the same `--home-demo-radius` token as the three reels.
+- `stage.css`: Owns the Apps frame, the four scaled pane layers, and the localized title-and-description switcher. The outer frame consumes the same `--home-demo-radius` token as the three reels.
 - `base.css`: Implements the shared Base App chrome and the Kanban, table, and analysis surfaces used by the bundled Base Apps.
 - `canvas.css`: Implements Design Canvas chrome, overlays, whiteboard, anchors, and dock using the App's native paper tokens.
 - `fitness.css`: Implements Fitness Log as a training-manual surface with its masthead, anatomy map, heat zones, and exercise index.

@@ -71,7 +71,7 @@ export function AppsStage({
                   </span>
                   <span className="app-switch-name">{app.name}</span>
                 </span>
-                <span className="mono app-switch-shape">{app.shape}</span>
+                <span className="app-switch-description">{app.description}</span>
               </button>
             </li>
           ))}

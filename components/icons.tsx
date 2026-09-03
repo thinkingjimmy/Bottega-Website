@@ -189,6 +189,12 @@ export const D = {
   funnel: "M3 4h18l-7 8v7l-4 2v-9z",
   sortAsc: "M4 7h13M4 12h9M4 17h5",
   moreHorizontal: "M5 12h.01M12 12h.01M19 12h.01",
+  /* 排队行那三枚：抄自 chat/composer/queue 的 message-queue-row。
+     grip 与 moreHorizontal 同一种写法——lucide 原版是六颗圆点，
+     这里并成一笔点划，与同族其余各枚共用一条描边规则。 */
+  grip: "M9 5h.01M9 12h.01M9 19h.01M15 5h.01M15 12h.01M15 19h.01",
+  cornerDownRight: "m15 10 5 5-5 5M4 4v7a4 4 0 0 0 4 4h12",
+  trash: "M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M10 11v6M14 11v6",
   columns3: "M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM9 3v18M15 3v18",
   /* 两节新正文用到的那几枚：App 菜单、视图目录、地图落点。 */
   arrowLeft: "M19 12H5M12 19l-7-7 7-7",

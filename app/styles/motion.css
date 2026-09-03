@@ -1,8 +1,8 @@
 /**
- * [INPUT]: 依赖前面每一支定义的类名
- * [OUTPUT]: 进场动效、prefers-reduced-motion 的总闸，以及 ≤900 的窄屏版
- * [POS]: 必须最后被引入：它靠「排在后面」去覆盖前面的规则，换个位置就有一半不生效
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [INPUT]: Uses class names defined by every earlier stylesheet in the cascade
+ * [OUTPUT]: Provides entrance motion, the prefers-reduced-motion gate, and the ≤900px layout
+ * [POS]: Final cascade layer whose order lets accessibility and narrow-screen rules override earlier styles
+ * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
 
 /* ============================================================
@@ -186,7 +186,7 @@
   }
   /* 方阵留住，限定语收起：167 宽的格子里那句 mono 要断成三行，
      方阵就变成了一堵字墙。名字留住，限定语交还给正文。 */
-  .app-switch-shape {
+  .app-switch-description {
     display: none;
   }
   .section {

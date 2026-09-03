@@ -2,6 +2,16 @@
 
 Ce fichier consigne les jalons du produit, pas les itérations internes d’implémentation.
 
+## 2026-09-02 — v0.1.0
+
+- Publication des premiers installeurs. Bottega est désormais disponible depuis GitHub Releases sous forme de DMG et ZIP macOS arm64, d’installeur NSIS Windows x64 et d’AppImage Linux x64, tous construits depuis le commit de ce tag. Ces builds ne sont pas signés ; le guide de démarrage documente l’étape unique que chaque plateforme demande au premier lancement.
+- Reconstruction du magasin de Chat sur SQLite comme unique source de vérité. Conversations, turns, pièces jointes et facts vivent maintenant dans une seule base locale durable au lieu de fichiers par Chat : un Chat survit aux plantages, reprend sans réanalyse et cesse de ralentir à mesure qu’il s’allonge.
+- Ouverture des longues conversations à coût constant. La timeline, le plan du Chat et la recherche dans le Chat sont paginés : ouvrir un Chat de dizaines de milliers de turns coûte autant qu’un Chat court, et remonter ne recharge jamais toute la transcription.
+- Ajout d’une recherche plein texte fondée sur les grammes. La recherche traite désormais le chinois, le japonais et le coréen aussi fidèlement que les langues séparées par des espaces, et renvoie des résultats du magasin que lit la transcription.
+- Unification de l’historique importé dans une seule timeline. Les sessions reprises des CLI locales Codex, Claude Code, Kimi Code et OpenCode s’affichent dans la même transcription que les Chats créés dans Bottega, avec le même plan, la même recherche et la même navigation, au lieu d’une vue séparée en lecture seule.
+- Restriction des écritures de facts. Un turn ne met à jour que les facts qu’il possède réellement, si bien que turns concurrents, livraison de Memory et écritures Base ne s’écrasent plus mutuellement.
+- Clôture des constats de la revue de fusion. App Use ne navigue qu’après un accusé completed, donc une App rejetée ou en cours de récupération ne déplace jamais la fenêtre ; la révocation de l’accès Base d’une App devient une étape atomique, si bien qu’accès et cycle de vie ne peuvent plus diverger ; l’épinglage des Apps et des Projects, l’apparence des Projects et la navigation des Settings ont été réorganisés pour que la barre latérale reflète toujours ce qui est réellement ouvert.
+
 ## 2026-08-29 — Outils par Project, Extensions et aperçu du code de Design Canvas
 
 - Publication du code de production actuel comme commit enfant normal de l’historique public propre, tandis que les tests, l’automatisation de développement et les preuves internes restent dans Bottega-Dev.

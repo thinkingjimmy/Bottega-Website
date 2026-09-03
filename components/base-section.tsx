@@ -55,7 +55,7 @@ export function BaseSection({
                       </span>
                       <span className="app-switch-name">{view.name}</span>
                     </span>
-                    <span className="mono app-switch-shape">{view.blurb}</span>
+                    <span className="mono app-switch-description">{view.blurb}</span>
                   </button>
                 </li>
               ))}

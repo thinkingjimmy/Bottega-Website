@@ -4,7 +4,7 @@
 
 ## Members
 
-- `apps-stage.tsx`: Drives four surfaces from localized DemoData and stops rotation after user input.
+- `apps-stage.tsx`: Drives four surfaces from localized App titles and descriptions, then stops rotation after user input.
 - `surface-canvas.tsx`: Reconstructs translated Design Canvas controls around inert Agent-authored HTML.
 - `surface-kanban.tsx`: Reconstructs translated Development Kanban lanes and records.
 - `surface-ledger.tsx`: Reconstructs translated Expense Tracker detail and analysis views.

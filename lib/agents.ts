@@ -1,5 +1,5 @@
 /**
- * [INPUT]: Uses SiteCatalog demo copy while keeping product identities, metrics, and icons locale-neutral
+ * [INPUT]: Uses SiteCatalog demo copy while keeping product IDs, metrics, and icons locale-neutral
  * [OUTPUT]: Exports Agent/model contracts, createDemoData, and the localized DemoData graph
  * [POS]: Typed boundary between stable product facts and translated website demonstrations
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
@@ -99,7 +99,7 @@ export type App = {
   id: string;
   icon: string;
   name: string;
-  shape: string;
+  description: string;
 };
 
 export type KanbanChip = { label?: string; text: string; tone?: KanbanTone };
@@ -135,10 +135,10 @@ const CHAT_SHELLS = [
 ] as const;
 
 const APP_SHELLS = [
-  { id: "design-canvas", icon: "✦", name: "Design Canvas" },
-  { id: "dev-kanban", icon: "🧭", name: "Development Kanban" },
-  { id: "expense-tracker", icon: "💰", name: "Expense Tracker" },
-  { id: "fitness-log", icon: "🏋️", name: "Fitness Log" },
+  { id: "design-canvas", icon: "✦" },
+  { id: "dev-kanban", icon: "🧭" },
+  { id: "expense-tracker", icon: "💰" },
+  { id: "fitness-log", icon: "🏋️" },
 ] as const;
 
 const LEDGER_ROWS = [
@@ -250,7 +250,7 @@ function createKanban(copy: SiteCatalog["demo"]["kanban"]): KanbanLane[] {
 }
 
 export function createDemoData(copy: SiteCatalog["demo"]) {
-  const apps: App[] = APP_SHELLS.map((app, index) => ({ ...app, shape: copy.apps.shapes[index] }));
+  const apps: App[] = APP_SHELLS.map((app, index) => ({ ...app, ...copy.apps.items[index] }));
   const ledgerLong = LEDGER_ROWS.map(([date, amount, category], index) => ({
     date,
     amount,

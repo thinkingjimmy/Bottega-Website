@@ -2,7 +2,7 @@
  * [INPUT]: Uses --ground, --ink, --font-*, and --edge from tokens.css
  * [OUTPUT]: Defines global typography, shared controls, page wraps, and the home-section grid skeletons
  * [POS]: Foundation layer consumed by every route before feature- or section-specific presentation
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
 
 /* ============================================================
@@ -24,6 +24,20 @@ h3 {
   font-weight: 600;
   letter-spacing: -0.018em;
   text-wrap: balance;
+}
+
+.agents-title {
+  max-width: 16ch;
+  margin-bottom: 22px;
+  font-size: 56px;
+  line-height: 1.03;
+}
+
+@media (min-width: 641px) {
+  html:lang(zh-CN) .agents-title {
+    max-width: none;
+    white-space: nowrap;
+  }
 }
 
 .mono {

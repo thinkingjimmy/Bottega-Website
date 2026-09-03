@@ -160,9 +160,8 @@
   color: var(--ink-2);
   transition: color 160ms ease;
 }
-.app-switch-shape {
+.app-switch-description {
   font-size: 11.5px;
-  letter-spacing: 0.03em;
   line-height: 1.45;
   color: var(--ink-3);
 }

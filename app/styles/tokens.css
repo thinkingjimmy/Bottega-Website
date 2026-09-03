@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Has no dependencies; every color, font, and geometry value is self-contained
- * [OUTPUT]: Provides site and product-surface palettes, App paper tokens, type stacks, shared layout geometry, and the reset
+ * [OUTPUT]: Provides site and product-surface palettes, App paper tokens, type stacks (including the handwriting stack), shared layout geometry, and the reset
  * [POS]: Foundation of the stylesheet cascade; every later stylesheet consumes these tokens
  * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
@@ -142,6 +142,16 @@ p {
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --font-serif: ui-serif, "Iowan Old Style", Charter, "Songti SC", "Source Han Serif SC",
     "Noto Serif SC", SimSun, Georgia, serif;
+
+  /* ── 手写：批注用的那一支 ────────────────────────────────────────
+   * 拉丁走 Caveat（next/font 自托管，见 components/site-document.tsx），
+   * 中文没有自托管的手写体——CJK 字重整本下发要几十兆，为一页图上的四句
+   * 批注付这个代价不划算，所以交给本机：翩翩体/手札体/行楷/楷体依次退。
+   * 一台机器上退到楷体仍读得出「这是写上去的」，而不是「排上去的」——
+   * 这是这条 stack 唯一要守住的事。
+   * ────────────────────────────────────────────────────────── */
+  --font-hand: var(--font-caveat, ui-rounded), "Hanzipen SC", "HanziPen SC",
+    "Hannotate SC", "Xingkai SC", STXingkai, "Kaiti SC", KaiTi, STKaiti, cursive;
 
   /* ── 全页左右边界的唯一真相源 ────────────────────────────────
    * 首屏那台机器收缩到位后左右各让出的量。这一个数同时决定三件事：

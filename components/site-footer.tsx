@@ -11,6 +11,7 @@ import { localizedPath, type Locale } from "@/lib/i18n/locale";
 import { LanguageSwitcher } from "./language-switcher";
 
 const REPO = "https://github.com/thinkingjimmy/Bottega";
+const COPYRIGHT = "Bottega © 2026. All rights reserved.";
 
 export function SiteFooter({
   locale,
@@ -31,9 +32,7 @@ export function SiteFooter({
   return (
     <footer className="site-footer">
       <div className="wrap footer-row">
-        <p className="footer-note">
-          {catalog.footer.noteBefore}<a href={`${REPO}/blob/main/LICENSE`}>MIT</a>{catalog.footer.noteAfter}
-        </p>
+        <p className="footer-note">{COPYRIGHT}</p>
         <div className="footer-actions">
           <nav aria-label={catalog.footer.navigation}>
             <ul className="footer-links">
