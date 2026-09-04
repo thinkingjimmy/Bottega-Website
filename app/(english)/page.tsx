@@ -1,7 +1,7 @@
 /**
- * [INPUT]: Uses English fallback catalog metadata and HomePageView
- * [OUTPUT]: Statically renders the unprefixed Auto home route
- * [POS]: x-default home entry; AutoLayout performs pre-paint language resolution
+ * [INPUT]: Uses the English catalog, canonical metadata, and HomePageView
+ * [OUTPUT]: Statically renders the unprefixed English home route
+ * [POS]: Canonical English and x-default home entry
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
@@ -13,9 +13,8 @@ export const metadata = buildMetadata({
   locale: "en",
   logicalPath: "/",
   catalog: getCatalog("en"),
-  auto: true,
 });
 
-export default function AutoHomePage() {
+export default function EnglishHomePage() {
   return <HomePageView locale="en" />;
 }

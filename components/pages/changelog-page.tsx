@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses one Locale, its SiteCatalog, locale-specific Changelog snapshot, and shared site chrome
- * [OUTPUT]: Exports ChangelogPageView for Auto fallback and five canonical locale routes
+ * [OUTPUT]: Exports ChangelogPageView for canonical English and four prefixed locale routes
  * [POS]: Locale-neutral milestone page composition
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */

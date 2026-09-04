@@ -1,7 +1,7 @@
 /**
  * [INPUT]: Uses Next Metadata, locale paths, and localized catalog metadata
- * [OUTPUT]: Exports locale-aware canonical/hreflang/Open Graph metadata builders
- * [POS]: Single SEO authority for the five canonical language trees and x-default fallback routes
+ * [OUTPUT]: Exports locale-aware canonical, hreflang, and Open Graph metadata builders
+ * [POS]: Single SEO authority for unprefixed English plus four prefixed language trees
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
@@ -33,7 +33,6 @@ export function buildMetadata({
   title,
   description,
   catalog,
-  auto = false,
   image,
 }: {
   locale: Locale;
@@ -41,12 +40,11 @@ export function buildMetadata({
   title?: string;
   description?: string;
   catalog: SiteCatalog;
-  auto?: boolean;
   image?: { url: string; width: number; height: number; alt: string };
 }): Metadata {
   const pageTitle = title ? `${title} · Bottega` : catalog.meta.siteTitle;
   const pageDescription = description ?? catalog.meta.siteDescription;
-  const canonical = localizedPath(auto ? "en" : locale, logicalPath);
+  const canonical = localizedPath(locale, logicalPath);
   const openGraphTitle = title ? `${title} · Bottega` : catalog.meta.siteTitle;
 
   return {
@@ -60,7 +58,7 @@ export function buildMetadata({
     openGraph: {
       title: openGraphTitle,
       description: pageDescription,
-      url: auto ? logicalPath : localizedPath(locale, logicalPath),
+      url: localizedPath(locale, logicalPath),
       siteName: "Bottega",
       locale: OG_LOCALES[locale],
       alternateLocale: LOCALES.filter((entry) => entry !== locale).map(

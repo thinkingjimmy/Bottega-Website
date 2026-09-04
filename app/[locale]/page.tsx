@@ -1,7 +1,7 @@
 /**
  * [INPUT]: Uses locale validation, localized metadata, and HomePageView
- * [OUTPUT]: Statically renders five canonical locale-prefixed home pages
- * [POS]: Canonical localized home route
+ * [OUTPUT]: Statically renders four canonical locale-prefixed home pages
+ * [POS]: Canonical non-English home route
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 

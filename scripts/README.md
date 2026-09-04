@@ -5,7 +5,7 @@
 ## Members
 
 - `sync-changelog.mjs`: Refreshes English and Simplified Chinese snapshots from the sibling public Bottega checkout when available.
-- `audit-static-i18n.mjs`: Audits all thirty canonical and six Auto fallback files after static export.
+- `audit-static-i18n.mjs`: Audits all thirty canonical files, their alternates, and the canonical-only sitemap after static export.
 
 Japanese, French, and Spanish snapshots are repository-owned and never overwritten by synchronization.
 

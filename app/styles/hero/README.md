@@ -17,7 +17,7 @@ The first-screen presentation: one sticky runway, a theme-aware desktop scene, a
 - `.stage` belongs only to the sticky hero runway; home-section illustrations use scoped class names.
 - `.site-header--stage` sits above the scene and allows visible overflow so its Features panel can cross the desktop boundary. Its controls remain invisible and non-interactive until the top band is tall enough to contain them.
 - `.scene` owns clipping and corner radius. Individual window panels clip their own moving faces instead of clipping the shared Header.
-- The menu-bar input-source and theme controls share one shape rule and one Auto dot; a new system control joins that rule instead of copying it.
+- The menu-bar input-source and theme controls share one shape rule; only the system-following theme owns the Auto dot.
 - The product window may shrink vertically; its transcript and panel bodies own scrolling.
 - The Agents feature embeds the same `.window` tree and Hero styles; it may change host dimensions and pin one Composer menu as inert evidence, never duplicate the Sidebar or Composer vocabulary.
 

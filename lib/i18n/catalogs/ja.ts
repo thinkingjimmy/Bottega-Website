@@ -13,7 +13,7 @@ export const ja = {
     siteTitle: "Bottega — 自らを組み上げるワークショップ",
     siteDescription: "Codex、Claude Code、Kimi Code、OpenCode をひとつの場所で。ローカルファーストで、すでに契約しているサブスクリプションをそのまま使えます。",
   },
-  language: { label: "言語", autoDetect: "自動検出", selected: "選択中" },
+  language: { label: "言語", selected: "選択中" },
   nav: { features: "機能", changelog: "更新履歴", download: "ダウンロード", downloadMac: "macOS 版をダウンロード" },
   footer: {
     navigation: "フッターナビゲーション",
@@ -275,6 +275,7 @@ export const ja = {
         { label: "ユーザー承認", values: ["✅", "✅", "✅", "✅"] },
         { label: "@ 機能", values: ["✅", "✅", "✅", "✅"] },
         { label: "Browser Use", values: ["✅", "✅", "✅", "✅"] },
+        { label: "Fork", values: ["✅", "✅", "✅", "✅"] },
         { label: "直前のメッセージを修正", values: ["✅", "✅", "✅", "✅"] },
       ],
       collaborationLabel: "Claude が Plan を立て、Codex が実装し、結果が元の Chat に戻って Claude がレビューする——同じ一台の三つのコマ",

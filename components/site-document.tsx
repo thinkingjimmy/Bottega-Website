@@ -1,13 +1,12 @@
 /**
- * [INPUT]: Uses theme/language pre-paint scripts, LanguageRuntime, the self-hosted Caveat face, and one statically known locale
- * [OUTPUT]: Exports SiteDocument, the shared HTML root for Auto and localized route trees
+ * [INPUT]: Uses the theme pre-paint script, self-hosted Caveat face, and one statically known locale
+ * [OUTPUT]: Exports SiteDocument, the shared HTML root for English and prefixed locale route trees
  * [POS]: Multi-root-layout document boundary that guarantees a build-time-correct html lang and owns the one webfont the site loads
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import { Caveat } from "next/font/google";
-import { AUTO_LOCALE_BOOT, type Locale } from "@/lib/i18n/locale";
-import { LanguageRuntime } from "./language-runtime";
+import type { Locale } from "@/lib/i18n/locale";
 import { THEME_BOOT, ThemeRuntime } from "./theme";
 
 /* ── 全站唯一一支 webfont ────────────────────────────────────────
@@ -26,11 +25,9 @@ const caveat = Caveat({
 export function SiteDocument({
   children,
   locale,
-  autoRedirect = false,
 }: {
   children: React.ReactNode;
   locale: Locale;
-  autoRedirect?: boolean;
 }) {
   return (
     <html
@@ -42,11 +39,9 @@ export function SiteDocument({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
-        {autoRedirect ? <script dangerouslySetInnerHTML={{ __html: AUTO_LOCALE_BOOT }} /> : null}
       </head>
       <body>
         <ThemeRuntime />
-        <LanguageRuntime locale={locale} />
         {children}
       </body>
     </html>

@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses the public site origin, five locales, localized paths, and six logical routes
- * [OUTPUT]: Exports a static sitemap containing thirty canonical pages and six x-default entries
+ * [OUTPUT]: Exports a static sitemap containing exactly thirty self-canonical localized pages
  * [POS]: Search discovery map for the complete localized static site
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
@@ -24,10 +24,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       ["x-default", `${SITE_URL}${logicalPath}`],
       ...LOCALES.map((locale) => [locale, `${SITE_URL}${localizedPath(locale, logicalPath)}`]),
     ]);
-    const canonical = LOCALES.map((locale) => ({
+    return LOCALES.map((locale) => ({
       url: `${SITE_URL}${localizedPath(locale, logicalPath)}`,
       alternates: { languages },
     }));
-    return [{ url: `${SITE_URL}${logicalPath}`, alternates: { languages } }, ...canonical];
   });
 }

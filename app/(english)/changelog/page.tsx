@@ -1,7 +1,7 @@
 /**
- * [INPUT]: Uses English fallback catalog metadata and ChangelogPageView
- * [OUTPUT]: Statically renders the unprefixed Auto Changelog route
- * [POS]: x-default Changelog entry with an English no-JavaScript fallback
+ * [INPUT]: Uses the English catalog, canonical metadata, and ChangelogPageView
+ * [OUTPUT]: Statically renders the unprefixed English Changelog route
+ * [POS]: Canonical English and x-default Changelog entry
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
@@ -16,9 +16,8 @@ export const metadata = buildMetadata({
   title: catalog.changelog.metaTitle,
   description: catalog.changelog.metaDescription,
   catalog,
-  auto: true,
 });
 
-export default function AutoChangelogPage() {
+export default function EnglishChangelogPage() {
   return <ChangelogPageView locale="en" />;
 }

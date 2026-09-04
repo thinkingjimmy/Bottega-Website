@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses one Locale to select SiteCatalog and assemble localized demo data and home sections
- * [OUTPUT]: Exports HomePageView for Auto fallback and five canonical locale routes
+ * [OUTPUT]: Exports HomePageView for canonical English and four prefixed locale routes
  * [POS]: Locale-neutral home composition; route files only choose locale and metadata policy
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */

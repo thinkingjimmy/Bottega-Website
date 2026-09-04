@@ -1,7 +1,7 @@
 /**
  * [INPUT]: Uses locale/feature static params, localized metadata, and FeaturePageView
- * [OUTPUT]: Statically renders twenty canonical locale-prefixed feature pages
- * [POS]: Canonical localized feature route
+ * [OUTPUT]: Statically renders sixteen canonical locale-prefixed feature pages
+ * [POS]: Canonical non-English feature route
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 

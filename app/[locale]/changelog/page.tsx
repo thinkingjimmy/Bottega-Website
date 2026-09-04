@@ -1,7 +1,7 @@
 /**
  * [INPUT]: Uses locale validation, localized Changelog metadata, and ChangelogPageView
- * [OUTPUT]: Statically renders five canonical locale-prefixed Changelog pages
- * [POS]: Canonical localized Changelog route
+ * [OUTPUT]: Statically renders four canonical locale-prefixed Changelog pages
+ * [POS]: Canonical non-English Changelog route
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 

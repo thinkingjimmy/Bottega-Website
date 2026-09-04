@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 /**
  * [INPUT]: Uses the NextConfig type from Next.js
  * [OUTPUT]: Exports the complete website build configuration
- * [POS]: Bottega-Website build entry; all thirty canonical and six Auto routes are fully static
+ * [POS]: Bottega-Website build entry; all thirty canonical localized routes are fully static
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 const nextConfig: NextConfig = {

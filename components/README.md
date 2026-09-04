@@ -12,11 +12,10 @@
 - `fork-band.tsx`: Closes the home narrative with localized source copy and immutable commands.
 - `site-header.tsx`: Renders language-preserving navigation and feature discovery.
 - `site-footer.tsx`: Renders the shared copyright notice, localized links, and the footer language selector.
-- `site-document.tsx`: Supplies shared HTML roots with build-time `lang`, pre-paint boot scripts, and the site's only self-hosted webfont.
+- `site-document.tsx`: Supplies shared HTML roots with build-time `lang`, theme boot code, and the site's only self-hosted webfont.
 - `disclosure.tsx`: Owns persistent-DOM outside-click and Escape dismissal behavior.
-- `language-switcher.tsx`: Wears the footer skin over the shared language-preference behavior.
-- `scene-language.tsx`: Wears the hero menu-bar input-source skin over that same behavior.
-- `language-runtime.tsx`: Follows later system-language changes while Auto remains active.
+- `language-switcher.tsx`: Wears the footer skin over explicit locale links.
+- `scene-language.tsx`: Wears the hero menu-bar input-source skin over those same locale links.
 - `theme.tsx`: Resolves and follows the local theme preference.
 - `icons.tsx`: Owns dependency-free SVG and product identity primitives.
 - `reveal.tsx`: Adds one-shot entrance without hiding server content by default.
@@ -25,7 +24,7 @@
 
 - `apps/`: Four localized product-faithful App surfaces.
 - `features/`: Stable feature identity and localized navigation/article assembly.
-- `pages/`: Locale-neutral page compositions reused by canonical and Auto routes.
+- `pages/`: Locale-neutral page compositions reused by English and prefixed route trees.
 - `reels/`: Focused localized demonstrations and shared playback behavior.
 - `window/`: Canonical localized product window, transcript, Composer, and Plan panel.
 

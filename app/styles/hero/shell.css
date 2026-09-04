@@ -2,7 +2,7 @@
  * [INPUT]: Uses every shared token from ../tokens.css
  * [OUTPUT]: Defines the hero runway/scene, both SiteHeader skins, product-window shell, sidebar, and third-panel geometry
  * [POS]: Structural layer for the first screen; it owns the stage header because that skin follows the shrinking hero band
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 /* ============================================================
@@ -213,10 +213,8 @@
   outline: 2px solid currentColor;
   outline-offset: -3px;
 }
-/* Auto 的那颗绿点在这条带子上只有一个意思：这一项跟着系统走。
-   主题与语言共用它，于是「自动」这件事不需要被解释第二遍。 */
-.scene-theme-toggle[data-mode="auto"]::after,
-.scene-input-trigger[data-mode="auto"]::after {
+/* Auto 的绿点只属于主题：语言由 URL 明确表达，不再拥有第二套自动状态。 */
+.scene-theme-toggle[data-mode="auto"]::after {
   content: "";
   position: absolute;
   top: 3px;

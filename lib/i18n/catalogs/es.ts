@@ -13,7 +13,7 @@ export const es = {
     siteTitle: "Bottega — el taller que se construye a sí mismo",
     siteDescription: "Un solo taller para Codex, Claude Code, Kimi Code y OpenCode — local primero y con las suscripciones que ya pagas.",
   },
-  language: { label: "Idioma", autoDetect: "Detección automática", selected: "Seleccionado" },
+  language: { label: "Idioma", selected: "Seleccionado" },
   nav: { features: "Funciones", changelog: "Novedades", download: "Descargar", downloadMac: "Descargar para macOS" },
   footer: {
     navigation: "Navegación del pie de página",
@@ -275,6 +275,7 @@ export const es = {
         { label: "Aprobaciones del usuario", values: ["✅", "✅", "✅", "✅"] },
         { label: "Función @", values: ["✅", "✅", "✅", "✅"] },
         { label: "Browser Use", values: ["✅", "✅", "✅", "✅"] },
+        { label: "Fork", values: ["✅", "✅", "✅", "✅"] },
         { label: "Editar el mensaje anterior", values: ["✅", "✅", "✅", "✅"] },
       ],
       collaborationLabel: "Claude redacta el Plan, Codex lo implementa y el resultado vuelve al Chat original para que Claude lo revise",

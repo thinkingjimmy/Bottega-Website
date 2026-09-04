@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses locale/slug, localized feature assembly, DemoData, feature articles, and shared site chrome
- * [OUTPUT]: Exports FeaturePageView for all Auto fallback and canonical feature routes
+ * [OUTPUT]: Exports FeaturePageView for canonical English and prefixed feature routes
  * [POS]: Locale-neutral feature composition with one specialized Agents branch
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */

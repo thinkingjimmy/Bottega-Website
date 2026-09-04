@@ -1,7 +1,7 @@
 /**
- * [INPUT]: Uses feature static params, English fallback catalog metadata, and FeaturePageView
- * [OUTPUT]: Statically renders four unprefixed Auto feature routes
- * [POS]: x-default feature entry with an English no-JavaScript fallback
+ * [INPUT]: Uses feature static params, the English catalog, canonical metadata, and FeaturePageView
+ * [OUTPUT]: Statically renders four unprefixed English feature routes
+ * [POS]: Canonical English and x-default feature entry
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
@@ -25,13 +25,12 @@ export async function generateMetadata({ params }: Props) {
     title: feature.label,
     description: feature.deck,
     catalog,
-    auto: true,
     image: feature.layout === "document"
       ? { url: feature.image, width: 1229, height: 768, alt: feature.imageAlt }
       : undefined,
   });
 }
 
-export default async function AutoFeaturePage({ params }: Props) {
+export default async function EnglishFeaturePage({ params }: Props) {
   return <FeaturePageView locale="en" slug={(await params).slug} />;
 }

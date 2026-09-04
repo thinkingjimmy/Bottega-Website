@@ -3,7 +3,7 @@
 Next.js 16 App Router + React 19 + TypeScript + plain CSS + static export
 
 <directory>
-app/ - Thirty localized routes plus six unprefixed Auto fallback routes
+app/ - Thirty static routes: six unprefixed English pages plus twenty-four prefixed translations
 app/styles/ - Presentation split by tokens, base, shared/Agents features, hero, Apps, reels, bands, and motion
 components/ - Shared site chrome, home sections, feature navigation, and product-faithful visuals
 components/apps/ - Four first-party App surfaces and their shared switcher
@@ -18,7 +18,7 @@ scripts/ - Build-time Changelog synchronization and static i18n audit
 
 <config>
 design-qa.md - Latest source-to-implementation visual verification for the Agents feature visuals
-next.config.ts - Thirty-six-page static export with no request-time data
+next.config.ts - Thirty-page static export with no request-time data
 package.json - Development, i18n tests/audit, typecheck, sync, and production-build commands
 postcss.config.mjs - Empty PostCSS pipeline; the site uses plain CSS
 tsconfig.json - Strict TypeScript with the `@/*` path alias
@@ -39,10 +39,10 @@ Each concept has one source of truth:
   page content.
 - `SiteHeader` and `SiteFooter` are the only site chrome implementations.
 
-The App Router generates six logical pages under `/en`, `/zh-CN`, `/ja`, `/fr`, and `/es`.
-The same six unprefixed URLs are x-default Auto entries: pre-paint JavaScript resolves the target
-language, while the static English document remains complete when JavaScript is disabled. No route
-requires server data or client-side content fetching.
+The App Router serves six canonical English pages without a prefix and the same six logical pages
+under `/zh-CN`, `/ja`, `/fr`, and `/es`. English and `x-default` share the unprefixed URLs; every
+other language has a self-canonical URL. No route infers language from the browser, redirects by
+language, or requires server data or client-side content fetching.
 
 ## Styling
 
@@ -67,8 +67,8 @@ a shared 32px height and preserve brand, Features, and Download on narrow screen
 
 The Features and language controls use native `details/summary`. Their entries remain in the
 initial DOM, so the menu works with pointer, keyboard, and assistive technology without a client
-state machine. The footer language selector stores only explicit choices; Auto clears storage and
-follows `navigator.languages` without mapping Traditional Chinese to Simplified Chinese.
+state machine. Both language selectors use explicit alternate links, preserve the current logical
+page, query, and hash, and derive their selected state only from the current route.
 
 ## Hero and home narrative
 
@@ -93,8 +93,9 @@ argument in reading order.
 
 ## Feature documentation
 
-`app/[locale]/features/[slug]/page.tsx` generates Agents, Apps, Customizable, and Base from one
-localized catalog and one wiki-style shell with a current-page-aware icon sidebar. Agents has a dedicated article:
+`app/(english)/features/[slug]/page.tsx` and `app/[locale]/features/[slug]/page.tsx` generate Agents,
+Apps, Customizable, and Base from one localized catalog and one wiki-style shell with a
+current-page-aware icon sidebar. Agents has a dedicated article:
 three static, code-built visuals explain official CLI support, capability-aware conversation
 adaptation, and persistent cross-Agent Chat handoffs. The Agent picker embeds the
 canonical Home Hero `ProductWindow` itself with its menu pinned open; the illustration is inert,

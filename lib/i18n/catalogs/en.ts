@@ -13,7 +13,6 @@ export const en = {
   },
   language: {
     label: "Language",
-    autoDetect: "Auto detect",
     selected: "Selected",
   },
   nav: {
@@ -477,6 +476,7 @@ export const en = {
         { label: "User approvals", values: ["✅", "✅", "✅", "✅"] },
         { label: "@ mentions", values: ["✅", "✅", "✅", "✅"] },
         { label: "Browser Use", values: ["✅", "✅", "✅", "✅"] },
+        { label: "Fork", values: ["✅", "✅", "✅", "✅"] },
         { label: "Edit previous message", values: ["✅", "✅", "✅", "✅"] },
       ],
       collaborationLabel: "Claude drafts the Plan, Codex implements it, and the result returns to the original Chat for Claude to review",

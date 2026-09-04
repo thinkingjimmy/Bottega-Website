@@ -13,7 +13,7 @@ export const zhCN = {
     siteTitle: "Bottega — 会自我构建的工作坊",
     siteDescription: "一个工作坊，同时运行 Codex、Claude Code、Kimi Code 与 OpenCode；本地优先，沿用你已有的订阅。",
   },
-  language: { label: "语言", autoDetect: "自动检测", selected: "已选择" },
+  language: { label: "语言", selected: "已选择" },
   nav: { features: "功能", changelog: "更新日志", download: "下载", downloadMac: "下载 macOS 版" },
   footer: {
     navigation: "页脚导航",
@@ -282,6 +282,7 @@ export const zhCN = {
         { label: "用户审批功能", values: ["✅", "✅", "✅", "✅"] },
         { label: "@ 功能", values: ["✅", "✅", "✅", "✅"] },
         { label: "Browser Use", values: ["✅", "✅", "✅", "✅"] },
+        { label: "Fork", values: ["✅", "✅", "✅", "✅"] },
         { label: "修订上一条消息", values: ["✅", "✅", "✅", "✅"] },
       ],
       collaborationLabel: "Claude 定 Plan、Codex 实现，结果回到原对话由 Claude 评审——同一台机器的先后三帧",
