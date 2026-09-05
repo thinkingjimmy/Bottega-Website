@@ -13,6 +13,7 @@
 Commands, paths, model names, product identities, and code-level terminology remain unchanged when translation would alter their meaning.
 `demo.apps.items` pairs each localized switcher title with its concrete user-facing description so the two cannot drift apart.
 Locale-neutral legal boilerplate stays in the owning component instead of being duplicated across catalogs.
+`features.base` follows the same three-part story in every locale: ask an Agent to organize records, explore six views of the same data, and reuse that data across Chats and Apps. Keep storage and permission details in plain language, and describe only what the product screenshot actually shows.
 `demo.agentsVisual.relayFrom` and `queueItem` are templates, not sentences: the Chat name and Section id are substituted at render time, so the two handoffs cannot name different Chats than the sidebar shows.
 
 [PROTOCOL]: Update this file when members or responsibilities change, then verify the parent README.md.

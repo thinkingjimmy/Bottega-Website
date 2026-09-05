@@ -175,40 +175,41 @@ export const en = {
     },
     base: {
       label: "Base",
-      menuCopy: "Structured local data beside the conversation",
-      title: "Structured local data beside every conversation.",
+      menuCopy: "Organize and explore data with your Agent",
+      title: "Turn conversations into data you can use.",
       deck:
-        "A Base is Bottega's row-backed data layer for Chats, Projects, and data-aware Apps—kept close to the conversation that operates it.",
+        "Base is a local data space for you and your Agent. Organize and update records through Chat, then explore the same data in six views.",
       imageAlt:
-        "Bottega App Data tab showing a Base table with view, filter, column, grouping, and add-row controls",
+        "Bottega Design Canvas with the Data tab open, showing an empty Base table and controls for filters, columns, grouping, and adding rows",
       imageCaption:
-        "Captured in Bottega: the same App detail surface switches from its GUI to a full Base workbench.",
+        "The Data tab in Bottega Design Canvas. Apps that use Base give you access to their records alongside their custom interface.",
       sections: [
         {
-          heading: "The conversation and dataset share an owner",
+          heading: "Start with what you want to track",
           paragraphs: [
-            "A Chat can use its own local Base. When it has no private Base and belongs to a Project, it can fall back to that Project's shared Base. The ownership rule is explicit, so the Agent and the interface act on the same durable dataset.",
-            "Agents receive built-in Base tools for reading schema and rows, querying, aggregating, and making revision-checked mutations. A request such as a tracker, inventory, ledger, or plan can become structured data without creating a separate spreadsheet file.",
+            "Track expenses, organize an inventory, or build a task list. Tell your Agent what you need, and it can create the fields and records in Base, then add or update entries when you ask.",
+            "Follow up with questions like “Which tasks are still open?” or “How much did I spend this month?” Your Agent can query and summarize the records directly, with the data right beside your conversation.",
           ],
           points: [],
         },
         {
-          heading: "Six views, one source of truth",
+          heading: "Six views. One set of records.",
           paragraphs: [
-            "Table, List, Kanban, Map, Chart, and Gallery are projections of the same rows. Changing the view does not fork the data into separate documents.",
+            "Use a table or list for details, a Kanban board for progress, a chart for trends, a gallery for media, or a map for locations. Every view stays connected to the same records.",
           ],
           points: [
-            "Filter, sort, group, and choose visible fields without rewriting the records.",
-            "Use formulas and relations for derived or connected data.",
-            "Attach media, inspect row history, and exchange CSV, JSON, or XLSX data.",
-            "Let an App present a tailored GUI while keeping the underlying Base available in the Data tab.",
+            "Filter, sort, and group records to focus on what matters.",
+            "Calculate values with formulas and connect records with relations.",
+            "Add media attachments and review the history of each record.",
+            "Import and export CSV, JSON, and XLSX files.",
           ],
         },
         {
-          heading: "Access is narrow by design",
+          heading: "Keep using the data you build",
           paragraphs: [
-            "App access to a Base is capability-scoped for an exact App generation. Read, row insertion, patching, deletion, and attachments are separate grants, and revision checks prevent stale writes from silently overwriting newer data.",
-            "The result is a local data surface that Agents can operate without turning every installed interface into an unrestricted database client.",
+            "Keep a Base for one Chat, or work from a shared Project Base across its Chats. You can return to the same records as the work continues.",
+            "Apps can build a custom interface around a Base. Use the App for the task at hand, then open its Data tab to inspect and work with the records behind it.",
+            "Base stores your records locally. Apps receive separate permissions to read, add, change, or delete records and work with attachments. Checks on each update help protect newer changes from being overwritten by an outdated edit.",
           ],
           points: [],
         },
@@ -314,6 +315,7 @@ export const en = {
       ],
       categoryShare: "Category share",
       dailySpend: "Daily spend",
+      receipt: "Receipt",
       location: "Location",
       where: "Where",
       label: "Label",
@@ -492,6 +494,33 @@ export const en = {
       noteBack: "When it finishes, the result returns on its own",
       noteReview: "Back in the original Chat — review it,\nor hand it to the next Agent",
       handoffCaption: "Three frames of one machine. Everything outside the skeleton is the product's own text — the Plan title, the inbound message header, the review verdict; the two handoffs call send_to_section and expect_reply.",
+    },
+    baseVisual: {
+      schemaLabel:
+        "A Chat asking for an expense ledger beside the typed columns and records Base creates from it",
+      askBuild: "Track my expenses — date, amount, category, and a note.",
+      askQuery: "How much have I spent so far?",
+      replyLine: "{count} records so far, {sum} in total.",
+      typesLabel: "Column types",
+      columnTypes: [
+        "Text", "Number", "Date", "Select", "Checkbox",
+        "URL", "Location", "Attachment", "Formula", "Relation",
+      ],
+      schemaCaption:
+        "The four tool names are the product's own: base_describe reads the columns and the current revision, base_add_columns appends typed columns, base_insert_rows writes rows under caller-supplied ids, and read_base answers the follow-up. A ledger needs four of the ten column types.",
+      viewsLabel:
+        "One set of records drawn as a table, a list, a Kanban board, a map, a chart, and a gallery",
+      recordsLabel: "The same {count} records",
+      viewNames: ["Table", "List", "Kanban", "Map", "Chart", "Gallery"],
+      viewsCaption:
+        "Six view types, and only six: table, list, kanban, map, chart, gallery. Each is a filter, a sort, and a little configuration over the same rows — Kanban groups by a select column, Map binds the location column, Gallery binds the attachment column. The outlined record is one row seen six times, not six copies.",
+      trustLabel:
+        "A Chat's own Base beside a Project Base shared by its Chats, and the permissions and revision check an App passes through",
+      ownerChat: "A Chat's own Base",
+      ownerProject: "A Project Base its Chats share",
+      grantLabel: "Granted to this App",
+      trustCaption:
+        "Every Base is owned by one Chat or one Project — that prefix is the record's address. An App reaches it only through the permissions granted to that exact generation, and every write states the revision it was made against: a matching revision lands, an outdated one is refused rather than applied.",
     },
   },
 } as const;
