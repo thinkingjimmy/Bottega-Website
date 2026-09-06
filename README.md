@@ -111,7 +111,8 @@ home narrative: one Base panel whose six view tabs cycle on their own and stop w
 drawing the same eighteen rows as a table, list, Kanban board, a map of central Washington, a
 three-card chart dashboard, and a gallery. The third borrows the Agents cross-Agent sketch — three
 staggered frames, elbow ink, handwritten notes — to show one Chat filing that receipt, the Project
-Base the row lands in, and a second Chat reading the month's total back out of it. Every column type, view type, tool name, and owner-key prefix in them is copied from the
+Base the row lands in, and a second Chat reading the month's total back out of it; like the Agents
+sketch it stays unframed on the page's own paper, so the white cards are the anchors. Every column type, view type, tool name, and owner-key prefix in them is copied from the
 desktop repository rather than approximated, down to the list and Kanban row titles, which come from
 the ledger's first column because that is what the product's own projections do. The Apps and
 Customizable screenshots

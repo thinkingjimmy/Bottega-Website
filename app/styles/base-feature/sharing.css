@@ -130,8 +130,6 @@
     height: auto;
     flex-direction: column;
     gap: 14px;
-    padding: 14px;
-    background: var(--app-sidebar);
   }
 
   .bfd-figure .bfd-ink {

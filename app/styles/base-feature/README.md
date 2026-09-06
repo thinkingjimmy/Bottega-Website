@@ -32,6 +32,10 @@ article's prose below both — so no rule here needs `!important`.
   The `section` line is not defensive tidiness: that rule's 42px padding once silently squeezed the
   Base frame's table while the frame itself still measured correctly.
 - Only the six-view figure is interactive. The other two carry `role="img"` and `inert`, and their
-  frame disables pointer events.
+  surface disables pointer events.
+- Two surfaces, deliberately: `.bfd-visual` frames the first two figures because they draw the
+  product's own machine, and `.bfd-sketch` leaves the third unframed on the page's warm paper
+  because it draws a page of notes. White cards on a white frame read as a mounted screenshot, and
+  handwriting on white stops reading as handwriting. Agents splits its three the same way.
 
 [PROTOCOL]: Update this header when members or responsibilities change, then verify the parent README.md.

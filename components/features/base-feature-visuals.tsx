@@ -33,20 +33,29 @@ const LEDGER_COLUMNS = [
 /* 视图配置条上那四颗，与首屏那一支同一组。 */
 const BAR_ACTIONS = [D.funnel, D.columns3, D.sortAsc, D.moreHorizontal] as const;
 
+/* ── 裱不裱，是两件不同的东西 ──────────────────────────────────
+ * `surface` 是个洞不是个开关：前两张画的是产品自己那台机器，得有画框
+ * （圆角、边、落影）把它从纸面上抬起来；第三张画的是一页手账，产品的壳
+ * 整只撤掉之后它就该直接落在页面的暖纸上——白卡压白框读起来是「一张被
+ * 裱起来的截图」，而不是「几张摊在桌上的卡片」。Agents 那三张的分法
+ * 逐条相同（见 agents-feature.css 的 .afd-visual 与 .afd-sketch）。
+ * ────────────────────────────────────────────────────────── */
 function Figure({
   label,
   caption,
   children,
   aside,
+  surface = "bfd-visual",
 }: {
   label: string;
   caption: string;
   children: ReactNode;
   aside?: ReactNode;
+  surface?: "bfd-visual" | "bfd-sketch";
 }) {
   return (
     <figure className="bfd-figure">
-      <div className="bfd-visual" role="img" aria-label={label} inert>
+      <div className={surface} role="img" aria-label={label} inert>
         {children}
       </div>
       {aside}
@@ -269,7 +278,7 @@ export function BaseChatsDemo({ demo }: { demo: DemoData }) {
     .replace("{count}", String(rows.length))
     .replace("{sum}", demo.ledgerLongSum);
   return (
-    <Figure label={copy.chatsLabel} caption={copy.chatsCaption}>
+    <Figure label={copy.chatsLabel} caption={copy.chatsCaption} surface="bfd-sketch">
       <div className="bfd-chats">
         {/* 笔画整幅一张，坐标全用 860×880 的绝对值——每根线各住一只小 svg、
             各算各的局部坐标时，「起点没对上、终点没落上」是迟早的：对齐若要

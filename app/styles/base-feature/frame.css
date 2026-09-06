@@ -79,8 +79,19 @@
   color: var(--app-fg);
 }
 
+/* ── 不裱的那一张 ────────────────────────────────────────────────
+ * 第三张画的是一页手账，不是一台机器：产品的壳整只撤掉之后，卡片就该
+ * 直接落在页面的暖纸上。白卡压白框读起来是「一张被裱起来的截图」——
+ * 而手写批注落在白纸上，更是把「有人在页边写了几句」这件事说没了。
+ * 与 Agents 那张交接图同一个决定（agents-feature.css 的 .afd-sketch）。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure .bfd-sketch {
+  color: var(--app-fg);
+}
+
 /* 只有静态那两张不接受指点；六视图那张的页签是真开关。 */
-.bfd-figure .bfd-visual[role="img"] {
+.bfd-figure .bfd-visual[role="img"],
+.bfd-figure .bfd-sketch {
   pointer-events: none;
   user-select: none;
 }
@@ -365,7 +376,8 @@
   }
 
   .bfd-figure figcaption,
-  .bfd-figure .bfd-types {
+  .bfd-figure .bfd-types,
+  .bfd-figure .bfd-sketch {
     padding-inline: var(--edge);
   }
 
