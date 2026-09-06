@@ -2,7 +2,7 @@
 
 > L2 | Parent: [app/](../README.md)
 
-The site stylesheet is split by responsibility. `globals.css` contains only the seventeen imports whose order defines the cascade.
+The site stylesheet is split by responsibility. `globals.css` contains only the twenty-one imports whose order defines the cascade.
 
 ## Cascade order
 
@@ -18,6 +18,7 @@ The site stylesheet is split by responsibility. `globals.css` contains only the 
 - `agents-feature.css`: Dedicated story rhythm plus the standalone capability matrix and the annotated cross-Agent handoff sketch for the Agents detail page.
 - `bands.css`: Source band, terminal, localized footer/language disclosure, changelog entries, and wide-grid collapse.
 - `motion.css`: One-shot entrance behavior, reduced-motion policy, and narrow-screen hero/layout overrides.
+- `base-feature/`: The three Base detail-page figures; see its README.
 - `hero/`: Hero runway and product-window styles; see its README.
 - `apps/`: Product-faithful App surface styles; see its README.
 - `reels/`: Shared and feature-specific home demonstrations; see its README.

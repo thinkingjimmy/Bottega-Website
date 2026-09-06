@@ -1,0 +1,135 @@
+/**
+ * [INPUT]: Uses the shared Base figure frame plus the product-surface tokens
+ * [OUTPUT]: Styles the receipt figure — a real Chat column beside the Base column it writes into
+ * [POS]: Second of four Base-figure stylesheets; it owns only the first figure's two-column machine
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ */
+
+/* ── 左边一栏对话，右边一栏 Base ──────────────────────────────────
+ * 这不是版式选择，是产品的事实：Base 不是另开的一扇窗，它是这条 Chat 的
+ * 第三栏（见 chat/side-panel）。所以对话那一栏必须画实——抬头、附件、
+ * 气泡、过程、回答、输入框，一样都不能省成骨架。省掉输入框，读到的是
+ * 一张截图；留着它，读到的才是一台还能接着说话的机器。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure .bfd-schema {
+  display: grid;
+  height: 440px;
+  grid-template-columns: 330px minmax(0, 1fr);
+  /* 行必须写死成 1fr。隐式行是 auto，于是一张十八行的表会把行撑到 612，
+     整只网格从 440 的盒子里溢出去——两栏的内容一起被顶出画框，而画框
+     自己看起来还是好的。写死之后行等于 440，两栏各自 min-height: 0，
+     裁边这件事才回到该发生的地方：行区里面。 */
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.bfd-figure .bfd-chat,
+.bfd-figure .bfd-work {
+  min-height: 0;
+}
+
+.bfd-figure .bfd-chat {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  border-right: 1px solid var(--app-border);
+}
+
+.bfd-figure .bfd-chat-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 42px;
+  flex: none;
+  padding: 0 10px 0 14px;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.bfd-figure .bfd-chat-name {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bfd-figure .bfd-chat-head .icon-slot {
+  margin-left: auto;
+}
+
+/* 消息压在输入框上方：真转录就是这样开场的，顶上那几条不是被藏了，
+   是已经翻过去了。 */
+.bfd-figure .bfd-chat-body {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 12px;
+  overflow: hidden;
+  padding: 16px 14px;
+}
+
+.bfd-figure .bfd-chat .bubble {
+  max-width: 88%;
+  font-size: 13px;
+}
+
+.bfd-figure .bfd-chat .reply {
+  font-size: 13px;
+}
+
+.bfd-figure .bfd-composer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  flex: none;
+  margin: 0 14px 14px;
+  padding: 0 8px 0 6px;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+}
+
+/* 输入行留白：一条骨架会把「等着你写」读成「正在加载」。 */
+.bfd-figure .bfd-composer-rest {
+  flex: 1;
+}
+
+.bfd-figure .bfd-send {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--app-primary);
+  color: var(--app-primary-fg);
+}
+
+.bfd-figure .bfd-work {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+@media (max-width: 900px) {
+  /* 竖排之后两栏各自还得看得出是两栏：对话在上、Base 在下，中间一条线。 */
+  .bfd-figure .bfd-schema {
+    height: auto;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bfd-figure .bfd-chat {
+    border-right: 0;
+    border-bottom: 1px solid var(--app-border);
+  }
+
+  .bfd-figure .bfd-chat-body {
+    justify-content: flex-start;
+  }
+
+  .bfd-figure .bfd-work {
+    height: 330px;
+  }
+}

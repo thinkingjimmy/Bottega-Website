@@ -1,13 +1,14 @@
 "use client";
 
 /**
- * [INPUT]: Uses localized DemoData plus shared Base icons and a parent-controlled active view
+ * [INPUT]: Uses localized DemoData, the shared BaseDonut, Base icons, and a parent-controlled active view
  * [OUTPUT]: Exports the localized BaseViewsReel component
  * [POS]: Animated proof that one local dataset supports four translated projections
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import type { DemoData } from "@/lib/agents";
+import { BaseDonut } from "../base-charts";
 import { D, Stroke, glyph } from "../icons";
 
 /* 十四行。画框现在跟着文栏长高，行数得跟上——留一片空白比留一行残行
@@ -22,33 +23,6 @@ const CHAT = [
 
 const NOTE_W = ["62%", "38%", "48%", "30%", "56%", "44%", "34%", "52%",
   "40%", "58%", "36%", "46%", "42%", "50%", "33%", "60%"];
-
-/* 分类占比。角度按 CATEGORY_SHARE 真实求和算出来——画一个跟表里对不上的
-   饼，这张图就成了装饰。 */
-function Pie({ slices }: { slices: DemoData["categoryShare"] }) {
-  const total = slices.reduce((sum, slice) => sum + slice.value, 0);
-  let angle = -Math.PI / 2;
-  return (
-    <svg viewBox="0 0 80 80" style={{ height: "100%", flex: "none" }} aria-hidden="true">
-      {slices.map((slice) => {
-        const sweep = (slice.value / total) * Math.PI * 2;
-        const x1 = 40 + 38 * Math.cos(angle);
-        const y1 = 40 + 38 * Math.sin(angle);
-        angle += sweep;
-        const x2 = 40 + 38 * Math.cos(angle);
-        const y2 = 40 + 38 * Math.sin(angle);
-        return (
-          <path
-            key={slice.label}
-            d={`M40 40 L${x1.toFixed(1)} ${y1.toFixed(1)} A38 38 0 ${sweep > Math.PI ? 1 : 0} 1 ${x2.toFixed(1)} ${y2.toFixed(1)} Z`}
-            fill={slice.tone}
-          />
-        );
-      })}
-      <circle cx="40" cy="40" r="19" fill="var(--app-bg)" />
-    </svg>
-  );
-}
 
 export function BaseViewsReel({
   active,
@@ -164,7 +138,7 @@ export function BaseViewsReel({
                 <div className="ch">
                   <div className="ch-h">{demo.copy.ledger.categoryShare}</div>
                   <div className="ch-b">
-                    <Pie slices={demo.categoryShare} />
+                    <BaseDonut slices={demo.categoryShare} />
                     <div className="ch-lg">
                       {demo.categoryShare.map((slice) => (
                         <span key={slice.label}>

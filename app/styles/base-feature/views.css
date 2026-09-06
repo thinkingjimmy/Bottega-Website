@@ -1,0 +1,614 @@
+/**
+ * [INPUT]: Uses the shared Base figure frame plus the product-surface tokens
+ * [OUTPUT]: Styles the six-view figure — one Base panel and its table, list, Kanban, map, chart, and gallery panes
+ * [POS]: Third of four Base-figure stylesheets; the only animated surface outside the home narrative
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ */
+
+/* ── 一台机器，六种看法 ──────────────────────────────────────────
+ * 页签自动往下走，点一下就停在那一格——与首屏 Base 一节同一个决定
+ * （见 reels/use-carousel.ts）。人一伸手，机器就该让位。
+ *
+ * 落选那几格用 hidden 收起而不是叠着改透明度：产品里同一时刻只渲染
+ * 一个视图，叠六份既不真也让读屏软件一次读到六张表。代价是没有交叉
+ * 淡出，于是只给露脸那一格一下淡入——那一下说的是「换了一格」。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure button.bfd-tab {
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.bfd-figure button.bfd-tab:hover {
+  background: color-mix(in srgb, var(--app-accent) 60%, transparent);
+  color: var(--app-fg);
+}
+
+.bfd-figure button.bfd-tab:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--app-fg) 34%, transparent);
+  outline-offset: -2px;
+}
+
+.bfd-figure .bfd-stage {
+  height: 420px;
+  overflow: hidden;
+}
+
+@keyframes bfd-pane-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.bfd-figure .bfd-pane {
+  height: 100%;
+  outline: none;
+  animation: bfd-pane-in 300ms ease-out both;
+}
+
+/* ── 表格 ────────────────────────────────────────────────────── */
+.bfd-figure .bv-table {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  font-size: 12.5px;
+}
+
+.bfd-figure .bv-rows {
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.bfd-figure .bv-tr {
+  display: flex;
+  height: 34px;
+  flex: none;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.bfd-figure .bv-tr > span {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  overflow: hidden;
+  padding: 0 10px;
+  border-right: 1px solid var(--app-border);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bfd-figure .bv-th {
+  background: color-mix(in srgb, var(--app-accent) 85%, transparent);
+  font-weight: 500;
+}
+
+.bfd-figure .bv-foot {
+  height: 36px;
+  border-bottom: 0;
+  border-top: 1px solid var(--app-border);
+}
+
+.bfd-figure .bv-foot i {
+  margin-right: 8px;
+  color: var(--app-muted-fg);
+  font-size: 11px;
+  font-style: normal;
+}
+
+.bfd-figure .t-num {
+  width: 46px;
+  flex: none;
+  justify-content: center;
+  color: var(--app-muted-fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.bfd-figure .t-date { width: 104px; flex: none; font-variant-numeric: tabular-nums; }
+.bfd-figure .t-amt { width: 116px; flex: none; font-variant-numeric: tabular-nums; }
+
+.bfd-figure .t-cat {
+  width: 156px;
+  flex: none;
+  justify-content: space-between;
+  padding-right: 12px;
+}
+
+.bfd-figure .t-cat svg {
+  flex: none;
+  color: var(--app-muted-fg);
+}
+
+.bfd-figure .t-note { min-width: 0; flex: 1; }
+
+.bfd-figure .t-add {
+  width: 40px;
+  flex: none;
+  justify-content: center;
+  border-right: 0;
+  color: var(--app-muted-fg);
+}
+
+/* ── 列表 ──────────────────────────────────────────────────────
+ * 行位照 views/list/list-properties.tsx 的四个位置：标题、状态点、
+ * 尾部属性、最右日期。这本账的首列是日期，所以行标题就是日期——
+ * 把备注挪上去好看一点，画出来的就是另一台机器。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure .bv-list {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.bfd-figure .bv-li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  flex: none;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.bfd-figure .bv-dot {
+  display: block;
+  width: 9px;
+  height: 9px;
+  flex: none;
+  border-radius: 9999px;
+  background: var(--app-muted-fg);
+}
+
+.bfd-figure .bv-li-title {
+  font-size: 13px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.bfd-figure .bv-chips {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.bfd-figure .bv-chip {
+  max-width: 220px;
+  overflow: hidden;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  background: var(--app-accent);
+  color: var(--app-muted-fg);
+  font-size: 11.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── 看板 ──────────────────────────────────────────────────────
+ * 泳道即 select 选项，卡面照 views/kanban/kanban-fields.ts：标题、
+ * 芯片、溢出。分道的只能是单选列——随手拿文本列分道画出来的看板，
+ * 是一台这里不存在的机器。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure .bv-kanban {
+  display: grid;
+  height: 100%;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  overflow: hidden;
+  padding: 14px 12px;
+}
+
+.bfd-figure .bv-lane {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.bfd-figure .bv-lane-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  overflow: hidden;
+  color: var(--app-fg);
+  font-size: 11.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.bfd-figure .bv-lane-head i {
+  color: var(--app-muted-fg);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.bfd-figure .bv-card {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px 10px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+}
+
+.bfd-figure .bv-card b {
+  font-size: 12px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.bfd-figure .bv-card .bv-chips {
+  margin-left: 0;
+}
+
+.bfd-figure .bv-card-note {
+  overflow: hidden;
+  color: var(--app-muted-fg);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── 地图 ────────────────────────────────────────────────────── */
+.bfd-figure .bv-map-pane {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.bfd-figure .bv-cfg {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  height: 38px;
+  flex: none;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--app-border);
+  color: var(--app-muted-fg);
+  font-size: 12px;
+}
+
+.bfd-figure .bv-cfg b {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 7px;
+  color: var(--app-fg);
+  font-weight: 400;
+}
+
+.bfd-figure .bv-map {
+  position: relative;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--app-muted-fg) 8%, transparent);
+}
+
+.bfd-figure .bv-plate {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bfd-figure .bv-pin {
+  position: absolute;
+  color: #c94f2f;
+  transform: translate(-50%, -100%);
+}
+
+.bfd-figure .bv-pin svg {
+  display: block;
+  fill: color-mix(in srgb, #c94f2f 18%, transparent);
+}
+
+/* ── 图表 ──────────────────────────────────────────────────────
+ * base-ops 举的月度 dashboard 例子就是「一张 pie + 一张 line」，
+ * 栅格照产品的 gap-3 / p-3、卡片 rounded-xl + border。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure .bv-charts {
+  display: grid;
+  height: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 14px;
+}
+
+.bfd-figure .bv-ch--half {
+  grid-column: span 2;
+}
+
+.bfd-figure .bv-ch--wide {
+  grid-column: span 4;
+}
+
+.bfd-figure .bv-ch {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+}
+
+.bfd-figure .bv-ch-head {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  flex: none;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--app-border);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* 环与图例用栅格分，不用 flex 挤：图例按内容取宽（auto），剩下的全给环。
+   反过来让环按卡高撑成正圆，它会把图例顶出卡外——图例被裁掉的那一刻，
+   这张环图就只剩五块颜色，说不出哪块是哪一类。 */
+.bfd-figure .bv-ch-body {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 16px;
+}
+
+/* 环自己不带尺寸（见 components/base-charts.tsx）：两个数都给它自己那一格，
+   圆由 viewBox 的 meet 保住。只给宽度、让高按比例跟上是不行的——格子比它
+   窄时，多出来的高会往上溢出去，正好盖住卡片抬头那行字。 */
+.bfd-figure .bv-ch-body > svg {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  align-self: stretch;
+}
+
+/* 折线那张卡没有图例，整块归它；它的 viewBox 不保比例，所以两个数都得给。 */
+.bfd-figure .bv-ch-body--plot {
+  display: block;
+  padding: 18px 16px;
+}
+
+.bfd-figure .bv-ch-body--plot > svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 横条那张卡：一列标签、一列条、一列数。三列各自定宽，条才有一条共同的
+   基准线——条的长度若从各自的文字末端起算，长短就再也比不出来了。 */
+.bfd-figure .bv-ch-body--bars {
+  display: flex;
+  grid-template-columns: none;
+  flex-direction: column;
+  justify-content: center;
+  /* 竖排 flex 的 align-items 管的是横向。基础那条 center 落到这里，每一行
+     就缩成自己内容那么宽——条全挤在中间，长短再也比不出来。 */
+  align-items: stretch;
+  gap: 9px;
+  padding: 12px 16px;
+}
+
+.bfd-figure .bv-bar-row {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) 76px;
+  align-items: center;
+  gap: 12px;
+  font-size: 11.5px;
+}
+
+.bfd-figure .bv-bar-label {
+  overflow: hidden;
+  color: var(--app-muted-fg);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bfd-figure .bv-bar-track {
+  display: block;
+  height: 12px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--app-muted-fg) 10%, transparent);
+}
+
+.bfd-figure .bv-bar-track i {
+  display: block;
+  height: 100%;
+  min-width: 4px;
+  border-radius: 3px;
+}
+
+.bfd-figure .bv-bar-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.bfd-figure .bv-legend {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+  flex: none;
+  color: var(--app-muted-fg);
+  font-size: 11.5px;
+}
+
+.bfd-figure .bv-legend span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.bfd-figure .bv-legend i {
+  display: block;
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 2px;
+}
+
+/* ── 画廊 ────────────────────────────────────────────────────── */
+.bfd-figure .bv-gallery {
+  display: grid;
+  height: 100%;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-content: start;
+  gap: 14px;
+  overflow: hidden;
+  padding: 14px;
+}
+
+.bfd-figure .bv-tile {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bfd-figure .bv-tile-cover {
+  display: grid;
+  aspect-ratio: 1;
+  place-items: stretch;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--app-accent);
+}
+
+/* 封面铺满格子：产品里这一格是照片，一张缩在中间的小图读起来像没加载完。 */
+.bfd-figure .bv-tile-cover .bfd-receipt {
+  width: 100%;
+  height: 100%;
+}
+
+.bfd-figure .bv-tile figcaption {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  max-width: none;
+  margin: 0;
+  color: var(--app-muted-fg);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.bfd-figure .bv-tile figcaption b {
+  color: var(--app-fg);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+/* ── Responsive rendering ────────────────────────────────────── */
+@media (max-width: 900px) {
+  .bfd-figure .bv-gallery {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .bfd-figure .bfd-stage {
+    height: 380px;
+  }
+
+  /* 编号与备注是宽屏才付得起的两列；窄屏先保住日期、金额、分类。 */
+  .bfd-figure .t-num,
+  .bfd-figure .t-note {
+    display: none;
+  }
+
+  .bfd-figure .t-cat {
+    width: auto;
+    min-width: 0;
+    flex: 1;
+    border-right: 0;
+  }
+
+  /* 五道并排在 360 上各剩 60，读出来是五条竖线。裁到三道——画框本就是
+     取景框，裁一部分与裁掉下面几行是同一件事。 */
+  .bfd-figure .bv-kanban {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .bfd-figure .bv-lane:nth-child(n + 4) {
+    display: none;
+  }
+
+  /* 窄屏三张卡竖排：环让出图例，横条让出标签列——一条 96px 的标签列
+     会把条挤成一截,而条的长短正是这张卡要说的话。 */
+  .bfd-figure .bv-charts {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+  }
+
+  .bfd-figure .bv-ch--half,
+  .bfd-figure .bv-ch--wide {
+    grid-column: span 1;
+  }
+
+  .bfd-figure .bv-legend {
+    display: none;
+  }
+
+  .bfd-figure .bv-bar-row {
+    grid-template-columns: minmax(0, 1fr) 68px;
+  }
+
+  .bfd-figure .bv-bar-label {
+    display: none;
+  }
+
+  .bfd-figure .bv-gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .bfd-figure .bv-li {
+    height: 46px;
+    padding-inline: 12px;
+  }
+
+  /* 列表行在窄屏摆不下两枚尾部属性，收起备注那一枚。限定在列表里：
+     看板卡只有一枚芯片（金额），它同时也是 :last-child——一条没限定
+     范围的规则会把看板上唯一的那个数一起抹掉。 */
+  .bfd-figure .bv-li .bv-chip:last-child {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .bfd-figure .t-add {
+    display: none;
+  }
+
+  /* 六格页签在 375 上摆不下。裁掉后三格等于把三种视图藏了，所以让它滚：
+     滚动条藏起来，因为这是一张产品照，不是一个控件面板。 */
+  .bfd-figure .bfd-views .bfd-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .bfd-figure .bfd-views .bfd-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .bfd-figure .bfd-views .bfd-bar-actions {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bfd-figure .bfd-pane {
+    animation: none;
+  }
+
+  .bfd-figure button.bfd-tab {
+    transition: none;
+  }
+}

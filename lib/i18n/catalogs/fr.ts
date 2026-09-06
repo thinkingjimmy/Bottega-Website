@@ -76,8 +76,10 @@ export const fr = {
       menuCopy: "Des interfaces conçues autour de votre tâche",
       title: "Transformez le travail de l’Agent en interface durable.",
       deck: "Une App donne à un workflow sa propre interface, ses données et ses autorisations, pour que le résultat utile ne reste pas prisonnier d’une transcription.",
-      imageAlt: "Bibliothèque Apps de Bottega montrant Bottega Design Canvas installé et marqué Ready",
-      imageCaption: "Capture de Bottega : une App installée possède une place durable dans la bibliothèque et un état de préparation explicite.",
+      screenshot: {
+        alt: "Bibliothèque Apps de Bottega montrant Bottega Design Canvas installé et marqué Ready",
+        caption: "Capture de Bottega : une App installée possède une place durable dans la bibliothèque et un état de préparation explicite.",
+      },
       sections: [
         {
           heading: "Une App est une surface produit durable",
@@ -112,8 +114,10 @@ export const fr = {
       menuCopy: "Modifiez une App dans son propre Chat source",
       title: "Modifiez l’App en parlant à sa source.",
       deck: "Pour les Apps dont la source est modifiable, Bottega ouvre un Chat Agent normal dans le Project source de l’App, au lieu de vous envoyer dans un éditeur séparé.",
-      imageAlt: "Écran de détail de Bottega Design Canvas avec onglets App et Data, réglages, Chat et menu d’actions",
-      imageCaption: "Capture de Bottega : la page d’une App réunit sa surface, ses données, son Chat d’utilisation, ses réglages et ses actions source.",
+      screenshot: {
+        alt: "Écran de détail de Bottega Design Canvas avec onglets App et Data, réglages, Chat et menu d’actions",
+        caption: "Capture de Bottega : la page d’une App réunit sa surface, ses données, son Chat d’utilisation, ses réglages et ses actions source.",
+      },
       sections: [
         {
           heading: "Modifier est une action produit de premier rang",
@@ -143,8 +147,6 @@ export const fr = {
       menuCopy: "Organisez et explorez vos données avec votre Agent",
       title: "Transformez vos conversations en données utiles.",
       deck: "Base est un espace de données local pour vous et votre Agent. Organisez et mettez à jour vos données dans le Chat, puis explorez-les sous six vues.",
-      imageAlt: "Onglet Data de Bottega Design Canvas affichant une table Base vide et les commandes de filtre, de colonnes, de regroupement et d’ajout de lignes",
-      imageCaption: "L’onglet Data de Bottega Design Canvas. Les Apps qui utilisent Base donnent accès à leurs données aux côtés de leur interface dédiée.",
       sections: [
         {
           heading: "Commencez par ce que vous voulez suivre",
@@ -229,7 +231,7 @@ export const fr = {
     ledger: {
       categories: ["Transport", "Équipement", "Courses", "Santé", "Restaurant"],
       notes: ["Didi, trajet aéroport", "Apple Store", "Hema Fresh", "Salle de sport, trimestre", "Ramen Ikkousha", "Train à grande vitesse", "Marché du quartier", "Déjeuner d’équipe", "Express aéroport", "Courses du week-end", "Bras d’écran", "Deux cafés", "Pharmacie", "Recharge métro", "Clavier mécanique", "Hema Fresh", "Nouilles tardives", "Dentiste"],
-      categoryShare: "Répartition par catégorie", dailySpend: "Dépenses quotidiennes", location: "Position", where: "Lieu", label: "Libellé",
+      categoryShare: "Répartition par catégorie", dailySpend: "Dépenses quotidiennes", topExpenses: "Dépenses les plus élevées", receipt: "Reçu", location: "Position", where: "Lieu", label: "Libellé",
     },
     kanban: {
       tabs: ["Tâches", "Constats", "Tout"], lanes: ["En cours", "Revue", "Terminé"], task: "Tâche", source: "Source", doc: "Document",
@@ -289,6 +291,37 @@ export const fr = {
       noteBack: "Une fois terminé, le résultat revient tout seul",
       noteReview: "De retour dans le Chat d'origine — réviser,\nou passer à l'Agent suivant",
       handoffCaption: "Trois images d'une même machine. Hors squelette, tout est le texte du produit — le titre du Plan, l'en-tête du message entrant, le verdict de la revue ; les deux transmissions appellent send_to_section et expect_reply.",
+    },
+    baseVisual: {
+      schemaLabel:
+        "Un reçu envoyé dans un Chat, et la ligne que Base en tire dans la colonne voisine",
+      chatLedger: "Dépenses",
+      askReceipt: "Enregistre ce reçu.",
+      replyReceipt: "Enregistré — {row}.",
+      typesLabel: "Types de colonne",
+      columnTypes: [
+        "Texte", "Nombre", "Date", "Sélection", "Case à cocher",
+        "URL", "Localisation", "Pièce jointe", "Formule", "Relation",
+      ],
+      schemaCaption:
+        "Base est la troisième colonne du Chat, pas une fenêtre à part. Les noms d’outils sont ceux du produit : base_describe lit les colonnes et la révision courante, base_insert_rows écrit la ligne sous un identifiant fourni par l’appelant. Ce registre utilise quatre des dix types de colonne ci-dessous.",
+      viewsLabel:
+        "Une même Base qui passe de sa vue tableau à liste, kanban, carte, graphique et galerie",
+      viewNames: ["Tableau", "Liste", "Kanban", "Carte", "Graphique", "Galerie"],
+      viewsCaption:
+        "Six types de vue, pas un de plus : table, list, kanban, map, chart, gallery. Rien sous la barre d’onglets n’est une copie : chaque vue lit les mêmes dix-huit lignes, plus un filtre, un tri et un peu de configuration. Le kanban groupe par la colonne de sélection, la carte s’appuie sur la colonne de position, la galerie sur la colonne de pièce jointe.",
+      chatsLabel:
+        "Trois images d’un même espace de travail : un Chat qui enregistre un reçu, la Base de Project où la ligne atterrit, et un second Chat qui y relit le total du mois",
+      chatMonthly: "Dépenses du mois",
+      askMonthly: "Combien ai-je dépensé le mois dernier ?",
+      replyMonthly: "{count} entrées, {sum} au total.",
+      baseOwner: "Une même Base de Project",
+      noteFile: "Donnez le reçu —\nl’Agent écrit la ligne",
+      noteStore: "La ligne atterrit dans Base,\npas dans ce Chat",
+      noteReuse: "Reposez la question depuis un autre Chat",
+      noteSame: "et le total est relu\ndans ces mêmes lignes",
+      chatsCaption:
+        "Trois images du même espace de travail, de haut en bas. Hors écriture manuscrite, tout est le texte du produit : la ligne citée dans la première réponse est la première ligne de la Base en dessous, et le total de la dernière réponse est la ligne de synthèse de cette Base — le second Chat ne reçoit pas la réponse, il la lit.",
     },
   },
 } satisfies CatalogShape<typeof en>;

@@ -76,8 +76,10 @@ export const zhCN = {
       menuCopy: "围绕任务构建的可用界面",
       title: "把 Agent 的成果变成可以持续使用的界面。",
       deck: "App 为工作流提供自己的界面、数据和权限，让有用的结果不再困在聊天记录里。",
-      imageAlt: "Bottega Apps 库，其中已安装的 Bottega Design Canvas 标记为 Ready",
-      imageCaption: "截取自 Bottega：已安装的 App 在 Apps 库中拥有持久位置和明确的就绪状态。",
+      screenshot: {
+        alt: "Bottega Apps 库，其中已安装的 Bottega Design Canvas 标记为 Ready",
+        caption: "截取自 Bottega：已安装的 App 在 Apps 库中拥有持久位置和明确的就绪状态。",
+      },
       sections: [
         {
           heading: "App 是持久的产品界面",
@@ -112,8 +114,10 @@ export const zhCN = {
       menuCopy: "在 App 自己的源码 Chat 中编辑",
       title: "和源码对话，就能编辑 App。",
       deck: "对于源码可编辑的 App，Bottega 会在其源码 Project 内打开普通 Agent Chat，而不是把你丢进另一个代码编辑器。",
-      imageAlt: "Bottega Design Canvas 详情页，包含 App 与 Data 标签、设置、Chat 和更多操作菜单",
-      imageCaption: "截取自 Bottega：App 详情页把界面、数据、使用 Chat、设置和源码操作放在一起。",
+      screenshot: {
+        alt: "Bottega Design Canvas 详情页，包含 App 与 Data 标签、设置、Chat 和更多操作菜单",
+        caption: "截取自 Bottega：App 详情页把界面、数据、使用 Chat、设置和源码操作放在一起。",
+      },
       sections: [
         {
           heading: "编辑是一级产品动作",
@@ -143,8 +147,6 @@ export const zhCN = {
       menuCopy: "和 Agent 一起整理、查看数据",
       title: "让对话里的信息，成为用得上的数据。",
       deck: "Base 是你和 Agent 共用的本地数据空间。通过对话整理和更新记录，再用六种视图查看同一份数据。",
-      imageAlt: "Bottega Design Canvas 打开的 Data 标签，显示空白 Base 表格，以及筛选、列设置、分组和新增行控件",
-      imageCaption: "Bottega Design Canvas 的 Data 标签：使用 Base 的 App，既有专用界面，也能直接查看背后的数据。",
       sections: [
         {
           heading: "想记录什么，告诉 Agent",
@@ -229,7 +231,7 @@ export const zhCN = {
     ledger: {
       categories: ["交通", "设备", "杂货", "健康", "外出就餐"],
       notes: ["滴滴，机场行程", "Apple Store", "盒马鲜生", "健身房，季度", "博多一幸舍拉面", "高铁", "社区市场", "团队午餐", "机场快线", "周末采购", "显示器支架", "咖啡，两杯", "药房", "地铁充值", "机械键盘", "盒马鲜生", "深夜面条", "牙医"],
-      categoryShare: "分类占比", dailySpend: "每日支出", location: "位置", where: "地址", label: "标签",
+      categoryShare: "分类占比", dailySpend: "每日支出", topExpenses: "金额最大的几笔", receipt: "票据", location: "位置", where: "地址", label: "标签",
     },
     kanban: {
       tabs: ["任务", "发现", "全部"], lanes: ["进行中", "评审", "完成"], task: "任务", source: "来源", doc: "文档",
@@ -296,6 +298,34 @@ export const zhCN = {
       noteBack: "跑完，结果自动送回来源",
       noteReview: "回到原对话，接着评审 ——\n或者交给下一个 Agent",
       handoffCaption: "三张卡是同一台机器的先后三帧。骨架之外的每一句都是产品原文——Plan 的题目、入站消息的抬头、评审的结论；两跳交接在产品里分别调 send_to_section 与 expect_reply。",
+    },
+    baseVisual: {
+      schemaLabel: "一张小票发进对话，Base 在旁边那一栏里记下的那一行",
+      chatLedger: "记账",
+      askReceipt: "帮我把这张小票记一下。",
+      replyReceipt: "已记入——{row}。",
+      typesLabel: "列类型",
+      columnTypes: [
+        "文本", "数字", "日期", "单选", "复选框",
+        "链接", "位置", "附件", "公式", "关联记录",
+      ],
+      schemaCaption:
+        "Base 是这条 Chat 的第三栏，不是另开的一扇窗。工具名都是产品自己的：base_describe 读列与当前 revision，base_insert_rows 按调用方给定的 id 写下这一行。这本账用掉下面十种列类型里的四种。",
+      viewsLabel: "同一张 Base 在表格、列表、看板、地图、图表与画廊之间轮换",
+      viewNames: ["表格", "列表", "看板", "地图", "图表", "画廊"],
+      viewsCaption:
+        "视图类型固定六种，不多不少：table、list、kanban、map、chart、gallery。页签底下没有一份是副本——每一种读的都是同样这十八行，外加一道筛选、一次排序和一点配置。看板按单选列分道，地图认位置列，画廊认附件列。",
+      chatsLabel: "同一处工作区的三帧：一条 Chat 记下小票，行落进 Project Base，另一条 Chat 再从中读回月度总额",
+      chatMonthly: "月度支出",
+      askMonthly: "上个月一共花了多少？",
+      replyMonthly: "{count} 笔，合计 {sum}。",
+      baseOwner: "同一张 Project Base",
+      noteFile: "小票丢给它——\n那一行由 Agent 写",
+      noteStore: "行落在 Base 里，\n不在这条 Chat 里",
+      noteReuse: "换一条 Chat 接着问",
+      noteSame: "总数是从上面那些行\n里读回来的",
+      chatsCaption:
+        "同一处工作区的三帧，自上而下。手写之外的每一句都是产品原文：第一句回答点名的那一行，就是下面那张 Base 的第一行；最后一句回答里的总数，就是那张 Base 自己的汇总条——第二条 Chat 不是被告知答案，是读出来的。",
     },
   },
 } satisfies CatalogShape<typeof en>;

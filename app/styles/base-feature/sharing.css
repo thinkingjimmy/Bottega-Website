@@ -1,0 +1,171 @@
+/**
+ * [INPUT]: Uses the shared Base figure frame plus the website and product-surface tokens
+ * [OUTPUT]: Styles the three-frame sketch — two Chats, one Project Base, two elbow handoffs, four handwritten notes
+ * [POS]: Fourth of four Base-figure stylesheets; the same sketch vocabulary as the Agents cross-Agent story
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ */
+
+/* ── 一本手账 ────────────────────────────────────────────────────
+ * 三帧同一处工作区错落摆开，两跳折线串起来，让开的半边写批注——与
+ * Agents 那张交接图逐条同款。三帧规规矩矩竖排读起来像一张流程图；拐一个
+ * 弯，那个弯本身就是「换了一处地方」。
+ *
+ * 横向按栏宽的百分比定位、纵向定死——于是整幅随栏宽伸缩，而卡里的字始终
+ * 按真实像素渲染。用 transform: scale 整只缩会把字一起重采样，字会糊；
+ * 这一条与首屏那台机器的收缩用的是同一个理由。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure .bfd-chats {
+  position: relative;
+  height: 880px;
+  color: var(--app-fg);
+}
+
+/* 笔画整幅一张，坐标用 860×880 的绝对值。它排在卡片之前，于是压在卡片
+   底下——批注在界面旁边，不在界面上面。横向伸缩交给 preserveAspectRatio，
+   线宽交给 vector-effect：竖直段横拉不歪，箭头须最多歪一点点，读不出来。 */
+.bfd-figure .bfd-ink {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--ink-3);
+}
+
+.bfd-figure .bfd-card {
+  position: absolute;
+  display: flex;
+  width: 60.47%;
+  overflow: hidden;
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  background: var(--app-bg);
+  box-shadow: 0 1px 2px rgba(27, 26, 22, 0.05), 0 18px 40px -28px rgba(27, 26, 22, 0.5);
+}
+
+/* 三帧的中线落在 250 / 520 / 300，与 INK 里那两跳折线的起止点是同一批数。
+   改了这里就得改那里——它们本来就是同一件事写了两遍，别让它们分叉。 */
+.bfd-figure .bfd-card--1 { top: 0; left: 0; height: 208px; }
+.bfd-figure .bfd-card--2 { top: 296px; left: 39.53%; height: 272px; flex-direction: column; }
+.bfd-figure .bfd-card--3 { top: 664px; left: 0; height: 196px; }
+
+.bfd-figure .bfd-card-side {
+  width: 142px;
+  flex: none;
+  padding: 12px 6px;
+  border-right: 1px solid var(--app-border);
+  background: var(--app-sidebar);
+}
+
+/* 真窗里消息压在输入框上方。这张静态照用 flex-end 复现「已滚到底」。 */
+.bfd-figure .bfd-card-main {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  overflow: hidden;
+  padding: 14px;
+}
+
+.bfd-figure .bfd-card .bubble {
+  max-width: 86%;
+  padding: 8px 12px;
+  font-size: 12.5px;
+}
+
+.bfd-figure .bfd-card .reply {
+  font-size: 12.5px;
+}
+
+.bfd-figure .bfd-store-owner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  flex: none;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--app-border);
+  background: var(--app-sidebar);
+  color: var(--app-muted-fg);
+  font-size: 11.5px;
+}
+
+.bfd-figure .bfd-store-owner .mono {
+  color: var(--app-fg);
+  letter-spacing: 0.04em;
+}
+
+/* ── 手写批注 ────────────────────────────────────────────────────
+ * 批注不是界面的一部分，它是站在界面旁边说话的那个人——所以它用手写体，
+ * 而不是把产品的字号缩小。各歪一点：齐整地贴四条手写字，看起来是排版排
+ * 出来的手写体，不是写上去的字；歪那一两度就是「有人拿笔在这儿写过」。
+ *
+ * 四条都待在三帧让开的那半边：store 与 reuse 落在左侧空档（x 都收在
+ * 340 以内，也就是 Base 那一帧的左缘之前），file 与 same 落在右侧。
+ * 译文长出一行也只会往上下长，不会撞到卡片。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure .bfd-note {
+  position: absolute;
+  color: var(--ink-2);
+  font-family: var(--font-hand);
+  font-size: 21px;
+  line-height: 1.45;
+  transform-origin: 0 50%;
+}
+
+.bfd-figure .bfd-note--file { top: 92px; left: 68.95%; width: 29%; transform: rotate(-1.6deg); }
+.bfd-figure .bfd-note--store { top: 214px; left: 4%; width: 25%; transform: rotate(1.2deg); }
+/* 这一条贴着折线的横段站，所以钉下缘而不是上缘：译文比中文长时多出来的
+   那一行会往下长，正好压在线上；钉下缘，它只会往上长。 */
+.bfd-figure .bfd-note--reuse { bottom: 274px; left: 10%; width: 28%; transform: rotate(-2deg); }
+.bfd-figure .bfd-note--same { top: 700px; left: 67.91%; width: 30%; transform: rotate(1.2deg); }
+
+@media (max-width: 700px) {
+  /* 窄屏没有让开的半边可写：三帧改成一列，批注落在它说的那一帧下面，
+     笔画整幅收起——一根按 860 算好的折线，在 360 上只会横穿三张卡。
+     卡也不再裁：这里没有「一屏之内」的压力，能全看见就全看见。 */
+  .bfd-figure .bfd-chats {
+    display: flex;
+    height: auto;
+    flex-direction: column;
+    gap: 14px;
+    padding: 14px;
+    background: var(--app-sidebar);
+  }
+
+  .bfd-figure .bfd-ink {
+    display: none;
+  }
+
+  .bfd-figure .bfd-card,
+  .bfd-figure .bfd-note {
+    position: static;
+    width: auto;
+    transform: none;
+  }
+
+  .bfd-figure .bfd-card {
+    height: auto;
+  }
+
+  .bfd-figure .bfd-card-main {
+    justify-content: flex-start;
+  }
+
+  .bfd-figure .bfd-card-side {
+    width: 118px;
+  }
+
+  .bfd-figure .bfd-note {
+    font-size: 19px;
+  }
+
+  .bfd-figure .bfd-card--1 { order: 1; }
+  .bfd-figure .bfd-note--file { order: 2; }
+  .bfd-figure .bfd-note--store { order: 3; }
+  .bfd-figure .bfd-card--2 { order: 4; }
+  .bfd-figure .bfd-note--reuse { order: 5; }
+  .bfd-figure .bfd-card--3 { order: 6; }
+  .bfd-figure .bfd-note--same { order: 7; }
+}

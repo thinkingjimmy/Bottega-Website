@@ -7,7 +7,7 @@
 
 import { notFound } from "next/navigation";
 import { FeaturePageView } from "@/components/pages/feature-page";
-import { FEATURE_SLUGS, featureBySlug } from "@/components/features/catalog";
+import { FEATURE_SLUGS, featureBySlug, featureOpenGraphImage } from "@/components/features/catalog";
 import { getCatalog, parseLocale } from "@/lib/i18n";
 import { buildMetadata } from "@/lib/i18n/metadata";
 
@@ -29,9 +29,7 @@ export async function generateMetadata({ params }: Props) {
     title: feature.label,
     description: feature.deck,
     catalog,
-    image: feature.layout === "document"
-      ? { url: feature.image, width: 1229, height: 768, alt: feature.imageAlt }
-      : undefined,
+    image: featureOpenGraphImage(feature),
   });
 }
 

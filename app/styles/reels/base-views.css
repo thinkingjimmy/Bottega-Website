@@ -170,6 +170,8 @@
 .ch { display: flex; flex-direction: column; height: 180px; overflow: hidden; border: 1px solid var(--app-border); border-radius: 12px; }
 .ch-h { display: flex; align-items: center; height: 40px; flex: none; padding: 0 10px; border-bottom: 1px solid var(--app-border); font-size: 14px; font-weight: 500; }
 .ch-b { display: flex; align-items: center; gap: 10px; flex: 1; min-height: 0; padding: 10px; }
+/* 环自己不带尺寸（见 components/base-charts.tsx），高度由这一处给。 */
+.ch-b > svg { height: 100%; flex: none; }
 .ch-lg { display: flex; flex-direction: column; gap: 5px; flex: none; font-size: 10px; color: var(--app-muted-fg); }
 .ch-lg span { display: flex; align-items: center; gap: 5px; }
 .ch-lg i { display: block; width: 7px; height: 7px; flex: none; border-radius: 2px; }
@@ -219,32 +221,4 @@
 
 @media (prefers-reduced-motion: reduce) {
   .vw-pane { transition: none; }
-}
-
-/* ── 十六枚类型标记 ────────────────────────────────────────────────
- * 与 Agents 一节那四枚 agent logo 同一个位置、同一件差事：那四枚是
- * 「有谁」的全部证据，这十六枚是「能改成什么」的全部证据。
- * 名字不画在旁边——一行标记读得比一行名字快，读不出来的人一 hover 就有。
- * ────────────────────────────────────────────────────────── */
-.type-marks {
-  display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
-  align-items: center;
-  column-gap: 16px;
-  row-gap: 14px;
-  margin-top: 30px;
-  color: var(--ink-2);
-}
-.type-marks dt {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-.type-marks dd {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  margin: 0;
 }

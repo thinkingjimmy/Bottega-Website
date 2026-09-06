@@ -4,10 +4,10 @@ Next.js 16 App Router + React 19 + TypeScript + plain CSS + static export
 
 <directory>
 app/ - Thirty static routes: six unprefixed English pages plus twenty-four prefixed translations
-app/styles/ - Presentation split by tokens, base, shared/Agents features, hero, Apps, reels, bands, and motion
-components/ - Shared site chrome, home sections, feature navigation, and product-faithful visuals
+app/styles/ - Presentation split by tokens, base, shared/Agents features, the Base figures, hero, Apps, reels, bands, and motion
+components/ - Shared site chrome, home sections, feature navigation, chart shapes, and product-faithful visuals
 components/apps/ - Four first-party App surfaces and their shared switcher
-components/features/ - Feature catalog, navigation, document article, and code-drawn Agents story
+components/features/ - Feature catalog, navigation, document article, and code-drawn Agents and Base figures
 components/reels/ - Focused animated demonstrations for Agents, App editing, and Base views
 components/window/ - Hero product shell, transcript, composer, model menu, and Plan panel
 content/ - Five locale-specific build-time Changelog snapshots
@@ -103,7 +103,18 @@ outside clicks cannot dismiss its evidence, and the interactive Home Hero keeps 
 dismissal behavior. The capability matrix stands alone without product-window chrome. No real user
 data is exposed. The cross-Agent handoff flow uses the same unframed treatment.
 
-Apps, Customizable, and Base share one screenshot-and-prose article. Their product screenshots
+Apps, Customizable, and Base share one prose article whose opening screenshot and per-section figures
+are both optional. Apps and Customizable open on a screenshot; Base opens on its first section and
+carries three figures instead. The first draws a receipt sent into a Chat and the row Base records
+from it in the column beside the conversation. The second is the only animated surface outside the
+home narrative: one Base panel whose six view tabs cycle on their own and stop when clicked, each tab
+drawing the same eighteen rows as a table, list, Kanban board, a map of central Washington, a
+three-card chart dashboard, and a gallery. The third borrows the Agents cross-Agent sketch — three
+staggered frames, elbow ink, handwritten notes — to show one Chat filing that receipt, the Project
+Base the row lands in, and a second Chat reading the month's total back out of it. Every column type, view type, tool name, and owner-key prefix in them is copied from the
+desktop repository rather than approximated, down to the list and Kanban row titles, which come from
+the ledger's first column because that is what the product's own projections do. The Apps and
+Customizable screenshots
 under `public/features/` were captured from the local Bottega development build with private sidebar
 content collapsed. All claims were cross-checked against current GTM notes, public feature
 documentation, production source contracts, and the corresponding running product surface. Copy

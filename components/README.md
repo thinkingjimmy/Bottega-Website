@@ -18,6 +18,7 @@
 - `scene-language.tsx`: Wears the hero menu-bar input-source skin over those same locale links.
 - `theme.tsx`: Resolves and follows the local theme preference.
 - `icons.tsx`: Owns dependency-free SVG and product identity primitives.
+- `base-charts.tsx`: Owns the two Base chart shapes — a donut and a filled line — neither of which carries its own size, so both fit a second layout.
 - `reveal.tsx`: Adds one-shot entrance without hiding server content by default.
 
 ## Child modules

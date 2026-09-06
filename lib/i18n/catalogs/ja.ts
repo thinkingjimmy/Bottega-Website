@@ -76,8 +76,10 @@ export const ja = {
       menuCopy: "タスクに合わせてつくられた実用的な画面",
       title: "Agent の成果を、使い続けられる画面に。",
       deck: "Apps はワークフロー固有の画面、データ、権限を持ち、有用な成果を会話ログの中に閉じ込めません。",
-      imageAlt: "Bottega Apps ライブラリ。インストール済みの Bottega Design Canvas が Ready と表示されている",
-      imageCaption: "Bottega の実画面：インストールした App は Apps ライブラリに永続的な場所と明示的な準備状態を持ちます。",
+      screenshot: {
+        alt: "Bottega Apps ライブラリ。インストール済みの Bottega Design Canvas が Ready と表示されている",
+        caption: "Bottega の実画面：インストールした App は Apps ライブラリに永続的な場所と明示的な準備状態を持ちます。",
+      },
       sections: [
         {
           heading: "App は長く使える製品画面",
@@ -112,8 +114,10 @@ export const ja = {
       menuCopy: "App 自身のソース Chat で編集",
       title: "ソースと話して App を編集する。",
       deck: "編集可能なソースを持つ App では、別のコードエディターではなく、App のソース Project 内に通常の Agent Chat を開きます。",
-      imageAlt: "App と Data タブ、設定、Chat、その他メニューを表示した Bottega Design Canvas の詳細画面",
-      imageCaption: "Bottega の実画面：App の画面、データ、利用 Chat、設定、ソース操作をひとつの詳細ページにまとめます。",
+      screenshot: {
+        alt: "App と Data タブ、設定、Chat、その他メニューを表示した Bottega Design Canvas の詳細画面",
+        caption: "Bottega の実画面：App の画面、データ、利用 Chat、設定、ソース操作をひとつの詳細ページにまとめます。",
+      },
       sections: [
         {
           heading: "編集は第一級の製品操作",
@@ -143,8 +147,6 @@ export const ja = {
       menuCopy: "Agent と一緒にデータを整理・活用",
       title: "会話の情報を、使えるデータに。",
       deck: "Base は、あなたと Agent が使うローカルのデータスペースです。Chat でレコードを整理・更新し、同じデータを 6 つのビューで確認できます。",
-      imageAlt: "Bottega Design Canvas の Data タブ。空の Base テーブルと、フィルター、列設定、グループ化、行追加のコントロール",
-      imageCaption: "Bottega Design Canvas の Data タブ。Base を使う App では、専用の画面と、その元になるレコードの両方を利用できます。",
       sections: [
         {
           heading: "記録したいことを、Agent に伝える",
@@ -229,7 +231,7 @@ export const ja = {
     ledger: {
       categories: ["交通", "機器", "食料品", "健康", "外食"],
       notes: ["DiDi、空港まで", "Apple Store", "Hema Fresh", "ジム、四半期", "ラーメン一幸舎", "高速鉄道", "近所の市場", "チームランチ", "空港エクスプレス", "週末の買い物", "モニターアーム", "コーヒー 2 杯", "薬局", "地下鉄チャージ", "メカニカルキーボード", "Hema Fresh", "夜食の麺", "歯科"],
-      categoryShare: "カテゴリ別比率", dailySpend: "日別支出", location: "位置", where: "場所", label: "ラベル",
+      categoryShare: "カテゴリ別比率", dailySpend: "日別支出", topExpenses: "支出の大きい順", receipt: "領収書", location: "位置", where: "場所", label: "ラベル",
     },
     kanban: {
       tabs: ["タスク", "指摘", "すべて"], lanes: ["進行中", "レビュー", "完了"], task: "タスク", source: "ソース", doc: "文書",
@@ -289,6 +291,34 @@ export const ja = {
       noteBack: "終われば、結果は自動で戻ってくる",
       noteReview: "元の対話に戻ってレビュー ——\nまたは次の Agent へ",
       handoffCaption: "三枚のカードは同じ一台の先後三コマ。スケルトン以外はすべて製品そのままの文字——Plan の題、受信メッセージの見出し、レビューの結論。二つの受け渡しは send_to_section と expect_reply を呼ぶ。",
+    },
+    baseVisual: {
+      schemaLabel: "Chat に送られたレシートと、その隣の列で Base が記録した 1 行",
+      chatLedger: "経費",
+      askReceipt: "このレシートを記録して。",
+      replyReceipt: "記録しました——{row}。",
+      typesLabel: "列タイプ",
+      columnTypes: [
+        "テキスト", "数値", "日付", "選択", "チェックボックス",
+        "URL", "位置", "添付", "数式", "関連レコード",
+      ],
+      schemaCaption:
+        "Base はこの Chat の 3 番目の列であり、別のウィンドウではありません。ツール名は製品そのものです。base_describe が列と現在の revision を読み、base_insert_rows が呼び出し側の id でこの行を書きます。この台帳は下の 10 種類の列タイプのうち 4 つを使っています。",
+      viewsLabel: "ひとつの Base がテーブル、リスト、カンバン、マップ、チャート、ギャラリーを順に切り替える様子",
+      viewNames: ["テーブル", "リスト", "カンバン", "マップ", "チャート", "ギャラリー"],
+      viewsCaption:
+        "ビュータイプは 6 つで固定、それ以上はありません: table、list、kanban、map、chart、gallery。タブの下に複製は 1 つもなく、どのビューも同じ 18 行にフィルター、並べ替え、少しの設定を重ねているだけです。カンバンは選択列でレーンを分け、マップは位置列を、ギャラリーは添付列を参照します。",
+      chatsLabel: "ひとつのワークスペースの 3 コマ：レシートを記録する Chat、行が落ちる Project Base、そこから月の合計を読み戻すもうひとつの Chat",
+      chatMonthly: "月次支出",
+      askMonthly: "先月はいくら使った？",
+      replyMonthly: "{count} 件、合計 {sum} です。",
+      baseOwner: "同じ Project Base",
+      noteFile: "レシートを渡すだけ——\n行は Agent が書く",
+      noteStore: "行が落ちるのは Base、\nこの Chat ではない",
+      noteReuse: "別の Chat から聞き直す",
+      noteSame: "合計は上の行から\n читを読み戻したもの",
+      chatsCaption:
+        "同じワークスペースの 3 コマを上から下へ。手書き以外はすべて製品そのままの文字です。最初の返答が挙げた行は、下の Base の 1 行目そのもの。最後の返答の合計は、その Base 自身のサマリー行です——2 つ目の Chat は答えを教わったのではなく、読み取っています。",
     },
   },
 } satisfies CatalogShape<typeof en>;

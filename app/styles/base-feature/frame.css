@@ -1,0 +1,401 @@
+/**
+ * [INPUT]: Uses the website and product-surface tokens plus the shared Base figure class names
+ * [OUTPUT]: Provides the figure frame, the prose reset, the ledger table, the view bar, and the receipt attachment
+ * [POS]: First of four Base-figure stylesheets; everything two or more figures share lives here
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ */
+
+/* ── 共用画框 ────────────────────────────────────────────────────
+ * 与 Agents 那三张同一副框：同一个圆角、同一道落影、同一句图注。
+ * 两页的图若各用各的框，读者会以为它们出自两套系统——而它们讲的是
+ * 同一台机器的两件事。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure {
+  margin: 34px 0 0;
+}
+
+/* ── 先把正文相剥掉 ──────────────────────────────────────────────
+ * 三张图挂在 .feature-prose 的一节里，于是那一节的正文排版（16.5px、
+ * --ink-2、72ch、绿点项目符号、段间 14px）会一路淌进图里每一个 <p> 与
+ * <ul>——而图里的 p 不是段落、li 不是论点，它们是界面的一部分。这一段
+ * 把继承来的正文相剥干净，下面每一条才是从零写起的。
+ *
+ * 这几条与 features.css 里那几条同级（0,1,1 / 0,1,2），靠 globals.css 里
+ * base-feature 排在 features 之后取胜；本组样式表所有类名一律带
+ * .bfd-figure 前缀，于是它们（0,2,0 起）又稳压这一段。三层各归各位，
+ * 一个 !important 都不必写——写了，下一个人就再也不知道谁本该赢。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure p,
+.bfd-figure li {
+  max-width: none;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.bfd-figure p + p {
+  margin-top: 0;
+}
+
+.bfd-figure ul {
+  display: block;
+  /* flex-direction 也得剥：.feature-prose ul 把它设成了 column，而图里的
+     每一列表都是横排的一行标记。只重置 display 不重置方向，改回 flex 的
+     那一刻方向仍是竖的——漏掉的那一条会一直等在下一次改动里。 */
+  flex-direction: row;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bfd-figure li {
+  padding-left: 0;
+}
+
+.bfd-figure li::before {
+  content: none;
+}
+
+.bfd-figure figure {
+  margin: 0;
+}
+
+/* section 也得剥。图挂在 `.feature-prose section` 里，而那条规则给每个
+   section 上下各留 42px 内边距、外加一道上边框——图里再出现一个 section，
+   它会凭空多出 84px 的内边距，把自己撑高、把内容挤扁，而画框看起来
+   毫无异样。这一条是那次 bug 的墓碑。 */
+.bfd-figure section {
+  padding: 0;
+  border-top: 0;
+}
+
+.bfd-figure .bfd-visual {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--app-bg);
+  box-shadow: 0 24px 56px -38px rgba(27, 26, 22, 0.46);
+  color: var(--app-fg);
+}
+
+/* 只有静态那两张不接受指点；六视图那张的页签是真开关。 */
+.bfd-figure .bfd-visual[role="img"] {
+  pointer-events: none;
+  user-select: none;
+}
+
+.bfd-figure figcaption {
+  max-width: 68ch;
+  margin-top: 12px;
+  color: var(--ink-3);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+/* 圈出来的那一行。绿是站点自己的墨，不是产品的——被圈中这件事不是
+   界面的状态，是站在界面旁边的人指了一下。 */
+.bfd-figure .is-lit {
+  box-shadow: inset 0 0 0 1.5px var(--green);
+}
+
+/* 骨架借站点自己那一副，只关掉呼吸：那边的闪说的是「正在加载」，
+   这里的灰说的是「这一格不必被读」。 */
+.bfd-figure .sk {
+  height: 8px;
+  animation: none;
+}
+
+/* ── 视图页签条 ──────────────────────────────────────────────────
+ * 抄自 bases/chrome 的 40px 工具条：左边页签、右边四颗配置钮。
+ * 图一只有一格页签（一张新表就一个视图），图二有六格。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure .bfd-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 40px;
+  flex: none;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.bfd-figure .bfd-tabs {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.bfd-figure .bfd-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+  flex: none;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--app-muted-fg);
+  font-size: 12.5px;
+  white-space: nowrap;
+}
+
+.bfd-figure .bfd-tab svg {
+  flex: none;
+}
+
+.bfd-figure .bfd-tab.is-on,
+.bfd-figure .bfd-tab[aria-selected="true"] {
+  background: var(--app-accent);
+  color: var(--app-fg);
+  font-weight: 500;
+}
+
+.bfd-figure .bfd-bar-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  place-items: center;
+  border-radius: 6px;
+  color: var(--app-muted-fg);
+}
+
+.bfd-figure .bfd-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+/* ── 账本表格 ────────────────────────────────────────────────────
+ * 几何抄自 bases/views/table：表头与行同高、逐格右分隔、数字等宽。
+ * 汇总条与行区分开两层，是因为行区要能被裁：一张十八行的表在十行的
+ * 框里，裁边就是「下面还有」这句话；而汇总条永远钉在底边。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure .bfd-grid {
+  display: flex;
+  min-height: 0;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  font-size: 12.5px;
+}
+
+.bfd-figure .bfd-rows {
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.bfd-figure .bfd-row {
+  display: flex;
+  height: 34px;
+  flex: none;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.bfd-figure .bfd-c {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  padding: 0 9px;
+  border-right: 1px solid var(--app-border);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bfd-figure .bfd-row-head {
+  background: color-mix(in srgb, var(--app-accent) 85%, transparent);
+  font-weight: 500;
+}
+
+.bfd-figure .bfd-row-head svg {
+  flex: none;
+  color: var(--app-muted-fg);
+}
+
+.bfd-figure .bfd-c-date {
+  width: 74px;
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.bfd-figure .bfd-c-amount {
+  width: 88px;
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.bfd-figure .bfd-c-category {
+  width: 100px;
+  flex: none;
+}
+
+.bfd-figure .bfd-c-note {
+  min-width: 0;
+  flex: 1;
+}
+
+.bfd-figure .bfd-c-add {
+  width: 32px;
+  flex: none;
+  justify-content: center;
+  padding: 0;
+  border-right: 0;
+  color: var(--app-muted-fg);
+}
+
+.bfd-figure .bfd-row-foot {
+  border-bottom: 0;
+  border-top: 1px solid var(--app-border);
+}
+
+.bfd-figure .bfd-row-foot .bfd-c-date {
+  justify-content: flex-end;
+}
+
+.bfd-figure .bfd-row-foot i {
+  color: var(--app-muted-fg);
+  font-size: 11px;
+  font-style: normal;
+}
+
+/* ── 小票附件 ────────────────────────────────────────────────────
+ * 照 transcript/chat-user-attachments.tsx：64px 方块、圆角 6、靠右成排，
+ * 压在那句话上面——真产品里图就在气泡之上，不在气泡里。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure .bfd-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.bfd-figure .bfd-thumb {
+  display: block;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--app-accent);
+}
+
+.bfd-figure .bfd-receipt {
+  display: block;
+}
+
+/* 工具行照转录里那截过程展开后的样子：16px 痕迹槽 + 一行等宽名字。
+   名字用等宽，是因为它们本来就是标识符，不是词。 */
+.bfd-figure .bfd-tool {
+  gap: 8px;
+  color: var(--app-muted-fg);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+/* 侧栏行的词汇与产品同一套：32px 行高、8px 内边距、16px 痕迹槽。 */
+.bfd-figure .bfd-side-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: var(--app-muted-fg);
+  font-size: 12px;
+}
+
+.bfd-figure .bfd-side-row.is-open {
+  background: var(--app-accent);
+  color: var(--app-fg);
+  font-weight: 500;
+}
+
+.bfd-figure .bfd-side-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── 十枚列类型 ──────────────────────────────────────────────────
+ * 站在画框外面，用站点的墨：它不是界面的一部分，是「界面里那四列
+ * 是从这十种里挑的」这句话。
+ * ────────────────────────────────────────────────────────── */
+.bfd-figure .bfd-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 16px;
+  color: var(--ink-2);
+  font-size: 12.5px;
+}
+
+.bfd-figure .bfd-types li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bfd-figure .bfd-types svg {
+  color: var(--ink-3);
+}
+
+.bfd-figure .bfd-types-label {
+  color: var(--ink-3);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 560px) {
+  .bfd-figure {
+    margin-inline: calc(var(--edge) * -1);
+  }
+
+  .bfd-figure .bfd-visual {
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  .bfd-figure figcaption,
+  .bfd-figure .bfd-types {
+    padding-inline: var(--edge);
+  }
+
+  /* 375 上四列挤在一起，备注只剩一半。日期与金额是可预知的窄列，钉死；
+     分类与备注按余量平分，因为它们的长度随语言变（法语的 Catégorie 比
+     英语的 Category 长一截），钉死宽度只会在某一门语言上裂开。加列钮在
+     窄屏只是一格空白，收起来。 */
+  .bfd-figure .bfd-grid {
+    font-size: 12px;
+  }
+
+  .bfd-figure .bfd-c-date {
+    width: 62px;
+  }
+
+  .bfd-figure .bfd-c-amount {
+    width: 82px;
+  }
+
+  .bfd-figure .bfd-c-category {
+    width: auto;
+    min-width: 0;
+    flex: 1 1 96px;
+  }
+
+  .bfd-figure .bfd-c-note {
+    flex: 1 1 96px;
+  }
+
+  .bfd-figure .bfd-c-add {
+    display: none;
+  }
+}

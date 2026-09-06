@@ -99,9 +99,10 @@ export const en = {
       title: "Turn Agent work into a surface you can keep using.",
       deck:
         "Apps give a workflow its own interface, data, and permissions, so the useful result is not trapped in a transcript.",
-      imageAlt: "Bottega Apps library showing an installed Bottega Design Canvas marked Ready",
-      imageCaption:
-        "Captured in Bottega: an installed App has a durable place in the Apps library and an explicit readiness state.",
+      screenshot: {
+        alt: "Bottega Apps library showing an installed Bottega Design Canvas marked Ready",
+        caption: "Captured in Bottega: an installed App has a durable place in the Apps library and an explicit readiness state.",
+      },
       sections: [
         {
           heading: "An App is a durable product surface",
@@ -139,10 +140,10 @@ export const en = {
       title: "Edit the App by talking to its source.",
       deck:
         "For Apps with editable source, Bottega opens a normal Agent Chat inside the App's source Project instead of dropping you into a separate code editor.",
-      imageAlt:
-        "Bottega Design Canvas detail screen with App and Data tabs, settings, Chat, and a More actions menu",
-      imageCaption:
-        "Captured in Bottega: an App detail page keeps its surface, data, use Chat, settings, and source actions together.",
+      screenshot: {
+        alt: "Bottega Design Canvas detail screen with App and Data tabs, settings, Chat, and a More actions menu",
+        caption: "Captured in Bottega: an App detail page keeps its surface, data, use Chat, settings, and source actions together.",
+      },
       sections: [
         {
           heading: "Edit is a first-class product action",
@@ -179,10 +180,6 @@ export const en = {
       title: "Turn conversations into data you can use.",
       deck:
         "Base is a local data space for you and your Agent. Organize and update records through Chat, then explore the same data in six views.",
-      imageAlt:
-        "Bottega Design Canvas with the Data tab open, showing an empty Base table and controls for filters, columns, grouping, and adding rows",
-      imageCaption:
-        "The Data tab in Bottega Design Canvas. Apps that use Base give you access to their records alongside their custom interface.",
       sections: [
         {
           heading: "Start with what you want to track",
@@ -315,6 +312,7 @@ export const en = {
       ],
       categoryShare: "Category share",
       dailySpend: "Daily spend",
+      topExpenses: "Largest expenses",
       receipt: "Receipt",
       location: "Location",
       where: "Where",
@@ -497,30 +495,34 @@ export const en = {
     },
     baseVisual: {
       schemaLabel:
-        "A Chat asking for an expense ledger beside the typed columns and records Base creates from it",
-      askBuild: "Track my expenses — date, amount, category, and a note.",
-      askQuery: "How much have I spent so far?",
-      replyLine: "{count} records so far, {sum} in total.",
+        "A receipt sent into a Chat, and the row Base records from it in the column beside the conversation",
+      chatLedger: "Expenses",
+      askReceipt: "Log this receipt.",
+      replyReceipt: "Logged it — {row}.",
       typesLabel: "Column types",
       columnTypes: [
         "Text", "Number", "Date", "Select", "Checkbox",
         "URL", "Location", "Attachment", "Formula", "Relation",
       ],
       schemaCaption:
-        "The four tool names are the product's own: base_describe reads the columns and the current revision, base_add_columns appends typed columns, base_insert_rows writes rows under caller-supplied ids, and read_base answers the follow-up. A ledger needs four of the ten column types.",
+        "Base is the Chat's third column, not a window of its own. The tool names are the product's own: base_describe reads the columns and the current revision, base_insert_rows writes the row under a caller-supplied id. This ledger uses four of the ten column types below.",
       viewsLabel:
-        "One set of records drawn as a table, a list, a Kanban board, a map, a chart, and a gallery",
-      recordsLabel: "The same {count} records",
+        "One Base cycling through its table, list, Kanban, map, chart, and gallery views",
       viewNames: ["Table", "List", "Kanban", "Map", "Chart", "Gallery"],
       viewsCaption:
-        "Six view types, and only six: table, list, kanban, map, chart, gallery. Each is a filter, a sort, and a little configuration over the same rows — Kanban groups by a select column, Map binds the location column, Gallery binds the attachment column. The outlined record is one row seen six times, not six copies.",
-      trustLabel:
-        "A Chat's own Base beside a Project Base shared by its Chats, and the permissions and revision check an App passes through",
-      ownerChat: "A Chat's own Base",
-      ownerProject: "A Project Base its Chats share",
-      grantLabel: "Granted to this App",
-      trustCaption:
-        "Every Base is owned by one Chat or one Project — that prefix is the record's address. An App reaches it only through the permissions granted to that exact generation, and every write states the revision it was made against: a matching revision lands, an outdated one is refused rather than applied.",
+        "Six view types, and only six: table, list, kanban, map, chart, gallery. Nothing under the tab bar is a copy — every view reads the same eighteen rows plus a filter, a sort, and a little configuration. Kanban groups by the select column, Map binds the location column, Gallery binds the attachment column.",
+      chatsLabel:
+        "Three frames of one workspace: a Chat filing a receipt, the Project Base the row lands in, and a second Chat reading the month's total back out",
+      chatMonthly: "Monthly spend",
+      askMonthly: "How much did I spend last month?",
+      replyMonthly: "{count} records, {sum} in total.",
+      baseOwner: "One Project Base",
+      noteFile: "Hand the receipt over —\nthe Agent writes the row",
+      noteStore: "The row lands in Base,\nnot in this Chat",
+      noteReuse: "Ask again from another Chat",
+      noteSame: "and the total is read back\nout of those same rows",
+      chatsCaption:
+        "Three frames of the same workspace, top to bottom. Everything outside the handwriting is the product's own: the row named in the first reply is the first row of the Base below it, and the total in the last reply is that Base's own summary — the second Chat is not told the answer, it reads it.",
     },
   },
 } as const;
