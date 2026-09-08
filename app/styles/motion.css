@@ -72,6 +72,16 @@
   .app-pane {
     transition: none;
   }
+  /* 首屏 App 那一面同理：按下那一格与开窗那一下都不演，窗仍然开——
+     hero.tsx 读的是同一条查询，那一拍的等待也一并撤掉。
+     关掉动效的人要的是「到位」，不是「别开」。 */
+  .app-gallery > .app-card,
+  .as-shell {
+    animation: none !important;
+  }
+  .app-card {
+    transition: none;
+  }
   /* 第三栏照开照关，只是不再滑：关掉动效的人要的是「到位」，不是「别开」。 */
   .win-panel,
   .win-panel-face {

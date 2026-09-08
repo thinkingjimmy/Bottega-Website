@@ -205,7 +205,7 @@ export const ja = {
   demo: {
     chrome: {
       newChat: "新しい Chat", apps: "Apps", projects: "Projects", chats: "Chats", settings: "設定", showMore: "さらに表示",
-      ledger: "台帳", analysis: "分析", byMonth: "月別", date: "日付", amount: "金額", category: "カテゴリ", note: "メモ", sum: "合計", records: "{count} 件",
+      ledger: "台帳", analysis: "分析", date: "日付", amount: "金額", category: "カテゴリ", note: "メモ", sum: "合計", ready: "準備完了", appTab: "アプリ", dataTab: "データ",
       askAnything: "何でも聞いてください", approveForMe: "代わりに承認", currentAgent: "現在の Agent: {name}", currentModel: "現在のモデル: {name}",
       recommended: "おすすめ", anotherApproach: "どれにも当てはまらない。別の方法を Agent に伝える", workedFor: "作業時間 {duration}", plan: "Plan",
       planCopied: "Plan をコピーしました", copyPlan: "Plan をコピー", closePlan: "Plan パネルを閉じる", openPlan: "Plan パネルを開く",

@@ -205,7 +205,7 @@ export const zhCN = {
   demo: {
     chrome: {
       newChat: "新建 Chat", apps: "Apps", projects: "Projects", chats: "Chats", settings: "设置", showMore: "显示更多",
-      ledger: "账本", analysis: "分析", byMonth: "按月", date: "日期", amount: "金额", category: "分类", note: "备注", sum: "合计", records: "{count} 条记录",
+      ledger: "账本", analysis: "分析", date: "日期", amount: "金额", category: "分类", note: "备注", sum: "合计", ready: "已就绪", appTab: "应用", dataTab: "数据",
       askAnything: "问任何问题", approveForMe: "替我批准", currentAgent: "当前 Agent：{name}", currentModel: "当前模型：{name}",
       recommended: "推荐", anotherApproach: "都不合适；告诉 Agent 另一种方案", workedFor: "工作了 {duration}", plan: "Plan",
       planCopied: "已复制 Plan", copyPlan: "复制 Plan", closePlan: "关闭 Plan 面板", openPlan: "打开 Plan 面板",

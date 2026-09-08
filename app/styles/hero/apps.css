@@ -1,0 +1,387 @@
+/**
+ * [INPUT]: 依赖 ../tokens.css 的 --app-*（含 --app-ok-*）与 shell.css 的 .icon-slot / .traffic / .emoji
+ * [OUTPUT]: 首屏 App 那一面：主栏里的 Apps 页与盖在桌面上的那扇 App 独立窗口
+ * [POS]: 与 surface.css 分家的判据是「这台机器在说什么」与「这台机器上还开着什么」——
+ *        前者是主窗口的内容，后者是第二扇窗，它连边界都在主窗口之外
+ * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ */
+
+/* ── Apps 页：产品的 AppsListView ─────────────────────────────────
+ * `p-4` 的滚动区 + `gap-4` 的卡片网格。列数看视口：这台机器 960 宽，
+ * 落在 `sm` 而够不着 `lg`，于是两列——不是「四只排两行好看」，
+ * 是同一条断点在同一个宽度上给出的同一个答案。
+ * 网格顶头排（align-content: start）：卡片撑不满这一屏是产品的实情，
+ * 拉开分家去凑满，读到的就成了「这里本来该有更多」。
+ * ────────────────────────────────────────────────────────── */
+.app-gallery {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 16px;
+  padding: 16px;
+}
+
+/* 整张卡就是那颗按钮。产品里覆着一张铺满整卡的透明按钮，两种写法落到
+   访客身上是同一件事：按下去，那只 App 开出来。
+   边是 `ring-1 ring-foreground/10`——一道不占位的环，卡片之间因此不会
+   因为多一像素边框而错开半格。 */
+.app-card {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--app-fg) 10%, transparent);
+  color: var(--app-fg);
+  text-align: left;
+  transition: background 120ms ease;
+}
+button.app-card {
+  cursor: pointer;
+}
+button.app-card:hover {
+  background: color-mix(in srgb, var(--app-accent) 40%, transparent);
+}
+button.app-card:active {
+  background: color-mix(in srgb, var(--app-accent) 60%, transparent);
+}
+button.app-card:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--app-fg) 32%, transparent);
+  outline-offset: -2px;
+}
+
+.ac-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+/* 名字与那句话住在左栏里，右上角那两枚不参与换行——产品的卡片就是这么
+   分栏的，铺满整卡去排，句子会从工具下面穿过去。 */
+.ac-main {
+  flex: 1;
+  min-width: 0;
+}
+.ac-id {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.ac-icon {
+  font-size: 30px;
+  line-height: 36px;
+}
+/* 徽标只说状态。绿只归 ready 一档——它是这张卡上唯一一处彩色，
+   多给一档，颜色就不再是一句话，而是装饰。 */
+.ac-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 8px;
+  border-radius: 9999px;
+  background: var(--app-ok-bg);
+  color: var(--app-ok-fg);
+  font-size: 11px;
+}
+.ac-name {
+  margin-top: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  font-weight: 500;
+}
+/* 两行封顶：卡片是目录里的一格，不是说明书。第三行开始该由那只 App
+   自己去说。 */
+.ac-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin-top: 4px;
+  color: var(--app-muted-fg);
+  font-size: 12px;
+  line-height: 1.625;
+}
+.ac-tools {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* ── 有人按了领头那张卡 ────────────────────────────────────────────
+ * 画面上没有鼠标，于是「有人按了这里」这句话全靠这一格说：底色亮起来，
+ * 同时缩一格。与 App 菜单那一支（styles/reels/app-menu.css）同一套办法。
+ * 底色用足 --app-accent，比产品的 `active:bg-accent/60` 实一档：产品里
+ * 按下去的那只手自己就在画面上，这里没有，反馈得自己把话说完。
+ * 0.42s 起：这一面刚换过来，让它先被看清是什么，再演下一步。
+ * ────────────────────────────────────────────────────────── */
+@keyframes ag-press {
+  0%,
+  100% {
+    background: transparent;
+    transform: none;
+  }
+  22%,
+  62% {
+    background: var(--app-accent);
+    transform: scale(0.988);
+  }
+}
+.app-gallery[data-auto="on"] > .app-card:first-child {
+  animation: ag-press 620ms cubic-bezier(0.4, 0, 0.2, 1) 420ms both;
+}
+
+/* ── 第二扇窗：一只 App 自己的窗口 ────────────────────────────────
+ * 它盖在主窗口上，右缘越出主窗口的边界。两扇窗必须彼此错开，读到的
+ * 才是「桌面上又开了一个东西」；对齐或内嵌读到的都是「那台机器里换了
+ * 一块面板」，而面板是属于宿主的——这一节要说的恰恰相反。
+ *
+ * 一个旋钮 --z 推出全部尺寸：窗宽是那张 1120 画布缩过之后的宽，窗高是
+ * 页头 40 + 入口行 44 + 画布缩过之后的高。两者若各写各的，改一处就得
+ * 记得改另一处，而「记得」是最不可靠的那种约束。
+ * ────────────────────────────────────────────────────────── */
+.app-studio {
+  --z: 0.72;
+  /* 落点主要往右让：右缘越出主窗口那 50 来像素，就是「这是另一扇窗」
+     这句话本身。往下只让一点——下面 24px 处就是那条芯片，两扇窗的下缘
+     一旦挤在一起，读到的是一团边；而两条下缘恰好对齐更糟：差一点点的
+     对齐会被读成没对准，不会被读成有意为之。 */
+  --studio-x: 130px;
+  --studio-y: 28px;
+  /* .scene-body 居中的是「窗 + 24 间距 + 32 芯片」这一整组，主窗口自己的
+     中心因此比这一栏的中心高 28px。落点是相对主窗口量的，所以这一档必须
+     先补回来，否则「让开多少」会跟着芯片条的高度悄悄变。 */
+  --studio-anchor: -28px;
+
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  width: calc(1120px * var(--z));
+  /* 视口一矮，窗先被压扁，里面那一页由 .as-body 自己裁——真窗口在小屏上
+     也是这么待着的：内容不重排，只是露出得少。 */
+  height: min(calc(84px + 780px * var(--z)), calc(100vh - 300px));
+  transform: translate(-50%, calc(-50% + var(--studio-anchor)))
+    translate(var(--studio-x), var(--studio-y));
+}
+
+/* 开窗那一下从卡片的方向长出来：origin 落在左上，而领头那张卡就在那边。
+   缩放与位移分两层写——外层管落点，里层管开窗，合成一条 transform 就得
+   在每一帧里把落点重抄一遍。 */
+@keyframes as-open {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.as-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  /* 比主窗口浓一档：它压在另一扇窗上，而不是压在桌面上。 */
+  box-shadow:
+    0 0 0 1px rgba(27, 26, 22, 0.12),
+    0 2px 8px rgba(27, 26, 22, 0.14),
+    0 48px 96px -34px rgba(27, 26, 22, 0.62);
+  transform-origin: 26% 18%;
+  animation: as-open 380ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+[data-theme="dark"] .as-shell {
+  box-shadow:
+    0 0 0 1px var(--app-border),
+    0 2px 8px rgba(0, 0, 0, 0.5),
+    0 48px 96px -34px rgba(0, 0, 0, 0.75);
+}
+
+/* 页头一行装下四件事：红绿灯、这只 App 是谁、正中两枚页签、右端那两颗
+   第三栏开关。产品把原来独占的 40px 页签横带收进了页头，内容区因此
+   白拿一整条——这里照抄那个决定。 */
+.as-head {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 8px 0 12px;
+  border-bottom: 1px solid var(--app-border);
+}
+.as-head .traffic {
+  height: auto;
+  padding: 0;
+  margin-right: 4px;
+}
+/* 红的那颗是真按钮，几何与 .traffic i 逐项相同——两颗灯并排，差一像素
+   就看得出来。悬停时露出那个 ×：macOS 的三颗灯也是停上去才显字。 */
+.as-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 11px;
+  height: 11px;
+  flex: none;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: #ff5f57;
+  cursor: pointer;
+}
+.as-close::after {
+  content: "\00d7";
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 11px;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+.as-close:hover::after {
+  opacity: 1;
+}
+
+.as-id {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.as-title {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-weight: 500;
+}
+/* 页签钉在页头正中，不跟着标题的长短漂：绝对居中是「它属于这扇窗」，
+   随标题推移读到的是「它属于那个标题」。 */
+.as-tabs {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.as-tabs span {
+  display: flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 12px;
+  border-radius: 6px;
+  color: var(--app-muted-fg);
+  font-size: 13px;
+}
+.as-tabs span.on {
+  background: var(--app-accent);
+  color: var(--app-fg);
+}
+.as-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* 入口那一行：左边写着装载的是哪一页，右边一颗刷新。44 是产品的
+   `min-h-11`——它比页头高一档，因为它属于下面那一页，不属于窗口。 */
+.as-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--app-border);
+}
+.as-entry {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--app-muted-fg);
+  font-size: 12px;
+}
+
+/* App 自己画的那一页：按 1120×780 的自然尺寸落笔，整块缩到 --z——与 Apps
+   一节那四台同一套办法（见 styles/apps/stage.css）。裁掉的是内容，
+   缩掉的只是观看距离，所以是缩不是裁。 */
+.as-body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--app-bg);
+}
+.as-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1120px;
+  /* 高度是「这只窗给得起多少」换算回自然坐标，不是写死的 780：写死那个数，
+     窗一高就在页脚下面留出一条白边，窗一矮又多裁一截。除以 --z 之后，
+     这张画布永远正好是那块窗肚子，缩放只改观看距离。 */
+  height: calc(100% / var(--z));
+  transform: scale(var(--z));
+  transform-origin: 0 0;
+}
+
+/* ── 两扇窗之间的比例得守住 ────────────────────────────────────────
+ * 主窗口是 min(960px, 73%)：视口窄到 1315 以下它就跟着缩，而这扇窗若不
+ * 跟着降档，迟早比它身后那扇还宽——那时读到的不再是「盖在上面的第二扇窗」。
+ * 降的是 --z 一个数，窗宽、窗高与里面那一页一起跟着走。
+ * ────────────────────────────────────────────────────────── */
+@media (max-width: 1320px) {
+  .app-studio {
+    --z: 0.62;
+    --studio-x: 112px;
+    --studio-y: 26px;
+  }
+}
+@media (max-width: 1120px) {
+  .app-studio {
+    --z: 0.54;
+    --studio-x: 92px;
+    --studio-y: 22px;
+  }
+}
+/* ── 窄屏：裁，不是缩 ────────────────────────────────────────────
+ * 主窗口在这里占满整幅、只有 460 高（见 motion.css）。这扇窗若还按
+ * 「宽 = 1120 × --z」去算，390px 上就得缩到 0.26——产品里的 15px 会落成
+ * 4px，那已经不是「小一点的界面」，是一张认不出内容的图。
+ * 所以比例保住，改把窗开小、让画布从右边裁出去——与 Apps 一节那台机器
+ * 同一个决定（见 styles/apps/stage.css）。落点仍往右让，让到越出屏幕边缘：
+ * 一扇被屏幕裁掉一角的窗，正是真桌面上的样子。
+ * ────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .app-studio {
+    --z: 0.5;
+    --studio-x: 56px;
+    --studio-y: 22px;
+    --studio-anchor: -26px;
+    width: min(calc(1120px * var(--z)), 74%);
+    height: min(calc(84px + 780px * var(--z)), 330px);
+  }
+  /* 277px 宽的页头装不下正中那两枚页签：标题、「⋯」与右端那两颗会当场
+     撞在一起。先丢页签，与这台机器的菜单栏在窄屏上的做法一样——留下的
+     是「这扇窗是谁」和它右上角那两颗开关，那才是这一格必须说清的。 */
+  .as-tabs {
+    display: none;
+  }
+  .app-gallery {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

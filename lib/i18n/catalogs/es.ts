@@ -205,7 +205,7 @@ export const es = {
   demo: {
     chrome: {
       newChat: "Nuevo Chat", apps: "Apps", projects: "Projects", chats: "Chats", settings: "Ajustes", showMore: "Mostrar más",
-      ledger: "Libro", analysis: "Análisis", byMonth: "Por mes", date: "Fecha", amount: "Importe", category: "Categoría", note: "Nota", sum: "Suma", records: "{count} registros",
+      ledger: "Libro", analysis: "Análisis", date: "Fecha", amount: "Importe", category: "Categoría", note: "Nota", sum: "Suma", ready: "Lista", appTab: "App", dataTab: "Datos",
       askAnything: "Pregunta lo que quieras", approveForMe: "Aprobar por mí", currentAgent: "Agent actual: {name}", currentModel: "Modelo actual: {name}",
       recommended: "Recomendado", anotherApproach: "Ninguna; indica al Agent otro enfoque", workedFor: "Trabajó durante {duration}", plan: "Plan",
       planCopied: "Plan copiado", copyPlan: "Copiar Plan", closePlan: "Cerrar panel de Plan", openPlan: "Abrir panel de Plan",

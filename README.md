@@ -6,10 +6,10 @@ Next.js 16 App Router + React 19 + TypeScript + plain CSS + static export
 app/ - Thirty static routes: six unprefixed English pages plus twenty-four prefixed translations
 app/styles/ - Presentation split by tokens, base, shared/Agents features, the Base figures, hero, Apps, reels, bands, and motion
 components/ - Shared site chrome, home sections, feature navigation, chart shapes, and product-faithful visuals
-components/apps/ - Four first-party App surfaces and their shared switcher
+components/apps/ - Four first-party App surfaces, their shared switcher, and the id-to-surface lookup
 components/features/ - Feature catalog, navigation, document article, and code-drawn Agents and Base figures
 components/reels/ - Focused animated demonstrations for Agents, App editing, and Base views
-components/window/ - Hero product shell, transcript, composer, model menu, and Plan panel
+components/window/ - Hero product shell, transcript, composer, model menu, Plan panel, Apps page, and App Studio window
 content/ - Five locale-specific build-time Changelog snapshots
 lib/ - Typed i18n, localized demo assembly, body-map paths, and Changelog parsing
 public/ - Brand assets, theme-aware hero backgrounds, and privacy-clean product screenshots
@@ -79,6 +79,14 @@ the whole UI, keeping text sharp.
 The light and dark wallpapers follow the active theme. Auto mode resolves system preference before
 first paint and continues to follow operating-system changes. Manual choices remain local to the
 browser.
+
+The desktop shows one of two surfaces. Chat is the default. The Apps surface opens on the product's
+own Apps page — one card per first-party App — and then plays a single beat: the leading card takes a
+press, and that App opens in its own window stacked over the desktop, crossing the first window's
+right edge because a second window must read as a second window. The window runs the same surface the
+Apps home section uses, drawn at its natural width and scaled as one block. Any card opens its own
+App, the red traffic light closes it, and the Apps chip replays the sequence. Reduced motion skips the
+beat and the movement, never the result.
 
 The home narrative contains four feature sections immediately after the hero:
 

@@ -1,6 +1,6 @@
 /**
  * [INPUT]: 依赖 ../tokens.css 的 --app-* 与 --font-*
- * [OUTPUT]: 产品窗口的输出侧：计时头 / Plan 卡 / 第三栏里那份全文 / 流式状态行 / App 表面
+ * [OUTPUT]: 产品窗口的输出侧：计时头 / Plan 卡 / 第三栏里那份全文 / 流式状态行
  * [POS]: 几何逐项抄自 apps/desktop，差 2px 就不像同一个产品。与 composer.css 分家的判据是
  *        「机器在说什么」与「你在对它说什么」——原来两侧同住一支 chat.css，加上第三栏那份
  *        文档就越过了 800 行，而那条线正是为「一支文件答得出自己管什么」立的
@@ -249,88 +249,4 @@
   background-clip: text;
   color: transparent;
   animation: bt-shimmer 2s linear infinite;
-}
-
-/* App 表面：取自 apps/desktop/src/components/bases/views/table */
-.tabs {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  height: 36px;
-  padding: 0 8px;
-  border-bottom: 1px solid var(--app-border);
-  background: var(--app-accent);
-  font-size: 12.5px;
-}
-.tabs span {
-  display: flex;
-  align-items: center;
-  height: 24px;
-  padding: 0 10px;
-  border-radius: 6px;
-  color: var(--app-muted-fg);
-}
-.tabs span.on {
-  background: var(--app-bg);
-  border: 1px solid var(--app-border);
-  color: var(--app-fg);
-}
-
-.grid-row {
-  display: flex;
-  height: 36px;
-  font-size: 12.5px;
-  border-bottom: 1px solid var(--app-border);
-}
-.grid-row.head,
-.grid-row.foot {
-  background: var(--app-accent);
-  font-weight: 500;
-  font-size: 12px;
-}
-.grid-row.foot {
-  border-bottom: 0;
-  border-top: 1px solid var(--app-border);
-  font-weight: 400;
-}
-.grid-row > * {
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  border-right: 1px solid var(--app-border);
-  overflow: hidden;
-  white-space: nowrap;
-}
-.grid-row > *:last-child {
-  border-right: 0;
-}
-.c-date {
-  flex: none;
-  width: 104px;
-  color: var(--app-muted-fg);
-}
-.c-amount {
-  flex: none;
-  width: 116px;
-  justify-content: flex-end;
-  gap: 6px;
-}
-.c-cat {
-  flex: none;
-  width: 132px;
-}
-.c-note {
-  flex: 1;
-  min-width: 0;
-  color: var(--app-muted-fg);
-}
-.tag {
-  display: inline-flex;
-  align-items: center;
-  height: 19px;
-  padding: 0 8px;
-  border-radius: 9999px;
-  background: var(--app-accent);
-  font-size: 11.5px;
 }

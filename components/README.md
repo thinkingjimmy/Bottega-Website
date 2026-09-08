@@ -27,7 +27,7 @@
 - `features/`: Stable feature identity and localized navigation/article assembly.
 - `pages/`: Locale-neutral page compositions reused by English and prefixed route trees.
 - `reels/`: Focused localized demonstrations and shared playback behavior.
-- `window/`: Canonical localized product window, transcript, Composer, and Plan panel.
+- `window/`: Canonical localized product window, transcript, Composer, Plan panel, Apps page, and App Studio window.
 
 Complete catalogs enter at `pages/` and are narrowed to current-locale props before crossing client boundaries.
 

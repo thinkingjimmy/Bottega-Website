@@ -1,9 +1,9 @@
 "use client";
 
 /**
- * [INPUT]: Uses React state, localized SiteCatalog/DemoData, ProductWindow, SiteHeader, and the menu-bar language/theme controls
+ * [INPUT]: Uses React state, localized SiteCatalog/DemoData, ProductWindow, AppStudioWindow, SiteHeader, and the menu-bar language/theme controls
  * [OUTPUT]: Exports the localized interactive Hero component
- * [POS]: Pinned product desktop; its menu bar carries the only visible theme control and the second language entry
+ * [POS]: Pinned product desktop; it owns the surface switch, the App that is open on it, and the only visible theme control
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
@@ -12,8 +12,9 @@ import { D, Glyph, Stroke } from "./icons";
 import { SceneLanguage } from "./scene-language";
 import { SiteHeader } from "./site-header";
 import { ThemeToggle } from "./theme";
+import { AppStudioWindow } from "./window/product-apps";
 import { ProductWindow } from "./window/product-window";
-import type { DemoData } from "@/lib/agents";
+import type { App, DemoData } from "@/lib/agents";
 import type { SiteCatalog } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n/locale";
 import type { FeatureRecord } from "./features/catalog";
@@ -26,6 +27,17 @@ const HEADER_ROOM = 44;
 const MAX_B = 44;
 const MAX_R = 14;
 const MAX_SH = 26;
+
+/* ── Apps 那一面自己演一遍 ────────────────────────────────────────
+ * 切到这一面先看见的是 Apps 页本身，一拍之后领头那张卡被按下去，一扇
+ * App 的独立窗口开在桌面上。三步的顺序就是这句话的语序：有哪些 App →
+ * 打开其中一只 → 它是一件独立的东西。开头就把窗摆好，等于把结论先说了。
+ *
+ * 1.15s：按下那一格（CSS，0.42s 起 0.62s 长）演完还留 110ms。两件事挨着
+ * 发生才读得出因果，叠在一起读到的是两件无关的事同时动。
+ * 关掉动效的人不必等这一拍——他们要的是「到位」，不是「别开」。
+ * ────────────────────────────────────────────────────────── */
+const LEAD_OPEN = 1150;
 
 export function Hero({
   demo,
@@ -45,6 +57,38 @@ export function Hero({
   const pinRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const [surface, setSurface] = useState<"chat" | "app">("chat");
+  /* 开着的是哪一只 App，不是一个 boolean：换一只就换一扇窗。 */
+  const [openApp, setOpenApp] = useState<App | null>(null);
+  /* 那一拍还欠着。它不是「窗还没开」的同义词：关掉窗口之后这一页重新
+     露出来，而那一下按压不该跟着再演一遍——机器只自己动一次手，
+     再动就成了它在替访客反复表演。run 让「再切一次 Apps」重演一遍：
+     芯片是回到这一面的唯一入口，它若不重演，第二次点它什么都不会发生。 */
+  const [pending, setPending] = useState(false);
+  const [run, setRun] = useState(0);
+
+  const show = (next: "chat" | "app") => {
+    setSurface(next);
+    setOpenApp(null);
+    setPending(next === "app");
+    if (next === "app") setRun((at) => at + 1);
+  };
+
+  const openNow = (app: App) => {
+    setOpenApp(app);
+    setPending(false);
+  };
+
+  useEffect(() => {
+    if (!pending) return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    /* 这里不走 openNow：它每渲染一次都是个新函数，进了依赖表就等于每渲染
+       一次重开一次计时器——那一拍于是永远落不下来。 */
+    const timer = setTimeout(() => {
+      setOpenApp(demo.galleryApps[0]);
+      setPending(false);
+    }, reduce ? 0 : LEAD_OPEN);
+    return () => clearTimeout(timer);
+  }, [demo.galleryApps, pending, run]);
 
   useEffect(() => {
     const pin = pinRef.current;
@@ -129,7 +173,26 @@ export function Hero({
           </div>
 
           <div className="scene-body">
-            <ProductWindow surface={surface} onSurface={setSurface} demo={demo} />
+            <ProductWindow
+              surface={surface}
+              onSurface={show}
+              onOpenApp={openNow}
+              appOpen={openApp !== null}
+              appLead={pending}
+              demo={demo}
+            />
+
+            {/* 第二扇窗盖在第一扇上，右缘越出它的边界——两扇窗必须彼此
+                错开，读到的才是「桌面上又开了一个东西」，而不是「那台
+                机器里换了一块面板」。key 一变就重演一次开窗。 */}
+            {surface === "app" && openApp ? (
+              <AppStudioWindow
+                demo={demo}
+                app={openApp}
+                onClose={() => setOpenApp(null)}
+                key={`${run}:${openApp.id}`}
+              />
+            ) : null}
 
             {/* 两颗并列而不是一个开关：chat 与 App 是产品的两种表面，
                 开关会把其中一种说成「另一种的反面」，并列才说得对。
@@ -139,7 +202,7 @@ export function Hero({
               <button
                 type="button"
                 className={`chip${surface === "chat" ? " on" : ""}`}
-                onClick={() => setSurface("chat")}
+                onClick={() => show("chat")}
                 aria-pressed={surface === "chat"}
               >
                 <Stroke d={D.message} size={15} />
@@ -148,7 +211,7 @@ export function Hero({
               <button
                 type="button"
                 className={`chip${surface === "app" ? " on" : ""}`}
-                onClick={() => setSurface("app")}
+                onClick={() => show("app")}
                 aria-pressed={surface === "app"}
               >
                 <Stroke d={D.grid} size={15} />

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * [INPUT]: Uses localized SiteCatalog/DemoData, carousel hooks, four product surfaces, and FeatureLink
+ * [INPUT]: Uses localized SiteCatalog/DemoData, carousel hooks, the shared APP_SURFACES lookup, and FeatureLink
  * [OUTPUT]: Exports the localized AppsStage component
  * [POS]: Complete Apps home feature with one language-specific surface switcher and detail route
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
@@ -13,13 +13,7 @@ import type { Locale } from "@/lib/i18n/locale";
 import { FeatureLink } from "../features/feature-link";
 import { useCarousel } from "../reels/use-carousel";
 import { usePlayWhenSeen } from "../reels/use-play-when-seen";
-import { CanvasSurface } from "./surface-canvas";
-import { KanbanSurface } from "./surface-kanban";
-import { LedgerSurface } from "./surface-ledger";
-import { FitnessSurface } from "./surface-fitness";
-
-/* 顺序即 APPS 的顺序：一份目录驱动一台机器，不会各排各的。 */
-const SURFACES = [CanvasSurface, KanbanSurface, LedgerSurface, FitnessSurface];
+import { APP_SURFACES } from "./surfaces";
 
 export function AppsStage({
   demo,
@@ -43,11 +37,15 @@ export function AppsStage({
           已经够把它从纸面上抬起来。 */}
       <div className="desk">
         <div className="app-stage" data-active={active} ref={frame} aria-hidden="true">
-          {SURFACES.map((Surface, at) => (
-            <div className="app-pane" key={demo.apps[at].id}>
-              <Surface demo={demo} />
-            </div>
-          ))}
+          {/* 顺序即目录的顺序：一份目录驱动一台机器，不会各排各的。 */}
+          {demo.apps.map((app) => {
+            const Surface = APP_SURFACES[app.id];
+            return (
+              <div className="app-pane" key={app.id}>
+                <Surface demo={demo} />
+              </div>
+            );
+          })}
         </div>
       </div>
 

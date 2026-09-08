@@ -277,12 +277,14 @@ export function createDemoData(copy: SiteCatalog["demo"]) {
     projectPageSize: 5,
     apps,
     pinnedApps: apps.filter((app) => ["expense-tracker", "dev-kanban"].includes(app.id)),
-    ledgerApp: apps.find((app) => app.id === "expense-tracker")!,
+    /* 首屏那张 Apps 页把目录倒过来排。产品的列表按 addedAt 升序，最早装的
+       在最前——那条顺序对访客不说明任何事。这一节要说的是「你的 Agent 造得出
+       这些」，于是最新做好的那只领头，也就是那台机器自己会打开的那一只：
+       「第一张卡」与「打开的那只 App」必须是同一张，否则演的是别的事。 */
+    galleryApps: [...apps].reverse(),
     designApp: apps.find((app) => app.id === "design-canvas")!,
     designAppWindowTitle: "Bottega Design Canvas",
     chats: createChats(copy.chats),
-    ledger: ledgerLong.slice(0, 8),
-    ledgerSum: "2,383.20",
     ledgerLong,
     ledgerLongSum: "4,531.20",
     categoryShare,

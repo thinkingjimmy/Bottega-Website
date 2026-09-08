@@ -358,6 +358,10 @@
    0.34 的底色会让字直接落在纹理上；更实的底、发丝边与分层影把 tabs 从
    壁纸里托出来，仍保留玻璃质感。 */
 .chip-bar {
+  /* 芯片条压在两扇窗之上：它是回到 chat、或把这一面重演一遍的唯一入口，
+     被盖住的入口等于不存在的入口。 */
+  position: relative;
+  z-index: 4;
   display: inline-flex;
   align-items: center;
   gap: 4px;

@@ -99,6 +99,11 @@ p {
   --app-accent: #f5f5f5;
   --app-primary: #343434;
   --app-primary-fg: #fafafa;
+  /* Apps 页那枚 ready 徽标唯一的一处彩色，取自产品的
+     `bg-emerald-500/10 text-emerald-700`。它只归 ready 一档：
+     多给一档，颜色就不再是一句话，而是装饰。 */
+  --app-ok-bg: rgba(16, 185, 129, 0.1);
+  --app-ok-fg: #047857;
 
   /* ── 两只带 GUI 的 App 自带的纸面 ──────────────────────────────
    * Design Canvas 是暖中性的工作台，Fitness Log 是一本训练手册，取值各自
@@ -218,6 +223,10 @@ p {
   --app-accent: #3f3f3f;
   --app-primary: #fafafa;
   --app-primary-fg: #252525;
+  /* 深色下 emerald-700 落在 #252525 上读不出来：底色留在同一档，
+     字换成 emerald-400。 */
+  --app-ok-bg: rgba(16, 185, 129, 0.16);
+  --app-ok-fg: #34d399;
 
   --dc-paper: #11120f;
   --dc-chrome: #1b1c18;

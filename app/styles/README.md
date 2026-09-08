@@ -2,7 +2,7 @@
 
 > L2 | Parent: [app/](../README.md)
 
-The site stylesheet is split by responsibility. `globals.css` contains only the twenty-one imports whose order defines the cascade.
+The site stylesheet is split by responsibility. `globals.css` contains only the twenty-two imports whose order defines the cascade.
 
 ## Cascade order
 

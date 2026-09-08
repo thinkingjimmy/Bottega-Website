@@ -1,8 +1,8 @@
 "use client";
 
 /**
- * [INPUT]: Uses React state, localized DemoData, transcript/composer/Plan modules, and product icons
- * [OUTPUT]: Exports ProductWindow with localized surfaces and optional persistent Composer disclosure
+ * [INPUT]: Uses React state, localized DemoData, transcript/composer/Plan/Apps modules, and product icons
+ * [OUTPUT]: Exports ProductWindow with localized Chat and Apps surfaces and optional persistent Composer disclosure
  * [POS]: Canonical product-window implementation shared by Home and Agents feature illustrations
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
@@ -11,10 +11,12 @@ import { useState } from "react";
 import {
   defaultTurn,
   type AgentId,
+  type App,
   type Chat,
   type DemoData,
 } from "@/lib/agents";
 import { AgentLogo, D, Stroke, Wordmark } from "../icons";
+import { AppsGallery } from "./product-apps";
 import { ProductComposer } from "./product-composer";
 import { ProductPlanPanel } from "./product-plan-panel";
 import { ProductTranscript } from "./product-transcript";
@@ -59,11 +61,19 @@ export function ProductWindow({
   pinnedComposerMenu,
   surface,
   onSurface,
+  onOpenApp,
+  appOpen,
+  appLead,
   demo,
 }: {
   pinnedComposerMenu?: "agent" | "model";
   surface: "chat" | "app";
   onSurface?: (surface: "chat" | "app") => void;
+  /* 打开一只 App 得到的是一扇独立的窗，而那扇窗盖在这台机器之外——
+     只有装得下第二扇窗的宿主（首屏那块桌面）给得出这只手。 */
+  onOpenApp?: (app: App) => void;
+  appOpen?: boolean;
+  appLead?: boolean;
   demo: DemoData;
 }) {
   /* 一个 chat 的 agent/模型/档位是它自己的属性，不是选择器的局部状态：
@@ -146,7 +156,6 @@ export function ProductWindow({
               mark={<span className="emoji">{app.icon}</span>}
               title={app.name}
               sub
-              on={isApp && app.id === demo.ledgerApp.id}
               onClick={onSurface ? () => onSurface("app") : undefined}
             />
           ))}
@@ -183,16 +192,26 @@ export function ProductWindow({
       <div className="win-main">
         <div className="win-head">
           <span className="mark">
-            {isApp ? <span className="emoji">{demo.ledgerApp.icon}</span> : <AgentLogo backend={open.agent} />}
+            {isApp ? (
+              <Stroke d={D.grid} size={16} width={1.9} />
+            ) : (
+              <AgentLogo backend={open.agent} />
+            )}
           </span>
-          <span className="win-title">{isApp ? demo.ledgerApp.name : open.title}</span>
+          <span className="win-title">{isApp ? chrome.apps : open.title}</span>
           <span className="icon-slot" style={{ marginLeft: "auto" }}>
-            <Stroke d={D.panelRight} size={16} width={1.5} />
+            <Stroke d={isApp ? D.plus : D.panelRight} size={16} width={isApp ? 1.9 : 1.5} />
           </span>
         </div>
 
         {isApp ? (
-          <AppSurface demo={demo} />
+          <AppsGallery
+            apps={demo.galleryApps}
+            ready={chrome.ready}
+            covered={appOpen === true}
+            lead={appLead === true}
+            onOpen={onOpenApp}
+          />
         ) : (
           <>
             <ProductTranscript
@@ -219,45 +238,5 @@ export function ProductWindow({
         closeLabel={chrome.closePlan}
       />
     </div>
-  );
-}
-
-/** App 表面：取自 apps/desktop/src/components/bases/views/table */
-function AppSurface({ demo }: { demo: DemoData }) {
-  const copy = demo.copy.chrome;
-  return (
-    <>
-      <div className="tabs">
-        <span className="on">{copy.ledger}</span>
-        <span>{copy.analysis}</span>
-        <span>{copy.byMonth}</span>
-      </div>
-      <div className="grid-row head">
-        <span className="c-date">{copy.date}</span>
-        <span className="c-amount">{copy.amount}</span>
-        <span className="c-cat">{copy.category}</span>
-        <span className="c-note">{copy.note}</span>
-      </div>
-      <div style={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
-        {demo.ledger.map((record) => (
-          <div className="grid-row" key={record.date}>
-            <span className="c-date mono">{record.date}</span>
-            <span className="c-amount mono">{record.amount}</span>
-            <span className="c-cat">
-              <span className="tag">{record.category}</span>
-            </span>
-            <span className="c-note">{record.note}</span>
-          </div>
-        ))}
-      </div>
-      <div className="grid-row foot">
-        <span className="c-date">{copy.records.replace("{count}", String(demo.ledger.length))}</span>
-        <span className="c-amount mono">
-          <span style={{ color: "var(--app-muted-fg)", fontSize: 11 }}>{copy.sum.toUpperCase()}</span>
-          {demo.ledgerSum}
-        </span>
-        <span className="c-note" />
-      </div>
-    </>
   );
 }

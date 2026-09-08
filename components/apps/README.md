@@ -10,6 +10,7 @@
 - `surface-ledger.tsx`: Reconstructs translated Expense Tracker detail and analysis views.
 - `surface-fitness.tsx`: Reconstructs translated Fitness Log copy over stable body-map paths.
 - `surface-chrome.tsx`: Provides shared Base toolbar, skeleton, and Design Canvas icon primitives.
+- `surfaces.ts`: Maps an App id to its surface; the Apps section and the Hero's Studio window both read it.
 
 Surface geometry is locale-neutral. All visitor-visible copy arrives through the current DemoData graph.
 
