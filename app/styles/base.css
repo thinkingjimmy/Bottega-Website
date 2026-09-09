@@ -67,17 +67,6 @@ h3 {
   display: block;
 }
 
-.btn-primary {
-  background: var(--ink);
-  color: var(--ground);
-  border: 0;
-  cursor: pointer;
-  transition: opacity 140ms ease;
-}
-.btn-primary:hover {
-  opacity: 0.86;
-}
-
 /* ── 一条带子，一种高度 ──────────────────────────────────────────
  * 32 不是新数：产品自己那两颗 chip 就是 32（见下面的 .chip）。站点 chrome
  * 跟着它走，「网站」与「产品」于是落在同一条基线上。
@@ -107,20 +96,6 @@ h3 {
   height: 16px;
   margin: 0 10px;
   background: var(--line);
-}
-
-/* 几何从两处内联搬到这里。内联那两份本来就已经分叉：首页与 changelog
-   写的是同一颗按钮，却各写了一遍。 */
-.nav-cta {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  height: 32px;
-  padding: 0 16px;
-  border-radius: 9999px;
-  font-size: 14px;
-  font-weight: 500;
-  white-space: nowrap;
 }
 
 :focus-visible {

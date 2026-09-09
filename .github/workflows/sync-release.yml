@@ -1,0 +1,45 @@
+# Repoints every download on the site at the newest published Bottega release.
+# Reads the public Releases API and commits back to this repository; no secrets
+# beyond the repository's own GITHUB_TOKEN, and nothing is required of the
+# Bottega repository's release workflow.
+
+name: sync-release
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-release
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.17.0
+
+      # Fails loudly when a release is missing an installer or the naming
+      # changed; a stale snapshot is better than a snapshot that 404s.
+      - run: node scripts/sync-release.mjs
+
+      - name: Commit the new snapshot
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- lib/release.ts; then
+            echo "already current"
+            exit 0
+          fi
+          version=$(node -p 'require("fs").readFileSync("lib/release.ts","utf8").match(/version: "([^"]+)"/)[1]')
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: point downloads at v${version}" -- lib/release.ts
+          git push

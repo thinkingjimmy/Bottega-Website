@@ -14,7 +14,21 @@ export const fr = {
     siteDescription: "Un seul atelier pour Codex, Claude Code, Kimi Code et OpenCode — local d’abord, avec les abonnements que vous payez déjà.",
   },
   language: { label: "Langue", selected: "Sélectionné" },
-  nav: { features: "Fonctions", changelog: "Nouveautés", download: "Télécharger", downloadMac: "Télécharger pour macOS" },
+  nav: { features: "Fonctions", changelog: "Nouveautés" },
+  download: {
+    short: "Télécharger",
+    action: {
+      mac: "Télécharger pour macOS",
+      windows: "Télécharger pour Windows",
+      linux: "Télécharger pour Linux",
+    },
+    menuLabel: "Choisir une plateforme",
+    platforms: {
+      mac: "Mac — Apple Silicon",
+      windows: "Windows — x64",
+      linux: "Linux — AppImage",
+    },
+  },
   footer: {
     navigation: "Navigation du pied de page",
     links: { changelog: "Nouveautés", docs: "Documentation", github: "GitHub", issues: "Issues", download: "Télécharger" },
@@ -39,6 +53,19 @@ export const fr = {
       more: "Et d’autres",
       soon: "Bientôt disponible",
     },
+    collaboration: {
+      title: "Les Agents se passent le travail.",
+      body:
+        "Un Agent peut confier le travail au Chat d’un autre Agent, qui le reprend avec le sien. Claude cadre le plan, Codex l’implémente, Kimi lance les tests : chaque passage est un Chat dans votre barre latérale, pas une étape dans un fichier de workflow.",
+      note: "Chaque Agent peut aussi lancer plusieurs sous-agents en parallèle.",
+      figureLabel:
+        "Un Chat passe le travail au suivant : Claude planifie, Codex implémente avec deux sous-agents simultanés, Kimi lance les tests",
+      roles: { plan: "Plan", development: "Développement", test: "Test" },
+      subagent: "Sous-agent · {name}",
+      sweep: "Appels de nav",
+      breakpoints: "Points de rupture",
+      regression: "Régression nav",
+    },
     apps: {
       title: "Créez des Apps natives pour l’IA.",
       body: "Créez un coach sportif IA, un suivi de dépenses IA ou quelque chose d’entièrement nouveau. Décrivez l’idée : Bottega la transforme en App fonctionnelle, des données jusqu’à l’interface. Voici quatre Apps créées avec Bottega :",
@@ -54,7 +81,6 @@ export const fr = {
     fork: {
       title: "Publiez votre propre version.",
       body: "Bottega est distribué sous licence MIT. Vous êtes libre de forker le dépôt, de modifier le code et de partager votre propre version avec d’autres.",
-      download: "Télécharger pour macOS",
       source: "Voir le code source",
       terminalLabel: "Commandes du terminal pour compiler Bottega",
     },

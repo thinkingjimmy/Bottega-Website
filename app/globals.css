@@ -1,5 +1,5 @@
 /**
- * [INPUT]: Imports the twenty-three stylesheets under ./styles in their required cascade order
+ * [INPUT]: Imports the twenty-five stylesheets under ./styles in their required cascade order
  * [OUTPUT]: Provides the only global style entry consumed by app/layout.tsx
  * [POS]: Manifest for the complete presentation layer; each imported file owns one visual concern
  * [PROTOCOL]: 变更时更新此头部，然后检查 styles/README.md
@@ -18,6 +18,7 @@
 @import "./styles/hero/composer.css";
 @import "./styles/hero/apps.css";
 
+@import "./styles/download.css";
 @import "./styles/features.css";
 @import "./styles/agents-feature.css";
 @import "./styles/base-feature/frame.css";
@@ -35,6 +36,7 @@
 @import "./styles/reels/app-menu.css";
 @import "./styles/reels/base-views.css";
 @import "./styles/subscription.css";
+@import "./styles/collaboration.css";
 @import "./styles/bands.css";
 
 @import "./styles/motion.css";

@@ -1,17 +1,15 @@
 "use client";
 
 /**
- * [INPUT]: Uses React effects/state and Stroke/D from ./icons
- * [OUTPUT]: Exports THEME_BOOT, ThemeRuntime, and ThemeToggle
+ * [INPUT]: Uses React effects/state, the shared pre-paint constants from ./boot, and Stroke/D from ./icons
+ * [OUTPUT]: Exports ThemeRuntime and ThemeToggle
  * [POS]: Owns the auto/light/dark theme mode and resolves it to the rendered <html data-theme>
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 
 import { useEffect, useState } from "react";
+import { THEME_KEY as KEY, THEME_QUERY as QUERY } from "./boot";
 import { D, Stroke } from "./icons";
-
-const KEY = "bottega-theme";
-const QUERY = "(prefers-color-scheme: dark)";
 
 type Theme = "light" | "dark";
 type ThemeMode = "auto" | Theme;
@@ -35,17 +33,6 @@ function nextMode(mode: ThemeMode, system: Theme): ThemeMode {
   if (mode !== system) return system;
   return "auto";
 }
-
-/**
- * 首帧脚本：必须在 body 渲染前同步跑完，否则深色用户会先看到一帧白闪。
- * 写成字符串由 layout 内联注入，是这件事唯一能做对的时机——
- * 任何 React 生命周期都已经晚了一帧。
- */
-export const THEME_BOOT = `(function(){var d=document.documentElement,m="auto";try{var s=localStorage.getItem(${JSON.stringify(
-  KEY
-)});if(s==="light"||s==="dark"||s==="auto")m=s;}catch(e){}var y=matchMedia(${JSON.stringify(
-  QUERY
-)}).matches?"dark":"light";d.dataset.themeMode=m;d.dataset.theme=m==="auto"?y:m;})();`;
 
 /** Auto mode belongs to the whole site, including pages without the visible toggle. */
 export function ThemeRuntime() {

@@ -163,10 +163,6 @@
   background: var(--surface);
   color: var(--ink-2);
 }
-.nav-cta-short {
-  display: none;
-}
-
 /* ── Home section exit ────────────────────────────────────────── */
 .feature-more {
   display: inline-flex;
@@ -389,15 +385,6 @@
   }
   .site-header .nav-trigger {
     padding-inline: 9px;
-  }
-  .nav-cta {
-    padding-inline: 14px;
-  }
-  .nav-cta-long {
-    display: none;
-  }
-  .nav-cta-short {
-    display: inline;
   }
   .feature-icon {
     width: 30px;

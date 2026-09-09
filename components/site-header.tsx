@@ -1,6 +1,6 @@
 /**
- * [INPUT]: Uses locale-aware paths, localized catalog/features, Disclosure, and shared icon primitives
- * [OUTPUT]: Exports SiteHeader with language-preserving feature discovery and navigation
+ * [INPUT]: Uses locale-aware paths, localized catalog/features, Disclosure, DownloadButton, and shared icon primitives
+ * [OUTPUT]: Exports SiteHeader with language-preserving feature discovery, navigation, and the split download control
  * [POS]: Single localized navigation header shared by the shrinking home stage and framed subpages
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
@@ -9,11 +9,11 @@ import Link from "next/link";
 
 import type { FeatureRecord } from "./features/catalog";
 import { Disclosure } from "./disclosure";
+import { DownloadButton } from "./download";
 import { AppIcon, Stroke, glyph } from "./icons";
 import type { SiteCatalog } from "@/lib/i18n";
 import { localizedPath, type Locale } from "@/lib/i18n/locale";
-
-const REPO = "https://github.com/thinkingjimmy/Bottega";
+import { REPO } from "@/lib/release";
 
 /**
  * stage  —— 住在首屏上缘让出来的那条带子里：高度、透明度、内缩都跟收缩进度走
@@ -26,11 +26,13 @@ export function SiteHeader({
   variant,
   locale,
   copy,
+  download,
   features,
 }: {
   variant: "stage" | "framed";
   locale: Locale;
   copy: SiteCatalog["nav"];
+  download: SiteCatalog["download"];
   features: FeatureRecord[];
 }) {
   return (
@@ -75,14 +77,7 @@ export function SiteHeader({
           GitHub
         </a>
         <span className="nav-rule" aria-hidden="true" />
-        <a
-          aria-label={copy.downloadMac}
-          className="btn-primary nav-cta"
-          href={`${REPO}/releases`}
-        >
-          <span className="nav-cta-long">{copy.downloadMac}</span>
-          <span className="nav-cta-short">{copy.download}</span>
-        </a>
+        <DownloadButton copy={download} variant="nav" />
       </nav>
     </header>
   );

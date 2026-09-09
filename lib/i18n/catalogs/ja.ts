@@ -14,7 +14,21 @@ export const ja = {
     siteDescription: "Codex、Claude Code、Kimi Code、OpenCode をひとつの場所で。ローカルファーストで、すでに契約しているサブスクリプションをそのまま使えます。",
   },
   language: { label: "言語", selected: "選択中" },
-  nav: { features: "機能", changelog: "更新履歴", download: "ダウンロード", downloadMac: "macOS 版をダウンロード" },
+  nav: { features: "機能", changelog: "更新履歴" },
+  download: {
+    short: "ダウンロード",
+    action: {
+      mac: "macOS 版をダウンロード",
+      windows: "Windows 版をダウンロード",
+      linux: "Linux 版をダウンロード",
+    },
+    menuLabel: "プラットフォームを選択",
+    platforms: {
+      mac: "Mac — Apple シリコン",
+      windows: "Windows — x64",
+      linux: "Linux — AppImage",
+    },
+  },
   footer: {
     navigation: "フッターナビゲーション",
     links: { changelog: "更新履歴", docs: "ドキュメント", github: "GitHub", issues: "Issues", download: "ダウンロード" },
@@ -37,6 +51,18 @@ export const ja = {
       more: "ほかにも",
       soon: "対応予定",
     },
+    collaboration: {
+      title: "Agent 同士が受け渡す。",
+      body: "ある Agent は別の Chat に仕事を渡し、その Chat は自分の Agent で受け取ります。Claude が計画を立て、Codex が実装し、Kimi がテストを回す——受け渡しはワークフローファイルの一行ではなく、サイドバーにある Chat そのものです。",
+      note: "各 Agent はサブエージェントを並行して走らせることもできます。",
+      figureLabel: "1 つの Chat が次へ仕事を渡していく：Claude が計画し、Codex が 2 つの並行サブエージェントとともに実装し、Kimi がテストを回す",
+      roles: { plan: "計画", development: "開発", test: "テスト" },
+      subagent: "Subagent · {name}",
+      sweep: "ナビ呼び出し箇所の洗い出し",
+      breakpoints: "ブレークポイントの確認",
+      regression: "ナビのリグレッション",
+    },
+
     apps: {
       title: "AI ネイティブな Apps をつくる。",
       body: "AI フィットネスコーチ、AI 支出トラッカー、あるいはまったく新しいもの。アイデアを伝えるだけで、Bottega がデータから画面まで、動く App に仕上げます。以下は Bottega で構築した 4 つの Apps です。",
@@ -52,7 +78,6 @@ export const ja = {
     fork: {
       title: "自分のバージョンを公開する。",
       body: "Bottega は MIT License を採用しています。リポジトリを Fork し、コードを変更して、自分のバージョンをほかの人に届けることができます。",
-      download: "macOS 版をダウンロード",
       source: "ソースを見る",
       terminalLabel: "Bottega をビルドするターミナルコマンド",
     },

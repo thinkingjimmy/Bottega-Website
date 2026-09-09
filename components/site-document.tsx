@@ -1,5 +1,5 @@
 /**
- * [INPUT]: Uses the theme pre-paint script, self-hosted Caveat face, and one statically known locale
+ * [INPUT]: Uses the theme and platform pre-paint scripts, self-hosted Caveat face, and one statically known locale
  * [OUTPUT]: Exports SiteDocument, the shared HTML root for English and prefixed locale route trees
  * [POS]: Multi-root-layout document boundary that guarantees a build-time-correct html lang and owns the one webfont the site loads
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
@@ -7,7 +7,8 @@
 
 import { Caveat } from "next/font/google";
 import type { Locale } from "@/lib/i18n/locale";
-import { THEME_BOOT, ThemeRuntime } from "./theme";
+import { PLATFORM_BOOT, THEME_BOOT } from "./boot";
+import { ThemeRuntime } from "./theme";
 
 /* ── 全站唯一一支 webfont ────────────────────────────────────────
  * 只给 Agents 页那张手账上的四句批注用（tokens.css 的 --font-hand）。
@@ -35,10 +36,11 @@ export function SiteDocument({
       className={caveat.variable}
       data-theme="light"
       data-theme-mode="auto"
+      data-platform="mac"
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT + PLATFORM_BOOT }} />
       </head>
       <body>
         <ThemeRuntime />

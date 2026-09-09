@@ -14,7 +14,21 @@ export const zhCN = {
     siteDescription: "一个工作坊，同时运行 Codex、Claude Code、Kimi Code 与 OpenCode；本地优先，沿用你已有的订阅。",
   },
   language: { label: "语言", selected: "已选择" },
-  nav: { features: "功能", changelog: "更新日志", download: "下载", downloadMac: "下载 macOS 版" },
+  nav: { features: "功能", changelog: "更新日志" },
+  download: {
+    short: "下载",
+    action: {
+      mac: "下载 macOS 版",
+      windows: "下载 Windows 版",
+      linux: "下载 Linux 版",
+    },
+    menuLabel: "选择平台",
+    platforms: {
+      mac: "Mac — Apple 芯片",
+      windows: "Windows — x64",
+      linux: "Linux — AppImage",
+    },
+  },
   footer: {
     navigation: "页脚导航",
     links: { changelog: "更新日志", docs: "文档", github: "GitHub", issues: "问题", download: "下载" },
@@ -37,6 +51,18 @@ export const zhCN = {
       more: "还有更多",
       soon: "接入中",
     },
+    collaboration: {
+      title: "Agent 之间互相交接。",
+      body: "一个 Agent 可以把工作交给另一条 Chat，由那条 Chat 自己的 Agent 接手。Claude 出计划，Codex 做实现，Kimi 跑测试——每一次交接都是侧栏里的一条 Chat，而不是工作流文件里的一步。",
+      note: "每个 Agent 还能并行跑多个 Subagent。",
+      figureLabel: "一条 Chat 依次把工作交给下一条：Claude 出计划，Codex 带两个并行 Subagent 做实现，Kimi 跑测试",
+      roles: { plan: "计划", development: "开发", test: "测试" },
+      subagent: "Subagent · {name}",
+      sweep: "梳理导航调用点",
+      breakpoints: "核对断点",
+      regression: "导航回归",
+    },
+
     apps: {
       title: "构建 AI 原生 App。",
       body: "构建 AI 健身教练、AI 记账工具，或任何只属于你的东西。描述想法，Bottega 会把它从数据到界面变成可运行的 App。以下是使用 Bottega 构建的四个 App：",
@@ -52,7 +78,6 @@ export const zhCN = {
     fork: {
       title: "发布你自己的版本。",
       body: "Bottega 采用 MIT License。Fork 仓库，修改代码，再把自己的版本交付给其他人，都是允许的。",
-      download: "下载 macOS 版",
       source: "查看源码",
       terminalLabel: "构建 Bottega 的终端命令",
     },

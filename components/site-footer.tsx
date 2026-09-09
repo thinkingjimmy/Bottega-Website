@@ -9,8 +9,8 @@ import Link from "next/link";
 import type { SiteCatalog } from "@/lib/i18n";
 import { localizedPath, type Locale } from "@/lib/i18n/locale";
 import { LanguageSwitcher } from "./language-switcher";
+import { REPO, RELEASES_URL } from "@/lib/release";
 
-const REPO = "https://github.com/thinkingjimmy/Bottega";
 const COPYRIGHT = "Bottega © 2026. All rights reserved.";
 
 export function SiteFooter({
@@ -27,7 +27,7 @@ export function SiteFooter({
     { label: catalog.footer.links.docs, href: `${REPO}/tree/main/docs` },
     { label: catalog.footer.links.github, href: REPO },
     { label: catalog.footer.links.issues, href: `${REPO}/issues` },
-    { label: catalog.footer.links.download, href: `${REPO}/releases` },
+    { label: catalog.footer.links.download, href: RELEASES_URL },
   ];
   return (
     <footer className="site-footer">

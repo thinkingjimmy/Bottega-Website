@@ -4,6 +4,49 @@
 
 This file records product milestones, not internal implementation iterations. Dates describe when each capability reached its first coherent product form.
 
+## 2026-09-08 — v0.1.3
+
+**Before upgrading:** 0.1.3 uses a new local storage format. Chat databases from 0.1.2 and earlier cannot be opened or automatically migrated. Quit Bottega and back up the complete application data folder before upgrading. Keep that folder for use with the older version; starting 0.1.3 requires a fresh data folder, and previous Bottega chats and settings are not imported automatically. Follow the [backup and setup instructions](../getting-started/README.md#upgrading-to-013).
+
+### What's new
+
+- **Switch Agents within a chat.** Choose Codex, Claude Code, Kimi Code, or OpenCode for the next turn while the chat is idle. Keep one transcript with clear author and switch markers; the new Agent receives bounded context and can retrieve relevant chat history.
+- **See whether an Agent is ready.** The composer shows installation, authentication, and runtime availability, with focused install, sign-in, and retry actions. Unavailable Agents no longer silently consume queued work, and recovery stays scoped to the affected chat or Agent.
+- **Follow tasks outside the main window on macOS.** Independently enable launch at login, keep-running behavior after closing the window, and a floating task panel. The top-of-screen panel shows running tasks and requests needing attention, supports keyboard navigation, and opens the related chat. All three options are off by default.
+- **Check App compatibility before installation.** All four first-party Apps now declare Bottega 0.1.3 as their minimum version. Installation, rebuilding, authorization, and activation check that requirement; an upgrade prompt can return to the original App candidate after restarting. Rejected updates preserve the existing working version and permissions.
+- **Rename Apps without disturbing their work.** Changing an App's display name keeps its active version, source, data, and permissions intact.
+- **Simplify adding Projects.** History-import choices appear when local CLI history is actually available, while Projects without history can be added directly.
+
+### Downloads
+
+macOS arm64 DMG/ZIP, Windows x64 NSIS, and Linux x64 AppImage installers are available below. These builds remain unsigned; follow the [first-launch instructions](../getting-started/README.md). macOS remains the primary platform; native App isolation and full feature parity on Windows/Linux are still in progress.
+
+Users on 0.1.0 or 0.1.1 must download and install 0.1.3 manually because those versions contain the earlier updater bug. The storage preparation above applies to all earlier versions.
+
+## 2026-09-05 — v0.1.2
+
+**Upgrading from 0.1.0 or 0.1.1:** download and install 0.1.2 manually from the [Releases page](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.1.2). Those versions contain the updater bug fixed here, so they cannot receive this fix through their existing update button.
+
+- Fixed update downloads being blocked by an unavailable release compatibility key in unsigned builds. The sidebar now distinguishes automatic installation from manual download, shows download progress, and keeps a route to Releases or About when an update or background check fails.
+- Rebuilt Fitness Log on the host React interface. It keeps 72 exercises, 17 muscle regions, five languages, animated demonstrations, training plans, and responsive light/dark layouts while using the shared component and data APIs.
+- Made App data loading complete and recoverable. Base snapshots read every page and publish one consistent revision; Fitness plan submissions retain their original row IDs through retries and uncertain outcomes, preventing duplicate submissions.
+- Fixed in-chat Find retry and navigation behavior. A failed page waits for an explicit retry, stale responses cannot replace a newer query, and switching chats no longer leaves the previous managed-worktree branch visible.
+- Repaired App catalog startup for older schema versions: preserve the original bytes in a quarantine copy, then establish an empty current catalog. Corrupt current-format catalogs still require the explicit repair flow. Also tightened staged-turn recovery and Memory cancellation handling.
+- Published macOS arm64 DMG/ZIP, Windows x64 NSIS, and Linux x64 AppImage installers. These builds remain unsigned; the existing [first-launch steps](../getting-started/README.md) still apply.
+
+## 2026-09-04 — v0.1.1
+
+- Published the v0.1.1 installers: a macOS arm64 DMG and ZIP, a Windows x64 NSIS installer, and a Linux x64 AppImage. These builds are still unsigned, so the one-time step each platform asks for on first launch is unchanged from 0.1.0 and stays documented in the [getting-started guide](../getting-started/README.md).
+- Added Chat Fork. Any assistant reply can become the starting point of a new chat that inherits the history before it as read-only, and a fork on a Git Project can take a product-managed worktree of its own, so two branches of the same conversation stop overwriting one working copy.
+- Grew the usage side of Apps. App Use now has a history panel, and an App can run in a standalone window instead of only inside the main one.
+- Unified the App GUI Surface on one component set and one message channel, so App pages no longer each carry their own copy of the protocol.
+- Fixed two real losses in imported history. Refreshing imported history now keeps each chat's Project membership, and re-importing a session rewrites its title search document instead of leaving a stale one behind.
+- Reflowed onboarding. The three steps now adapt to narrow windows with container-aware capability rows, and the descriptions collapse to chat home, Agent, and extras, which keeps a readable line width at every width.
+- Made chat-store maintenance repair drift instead of failing, and made a genuine failure actionable. A search projection that no longer matches the conversations it derives from is recomputed and rewritten through the same write path; when a self-check does fail, the Sidebar shows a typed notice with the way out and a report button that opens a prefilled GitHub issue.
+- Gave the installed app its own data directory. A copy installed from a release now keeps its data in a `Bottega` directory instead of sharing the one a development build uses, so the two no longer rebuild each other's local state.
+- Made an unreadable durable ledger recover instead of stopping startup. A ledger whose contents cannot be trusted is now quarantined under a new name for evidence and rebuilt empty, and the app continues to start.
+- Advanced the bundled first-party App presets to their published commits.
+
 ## 2026-09-02 — v0.1.0
 
 - Published the first installers. Bottega is now available from GitHub Releases as a macOS arm64 DMG and ZIP, a Windows x64 NSIS installer, and a Linux x64 AppImage, all built from this tagged commit. These builds are unsigned; the [getting-started guide](../getting-started/README.md) documents the one-time step each platform asks for on first launch.

@@ -1,0 +1,197 @@
+/**
+ * [INPUT]: Uses --home-demo-radius geometry and the --app-* product palette plus --ink-3 from ./tokens.css
+ * [OUTPUT]: Provides the handoff graph for the home Collaboration section, including its stacked narrow layout
+ * [POS]: The one home figure drawn as a graph rather than a product window or a list; siblings live in ./reels and ./subscription.css
+ * [PROTOCOL]: Update this header when changing this file, then check README.md
+ */
+
+/* ── One silhouette for every home figure ──────────────────────────
+ * 580×360 is the frame the three reels share (see reels/shared.css) and the one the
+ * Subscription roster stands in. This figure is neither a product window nor a list,
+ * but it occupies the same slot beside the same column of text: a different outline
+ * would read as a different kind of section.
+ *
+ * No desk panel behind it, for the reason .desk gave up its own: each node already
+ * carries a border and a lift, and a second surface underneath reads as a picture of
+ * a diagram rather than the diagram itself.
+ * ────────────────────────────────────────────────────────────── */
+.handoff {
+  position: relative;
+  width: 580px;
+  max-width: 100%;
+  height: 360px;
+  margin-inline: auto;
+  color: var(--app-fg);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* One stroke for the whole graph, in one coordinate system — the reason is written
+   at INK in collaboration-section.tsx. preserveAspectRatio="none" is safe here only
+   because the frame never changes shape: below 640 the graph stacks instead. */
+.handoff-ink {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--ink-3);
+}
+
+/* Grouping only, so the stacked layout can join the pair once. It draws no box of
+   its own; the two subagents keep positioning against .handoff. */
+.handoff-pair {
+  display: contents;
+}
+
+.handoff-node {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 14px;
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  background: var(--app-bg);
+  /* The card lift the Agents page already uses for the same kind of node
+     (.afd-cd). Two figures of the same thing should not sit at two heights. */
+  box-shadow:
+    0 1px 2px rgba(27, 26, 22, 0.05),
+    0 18px 40px -28px rgba(27, 26, 22, 0.5);
+}
+
+/* ── A subagent is not a Chat ──────────────────────────────────────
+ * It leaves no sidebar row, keeps no transcript, and is gone when the turn ends.
+ * Dashed, flat and unlifted says that before any label does — which is also why
+ * these two carry a role badge but never a Chat's identity.
+ * ────────────────────────────────────────────────────────────── */
+.handoff-node--sub {
+  gap: 9px;
+  padding: 0 12px;
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--app-border) 70%, var(--app-muted-fg));
+  background: var(--app-sidebar);
+  box-shadow: none;
+}
+
+/* Rectangles the INK coordinates are read off. Changing one means changing both. */
+.handoff-node--plan {
+  left: 140px;
+  top: 12px;
+  width: 300px;
+  height: 58px;
+}
+.handoff-node--dev {
+  left: 140px;
+  top: 106px;
+  width: 300px;
+  height: 58px;
+}
+.handoff-node--sweep {
+  left: 8px;
+  top: 201px;
+  width: 266px;
+  height: 52px;
+}
+.handoff-node--check {
+  left: 306px;
+  top: 201px;
+  width: 266px;
+  height: 52px;
+}
+.handoff-node--test {
+  left: 140px;
+  top: 290px;
+  width: 300px;
+  height: 58px;
+}
+
+.handoff-label {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+/* Truncation is the product's own answer for a Chat row (.afd-cd-title on the Agents
+   page, the sidebar in the app itself), and it is what keeps this figure honest across
+   five locales: the widest row today clears its card by four pixels, so a different
+   fallback face would otherwise push a badge out of the frame instead of shortening a
+   title. The badge stays flex: none, so the title is what gives. */
+.handoff-title,
+.handoff-agent {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.handoff-title {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+}
+.handoff-agent {
+  font-size: 10.5px;
+  line-height: 14px;
+  color: var(--app-muted-fg);
+}
+.handoff-node--sub .handoff-title {
+  font-size: 12px;
+  line-height: 16px;
+}
+.handoff-node--sub .handoff-agent {
+  font-size: 10px;
+  line-height: 13px;
+}
+
+/* The role this node plays in the work — the whole label the figure needs, now that
+   the relay header it used to print is back on the Agents page where there is room
+   to read it. */
+.handoff-badge {
+  flex: none;
+  margin-left: auto;
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: var(--app-accent);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--app-muted-fg);
+}
+
+.handoff-drop {
+  display: none;
+  color: var(--ink-3);
+}
+
+/* ── Narrow: stack, do not shrink ──────────────────────────────────
+ * 640 is where the content column stops being 580 wide. A screenshot can retreat a
+ * step and stay readable; a graph cannot — 13px would land near 8px. So the chain
+ * runs straight down, the ink gives way to one drop per join, and every number above
+ * keeps its size. The pair stays a pair: no drop threads between two subagents,
+ * because neither hands work to the other.
+ * ────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .handoff {
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+  }
+  .handoff-ink {
+    display: none;
+  }
+  .handoff-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .handoff-node {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 11px 12px;
+  }
+  .handoff-drop {
+    display: flex;
+    justify-content: center;
+    padding: 9px 0;
+  }
+}

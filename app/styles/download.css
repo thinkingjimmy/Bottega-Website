@@ -1,0 +1,198 @@
+/**
+ * [INPUT]: Uses the site tokens, the shared 32px header geometry, and the download control's markup
+ * [OUTPUT]: Styles the split download button, its platform panel, and both the header and Fork band skins
+ * [POS]: Complete presentation for the site's only download control
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ */
+
+/* ── 一颗按钮，两个动作 ─────────────────────────────────────────
+ * 左半把本机那一版直接取回来，右半才是「换个平台」。三个平台一律塞进下拉，
+ * 等于让绝大多数人替少数人多按一次；而把三条并排摆出来，导航栏上就有了
+ * 三颗一样重的按钮，等于没有主次。
+ *
+ * 面板的皮与 .nav-menu-panel、.language-panel 是同一套（--surface-2 的纸、
+ * --line 的边、var(--shadow)）。三处各自写一遍，是因为它们的落点、方向与
+ * 半径都不同——抽出来的公共类最后仍要被三份覆写改回去，那不叫复用。
+ * ────────────────────────────────────────────────────────── */
+.download {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: stretch;
+  border-radius: 9999px;
+  background: var(--download-face);
+  color: var(--download-text);
+  white-space: nowrap;
+}
+
+.download--nav {
+  --download-face: var(--ink);
+  --download-text: var(--ground);
+  height: 32px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.download--band {
+  --download-face: var(--ground);
+  --download-text: var(--ink);
+  height: 50px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* ── 认领本机那一条 ────────────────────────────────────────────
+ * 三条链接都在 DOM 里，<html data-platform> 说了算——与 .img-light /
+ * .img-dark 同一套写法。用 display 而不是 opacity：藏起来的那两条不该留在
+ * 无障碍树里，否则读屏听到的是三颗下载按钮。
+ * 脚本不跑时 data-platform 仍是构建期写死的 mac，于是按钮照样能按。
+ * ────────────────────────────────────────────────────────── */
+.download-action {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 0 13px 0 17px;
+  border-radius: 9999px 0 0 9999px;
+}
+[data-platform="mac"] .download-action[data-for="mac"],
+[data-platform="windows"] .download-action[data-for="windows"],
+[data-platform="linux"] .download-action[data-for="linux"] {
+  display: inline-flex;
+}
+.download--band .download-action {
+  gap: 10px;
+  padding: 0 20px 0 26px;
+}
+
+.download-short {
+  display: none;
+}
+
+/* 两半各自响应各自的悬停。整颗一起变暗，是在说「按哪儿都一样」——
+   可它们做的是两件事。 */
+.download-action,
+.download-caret {
+  transition: background 140ms ease;
+}
+.download-action:hover,
+.download-caret:hover,
+.download-menu[open] .download-caret {
+  background: color-mix(in srgb, var(--download-text) 13%, transparent);
+}
+
+.download-menu {
+  display: flex;
+}
+.download-caret {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  border-radius: 0 9999px 9999px 0;
+  border-left: 1px solid color-mix(in srgb, var(--download-text) 20%, transparent);
+  cursor: pointer;
+  list-style: none;
+}
+.download--band .download-caret {
+  width: 44px;
+}
+.download-caret::-webkit-details-marker {
+  display: none;
+}
+.download-caret svg {
+  transition: transform 160ms ease;
+}
+.download-menu[open] .download-caret svg {
+  transform: rotate(180deg);
+}
+
+/* ── 面板 ──────────────────────────────────────────────────────
+ * 始终在 DOM 里；现不现身只认 details 的 open 一个开关（悬停也是去写它，
+ * 见 disclosure.tsx）。右对齐：导航里这颗按钮贴着页面右缘，左对齐会把面板
+ * 顶出视口。
+ * ────────────────────────────────────────────────────────── */
+.download-panel {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 8px);
+  right: 0;
+  width: max-content;
+  min-width: max(100%, 214px);
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-2);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  pointer-events: none;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition:
+    opacity 150ms ease,
+    visibility 150ms ease,
+    transform 150ms ease;
+}
+.download-menu[open] .download-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+.download--band .download-panel {
+  right: auto;
+  left: 0;
+}
+
+.download-panel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.download-panel li + li {
+  margin-top: 1px;
+}
+.download-panel li a {
+  display: grid;
+  grid-template-columns: 17px minmax(0, 1fr);
+  gap: 11px;
+  align-items: center;
+  padding: 9px 11px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+  transition: background 140ms ease;
+}
+.download-panel li a:hover,
+.download-panel li a:focus-visible {
+  background: var(--surface);
+}
+/* 标记随语境，不上品牌色：三枚并排时颜色会先于名字被读到，
+   而这一列要回答的是「哪个平台」，不是「谁家的标」。 */
+.download-panel svg {
+  color: var(--ink-2);
+}
+
+@media (max-width: 560px) {
+  .download--nav .download-action {
+    padding: 0 11px 0 14px;
+  }
+  .download--nav .download-long {
+    display: none;
+  }
+  .download--nav .download-short {
+    display: inline;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .download-panel,
+  .download-action,
+  .download-caret,
+  .download-caret svg {
+    transition: none;
+  }
+}

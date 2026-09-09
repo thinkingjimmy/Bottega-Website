@@ -4,22 +4,23 @@ Next.js 16 App Router + React 19 + TypeScript + plain CSS + static export
 
 <directory>
 app/ - Thirty static routes: six unprefixed English pages plus twenty-four prefixed translations
-app/styles/ - Presentation split by tokens, base, shared/Agents features, the Base figures, hero, Apps, reels, the Subscription roster, bands, and motion
-components/ - Shared site chrome, home sections, feature navigation, chart shapes, and product-faithful visuals
+app/styles/ - Presentation split by tokens, base, the download control, shared/Agents features, the Base figures, hero, Apps, reels, the Subscription roster, the handoff graph, bands, and motion
+components/ - Shared site chrome, the download control, home sections, feature navigation, chart shapes, and product-faithful visuals
 components/apps/ - Four first-party App surfaces, their shared switcher, and the id-to-surface lookup
 components/features/ - Feature catalog, navigation, document article, and code-drawn Agents and Base figures
 components/reels/ - Focused animated demonstrations for Agents, App editing, and Base views
 components/window/ - Hero product shell, transcript, composer, model menu, Plan panel, Apps page, and App Studio window
 content/ - Five locale-specific build-time Changelog snapshots
-lib/ - Typed i18n, localized demo assembly, body-map paths, and Changelog parsing
+lib/ - Typed i18n, the release snapshot, localized demo assembly, body-map paths, and Changelog parsing
 public/ - Brand assets, theme-aware hero backgrounds, and privacy-clean product screenshots
-scripts/ - Build-time Changelog synchronization and static i18n audit
+scripts/ - Build-time Changelog synchronization, release-snapshot synchronization, and static i18n audit
+.github/workflows/ - One scheduled job that repoints the downloads at the newest published release
 </directory>
 
 <config>
 design-qa.md - Latest source-to-implementation visual verification for the Agents feature visuals
 next.config.ts - Thirty-page static export with no request-time data
-package.json - Development, i18n tests/audit, typecheck, sync, and production-build commands
+package.json - Development, i18n tests/audit, typecheck, both syncs, and production-build commands
 postcss.config.mjs - Empty PostCSS pipeline; the site uses plain CSS
 tsconfig.json - Strict TypeScript with the `@/*` path alias
 </config>
@@ -32,12 +33,14 @@ owned by the Bottega desktop repository.
 
 Each concept has one source of truth:
 
+- `lib/release.ts` names the public repository and the build every download link points at.
 - `lib/i18n/catalogs/en.ts` defines the complete content shape; four translated catalogs must match it.
 - `lib/agents.ts` combines stable Agent/App facts with the current locale's demonstration copy.
 - `components/features/catalog.ts` combines stable feature identity with the current locale's content.
 - `--bleed` and `--edge` own horizontal alignment across the shrinking hero, shared header, and
   page content.
 - `SiteHeader` and `SiteFooter` are the only site chrome implementations.
+- `DownloadButton` is the only download control; every other surface links to the release archive instead.
 
 The App Router serves six canonical English pages without a prefix and the same six logical pages
 under `/zh-CN`, `/ja`, `/fr`, and `/es`. English and `x-default` share the unprefixed URLs; every
@@ -65,9 +68,11 @@ transform or opacity, starts only when its argument enters the viewport, and has
 as the desktop shrinks, while content pages use the fixed-height `framed` variant. The controls use
 a shared 32px height and preserve brand, Features, and Download on narrow screens.
 
-The Features and language controls use native `details/summary`. Their entries remain in the
-initial DOM, so the menu works with pointer, keyboard, and assistive technology without a client
-state machine. Both language selectors use explicit alternate links, preserve the current logical
+The Features, download, and language controls use native `details/summary`. Their entries remain in
+the initial DOM, so the menu works with pointer, keyboard, and assistive technology without a client
+state machine. `open` is the single switch: the download menu's hover opening writes it rather than
+running beside it, because a parallel `:hover` opener makes clicking the trigger closed impossible
+while the pointer is still on it. Hover is claimed only where a real pointer exists. Both language selectors use explicit alternate links, preserve the current logical
 page, query, and hash, and derive their selected state only from the current route.
 
 ## Hero and home narrative
@@ -140,6 +145,35 @@ Screenshot dimensions are declared to prevent layout shift. The specialized runt
 `thinking-orbs@0.1.1`, shared with the product's streaming status treatment; icons and model marks
 otherwise come from local primitives.
 
+## Downloads
+
+The download button hands over an installer rather than a repository page. Release assets carry their version
+in the filename, so GitHub's `releases/latest/download/<name>` shortcut does not apply; the site keeps its own
+snapshot in `lib/release.ts` and builds the asset URLs from it. No request-time or build-time network call is
+involved — a link is either correct or it was already red when the snapshot was written.
+
+`scripts/sync-release.mjs` is that file's only writer. It reads the public Releases API, claims exactly one
+installer per platform by extension, and rewrites the snapshot only after each one answers a `HEAD` request.
+Zero or two matches for a platform fail the run: a missing installer and a changed naming rule both have to be
+loud rather than silently resolved into whichever file looks closest.
+
+```bash
+pnpm sync:release
+```
+
+`.github/workflows/sync-release.yml` runs the same script daily and on demand, and commits the result. Nothing is
+asked of the Bottega repository's release workflow, and no secret beyond this repository's own `GITHUB_TOKEN` is
+involved. Publish a release; the site follows within a day, or immediately from the workflow's manual trigger.
+
+The control is one split button. Its primary half is the visitor's own platform, resolved before first paint by
+`PLATFORM_BOOT` — all three links are in the DOM and CSS claims one, the way the light and dark wordmarks work, so
+the button is still usable with scripting off. The caret opens a menu carrying all three platforms and nothing
+else. macOS is Apple silicon only; the builds have no Intel target and the menu does not offer one.
+
+A direct download bypasses the release notes, and with them the one-time setup each unsigned build needs on its
+platform. Those steps stay on the release archive, which the footer's Download link and the public repository's
+README both reach; the menu does not repeat them.
+
 ## Changelog
 
 English and Simplified Chinese are synchronized from Bottega's public Changelog documentation.
@@ -158,6 +192,9 @@ pnpm dev
 pnpm check   # typecheck + test:i18n + audit:i18n
 pnpm build
 ```
+
+`pnpm sync:release` is a release-time step rather than a build step: it needs the network, and `pnpm build` must
+stay offline.
 
 `pnpm check` chains the three gates that actually exist here. There is no `lint` script: Next.js 16
 removed `next lint`, and this repository never carried an ESLint configuration of its own — a script

@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses surface/text/line tokens from tokens.css and footer language disclosure markup
- * [OUTPUT]: Styles the Fork band, terminal, localized footer/language selector, changelog, and ≤1300 layout
+ * [OUTPUT]: Styles the Fork band and its actions, terminal, localized footer/language selector, changelog, and ≤1300 layout
  * [POS]: Presentation boundary for the final content bands and the site's language-switching entry
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
@@ -25,6 +25,39 @@
   letter-spacing: -0.04em;
   font-kerning: normal;
   white-space: nowrap;
+}
+.fork-body {
+  max-width: 54ch;
+  margin-bottom: 34px;
+  font-size: 18px;
+  line-height: 1.62;
+  opacity: 0.74;
+}
+/* 几何从内联搬到这里，与 header 那颗 CTA 同一个理由：同一颗按钮写两遍，
+   两遍就会各自漂走。左边那颗是站点唯一的下载控件，右边这颗只是它的陪衬——
+   描边而非实心，说的就是这个主次。 */
+.fork-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+.fork-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 50px;
+  padding: 0 24px;
+  border: 1px solid color-mix(in srgb, var(--ground) 28%, transparent);
+  border-radius: 9999px;
+  color: var(--ground);
+  font-size: 16px;
+  font-weight: 500;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+.fork-source:hover {
+  border-color: color-mix(in srgb, var(--ground) 48%, transparent);
+  background: color-mix(in srgb, var(--ground) 8%, transparent);
 }
 
 /* ── 代码不是一块灰卡，是一次真实构建 ───────────────────────────

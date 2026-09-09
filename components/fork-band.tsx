@@ -1,15 +1,15 @@
 /**
- * [INPUT]: Uses localized SiteCatalog copy plus shared Stroke/Glyph/D icons
+ * [INPUT]: Uses localized SiteCatalog copy, the shared DownloadButton, the repository URL, and Glyph/D icons
  * [OUTPUT]: Exports the localized ForkBand closing section
  * [POS]: Closes Bottega-Website with source ownership, download actions, and an immutable build command terminal
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
-import { D, Glyph, Stroke } from "./icons";
+import { DownloadButton } from "./download";
+import { D, Glyph } from "./icons";
 import { Reveal } from "./reveal";
 import type { SiteCatalog } from "@/lib/i18n";
-
-const REPO = "https://github.com/thinkingjimmy/Bottega";
+import { REPO } from "@/lib/release";
 
 const STEPS = [
   "gh repo fork thinkingjimmy/Bottega",
@@ -57,45 +57,10 @@ export function ForkBand({ catalog }: { catalog: SiteCatalog }) {
                 <h2 className="fork-title">
                   {copy.title}
                 </h2>
-                <p style={{ fontSize: 18, lineHeight: 1.62, opacity: 0.74, maxWidth: "54ch", marginBottom: 34 }}>
-                  {copy.body}
-                </p>
-                <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-                  <a
-                    href={`${REPO}/releases`}
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 10,
-                      height: 50,
-                      padding: "0 26px",
-                      borderRadius: 9999,
-                      background: "var(--ground)",
-                      color: "var(--ink)",
-                      fontSize: 16,
-                      fontWeight: 600,
-                    }}
-                  >
-                    <Stroke d={D.download} size={18} />
-                    {copy.download}
-                  </a>
-                  <a
-                    href={REPO}
-                    rel="noreferrer"
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 10,
-                      height: 50,
-                      padding: "0 24px",
-                      borderRadius: 9999,
-                      border: "1px solid rgba(237, 233, 222, .28)",
-                      color: "var(--ground)",
-                      fontSize: 16,
-                      fontWeight: 500,
-                    }}
-                    target="_blank"
-                  >
+                <p className="fork-body">{copy.body}</p>
+                <div className="fork-actions">
+                  <DownloadButton copy={catalog.download} variant="band" />
+                  <a className="fork-source" href={REPO} rel="noreferrer" target="_blank">
                     <Glyph d={D.github} size={18} />
                     {copy.source}
                   </a>

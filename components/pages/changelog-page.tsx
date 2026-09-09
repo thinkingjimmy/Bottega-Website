@@ -18,7 +18,7 @@ export function ChangelogPageView({ locale }: { locale: Locale }) {
 
   return (
     <div className="content">
-      <SiteHeader variant="framed" locale={locale} copy={catalog.nav} features={features} />
+      <SiteHeader variant="framed" locale={locale} copy={catalog.nav} download={catalog.download} features={features} />
       <section className="section" style={{ paddingTop: 96 }}>
         <div className="wrap">
           <p className="mono eyebrow">{catalog.changelog.eyebrow}</p>

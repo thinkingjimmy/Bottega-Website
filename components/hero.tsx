@@ -43,6 +43,7 @@ export function Hero({
   demo,
   copy,
   nav,
+  download,
   language,
   features,
   locale,
@@ -50,6 +51,7 @@ export function Hero({
   demo: DemoData;
   copy: SiteCatalog["home"]["hero"];
   nav: SiteCatalog["nav"];
+  download: SiteCatalog["download"];
   language: SiteCatalog["language"];
   features: FeatureRecord[];
   locale: Locale;
@@ -154,7 +156,7 @@ export function Hero({
   return (
     <div className="hero-pin" ref={pinRef}>
       <div className="stage" ref={stageRef}>
-        <SiteHeader variant="stage" locale={locale} copy={nav} features={features} />
+        <SiteHeader variant="stage" locale={locale} copy={nav} download={download} features={features} />
 
         <section className="scene" id="top">
           {/* 真 macOS 的菜单栏不放产品 CTA。放了就是拿系统的壳卖自己的货，

@@ -26,7 +26,7 @@ export function FeaturePageView({ locale, slug }: { locale: Locale; slug: string
 
   return (
     <div className="content">
-      <SiteHeader variant="framed" locale={locale} copy={catalog.nav} features={features} />
+      <SiteHeader variant="framed" locale={locale} copy={catalog.nav} download={catalog.download} features={features} />
       <div className="wrap feature-layout">
         <FeatureSidebar
           active={feature.slug}

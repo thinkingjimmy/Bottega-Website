@@ -5,6 +5,7 @@
 ## Members
 
 - `sync-changelog.mjs`: Refreshes English and Simplified Chinese snapshots from the sibling public Bottega checkout when available.
+- `sync-release.mjs`: Rewrites `lib/release.ts` from the public Releases API after every expected installer answers a request.
 - `audit-static-i18n.mjs`: Audits all thirty canonical files, their alternates, and the canonical-only sitemap after static export.
 
 Japanese, French, and Spanish snapshots are repository-owned and never overwritten by synchronization.

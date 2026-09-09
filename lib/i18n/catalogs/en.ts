@@ -18,8 +18,20 @@ export const en = {
   nav: {
     features: "Features",
     changelog: "Changelog",
-    download: "Download",
-    downloadMac: "Download for macOS",
+  },
+  download: {
+    short: "Download",
+    action: {
+      mac: "Download for macOS",
+      windows: "Download for Windows",
+      linux: "Download for Linux",
+    },
+    menuLabel: "Choose a platform",
+    platforms: {
+      mac: "Mac — Apple Silicon",
+      windows: "Windows — x64",
+      linux: "Linux — AppImage",
+    },
   },
   footer: {
     navigation: "Footer navigation",
@@ -54,6 +66,19 @@ export const en = {
       more: "And more",
       soon: "Coming soon",
     },
+    collaboration: {
+      title: "Agents talk to each other.",
+      body:
+        "An Agent can hand work to another Agent's Chat, and that Chat picks it up with its own Agent. Claude frames the plan, Codex implements it, Kimi runs the tests—each hop is a Chat in your sidebar, not a step in a workflow file.",
+      note: "Each Agent can also run several subagents in parallel.",
+      figureLabel:
+        "One Chat hands work to the next: Claude plans it, Codex implements it with two subagents running at once, Kimi runs the tests",
+      roles: { plan: "Plan", development: "Development", test: "Test" },
+      subagent: "Subagent · {name}",
+      sweep: "Sweep nav call sites",
+      breakpoints: "Verify breakpoints",
+      regression: "Nav regression",
+    },
     apps: {
       title: "Build AI-native Apps.",
       body:
@@ -73,7 +98,6 @@ export const en = {
       title: "Release your own version.",
       body:
         "Bottega is licensed under the MIT License. You’re free to fork the repository, modify the code, and share your own version with others.",
-      download: "Download for macOS",
       source: "View the source",
       terminalLabel: "Terminal commands to build Bottega",
     },

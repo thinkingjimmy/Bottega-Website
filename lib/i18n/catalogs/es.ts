@@ -14,7 +14,21 @@ export const es = {
     siteDescription: "Un solo taller para Codex, Claude Code, Kimi Code y OpenCode — local primero y con las suscripciones que ya pagas.",
   },
   language: { label: "Idioma", selected: "Seleccionado" },
-  nav: { features: "Funciones", changelog: "Novedades", download: "Descargar", downloadMac: "Descargar para macOS" },
+  nav: { features: "Funciones", changelog: "Novedades" },
+  download: {
+    short: "Descargar",
+    action: {
+      mac: "Descargar para macOS",
+      windows: "Descargar para Windows",
+      linux: "Descargar para Linux",
+    },
+    menuLabel: "Elegir plataforma",
+    platforms: {
+      mac: "Mac — Apple Silicon",
+      windows: "Windows — x64",
+      linux: "Linux — AppImage",
+    },
+  },
   footer: {
     navigation: "Navegación del pie de página",
     links: { changelog: "Novedades", docs: "Documentación", github: "GitHub", issues: "Issues", download: "Descargar" },
@@ -39,6 +53,19 @@ export const es = {
       more: "Y más",
       soon: "Muy pronto",
     },
+    collaboration: {
+      title: "Los Agentes se pasan el trabajo.",
+      body:
+        "Un Agente puede pasar el trabajo al Chat de otro Agente, que lo retoma con el suyo. Claude plantea el plan, Codex lo implementa, Kimi ejecuta las pruebas: cada relevo es un Chat en tu barra lateral, no un paso en un archivo de flujo de trabajo.",
+      note: "Cada Agente también puede ejecutar varios subagentes en paralelo.",
+      figureLabel:
+        "Un Chat pasa el trabajo al siguiente: Claude planifica, Codex implementa con dos subagentes a la vez, Kimi ejecuta las pruebas",
+      roles: { plan: "Plan", development: "Desarrollo", test: "Prueba" },
+      subagent: "Subagente · {name}",
+      sweep: "Llamadas de nav",
+      breakpoints: "Puntos de ruptura",
+      regression: "Regresión de nav",
+    },
     apps: {
       title: "Crea Apps nativas para la IA.",
       body: "Crea un entrenador personal con IA, un registro de gastos o algo completamente nuevo. Describe la idea y Bottega la convierte en una App funcional, desde los datos hasta la interfaz. Estas son cuatro Apps creadas con Bottega:",
@@ -54,7 +81,6 @@ export const es = {
     fork: {
       title: "Publica tu propia versión.",
       body: "Bottega se distribuye bajo la licencia MIT. Puedes crear un fork del repositorio, modificar el código y compartir tu propia versión con otras personas.",
-      download: "Descargar para macOS",
       source: "Ver el código fuente",
       terminalLabel: "Comandos de terminal para compilar Bottega",
     },
