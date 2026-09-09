@@ -29,10 +29,13 @@ export const ja = {
     },
     agents: {
       title: "あなたの Agent を、ひとつのサイドバーに。",
-      paragraphs: [
-        "Codex、Claude、Kimi、OpenCode はすべて Bottega で動作します。インストール済みの公式 CLI を直接使うため、追加の Agent サービスは必要ありません。",
-        "さらに、各 Agent はご自身のサブスクリプションを使用するため、追加料金はかかりません。",
-      ],
+      body: "Codex、Claude、Kimi、OpenCode はすべて Bottega で動作します。インストール済みの公式 CLI を直接使うため、追加の Agent サービスは必要ありません。",
+    },
+    subscription: {
+      title: "自分のサブスクリプションのまま。",
+      body: "Bottega はトークンを再販しません。すでに課金しているコーディング Agent をそのまま使えます。オーケストレーションは Bottega が担い、プランはあなたのものです。",
+      more: "ほかにも",
+      soon: "対応予定",
     },
     apps: {
       title: "AI ネイティブな Apps をつくる。",

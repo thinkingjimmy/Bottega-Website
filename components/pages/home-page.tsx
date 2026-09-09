@@ -14,6 +14,7 @@ import { CustomizableSection } from "../customizable-section";
 import { ForkBand } from "../fork-band";
 import { Hero } from "../hero";
 import { SiteFooter } from "../site-footer";
+import { SubscriptionSection } from "../subscription-section";
 import { featuresFor } from "../features/catalog";
 
 export function HomePageView({ locale }: { locale: Locale }) {
@@ -33,6 +34,7 @@ export function HomePageView({ locale }: { locale: Locale }) {
       />
       <div className="content">
         <AgentsSection demo={demo} catalog={catalog} locale={locale} />
+        <SubscriptionSection copy={catalog.home.subscription} readMore={catalog.common.readMore} locale={locale} />
         <AppsSection demo={demo} catalog={catalog} locale={locale} />
         <CustomizableSection demo={demo} catalog={catalog} locale={locale} />
         <BaseSection demo={demo} copy={catalog.home.base} readMore={catalog.common.readMore} locale={locale} />

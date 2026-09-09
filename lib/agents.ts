@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses SiteCatalog demo copy while keeping product IDs, metrics, and icons locale-neutral
- * [OUTPUT]: Exports Agent/model contracts, createDemoData, and the localized DemoData graph
+ * [OUTPUT]: Exports Agent/model contracts, the announced-backend roster, createDemoData, and the localized DemoData graph
  * [POS]: Typed boundary between stable product facts and translated website demonstrations
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
@@ -9,15 +9,30 @@ import type { SiteCatalog } from "./i18n";
 
 export type AgentId = "codex" | "claude" | "kimi" | "opencode";
 
-export const BACKENDS: { id: AgentId; label: string }[] = [
-  { id: "codex", label: "Codex" },
-  { id: "claude", label: "Claude" },
-  { id: "kimi", label: "Kimi" },
-  { id: "opencode", label: "OpenCode" },
+/* `cli` and `login` are product facts, not copy: the CLI's own product name and the
+   exact command the desktop app tells you to run (apps/desktop/shared/i18n/locales/
+   setup.ts). They stay out of the catalogs because a terminal command is the same
+   sentence in every language, and a translated one would be wrong. */
+export const BACKENDS: { id: AgentId; label: string; cli: string; login: string }[] = [
+  { id: "codex", label: "Codex", cli: "Codex CLI", login: "codex login" },
+  { id: "claude", label: "Claude", cli: "Claude Code", login: "claude auth login" },
+  { id: "kimi", label: "Kimi", cli: "Kimi Code", login: "kimi login" },
+  { id: "opencode", label: "OpenCode", cli: "OpenCode", login: "opencode auth login" },
 ];
 
 export const backendLabel = (id: AgentId) =>
   BACKENDS.find((backend) => backend.id === id)!.label;
+
+/* Announced, not shipped. These carry a mark and a name but no login command,
+   because none exists yet: printing one would be a promise the product cannot keep.
+   Names come from the <title> of each mark in packages/model-logos. */
+export type AnnouncedId = "hermes" | "pi" | "deepseek";
+
+export const ANNOUNCED: { id: AnnouncedId; label: string }[] = [
+  { id: "hermes", label: "Hermes Agent" },
+  { id: "pi", label: "Pi" },
+  { id: "deepseek", label: "DeepSeek" },
+];
 
 export type Model = {
   name: string;

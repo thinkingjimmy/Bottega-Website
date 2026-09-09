@@ -182,6 +182,12 @@ h3 {
   grid-template-columns: 580px 1fr;
   align-items: stretch;
 }
+/* 文字块明显比图矮的那一节（Subscription）。stretch 会把它顶在图的上缘，
+   于是两栏各站各的高度；Base 一节不吃这条——它的目录本就该沿着图的下缘落。
+   写在 .split-figure-first 之后：同权重，靠源序接管 align-items。 */
+.split-middle {
+  align-items: center;
+}
 /* 图那一栏窄一些的那一版（Fork 带的终端框）。 */
 .split-narrow {
   grid-template-columns: 1fr 400px;

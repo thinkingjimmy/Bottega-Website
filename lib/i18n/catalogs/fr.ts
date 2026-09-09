@@ -29,10 +29,15 @@ export const fr = {
     },
     agents: {
       title: "Vos Agents, une seule barre latérale.",
-      paragraphs: [
+      body:
         "Codex, Claude, Kimi et OpenCode s’exécutent tous dans Bottega — directement via les CLI officielles que vous avez déjà installées, sans service d’Agent supplémentaire.",
-        "Et chaque Agent utilise votre propre abonnement, sans frais supplémentaires.",
-      ],
+    },
+    subscription: {
+      title: "Gardez votre propre abonnement.",
+      body:
+        "Bottega ne revend pas de tokens. Utilisez les agents de code que vous payez déjà : nous les orchestrons, votre abonnement reste le vôtre.",
+      more: "Et d’autres",
+      soon: "Bientôt disponible",
     },
     apps: {
       title: "Créez des Apps natives pour l’IA.",

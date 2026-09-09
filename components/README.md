@@ -6,6 +6,7 @@
 
 - `hero.tsx`: Runs the localized full-viewport product stage and shrink geometry.
 - `agents-section.tsx`: Presents the four official Agents with localized copy and a focused reel.
+- `subscription-section.tsx`: States who pays for the tokens, over a roster of the four CLIs, their sign-in commands, and the announced backends.
 - `apps-section.tsx`: Wraps the localized first-party App surface switcher.
 - `customizable-section.tsx`: Presents source-bound App editing through Chat.
 - `base-section.tsx`: Drives four localized views over one Base dataset.

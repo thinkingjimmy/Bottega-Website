@@ -223,17 +223,3 @@
   border-radius: 10px;
 }
 
-/* 四枚标记就是「有谁」的全部证据。名字不画在旁边：一行 logo 读得比一行
-   名字快，读不出来的人 hover 就有，读屏器走 .sr-only。 */
-.agent-marks {
-  display: flex;
-  align-items: center;
-  gap: 26px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  color: var(--ink-2);
-}
-.agent-marks li {
-  display: flex;
-}

@@ -199,6 +199,27 @@
   .app-switch-description {
     display: none;
   }
+  /* ── 名单：三列变两列 ────────────────────────────────────────
+   * 三列要每格 190 才装得下最长的那句 `opencode auth login`；342 的正文宽
+   * 下每格只有 113，命令断成两行，两行标记就不再是两行。两列 + 收一档的
+   * mono 让每条命令保持整句；「还有更多」那格照旧横跨整行。
+   * 高度交回内容：360 是桌面上与三支 reel 对齐用的，这里没有可对齐的东西。
+   * ────────────────────────────────────────────────────────── */
+  .roster {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto;
+    height: auto;
+  }
+  .roster-cell {
+    gap: 10px;
+    padding: 26px 16px;
+  }
+  .roster-note {
+    font-size: 11.5px;
+  }
+  .roster-marks {
+    gap: 20px;
+  }
   .section {
     padding: 88px 0 0;
   }

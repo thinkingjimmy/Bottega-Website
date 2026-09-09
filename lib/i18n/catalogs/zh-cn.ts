@@ -29,10 +29,13 @@ export const zhCN = {
     },
     agents: {
       title: "你的 Agent，一个侧栏。",
-      paragraphs: [
-        "Codex、Claude、Kimi 与 OpenCode 都在 Bottega 中运行——直接使用你已经安装的官方 CLI，无需安装额外 Agent 服务。",
-        "并且每个 Agent 服务都使用你自己的订阅，无需额外付费。",
-      ],
+      body: "Codex、Claude、Kimi 与 OpenCode 都在 Bottega 中运行——直接使用你已经安装的官方 CLI，无需安装额外 Agent 服务。",
+    },
+    subscription: {
+      title: "带上你自己的订阅。",
+      body: "Bottega 不转售 token。用你已经付费的编程 Agent——调度交给我们，订阅仍然是你自己的。",
+      more: "还有更多",
+      soon: "接入中",
     },
     apps: {
       title: "构建 AI 原生 App。",

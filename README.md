@@ -4,7 +4,7 @@ Next.js 16 App Router + React 19 + TypeScript + plain CSS + static export
 
 <directory>
 app/ - Thirty static routes: six unprefixed English pages plus twenty-four prefixed translations
-app/styles/ - Presentation split by tokens, base, shared/Agents features, the Base figures, hero, Apps, reels, bands, and motion
+app/styles/ - Presentation split by tokens, base, shared/Agents features, the Base figures, hero, Apps, reels, the Subscription roster, bands, and motion
 components/ - Shared site chrome, home sections, feature navigation, chart shapes, and product-faithful visuals
 components/apps/ - Four first-party App surfaces, their shared switcher, and the id-to-surface lookup
 components/features/ - Feature catalog, navigation, document article, and code-drawn Agents and Base figures
