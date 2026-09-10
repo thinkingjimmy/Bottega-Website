@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖 ../tokens.css 的 --app-* 与 --ground-2
+ * [INPUT]: 依赖 ../tokens.css 的 --app-*；画框与底色归 ../base.css
  * [OUTPUT]: Agents 一节那台一镜到底的示意图
  * [POS]: 三支 reel 里的第一支，也是全站最早那一台。画框与骨架条已挪到 ./shared.css——三支都吃它
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
@@ -35,11 +35,12 @@
  * 左上两边悬空，读起来不像取景，像放歪了。
  * 这三个数也借给了 App 菜单那一支的首帧（见 app-menu.css）：两节都从
  * 一台机器的左上角开镜，取景一致，读起来才是同一间屋子里的两台机器。
- * 只有 Base 那一支不需要——它的画框恰好等于机器本身，镜头也不动。
+ *
+ * 桌面色不再写在这里。原来这两支各自把 --ground-2 加回来，而另外四张图
+ * 没有底——「有没有底」于是成了每张图自己的决定，六张图长出四种答案。
+ * 现在底色归 base.css 那一条画框，六张一起换：--surface，比页面亮一档。
+ * 这两支要的「机器背后还有一层」仍然成立，只是那一层不再由它们私有。
  * ────────────────────────────────────────────────────────── */
-.reel:has(.reel-cam) {
-  background: var(--ground-2);
-}
 
 .reel {
   /* 四个数钉住整段镜头，都是从画框 580×360 与机器 720×420 推出来的：
@@ -98,14 +99,9 @@
   border-radius: 9px;
   background: var(--app-bg);
   color: var(--app-fg);
-  box-shadow:
-    0 0 0 1px var(--app-border),
-    0 12px 32px -10px rgba(27, 26, 22, 0.3);
-}
-[data-theme="dark"] .reel-app {
-  box-shadow:
-    0 0 0 1px var(--app-border),
-    0 12px 32px -10px rgba(0, 0, 0, 0.6);
+  /* 只留一条边，不投影。画框已经是一张纸，纸上的东西不需要再浮起来
+     一次——落影是给「悬空」用的，而这台机器是摆着的。全页六张图同此。 */
+  box-shadow: 0 0 0 1px var(--app-border);
 }
 
 .reel-side {

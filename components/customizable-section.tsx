@@ -14,7 +14,7 @@ import type { Locale } from "@/lib/i18n/locale";
 
 export function CustomizableSection({ demo, catalog, locale }: { demo: DemoData; catalog: SiteCatalog; locale: Locale }) {
   return (
-    <section className="section" id="customizable">
+    <section className="section section--feature" id="customizable">
       <Reveal>
         <div className="wrap split">
           <div className="copy">

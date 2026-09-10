@@ -10,10 +10,10 @@ Styles for the three animated demonstrations in the home narrative. Their React 
 
 ## Member list
 
-- `shared.css`: Defines the shared 580x360 frame, consumes `--home-demo-radius` for its outer silhouette, and provides `.sk`, `.sr-only`, and the replay control. It paints no ground: whether the frame is a viewfinder or the machine's own edge is a per-reel answer, so each reel that needs a desktop declares it.
-- `agents.css`: Drives the one-shot sidebar camera pan and renders the Agents product shell. Its `--cam-*` values derive the crop from the shared frame and the 720x420 machine, and it fills the frame with `--ground-2` because the 26/20 margins are the only evidence that this is a crop of a machine rather than the machine itself.
-- `app-menu.css`: Animates the editable App window from its upper-left identity through the menu action and into the completed source-chat change. Its camera leaves the machine on both the opening and the closing station, so it fills the frame with the same `--ground-2` desktop as `agents.css`; page paper behind those margins would read as a screenshot mounted on a page instead of a machine sitting on a desk.
-- `base-views.css`: Renders four projections of the same Base data with a stationary camera and short opacity crossfades. The frame stretches to the copy in the two-column layout and restores the shared 580x360 ratio when the columns stack.
+- `shared.css`: Sizes the three reels to `--figure-w`/`--figure-h` and provides `.sk`, `.sr-only`, and the replay control. The frame itself — shape, radius and ground — belongs to `base.css`, because "what is behind the picture" is one answer for all six home figures rather than a per-reel one.
+- `agents.css`: Drives the one-shot sidebar camera pan and renders the Agents product shell. Its `--cam-*` values derive the crop from the shared frame and the 720x420 machine; the 26/20 margins are the only evidence that this is a crop of a machine rather than the machine itself, and what shows through them is the shared `--surface` frame.
+- `app-menu.css`: Animates the editable App window from its upper-left identity through the menu action and into the completed source-chat change. Its camera leaves the machine on both the opening and the closing station, so the frame must have a ground behind those margins — it gets the shared one.
+- `base-views.css`: Renders four projections of the same Base data with a stationary camera and short opacity crossfades. The machine sits inside the shared inset rather than stretching to the copy column's height, so this figure is the same size as the other five.
 
 The reels share one outer radius because they are sibling arguments in the same home narrative. Product windows inside the frames retain their native radii.
 

@@ -14,20 +14,25 @@
 .band h2 {
   color: var(--ground);
 }
+/* 收尾这一带原来自成一套：标题 38、栏距 86.4、图宽 400——三个数没有
+   一个与正文六节对得上，于是它读起来不像这一页的最后一节，像另一页的
+   第一节。三个数一并交还给正文：字号跟 .copy h2，栏距跟 .split，图宽
+   跟 --figure-w。标题因此会断成两行，nowrap 一并撤掉——一句话断成两行
+   是排版，钉死不断行则是把版面交给字符数。 */
 .fork-layout {
-  grid-template-columns: minmax(0, 1fr) minmax(340px, 400px);
-  gap: clamp(56px, 6vw, 90px);
+  grid-template-columns: minmax(0, 1fr) var(--figure-w);
+  gap: 72px;
 }
 .fork-title {
   margin-bottom: 22px;
-  font-size: clamp(38px, 2.85vw, 54px);
-  line-height: 1.02;
-  letter-spacing: -0.04em;
+  max-width: 14ch;
+  font-size: 52px;
+  line-height: 1.04;
+  letter-spacing: -0.018em;
   font-kerning: normal;
-  white-space: nowrap;
 }
 .fork-body {
-  max-width: 54ch;
+  max-width: 46ch;
   margin-bottom: 34px;
   font-size: 18px;
   line-height: 1.62;
@@ -341,7 +346,9 @@
 @media (max-width: 1300px) {
   .split,
   .split-figure-first,
-  .split-narrow {
+  /* .fork-layout 自己声明了两栏，同权重、更靠后，所以必须点名——原来这
+     份名单里写的是 .split-narrow，它替 .fork-layout 挨着这一条。 */
+  .fork-layout {
     grid-template-columns: 1fr;
     gap: 48px;
   }

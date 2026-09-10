@@ -1,30 +1,27 @@
 /**
- * [INPUT]: Uses --home-demo-radius and the --app-* tokens from ../tokens.css
- * [OUTPUT]: Provides the shared 580x360 reel frame, skeletons, screen-reader utility, and replay control
- * [POS]: Shared silhouette and primitives for all three home feature reels
+ * [INPUT]: Uses --figure-w/h and the --app-* tokens from ../tokens.css
+ * [OUTPUT]: Sizes the three reels to the shared figure frame and provides skeletons, the screen-reader utility, and the replay control
+ * [POS]: Shared sizing and primitives for all three home feature reels; the frame itself lives in ../base.css
  * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
 
-/* ── 三支 reel 共用的画框 ────────────────────────────────────────
- * 共用的是形状（定宽、居中、溢出裁掉），不再共用底色：机器自己那圈
- * `0 0 0 1px` 的边加一道落影已经够把它从纸面上抬起来，再垫一块桌面，
- * 读到的是「一张被裱起来的截图」，而不是「一台摆在那儿的机器」。
+/* ── 三支 reel 共用的尺寸 ────────────────────────────────────────
+ * 形状、圆角与底色已经不在这里了：那是六张图共用的一件事，写在
+ * base.css 的画框那一条上。原来「要不要底色」由每一支自己回答，于是
+ * 两支镜头垫 --ground-2、另外四张什么都不垫——六张图长出四种答案。
+ * 现在答案只有一个：--surface，比页面亮一档的一张纸。
  *
- * 例外是镜头会走出机器之外的那两支——Agents 与 App 菜单——它们各自
- * 把底色加了回去：那两支的画框不是「机器的边界」而是「镜头的取景框」，
- * 画框里露出的是机器背后的桌面，不是页面的纸。理由见 agents.css 与
- * app-menu.css。要不要桌面，答案在每一支的镜头里，共用层答不了。
+ * 这一条只剩下「多大」，而那两个数也不在这里，在 tokens.css。
  * ────────────────────────────────────────────────────────── */
 .reel {
   position: relative;
-  /* 三支 reel 同一个画框：580×360。这个数写在各支里就有三份真相，
-     而它们本就该一样——两节的文字块高度也一样。 */
-  width: 580px;
-  aspect-ratio: 580 / 360;
+  /* 尺寸读 tokens.css 那两个数——全站六张图共用它们。形状、圆角与底色
+     由 base.css 的画框那一条统一给出，这里只管「多大」。
+     写成 aspect-ratio 而不是定高：窄屏画框跟着栏宽收，机器照旧按 1.7
+     画，于是窗小了、字没小。 */
+  width: var(--figure-w);
+  aspect-ratio: calc(var(--figure-w) / var(--figure-h));
   max-width: 100%;
-  margin-inline: auto;
-  overflow: hidden;
-  border-radius: var(--home-demo-radius);
 }
 
 @keyframes bt-sk {

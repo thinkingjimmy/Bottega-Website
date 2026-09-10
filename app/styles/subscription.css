@@ -1,14 +1,15 @@
 /**
- * [INPUT]: Uses --home-demo-radius and --shadow plus the --app-* product palette from ./tokens.css
- * [OUTPUT]: Provides the roster figure for the home Subscription section
+ * [INPUT]: Uses --figure-w/h and --figure-inset-* plus the --app-* product palette from ./tokens.css
+ * [OUTPUT]: Provides the roster sheet for the home Subscription section, inset in the shared figure frame
  * [POS]: The one home figure that is a list rather than a product window; its siblings live in ./reels
  * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
 
-/* ── One silhouette for every home figure ──────────────────────────
- * 580×360 is the frame the three reels share (see reels/shared.css). This figure is
- * not a product window, but it stands in the same slot beside the same column of
- * text: a different outline here would read as a different kind of section.
+/* ── A sheet laid on the frame, not the frame itself ───────────────
+ * The roster used to BE the frame: 580x360, the shared radius, the page shadow.
+ * It now sits inside `.figure-frame` on the same inset every whole object on this
+ * page gets — 528 x 312, the box the Apps surface and the Base machine also land
+ * in. Three insets, one number.
  *
  * The hairlines are the grid's own 1px gaps over the border color. One background
  * draws every rule, so a cell that changes span cannot leave a border behind.
@@ -18,19 +19,18 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-rows: repeat(2, minmax(0, 1fr));
   gap: 1px;
-  width: 580px;
-  max-width: 100%;
-  height: 360px;
-  margin: 0 auto;
+  width: calc(var(--figure-w) - var(--figure-inset-x) * 2);
+  height: calc(var(--figure-h) - var(--figure-inset-y) * 2);
+  margin: var(--figure-inset-y) var(--figure-inset-x);
   padding: 0;
   list-style: none;
   overflow: hidden;
-  border-radius: var(--home-demo-radius);
+  /* 9px is the machine radius the two reels already use; nothing on this page
+     is lifted any more, so a single hairline is the whole edge. */
+  border-radius: 9px;
   background: var(--app-border);
   color: var(--app-fg);
-  box-shadow:
-    0 0 0 1px var(--app-border),
-    var(--shadow);
+  box-shadow: 0 0 0 1px var(--app-border);
 }
 
 /* Cells start on one line instead of centering each block. The open cell carries a
@@ -40,7 +40,9 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 50px 20px 0;
+  /* The inset takes 18px of cell width with it, and `opencode auth login` is the
+     string that decides how much padding the cells can still afford. */
+  padding: 44px 14px 0;
   background: var(--app-bg);
 }
 .roster-cell--open {

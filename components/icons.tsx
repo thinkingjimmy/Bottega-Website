@@ -239,6 +239,10 @@ export const D = {
   /* Base 视图页签与工具条那一排（bases/chrome 与 views/ 里用的就是这几枚）。 */
   kanban: "M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8 7v7M12 7v4M16 7v9",
   chartColumn: "M3 3v16a2 2 0 0 0 2 2h16M8 17v-5M13 17V8M18 17v-3",
+  /* Fitness Log 那一只。四只 App 的目录原来印的是 ✦ 与三枚彩色 emoji——
+     同一份目录里一个字符符号配三张位图，而隔壁 Base 的目录是描边。
+     一份目录一种笔法，缺的那一枚就补在这里。 */
+  dumbbell: "M6.5 6.5v11M3.5 8.5v7M17.5 6.5v11M20.5 8.5v7M6.5 12h11",
   funnel: "M3 4h18l-7 8v7l-4 2v-9z",
   sortAsc: "M4 7h13M4 12h9M4 17h5",
   moreHorizontal: "M5 12h.01M12 12h.01M19 12h.01",

@@ -14,11 +14,11 @@ import type { Locale } from "@/lib/i18n/locale";
 
 export function AgentsSection({ demo, catalog, locale }: { demo: DemoData; catalog: SiteCatalog; locale: Locale }) {
   return (
-    <section className="section" id="agents">
+    <section className="section section--feature" id="agents">
       <Reveal>
         <div className="wrap split">
           <div className="copy">
-            <h1 className="agents-title">{catalog.home.agents.title}</h1>
+            <h1>{catalog.home.agents.title}</h1>
             <p>{catalog.home.agents.body}</p>
             <FeatureLink slug="agents" locale={locale} label={catalog.common.readMore} />
           </div>

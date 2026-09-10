@@ -48,11 +48,11 @@ function BuildTerminal({ label }: { label: string }) {
 export function ForkBand({ catalog }: { catalog: SiteCatalog }) {
   const copy = catalog.home.fork;
   return (
-    <section className="section" id="source">
+    <section className="section section--feature" id="source">
       <Reveal>
         <div className="wrap">
           <div className="band">
-            <div className="split split-narrow fork-layout">
+            <div className="split fork-layout">
               <div>
                 <h2 className="fork-title">
                   {copy.title}

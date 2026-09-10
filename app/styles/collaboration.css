@@ -1,5 +1,5 @@
 /**
- * [INPUT]: Uses --home-demo-radius geometry and the --app-* product palette plus --ink-3 from ./tokens.css
+ * [INPUT]: Uses --figure-w/h geometry and the --app-* product palette plus --ink-3 from ./tokens.css
  * [OUTPUT]: Provides the handoff graph for the home Collaboration section, including its stacked narrow layout
  * [POS]: The one home figure drawn as a graph rather than a product window or a list; siblings live in ./reels and ./subscription.css
  * [PROTOCOL]: Update this header when changing this file, then check README.md
@@ -17,10 +17,9 @@
  * ────────────────────────────────────────────────────────────── */
 .handoff {
   position: relative;
-  width: 580px;
+  width: var(--figure-w);
   max-width: 100%;
-  height: 360px;
-  margin-inline: auto;
+  height: var(--figure-h);
   color: var(--app-fg);
   pointer-events: none;
   user-select: none;
@@ -52,11 +51,10 @@
   border: 1px solid var(--app-border);
   border-radius: 12px;
   background: var(--app-bg);
-  /* The card lift the Agents page already uses for the same kind of node
-     (.afd-cd). Two figures of the same thing should not sit at two heights. */
-  box-shadow:
-    0 1px 2px rgba(27, 26, 22, 0.05),
-    0 18px 40px -28px rgba(27, 26, 22, 0.5);
+  /* No lift. This figure is ink on the frame, not a photograph of something
+     standing on it — a drawn label does not cast a shadow, and nothing else on
+     this page does either now. What separates a node from the frame is the
+     hairline and the fill, which is all it ever needed. */
 }
 
 /* ── A subagent is not a Chat ──────────────────────────────────────

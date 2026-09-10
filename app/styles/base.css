@@ -1,6 +1,6 @@
 /**
- * [INPUT]: Uses --ground, --ink, --font-*, and --edge from tokens.css
- * [OUTPUT]: Defines global typography, shared controls, page wraps, and the home-section grid skeletons
+ * [INPUT]: Uses --ground, --ink, --surface, --line, --font-*, --edge, and --figure-* from tokens.css
+ * [OUTPUT]: Defines global typography, shared controls, page wraps, the one home-figure frame, the feature-section rule, and the home-section grid skeletons
  * [POS]: Foundation layer consumed by every route before feature- or section-specific presentation
  * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
@@ -24,20 +24,6 @@ h3 {
   font-weight: 600;
   letter-spacing: -0.018em;
   text-wrap: balance;
-}
-
-.agents-title {
-  max-width: 16ch;
-  margin-bottom: 22px;
-  font-size: 56px;
-  line-height: 1.03;
-}
-
-@media (min-width: 641px) {
-  html:lang(zh-CN) .agents-title {
-    max-width: none;
-    white-space: nowrap;
-  }
 }
 
 .mono {
@@ -116,6 +102,59 @@ h3 {
   padding: 132px 0 0;
 }
 
+/* ── 正文一节：一条发丝线开头 ────────────────────────────────────
+ * 六节正文左右交替，原来只靠 132px 的留白分段——留白说得出「这里断开
+ * 了」，说不出「这是第几段」，于是交替读起来像随机而不是节拍。一条
+ * --line 把每一节的起点标出来，交替才成为可数的东西。
+ *
+ * 线挂在 .reveal 上而不是 .wrap 上：六节里有四节的 .wrap 自己就是那张
+ * 网格（.wrap.split），::before 落进去会变成网格的第三个格子，把两栏
+ * 顶开。挂在 .reveal 上还顺带把它交给了进场动画——线跟着这一节一起
+ * 淡进来，而不是先画好一条线等着内容。
+ * 只归首页：changelog 与 feature 两页也用 .section，但它们不套 Reveal，
+ * 也不该被分段。
+ * ────────────────────────────────────────────────────────── */
+.section--feature {
+  padding: 0 0 104px;
+}
+.section--feature > .reveal::before {
+  content: "";
+  display: block;
+  height: 1px;
+  margin: 0 var(--edge) 104px;
+  background: var(--line);
+}
+
+/* ── 六张图，一个画框 ────────────────────────────────────────────
+ * 形状、圆角、底色归这一条；框里装的是什么，归各自那份样式表。
+ *
+ * 底色是 --surface，比页面亮一档，读作「铺在上面的一张纸」。原来两支
+ * 镜头用的是 --ground-2（暗一档）而另外四张干脆没有底——暗一档读作
+ * 「挖下去的一个槽」：机器摆在槽里尚可，一张关系图放进槽里就成了被
+ * 压暗的一块。方向反过来，六张图才落在同一种材质上。
+ *
+ * 尺寸不写在这里：三张按比例缩、两支镜头按 px 定位、名单是格子，各自
+ * 的推法不同——但都读同一个 --figure-w / --figure-h，所以推法不同不等
+ * 于结果不同。
+ * ────────────────────────────────────────────────────────── */
+.reel,
+.app-stage,
+.handoff,
+.figure-frame {
+  overflow: hidden;
+  margin-inline: auto;
+  border-radius: var(--home-demo-radius);
+  background: var(--surface);
+}
+/* 名单那一张没有自己的元素可以当画框——它本身就是那张格子。给它一层
+   外壳，是三张「整台都要看见」的图共用同一个内框的代价，也是唯一的
+   代价：其余两张（Apps 表面、Base 机器）本来就有一层可以当框。 */
+.figure-frame {
+  width: var(--figure-w);
+  max-width: 100%;
+  height: var(--figure-h);
+}
+
 .eyebrow {
   font-size: 12px;
   letter-spacing: 0.14em;
@@ -140,7 +179,7 @@ h3 {
    四节正文的两栏之间是同一口气。 */
 .split {
   display: grid;
-  grid-template-columns: 1fr 580px;
+  grid-template-columns: minmax(0, 1fr) var(--figure-w);
   gap: 72px;
   align-items: center;
 }
@@ -153,17 +192,11 @@ h3 {
    四节正文的图各站各的边。桌子改由网格定宽、机器在里头居中之后，
    四节的图左右两缘都落在同一条竖线上。
    两栏之间的 72 继承 .split：一个外沿距管全页。 */
+/* 对齐只有一种：center。原来这里是 stretch，再由 .split-middle 把
+   Subscription 一节掰回 center——同一个决定写了三条规则，而 Base 一节
+   因此被拉高 114px，六张图里唯一一张不是 360 的。图不再被文栏的高度
+   牵着走之后，那两条规则一起没了存在的理由。 */
 .split-figure-first {
-  grid-template-columns: 580px 1fr;
-  align-items: stretch;
-}
-/* 文字块明显比图矮的那一节（Subscription）。stretch 会把它顶在图的上缘，
-   于是两栏各站各的高度；Base 一节不吃这条——它的目录本就该沿着图的下缘落。
-   写在 .split-figure-first 之后：同权重，靠源序接管 align-items。 */
-.split-middle {
+  grid-template-columns: var(--figure-w) minmax(0, 1fr);
   align-items: center;
-}
-/* 图那一栏窄一些的那一版（Fork 带的终端框）。 */
-.split-narrow {
-  grid-template-columns: 1fr 400px;
 }

@@ -1,5 +1,5 @@
 /**
- * [INPUT]: Uses --home-demo-radius, --ground-2, --surface, --ink-*, and --line-2 from ../../tokens.css
+ * [INPUT]: Uses --figure-w/h, --figure-inset-*, --surface, --ink-*, and --line-2 from ../../tokens.css
  * [OUTPUT]: Provides the Apps desk, shared frame and pane stack, plus the interactive App switcher
  * [POS]: Structural layer for the Apps home feature; sibling stylesheets own each product surface
  * [PROTOCOL]: Update this header when changing this file, then check README.md
@@ -35,14 +35,18 @@
    名字带 app- 前缀不是修辞：.stage 在这张表里已经归首屏那条 sticky 跑道所有，
    撞名的后果不是样式冲突这么轻，是首屏整个塌掉。 */
 .app-stage {
-  /* 「图矮一点」只有这一个旋钮：画框尺寸与里面那台机器的缩放都由它推出，
-     于是两者不可能对不上。裁掉的是内容，缩掉的只是观看距离——所以是缩不是裁。 */
-  --z: 0.518;
+  /* 0.4 不是调出来的，是解出来的。内框是 528×312（580 − 26×2，360 − 24×2），
+     780 × 528 / 312 = 1320，于是 312 / 780 = 0.4 正好把 1320×780 的画布放进
+     内框：整幅高度一刀不裁，而 775 正是 Fitness Log 的图例掉出框的临界值，
+     780 一格都让不得。
+     1320 也仍然越过四只 App 真正读的那两条断点（>900 出两栏、>860 出按钮
+     文字），所以加宽不改变任何一只 App 的行为。
+     原来这里是 0.518，画框由它反推成 580×404——六张图里唯一一张不是 360 的。
+     现在尺寸不再由 --z 反推，而是与另外五张图一起读 tokens.css。 */
+  --z: 0.4;
   position: relative;
-  width: calc(1120px * var(--z));
-  height: calc(780px * var(--z));
-  overflow: hidden;
-  border-radius: var(--home-demo-radius);
+  width: var(--figure-w);
+  height: var(--figure-h);
 }
 /* 每一台机器就是一格 1120×780 的画布，原尺寸落笔，整体缩到 0.518。
    尺寸写在这一层而不是写在 .dc / .ba / .fl 上：那三支各自带着
@@ -58,12 +62,17 @@
    「一张被裱起来的截图」，而不是「一台摆在那儿的机器」。 */
 .app-pane {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 1120px;
+  top: var(--figure-inset-y);
+  left: var(--figure-inset-x);
+  width: 1320px;
   height: 780px;
   transform: scale(var(--z));
   transform-origin: 0 0;
+  /* 边与圆角都除回缩放：直接写 1px 会被缩成 0.4px（多半画不出来），
+     9px 会缩成 3.6px。除回去之后落到屏幕上正好是 1 与 9，与另外五张图
+     上的机器一致。 */
+  border-radius: calc(9px / var(--z));
+  box-shadow: 0 0 0 calc(1px / var(--z)) var(--app-border);
   opacity: 0;
   transition: opacity 320ms ease;
 }
@@ -90,6 +99,10 @@
   display: flex;
   flex-direction: column;
 }
+/* 六节正文一种标题字号。h1 一并收进来：Agents 那一节是全页的 h1，原来
+   在 base.css 里另写一条 56px / 16ch——同一级标题两套字号，而两套字号
+   之间没有任何语义差别，只是没人核对过。 */
+.copy h1,
 .copy h2 {
   /* 原来是 14ch（≈405px），比当时最短的那句标题本身还窄，
      标题永远断成两行——那不是排版决定，是一个没人核对过的数。 */
@@ -97,6 +110,14 @@
   margin-bottom: 22px;
   font-size: 52px;
   line-height: 1.04;
+}
+/* 中文那句标题不断行：CJK 没有词间空格，断在哪儿由字数决定，
+   而这一句断开之后前半截会读成另一个意思。 */
+@media (min-width: 641px) {
+  html:lang(zh-CN) .copy h1 {
+    max-width: none;
+    white-space: nowrap;
+  }
 }
 .copy p {
   max-width: 56ch;

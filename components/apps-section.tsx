@@ -13,7 +13,7 @@ import type { Locale } from "@/lib/i18n/locale";
 
 export function AppsSection({ demo, catalog, locale }: { demo: DemoData; catalog: SiteCatalog; locale: Locale }) {
   return (
-    <section className="section" id="apps">
+    <section className="section section--feature" id="apps">
       <Reveal>
         <div className="wrap">
           <AppsStage demo={demo} copy={catalog.home.apps} readMore={catalog.common.readMore} locale={locale} />

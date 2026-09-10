@@ -34,7 +34,7 @@ export function BaseSection({
   const { active, auto, pick } = useCarousel(demo.baseViews.length, play);
 
   return (
-    <section className="section" id="base">
+    <section className="section section--feature" id="base">
       <Reveal>
         <div className="wrap split split-figure-first">
           <BaseViewsReel active={active} frame={frame} demo={demo} />
@@ -55,7 +55,7 @@ export function BaseSection({
                       </span>
                       <span className="app-switch-name">{view.name}</span>
                     </span>
-                    <span className="mono app-switch-description">{view.blurb}</span>
+                    <span className="app-switch-description">{view.blurb}</span>
                   </button>
                 </li>
               ))}

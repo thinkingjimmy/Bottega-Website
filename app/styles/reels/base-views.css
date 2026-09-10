@@ -1,5 +1,5 @@
 /**
- * [INPUT]: Uses the shared reel frame and the --app-* tokens from ../tokens.css
+ * [INPUT]: Uses the shared reel frame, --figure-inset-*, and the --app-* tokens from ../tokens.css
  * [OUTPUT]: Provides the responsive Base reel with table, chart, gallery, and map projections
  * [POS]: Stationary-camera reel for the Base home feature; the view switch is the only motion
  * [PROTOCOL]: Update this header when changing this file, then check README.md
@@ -24,37 +24,25 @@
   background: var(--app-bg);
   color: var(--app-fg);
 }
-/* ── 画框有多高，机器就有多高 ────────────────────────────────────
- * 原来机器钉死 725×450，缩到 0.8 就是 580×360；而画框被网格拉到与文栏
- * 等高时，底下会空出一截——截图里那片白就是它。
+/* ── 机器摆进内框，不再跟着文栏拉高 ──────────────────────────────
+ * 原来这一支让画框 align-self: stretch，高度交给网格——文栏一高，机器
+ * 跟着长，于是这张图在 1440 下是 580×474，而另外五张是 580×360。图跟着
+ * 文字的高度走，本身就是让图去将就一个跟它无关的数。
  *
- * 与其去追文栏那个数（文案一改就又对不上），不如让机器反推：
- * 画框的高由网格给，这一层按 1/0.644 反推回自然尺寸，缩放之后
- * 正好铺满。文案再改几行，两边仍然齐——齐这件事由比例保证，
- * 不由某个抄下来的数保证。
+ * 现在画框回到六张共用的 580×360，机器摆进内框 528×312：
+ *   0.5867 = 528 / 900，机器自然宽 900，缩完正好是内框的宽
+ *   高度算式把上下各让出的 24px 还回去，于是机器落在内框的下缘——
+ *   少这一步，输入框那颗发送键会被从中间切开，读起来是坏了不是取景
  * ────────────────────────────────────────────────────────── */
-.reel:has(.vw-cam) {
-  aspect-ratio: auto;
-  height: auto;
-  align-self: stretch;
-}
-/* Once the feature columns stack, no sibling defines this grid row's height.
-   Restore the shared frame ratio so the absolutely positioned camera has a
-   real containing block instead of collapsing the demonstration to zero. */
-@media (max-width: 1300px) {
-  .reel:has(.vw-cam) {
-    aspect-ratio: 580 / 360;
-  }
-}
 .vw-cam {
-  /* 一个数管两件事：缩放比，以及「画框有多高就反推多少自然高度」。
-     写成两个数迟早分叉，而分叉的表现是机器比画框高出或矮下去一截。 */
-  --s: 0.644;
+  /* 一个数管两件事：缩放比，以及「内框有多高就反推多少自然高度」。
+     写成两个数迟早分叉，而分叉的表现是机器比内框高出或矮下去一截。 */
+  --s: 0.5867;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: var(--figure-inset-y);
+  left: var(--figure-inset-x);
   width: 900px;
-  height: calc(100% / var(--s));
+  height: calc((100% - var(--figure-inset-y) * 2) / var(--s));
   transform-origin: 0 0;
   transform: scale(var(--s));
 }

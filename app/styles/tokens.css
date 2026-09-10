@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Has no dependencies; every color, font, and geometry value is self-contained
- * [OUTPUT]: Provides site and product-surface palettes, App paper tokens, type stacks (including the handwriting stack), shared layout geometry, and the reset
+ * [OUTPUT]: Provides site and product-surface palettes, App paper tokens, type stacks (including the handwriting stack), shared page and figure geometry, and the reset
  * [POS]: Foundation of the stylesheet cascade; every later stylesheet consumes these tokens
  * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
@@ -185,6 +185,22 @@ p {
   --content-max: 1286px;
   --bleed: max(min(120px, 6.5vw), (100vw - var(--content-max) - 16px) / 2);
   --gutter: 8px;
+  /* ── 正文六张图共用的那一个画框 ────────────────────────────────
+   * 尺寸、圆角、内缩，三件事各写一个数，六张图一起读它们。原来这三件
+   * 事分散在四份样式表里各写一遍：reels/shared.css 的 580×360、
+   * apps/stage.css 由 --z 反推出来的 580×404、subscription.css 的
+   * 580×360、collaboration.css 的 580×360——四份「一样」的数，其中一份
+   * 已经不一样了，而没有人看得出来。写成一处之后，不一样就不可能悄悄
+   * 发生。
+   *
+   * 内缩只归「整台都要看见」的那三张（名单、Apps 表面、Base 机器）：
+   * 528 = 580 − 26 × 2，312 = 360 − 24 × 2。两支镜头不吃它——它们是
+   * 推近的取景，留白由 agents.css 的 --cam-in-* 说了算。
+   * ────────────────────────────────────────────────────────── */
+  --figure-w: 580px;
+  --figure-h: 360px;
+  --figure-inset-x: 26px;
+  --figure-inset-y: 24px;
   /* One silhouette for the four home feature demonstrations. The product windows
      inside them keep their native radii; this token owns only the outer frame. */
   --home-demo-radius: 14px;

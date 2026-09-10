@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * [INPUT]: Uses localized SiteCatalog/DemoData, carousel hooks, the shared APP_SURFACES lookup, and FeatureLink
+ * [INPUT]: Uses localized SiteCatalog/DemoData, carousel hooks, the shared APP_SURFACES lookup, FeatureLink, and the Stroke glyph primitive
  * [OUTPUT]: Exports the localized AppsStage component
  * [POS]: Complete Apps home feature with one language-specific surface switcher and detail route
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
@@ -11,6 +11,7 @@ import type { DemoData } from "@/lib/agents";
 import type { SiteCatalog } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n/locale";
 import { FeatureLink } from "../features/feature-link";
+import { Stroke, glyph } from "../icons";
 import { useCarousel } from "../reels/use-carousel";
 import { usePlayWhenSeen } from "../reels/use-play-when-seen";
 import { APP_SURFACES } from "./surfaces";
@@ -65,7 +66,7 @@ export function AppsStage({
               >
                 <span className="app-switch-head">
                   <span className="app-switch-icon" aria-hidden="true">
-                    {app.icon}
+                    <Stroke d={glyph(app.mark)} size={15} width={1.8} />
                   </span>
                   <span className="app-switch-name">{app.name}</span>
                 </span>

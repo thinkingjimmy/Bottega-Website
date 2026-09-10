@@ -168,7 +168,7 @@ export function CollaborationSection({
   locale: Locale;
 }) {
   return (
-    <section className="section" id="collaboration">
+    <section className="section section--feature" id="collaboration">
       <Reveal>
         <div className="wrap split">
           <div className="copy">

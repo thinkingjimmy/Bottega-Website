@@ -163,7 +163,7 @@
   }
   .split,
   .split-figure-first,
-  .split-narrow {
+  .fork-layout {
     grid-template-columns: 1fr;
     gap: 40px;
   }
@@ -205,10 +205,17 @@
    * mono 让每条命令保持整句；「还有更多」那格照旧横跨整行。
    * 高度交回内容：360 是桌面上与三支 reel 对齐用的，这里没有可对齐的东西。
    * ────────────────────────────────────────────────────────── */
+  /* 名单在窄屏交回内容高度，它的外壳跟着——两个数分开写，迟早只有
+     一个跟着改，而表现是格子下面空出一截画框。 */
+  .figure-frame {
+    height: auto;
+  }
   .roster {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: auto;
+    width: auto;
     height: auto;
+    margin: var(--figure-inset-y) var(--figure-inset-x);
   }
   .roster-cell {
     gap: 10px;
@@ -222,6 +229,13 @@
   }
   .section {
     padding: 88px 0 0;
+  }
+  /* 正文一节：留白与那条线一起收，否则线还在原处而内容已经上来了。 */
+  .section--feature {
+    padding: 0 0 72px;
+  }
+  .section--feature > .reveal::before {
+    margin-bottom: 72px;
   }
   .band {
     padding: 48px 28px;
@@ -243,8 +257,3 @@
   }
 }
 
-@media (max-width: 640px) {
-  .fork-title {
-    white-space: normal;
-  }
-}

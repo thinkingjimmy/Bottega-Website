@@ -1,5 +1,5 @@
 /**
- * [INPUT]: 依赖 ../tokens.css 的 --app-*、--dc-paper、--dc-line 与 --ground-2
+ * [INPUT]: 依赖 ../tokens.css 的 --app-*、--dc-paper 与 --dc-line；画框与底色归 ../base.css
  * [OUTPUT]: Customize any app by chatting 一节那扇独立 App 窗口、它的「···」菜单、那条 chat
  *           输入框与它落地之后画布上多出来的第三块板
  * [POS]: 三支 reel 里唯一一支镜头走两段的：先贴着窗口左上角，右移到「···」拍下那一按，
@@ -9,14 +9,13 @@
  */
 
 /* ── 这一支的画框是取景框，不是机器的边界 ────────────────────────
- * 于是它得垫一块桌面（与 Agents 那一支同一块 --ground-2）。头两站镜头
- * 贴在机器的一角、末站又退到机器之外，四边都会露出机器背后的东西——
- * 露出的若是页面的纸，读到的是「一张图被裱在纸上」；露出桌面，读到的
- * 才是「一台摆在桌面上的机器」。共用层不再统一垫底色（见 shared.css），
- * 因为要不要桌面这件事，答案在每一支的镜头里，不在共用层。
+ * 头两站镜头贴在机器的一角、末站又退到机器之外，四边都会露出机器背后
+ * 的东西——所以画框必须有底色，否则读到的是「一张图被裱在页面上」。
+ * 底色本身不写在这里：它是六张图共用的一件事，归 base.css 的画框
+ * （--surface，比页面亮一档）。这一支要的只是「背后有一层」，而那一层
+ * 长什么样，六张图一起说了算。
  * ────────────────────────────────────────────────────────── */
 .reel:has(.aw-cam) {
-  background: var(--ground-2);
   /* 十一秒一镜：左上角静息 → 右移到「···」→ 它亮起、菜单掉出来 →
      落焦 Edit App → 回拉到整台机器（四边留着桌面）、压暗、输入框升起 →
      一个字一个字打完 → 发送 → 输入框退场，画布上长出第三块板。 */
@@ -57,9 +56,9 @@
   border-radius: 9px;
   background: var(--dc-paper);
   color: var(--app-fg);
-  box-shadow: 0 0 0 1px var(--app-border), 0 12px 32px -10px rgba(27, 26, 22, 0.3);
+  /* 只留一条边，不投影——理由见 agents.css 的 .reel-app。 */
+  box-shadow: 0 0 0 1px var(--app-border);
 }
-[data-theme="dark"] .appwin { box-shadow: 0 0 0 1px var(--app-border), 0 12px 32px -10px rgba(0, 0, 0, 0.6); }
 .aw-head {
   display: flex; align-items: center; gap: 8px;
   height: 40px; flex: none; padding: 0 8px;

@@ -112,7 +112,14 @@ export type Chat = {
 
 export type App = {
   id: string;
+  /* manifest 里那枚 emoji。产品页头写的就是 `${icon} ${displayName}`，
+     所以凡是复刻产品窗口的地方（首屏那台机器、App 菜单那一支）印的
+     必须是它——那不是站点的排版选择，是那台机器上真实的样子。 */
   icon: string;
+  /* 站点目录那一栏用的描边图标名（见 components/icons.tsx 的 D）。
+     目录是站点自己的东西，它的邻居是 Base 那份视图目录——两份结构相同的
+     目录该用同一种笔法，而 emoji 与描边不是同一种笔法。 */
+  mark: string;
   name: string;
   description: string;
 };
@@ -149,11 +156,15 @@ const CHAT_SHELLS = [
   ["acp", "acp-handshake", "claude", "Haiku 4.5", "", "chats", "11s", [I_READ, I_SEARCH]],
 ] as const;
 
+/* 两枚标记各有各的去处：icon 是产品 manifest 里那枚 emoji，只在复刻
+   产品窗口的地方出现；mark 是站点目录那一栏的描边图标名。原来只有前者，
+   于是站点目录里印着 ✦ 加三枚彩色 emoji，而隔壁 Base 的目录是 15px/1.8
+   的描边——两份结构完全相同的目录，一份位图一份线条。 */
 const APP_SHELLS = [
-  { id: "design-canvas", icon: "✦" },
-  { id: "dev-kanban", icon: "🧭" },
-  { id: "expense-tracker", icon: "💰" },
-  { id: "fitness-log", icon: "🏋️" },
+  { id: "design-canvas", icon: "✦", mark: "grid" },
+  { id: "dev-kanban", icon: "🧭", mark: "kanban" },
+  { id: "expense-tracker", icon: "💰", mark: "chartColumn" },
+  { id: "fitness-log", icon: "🏋️", mark: "dumbbell" },
 ] as const;
 
 const LEDGER_ROWS = [
