@@ -10,8 +10,10 @@ Next.js App Router roots for unprefixed canonical English and four prefixed lang
 - `[locale]/`: Owns the twenty-four `/zh-CN`, `/ja`, `/fr`, and `/es` canonical pages.
 - `globals.css`: Imports the ordered plain-CSS cascade.
 - `sitemap.ts`: Emits thirty canonical URLs with complete English, translated, and `x-default` alternates.
+- `robots.ts`: Exports public crawl access and the production sitemap URL as `/robots.txt`.
+- `og.png/`: Generates the shared brand preview as a static PNG during the build.
 - `styles/`: Splits presentation by visual concern; see its README.
 
 Each route is statically generated. Root layouts choose `<html lang>` at build time; no component infers its content language from the browser.
 
-[PROTOCOL]: Update this file when members or route ownership change, then verify the project README.md.
+[PROTOCOL]: Update this header when making changes, then check README.md.

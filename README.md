@@ -3,7 +3,7 @@
 Next.js 16 App Router + React 19 + TypeScript + plain CSS + static export
 
 <directory>
-app/ - Thirty static routes: six unprefixed English pages plus twenty-four prefixed translations
+app/ - Thirty static pages plus crawler and social-image endpoints: six unprefixed English pages and twenty-four prefixed translations
 app/styles/ - Presentation split by tokens, base, the download control, shared/Agents features, the Base figures, hero, Apps, reels, the Subscription roster, the handoff graph, bands, and motion
 components/ - Shared site chrome, the download control, home sections, feature navigation, chart shapes, and product-faithful visuals
 components/apps/ - Four first-party App surfaces, their shared switcher, and the id-to-surface lookup
@@ -11,16 +11,16 @@ components/features/ - Feature catalog, navigation, document article, and code-d
 components/reels/ - Focused animated demonstrations for Agents, App editing, and Base views
 components/window/ - Hero product shell, transcript, composer, model menu, Plan panel, Apps page, and App Studio window
 content/ - Five locale-specific build-time Changelog snapshots
-lib/ - Typed i18n, the release snapshot, localized demo assembly, body-map paths, and Changelog parsing
+lib/ - Typed i18n, shared SEO identity and structured data, the release snapshot, localized demos, body-map paths, and Changelog parsing
 public/ - Brand assets, theme-aware hero backgrounds, and privacy-clean product screenshots
-scripts/ - Build-time Changelog synchronization, release-snapshot synchronization, and static i18n audit
+scripts/ - Explicit Changelog and release-snapshot synchronization, plus static i18n and SEO audits
 .github/workflows/ - One scheduled job that repoints the downloads at the newest published release
 </directory>
 
 <config>
 design-qa.md - Latest source-to-implementation visual verification for the Agents feature visuals
 next.config.ts - Thirty-page static export with no request-time data
-package.json - Development, i18n tests/audit, typecheck, both syncs, and production-build commands
+package.json - Development, i18n tests, typecheck, both syncs, and production builds with mandatory i18n/SEO audits
 postcss.config.mjs - Empty PostCSS pipeline; the site uses plain CSS
 tsconfig.json - Strict TypeScript with the `@/*` path alias
 </config>
@@ -34,6 +34,7 @@ owned by the Bottega desktop repository.
 Each concept has one source of truth:
 
 - `lib/release.ts` names the public repository and the build every download link points at.
+- `lib/seo/site.ts` owns the production origin and default social image dimensions for metadata, crawler routes, and audits.
 - `lib/i18n/catalogs/en.ts` defines the complete content shape; four translated catalogs must match it.
 - `lib/agents.ts` combines stable Agent/App facts with the current locale's demonstration copy.
 - `components/features/catalog.ts` combines stable feature identity with the current locale's content.
@@ -46,6 +47,33 @@ The App Router serves six canonical English pages without a prefix and the same 
 under `/zh-CN`, `/ja`, `/fr`, and `/es`. English and `x-default` share the unprefixed URLs; every
 other language has a self-canonical URL. No route infers language from the browser, redirects by
 language, or requires server data or client-side content fetching.
+
+## Search and sharing
+
+The production origin is `https://www.getbottega.app`, matching the destination of the apex domain's
+redirect. Canonical URLs, hreflang, Open Graph, JSON-LD, and the sitemap all use that origin and retain
+the existing trailing-slash route policy. The previous `bottega.app` origin is not the product website.
+
+All thirty pages have localized search titles and descriptions. Feature metadata has its own catalog
+fields, so descriptive search snippets do not change the visible headlines or short navigation labels.
+Each page includes a large Open Graph/Twitter preview: existing feature screenshots where available,
+otherwise a 1200 x 630 branded PNG generated locally at `/og.png` during the build.
+
+`/robots.txt` permits crawling and points to `/sitemap.xml`. Normal pages permit indexing and large
+image previews; the generated 404 remains `noindex`. Static JSON-LD describes the website and each
+localized page, the downloadable application on home pages, and breadcrumbs on feature and Changelog
+pages. Application facts reuse the release snapshot and the MIT source repository; no ratings are invented.
+
+`pnpm build` runs catalog tests, Next.js compilation/typechecking, and audits against the fresh export.
+The audits verify all thirty URLs, reciprocal HTML/XML alternates, unique metadata per locale,
+social image files and dimensions, JSON-LD parity, internal link targets, and the 404 policy.
+To inspect an existing export, run `pnpm audit:i18n` and `pnpm audit:seo`.
+
+After deploying, submit `https://www.getbottega.app/sitemap.xml` in the site's Google Search Console
+property and inspect representative English and translated URLs. Local export checks do not measure
+index coverage or field Core Web Vitals. SoftwareApplication markup describes the product; eligibility
+for app rich results also requires a genuine published rating or review under
+[Google's software app guidelines](https://developers.google.com/search/docs/appearance/structured-data/software-app).
 
 ## Styling
 
@@ -180,23 +208,26 @@ English and Simplified Chinese are synchronized from Bottega's public Changelog 
 Japanese, French, and Spanish are maintained by this repository. Five snapshots under `content/`
 let the site clone and build independently; tests enforce matching dates, order, and item counts.
 
-When developing as the Bottega-Dev submodule, run `pnpm sync:changelog` to refresh the snapshot.
-`pnpm build` attempts the same sync with `--if-present` and keeps the committed snapshot when the
-source repository is unavailable.
+When developing as the Bottega-Dev submodule, run `pnpm sync:changelog` to refresh the English and
+Chinese snapshots, then update the three maintained translations before building. Builds always
+read the committed snapshots without modifying them, so nested and independent checkouts publish
+the same content. Catalog parity is a mandatory build gate.
 
 ## Development
 
 ```bash
 pnpm install --ignore-workspace
 pnpm dev
-pnpm check   # typecheck + test:i18n + audit:i18n
+pnpm check   # catalog tests + fresh build/typecheck + i18n and SEO audits
 pnpm build
 ```
 
 `pnpm sync:release` is a release-time step rather than a build step: it needs the network, and `pnpm build` must
 stay offline.
 
-`pnpm check` chains the three gates that actually exist here. There is no `lint` script: Next.js 16
+`pnpm check` runs the complete production validation pipeline through `pnpm build`, so it cannot pass
+against stale or missing exported HTML. `pnpm typecheck` remains available for a quick source check.
+There is no `lint` script: Next.js 16
 removed `next lint`, and this repository never carried an ESLint configuration of its own — a script
 that cannot run is worse than no script, because it reads like a gate that is holding.
 

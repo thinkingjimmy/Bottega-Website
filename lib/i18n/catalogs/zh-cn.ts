@@ -2,7 +2,7 @@
  * [INPUT]: Uses the English baseline and CatalogShape parity type
  * [OUTPUT]: Exports the complete Simplified Chinese website catalog
  * [POS]: Simplified Chinese translation of every visitor-visible website string
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 import type { CatalogShape } from "../catalog-shape.ts";
@@ -10,8 +10,9 @@ import type { en } from "./en.ts";
 
 export const zhCN = {
   meta: {
-    siteTitle: "Bottega — 会自我构建的工作坊",
-    siteDescription: "一个工作坊，同时运行 Codex、Claude Code、Kimi Code 与 OpenCode；本地优先，沿用你已有的订阅。",
+    siteTitle: "Bottega — 开源 AI Agent 桌面工作台",
+    siteDescription: "在 Bottega 开源桌面工作台中统一使用 Codex、Claude Code、Kimi Code 和 OpenCode。沿用已有订阅，通过对话构建 AI 应用、管理本地数据，支持 macOS、Windows 和 Linux。",
+    socialImageAlt: "Bottega：在 macOS、Windows 和 Linux 上使用 Codex、Claude Code、Kimi Code 和 OpenCode",
   },
   language: { label: "语言", selected: "已选择" },
   nav: { features: "功能", changelog: "更新日志" },
@@ -94,12 +95,16 @@ export const zhCN = {
     sidebarNavigation: "功能文档",
     breadcrumb: "功能",
     agents: {
+      metaTitle: "Codex 与 Claude Code 的统一桌面工作台",
+      metaDescription: "在同一个本地工作空间使用 Codex、Claude Code、Kimi Code 和 OpenCode 的官方 CLI，沿用已有订阅。保留对话记录，让不同 Agent 通过 Chat 持续交接任务。",
       label: "Agents",
       menuCopy: "Codex、Claude、Kimi 与 OpenCode",
       title: "换 Agent，不换工作空间。",
       deck: "在同一个本地工作空间运行 Codex、Claude Code、Kimi Code 与 OpenCode——使用它们的官方 CLI、你已有的订阅，无需额外付费。",
     },
     apps: {
+      metaTitle: "用 AI Agent 构建与安装应用",
+      metaDescription: "在 Bottega 中构建和安装拥有独立界面、数据与权限的 AI 应用。探索设计画布、开发看板、记账工具和健身记录，让 Agent 的成果成为可以持续使用的工具。",
       label: "Apps",
       menuCopy: "围绕任务构建的可用界面",
       title: "把 Agent 的成果变成可以持续使用的界面。",
@@ -138,6 +143,8 @@ export const zhCN = {
       ],
     },
     customizable: {
+      metaTitle: "通过 AI 对话定制应用",
+      metaDescription: "在 Bottega 应用的源码项目中与 AI Agent 对话，描述你想改变的功能、数据或界面。Agent 在同一工作台内修改代码并重新构建应用，让使用与编辑各有清晰的上下文。",
       label: "可定制",
       menuCopy: "在 App 自己的源码 Chat 中编辑",
       title: "和源码对话，就能编辑 App。",
@@ -171,6 +178,8 @@ export const zhCN = {
       ],
     },
     base: {
+      metaTitle: "Base：用 AI 管理本地数据与六种视图",
+      metaDescription: "通过 AI 对话在 Bottega Base 中创建、整理和查询本地数据。用表格、列表、看板、图表、画廊和地图查看同一份记录，在 Chat 与应用之间持续复用。",
       label: "Base",
       menuCopy: "和 Agent 一起整理、查看数据",
       title: "让对话里的信息，成为用得上的数据。",

@@ -2,7 +2,7 @@
  * [INPUT]: Uses feature static params, the English catalog, canonical metadata, and FeaturePageView
  * [OUTPUT]: Statically renders four unprefixed English feature routes
  * [POS]: Canonical English and x-default feature entry
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 import { FeaturePageView } from "@/components/pages/feature-page";
@@ -22,8 +22,8 @@ export async function generateMetadata({ params }: Props) {
   return buildMetadata({
     locale: "en",
     logicalPath: `/features/${feature.slug}/`,
-    title: feature.label,
-    description: feature.deck,
+    title: catalog.features[feature.slug].metaTitle,
+    description: catalog.features[feature.slug].metaDescription,
     catalog,
     image: featureOpenGraphImage(feature),
   });

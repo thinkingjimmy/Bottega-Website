@@ -2,7 +2,7 @@
  * [INPUT]: Uses the English baseline and CatalogShape parity type
  * [OUTPUT]: Exports the complete Japanese website catalog
  * [POS]: Japanese translation of every visitor-visible website string
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 import type { CatalogShape } from "../catalog-shape.ts";
@@ -10,8 +10,9 @@ import type { en } from "./en.ts";
 
 export const ja = {
   meta: {
-    siteTitle: "Bottega — 自らを組み上げるワークショップ",
-    siteDescription: "Codex、Claude Code、Kimi Code、OpenCode をひとつの場所で。ローカルファーストで、すでに契約しているサブスクリプションをそのまま使えます。",
+    siteTitle: "Bottega — オープンソースの AI エージェントワークスペース",
+    siteDescription: "Codex、Claude Code、Kimi Code、OpenCode をひとつのデスクトップで。既存のサブスクリプションを使い、AI アプリの構築とローカルデータの管理ができるオープンソースのワークスペースです。",
+    socialImageAlt: "Bottega：macOS、Windows、Linux で Codex、Claude Code、Kimi Code、OpenCode を利用",
   },
   language: { label: "言語", selected: "選択中" },
   nav: { features: "機能", changelog: "更新履歴" },
@@ -94,12 +95,16 @@ export const ja = {
     sidebarNavigation: "機能ドキュメント",
     breadcrumb: "機能",
     agents: {
+      metaTitle: "Codex と Claude Code をひとつのデスクトップで",
+      metaDescription: "Codex、Claude Code、Kimi Code、OpenCode の公式 CLI を同じローカルワークスペースで利用。既存の契約を使い、履歴を保ちながら Chat 間で作業を引き継げます。",
       label: "Agents",
       menuCopy: "Codex、Claude、Kimi、OpenCode",
       title: "Agent を替えても、ワークスペースはそのまま。",
       deck: "Codex、Claude Code、Kimi Code、OpenCode を同じローカルワークスペースで実行。公式 CLI と既存のサブスクリプションを使うため、追加料金はかかりません。",
     },
     apps: {
+      metaTitle: "AI エージェントでアプリを構築・インストール",
+      metaDescription: "専用の画面、データ、権限を持つ AI アプリを Bottega で構築・インストール。デザインキャンバス、開発カンバン、支出管理、運動記録など、継続して使えるツールを作れます。",
       label: "Apps",
       menuCopy: "タスクに合わせてつくられた実用的な画面",
       title: "Agent の成果を、使い続けられる画面に。",
@@ -138,6 +143,8 @@ export const ja = {
       ],
     },
     customizable: {
+      metaTitle: "AI との対話でアプリをカスタマイズ",
+      metaDescription: "Bottega アプリのソースプロジェクトで AI エージェントと対話し、機能や画面の変更を依頼。同じワークスペースでコードを更新し、アプリを再ビルドできます。",
       label: "カスタマイズ",
       menuCopy: "App 自身のソース Chat で編集",
       title: "ソースと話して App を編集する。",
@@ -171,6 +178,8 @@ export const ja = {
       ],
     },
     base: {
+      metaTitle: "Base：AI と管理するローカルデータと6つのビュー",
+      metaDescription: "Bottega Base で AI と対話しながらローカルデータを作成・整理・検索。テーブル、リスト、カンバン、チャート、ギャラリー、マップで同じ記録を表示し、Chat やアプリで共有できます。",
       label: "Base",
       menuCopy: "Agent と一緒にデータを整理・活用",
       title: "会話の情報を、使えるデータに。",

@@ -2,14 +2,14 @@
  * [INPUT]: Has no runtime dependencies
  * [OUTPUT]: Exports the complete English website copy baseline
  * [POS]: Canonical catalog whose structure defines every translated catalog
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 export const en = {
   meta: {
-    siteTitle: "Bottega — the workshop that builds itself",
-    siteDescription:
-      "One workshop for Codex, Claude Code, Kimi Code and OpenCode — local-first, on the subscriptions you already pay for.",
+    siteTitle: "Bottega — Open-Source AI Agent Workspace",
+    siteDescription: "Run Codex, Claude Code, Kimi Code and OpenCode in one open-source desktop workspace. Build AI apps, manage local data and use your existing subscriptions.",
+    socialImageAlt: "Bottega with Codex, Claude Code, Kimi Code and OpenCode for macOS, Windows and Linux",
   },
   language: {
     label: "Language",
@@ -116,6 +116,8 @@ export const en = {
     sidebarNavigation: "Feature documentation",
     breadcrumb: "Features",
     agents: {
+      metaTitle: "Codex & Claude Code Desktop Workspace",
+      metaDescription: "Run Codex, Claude Code, Kimi Code and OpenCode in one desktop workspace. Use official CLIs, your existing subscriptions and persistent Chat handoffs.",
       label: "Agents",
       menuCopy: "Codex, Claude, Kimi, and OpenCode",
       title: "Switch Agents, keep your workspace.",
@@ -123,6 +125,8 @@ export const en = {
         "Run Codex, Claude Code, Kimi Code, and OpenCode in the same local workspace—using their official CLIs and the subscriptions you already have, with no extra fees.",
     },
     apps: {
+      metaTitle: "Build AI Apps with Your Coding Agents",
+      metaDescription: "Build and install AI apps with their own interfaces, data and permissions. Explore Bottega’s design canvas, task board, expense tracker and fitness log.",
       label: "Apps",
       menuCopy: "Working interfaces built around your task",
       title: "Turn Agent work into a surface you can keep using.",
@@ -164,6 +168,8 @@ export const en = {
       ],
     },
     customizable: {
+      metaTitle: "Customize Apps Through AI Chat",
+      metaDescription: "Customize Bottega apps by chatting with an AI agent in their source project. Describe a change, update the code and rebuild in the same workspace.",
       label: "Customizable",
       menuCopy: "Edit an App through its own source Chat",
       title: "Edit the App by talking to its source.",
@@ -204,6 +210,8 @@ export const en = {
       ],
     },
     base: {
+      metaTitle: "Local AI Database with Six Data Views",
+      metaDescription: "Organize local data with AI chat in Bottega Base. Explore one set of records in table, list, Kanban, chart, gallery and map views across Chats and Apps.",
       label: "Base",
       menuCopy: "Organize and explore data with your Agent",
       title: "Turn conversations into data you can use.",

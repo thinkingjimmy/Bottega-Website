@@ -1,19 +1,20 @@
 /**
- * [INPUT]: Uses the completed out/ static export and the known locale/logical route matrix
+ * [INPUT]: Uses the completed out/ static export, shared production origin, and known locale/logical route matrix
  * [OUTPUT]: Fails on missing pages, wrong lang/canonical/hreflang, weak metadata, invalid English prefixes, sitemap drift, or key leaks
  * [POS]: Post-build static i18n audit for six unprefixed English and twenty-four prefixed pages
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { SITE_URL } from "../lib/seo/site.ts";
 
 const root = join(fileURLToPath(new URL("..", import.meta.url)));
 const locales = ["en", "zh-CN", "ja", "fr", "es"];
 const logicalPaths = ["/", "/changelog/", "/features/agents/", "/features/apps/", "/features/customizable/", "/features/base/"];
-const origin = "https://bottega.app";
+const origin = SITE_URL;
 
 function localizedPath(locale, logicalPath) {
   return locale === "en" ? logicalPath : `/${locale}${logicalPath}`;
@@ -66,6 +67,6 @@ const expectedLocations = logicalPaths.flatMap((logicalPath) =>
 );
 assert.equal(sitemapLocations.length, expectedLocations.length, "sitemap: canonical URL count");
 assert.deepEqual(new Set(sitemapLocations), new Set(expectedLocations), "sitemap: canonical URL set");
-assert.doesNotMatch(sitemap, /<loc>https:\/\/bottega\.app\/en(?:\/|<)/, "sitemap: English must stay unprefixed");
+assert.ok(sitemapLocations.every((url) => !new URL(url).pathname.startsWith("/en/")), "sitemap: English must stay unprefixed");
 
 console.log(`audit-static-i18n: ${expectedLocations.length} pages passed`);

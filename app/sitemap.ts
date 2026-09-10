@@ -2,13 +2,13 @@
  * [INPUT]: Uses the public site origin, five locales, localized paths, and six logical routes
  * [OUTPUT]: Exports a static sitemap containing exactly thirty self-canonical localized pages
  * [POS]: Search discovery map for the complete localized static site
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 import type { MetadataRoute } from "next";
 import { FEATURE_SLUGS } from "@/components/features/catalog";
 import { LOCALES, localizedPath } from "@/lib/i18n/locale";
-import { SITE_URL } from "@/lib/i18n/metadata";
+import { SITE_URL } from "@/lib/seo/site";
 
 const LOGICAL_PATHS = [
   "/",

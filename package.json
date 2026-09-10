@@ -6,14 +6,15 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/sync-changelog.mjs --if-present && next build --webpack",
+    "build": "pnpm test:i18n && next build --webpack && pnpm audit:i18n && pnpm audit:seo",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "check": "pnpm typecheck && pnpm test:i18n && pnpm audit:i18n",
+    "check": "pnpm build",
     "sync:changelog": "node scripts/sync-changelog.mjs",
     "sync:release": "node scripts/sync-release.mjs",
     "test:i18n": "node --experimental-strip-types --test lib/i18n/*.test.mjs",
-    "audit:i18n": "node scripts/audit-static-i18n.mjs"
+    "audit:i18n": "node --experimental-strip-types scripts/audit-static-i18n.mjs",
+    "audit:seo": "node --experimental-strip-types scripts/audit-static-seo.mjs"
   },
   "dependencies": {
     "next": "16.3.3",

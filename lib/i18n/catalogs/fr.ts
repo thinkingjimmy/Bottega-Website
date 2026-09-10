@@ -2,7 +2,7 @@
  * [INPUT]: Uses the English baseline and CatalogShape parity type
  * [OUTPUT]: Exports the complete French website catalog
  * [POS]: French translation of every visitor-visible website string
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 import type { CatalogShape } from "../catalog-shape.ts";
@@ -10,8 +10,9 @@ import type { en } from "./en.ts";
 
 export const fr = {
   meta: {
-    siteTitle: "Bottega — l’atelier qui se construit lui-même",
-    siteDescription: "Un seul atelier pour Codex, Claude Code, Kimi Code et OpenCode — local d’abord, avec les abonnements que vous payez déjà.",
+    siteTitle: "Bottega — Espace de travail open source pour agents IA",
+    siteDescription: "Réunissez Codex, Claude Code, Kimi Code et OpenCode sur votre bureau. Créez des apps IA et gérez vos données locales avec vos abonnements existants.",
+    socialImageAlt: "Bottega avec Codex, Claude Code, Kimi Code et OpenCode sur macOS, Windows et Linux",
   },
   language: { label: "Langue", selected: "Sélectionné" },
   nav: { features: "Fonctions", changelog: "Nouveautés" },
@@ -97,12 +98,16 @@ export const fr = {
     sidebarNavigation: "Documentation des fonctions",
     breadcrumb: "Fonctions",
     agents: {
+      metaTitle: "Codex et Claude Code dans un même espace",
+      metaDescription: "Utilisez les CLI officiels de Codex, Claude Code, Kimi Code et OpenCode dans Bottega. Gardez vos abonnements et transmettez le travail entre Chats.",
       label: "Agents",
       menuCopy: "Codex, Claude, Kimi et OpenCode",
       title: "Changez d’Agent, gardez le même espace de travail.",
       deck: "Exécutez Codex, Claude Code, Kimi Code et OpenCode dans le même espace de travail local, avec leurs CLI officielles et vos abonnements existants, sans frais supplémentaires.",
     },
     apps: {
+      metaTitle: "Créer des applications avec vos agents IA",
+      metaDescription: "Créez et installez des apps IA avec interface, données et permissions. Découvrez le canevas de design, le Kanban, le suivi des dépenses et du sport.",
       label: "Apps",
       menuCopy: "Des interfaces conçues autour de votre tâche",
       title: "Transformez le travail de l’Agent en interface durable.",
@@ -141,6 +146,8 @@ export const fr = {
       ],
     },
     customizable: {
+      metaTitle: "Personnaliser vos apps par Chat avec l’IA",
+      metaDescription: "Décrivez vos changements à un agent IA dans le projet source de votre app Bottega. Modifiez le code et reconstruisez l’app dans le même espace.",
       label: "Personnalisable",
       menuCopy: "Modifiez une App dans son propre Chat source",
       title: "Modifiez l’App en parlant à sa source.",
@@ -174,6 +181,8 @@ export const fr = {
       ],
     },
     base: {
+      metaTitle: "Base : données locales et six vues avec l’IA",
+      metaDescription: "Organisez vos données locales par Chat dans Bottega Base. Explorez les mêmes données en tableau, liste, Kanban, graphique, galerie ou carte.",
       label: "Base",
       menuCopy: "Organisez et explorez vos données avec votre Agent",
       title: "Transformez vos conversations en données utiles.",

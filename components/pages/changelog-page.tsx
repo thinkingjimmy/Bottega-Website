@@ -1,8 +1,8 @@
 /**
- * [INPUT]: Uses one Locale, its SiteCatalog, locale-specific Changelog snapshot, and shared site chrome
- * [OUTPUT]: Exports ChangelogPageView for canonical English and four prefixed locale routes
+ * [INPUT]: Uses one Locale, its SiteCatalog, page structured data, Changelog snapshot, and shared site chrome
+ * [OUTPUT]: Exports ChangelogPageView with static page/breadcrumb JSON-LD for all five locales
  * [POS]: Locale-neutral milestone page composition
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 import { getCatalog, type Locale } from "@/lib/i18n";
@@ -10,6 +10,7 @@ import { readEntries, renderInline } from "@/lib/changelog";
 import { SiteFooter } from "../site-footer";
 import { SiteHeader } from "../site-header";
 import { featuresFor } from "../features/catalog";
+import { PageStructuredData } from "./structured-data";
 
 export function ChangelogPageView({ locale }: { locale: Locale }) {
   const catalog = getCatalog(locale);
@@ -18,6 +19,13 @@ export function ChangelogPageView({ locale }: { locale: Locale }) {
 
   return (
     <div className="content">
+      <PageStructuredData
+        locale={locale}
+        logicalPath="/changelog/"
+        catalog={catalog}
+        title={catalog.changelog.metaTitle}
+        description={catalog.changelog.metaDescription}
+      />
       <SiteHeader variant="framed" locale={locale} copy={catalog.nav} download={catalog.download} features={features} />
       <section className="section" style={{ paddingTop: 96 }}>
         <div className="wrap">

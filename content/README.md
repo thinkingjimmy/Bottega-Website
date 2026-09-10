@@ -11,6 +11,7 @@
 - `changelog.es.md`: Spanish snapshot maintained by the website repository.
 
 All snapshots preserve the English entry dates, order, and item counts. The i18n content test enforces this contract.
+All five snapshots include v0.1.1, v0.1.2, and v0.1.3. Builds read committed content without synchronizing it; new upstream releases enter through the explicit synchronization and translation workflow below.
 
 `sync:changelog` refreshes only the two synchronized snapshots. When it brings in a new entry, the three
 maintained translations must gain the same entry in the same change — otherwise `pnpm check` fails on
@@ -20,4 +21,4 @@ Entries use `**bold**` and `` `code` `` only. A markdown link survives as its la
 address (see `lib/changelog.ts`): the upstream links point into the docs repository, and those paths
 do not exist on this site.
 
-[PROTOCOL]: Update this file when members or responsibilities change, then verify the project README.md.
+[PROTOCOL]: Update this header when making changes, then check README.md.

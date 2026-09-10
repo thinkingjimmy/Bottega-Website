@@ -1,8 +1,8 @@
 /**
- * [INPUT]: Uses locale/slug, localized feature assembly, DemoData, feature articles, Base figures, and shared site chrome
- * [OUTPUT]: Exports FeaturePageView for canonical English and prefixed feature routes
+ * [INPUT]: Uses locale/slug, localized feature copy, page structured data, DemoData, articles, Base figures, and site chrome
+ * [OUTPUT]: Exports FeaturePageView with static page/breadcrumb JSON-LD for all localized feature routes
  * [POS]: Locale-neutral feature composition with one specialized Agents branch
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 import { notFound } from "next/navigation";
@@ -15,6 +15,7 @@ import { featureBySlug, featuresFor } from "../features/catalog";
 import { FeatureSidebar } from "../features/feature-sidebar";
 import { SiteFooter } from "../site-footer";
 import { SiteHeader } from "../site-header";
+import { PageStructuredData } from "./structured-data";
 
 export function FeaturePageView({ locale, slug }: { locale: Locale; slug: string }) {
   const catalog = getCatalog(locale);
@@ -26,6 +27,13 @@ export function FeaturePageView({ locale, slug }: { locale: Locale; slug: string
 
   return (
     <div className="content">
+      <PageStructuredData
+        locale={locale}
+        logicalPath={logicalPath}
+        catalog={catalog}
+        title={catalog.features[feature.slug].metaTitle}
+        description={catalog.features[feature.slug].metaDescription}
+      />
       <SiteHeader variant="framed" locale={locale} copy={catalog.nav} download={catalog.download} features={features} />
       <div className="wrap feature-layout">
         <FeatureSidebar

@@ -2,7 +2,7 @@
  * [INPUT]: Uses locale/feature static params, localized metadata, and FeaturePageView
  * [OUTPUT]: Statically renders sixteen canonical locale-prefixed feature pages
  * [POS]: Canonical non-English feature route
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 import { notFound } from "next/navigation";
@@ -26,8 +26,8 @@ export async function generateMetadata({ params }: Props) {
   return buildMetadata({
     locale,
     logicalPath: `/features/${feature.slug}/`,
-    title: feature.label,
-    description: feature.deck,
+    title: catalog.features[feature.slug].metaTitle,
+    description: catalog.features[feature.slug].metaDescription,
     catalog,
     image: featureOpenGraphImage(feature),
   });

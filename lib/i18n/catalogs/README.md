@@ -11,6 +11,7 @@
 - `es.ts`: Complete Spanish product translation.
 
 Commands, paths, model names, product identities, and code-level terminology remain unchanged when translation would alter their meaning.
+`meta` owns the homepage search title, description, and default social image alt text. Each `features.<slug>` also owns a `metaTitle` and `metaDescription` so search snippets can describe the feature without changing its navigation label or visible headline. Metadata and structured data consume these same fields in every language.
 `demo.apps.items` pairs each localized switcher title with its concrete user-facing description so the two cannot drift apart.
 Locale-neutral legal boilerplate stays in the owning component instead of being duplicated across catalogs.
 `home.subscription` carries only the section's prose and the two roster labels; the CLI names and their sign-in commands live in `lib/agents.ts`, because a terminal command reads the same in every locale.
@@ -19,4 +20,4 @@ Locale-neutral legal boilerplate stays in the owning component instead of being 
 `demo.baseVisual.columnTypes` and `viewNames` are the desktop product's own `bases.columnType.*` and `bases.viewType.*` strings; translate them by copying that catalog, never by inventing a synonym. Tool names and owner-key prefixes stay untranslated because they are identifiers.
 `demo.agentsVisual.relayFrom` and `queueItem` are templates, not sentences: the Chat name and Section id are substituted at render time, so the two handoffs cannot name different Chats than the sidebar shows.
 
-[PROTOCOL]: Update this file when members or responsibilities change, then verify the parent README.md.
+[PROTOCOL]: Update this header when making changes, then check README.md.
