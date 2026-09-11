@@ -12,7 +12,7 @@ export const PLATFORMS = ["mac", "windows", "linux"] as const;
 export type PlatformId = (typeof PLATFORMS)[number];
 
 /* ── 一份快照，不是一次猜测 ────────────────────────────────────
- * 资产名带版本号（Bottega-0.1.3-arm64.dmg），于是 GitHub 那条
+ * 资产名带版本号（Bottega-0.1.4-arm64.dmg），于是 GitHub 那条
  * /releases/latest/download/<name> 短链在这里用不上——它要求文件名恒定。
  * 站点只好自己记住：版本号，与三个确实挂在那个 Release 上的文件名。
  *
@@ -21,11 +21,11 @@ export type PlatformId = (typeof PLATFORMS)[number];
  * 只在同步那一刻被回答一次，而不是每个访客各自撞一次运气。
  * ────────────────────────────────────────────────────────── */
 export const RELEASE = {
-  version: "0.1.3",
+  version: "0.1.4",
   assets: {
-    mac: "Bottega-0.1.3-arm64.dmg",
-    windows: "Bottega-0.1.3-windows-x64.exe",
-    linux: "Bottega-0.1.3-linux-x86_64.AppImage",
+    mac: "Bottega-0.1.4-arm64.dmg",
+    windows: "Bottega-0.1.4-windows-x64.exe",
+    linux: "Bottega-0.1.4-linux-x86_64.AppImage",
   },
 } satisfies { version: string; assets: Record<PlatformId, string> };
 
