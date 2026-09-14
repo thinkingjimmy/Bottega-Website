@@ -210,6 +210,14 @@ export const fr = {
           ],
           points: [],
         },
+        {
+          heading: "Sauvegarder le contenu local enregistré",
+          paragraphs: [
+            "Pour les versions utilisant le format de dossier v1, quittez complètement Bottega avant de copier tout le dossier choisi lors de la configuration. Choisissez cette copie après une réinstallation pour restaurer le contenu local. Une copie pendant l’exécution peut être incomplète.",
+            "L’emplacement reste fixe après la configuration. Pour le déplacer, quittez Bottega, copiez le dossier entier, puis choisissez la copie après réinstallation. Les dossiers iCloud Drive, Dropbox, OneDrive et autres services de synchronisation ne sont pas pris en charge. Utilisez Bottega Cloud Sync sur plusieurs appareils.",
+          ],
+          points: [],
+        },
       ],
     },
     agentsArticle: {

@@ -210,6 +210,14 @@ export const es = {
           ],
           points: [],
         },
+        {
+          heading: "Haz una copia del contenido local guardado",
+          paragraphs: [
+            "En las versiones con formato de carpeta v1, cierra Bottega por completo antes de copiar toda la carpeta elegida en la configuración. Tras reinstalar, elige la copia para restaurar el contenido local. Una copia mientras la aplicación está abierta puede estar incompleta.",
+            "La ubicación queda fija después de la configuración. Para cambiarla, cierra Bottega, copia toda la carpeta y elige la copia al reinstalar. No se admiten carpetas de iCloud Drive, Dropbox, OneDrive u otros servicios de sincronización. Usa Bottega Cloud Sync para varios dispositivos.",
+          ],
+          points: [],
+        },
       ],
     },
     agentsArticle: {

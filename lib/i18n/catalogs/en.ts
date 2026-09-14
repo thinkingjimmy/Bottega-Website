@@ -247,6 +247,14 @@ export const en = {
           ],
           points: [],
         },
+        {
+          heading: "Back up your saved local content",
+          paragraphs: [
+            "In releases with folder format v1, quit Bottega completely before copying the entire folder chosen during setup. Opening that copy after reinstalling restores saved local content; a copy made while the app is running is best effort and may have missing content.",
+            "The folder location is fixed after setup. To move it, quit, copy the whole folder, then choose the copy after reinstalling. iCloud Drive, Dropbox, OneDrive and other file-sync directories are unsupported; use Bottega Cloud Sync for multiple devices.",
+          ],
+          points: [],
+        },
       ],
     },
     agentsArticle: {

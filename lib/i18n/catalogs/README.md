@@ -20,4 +20,6 @@ Locale-neutral legal boilerplate stays in the owning component instead of being 
 `demo.baseVisual.columnTypes` and `viewNames` are the desktop product's own `bases.columnType.*` and `bases.viewType.*` strings; translate them by copying that catalog, never by inventing a synonym. Tool names and owner-key prefixes stay untranslated because they are identifiers.
 `demo.agentsVisual.relayFrom` and `queueItem` are templates, not sentences: the Chat name and Section id are substituted at render time, so the two handoffs cannot name different Chats than the sidebar shows.
 
+The Base articles also explain closed-app folder backups, fixed setup locations and unsupported file-sync directories in all five locales.
+
 [PROTOCOL]: Update this header when making changes, then check README.md.

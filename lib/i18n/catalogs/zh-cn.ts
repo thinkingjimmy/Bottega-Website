@@ -207,6 +207,14 @@ export const zhCN = {
           ],
           points: [],
         },
+        {
+          heading: "备份已保存的本机内容",
+          paragraphs: [
+            "使用库格式 v1 的版本中，请完全退出 Bottega，再复制首次设置时选择的整个文件夹。重装后选择副本即可恢复已保存的本机内容；运行中复制只能尽力恢复，可能有内容缺失。",
+            "首次设置后文件夹位置固定。需要换位置时，请退出、完整复制，重装后再选择副本。不支持 iCloud Drive、Dropbox、OneDrive 等网盘同步目录；多设备使用请通过 Bottega Cloud Sync。",
+          ],
+          points: [],
+        },
       ],
     },
     agentsArticle: {
