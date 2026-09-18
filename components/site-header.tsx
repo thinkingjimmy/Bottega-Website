@@ -1,7 +1,7 @@
 /**
  * [INPUT]: Uses locale-aware paths, localized catalog/features, Disclosure, DownloadButton, and shared icon primitives
  * [OUTPUT]: Exports SiteHeader with language-preserving feature discovery, navigation, and the split download control
- * [POS]: Single localized navigation header shared by the shrinking home stage and framed subpages
+ * [POS]: Single localized navigation header shared by the shrinking home stage, the floating home bar, and framed subpages
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
@@ -16,10 +16,12 @@ import { localizedPath, type Locale } from "@/lib/i18n/locale";
 import { REPO } from "@/lib/release";
 
 /**
- * stage  —— 住在首屏上缘让出来的那条带子里：高度、透明度、内缩都跟收缩进度走
- * framed —— 子页没有那台钉住的桌面，于是定高、下缘一条发丝线
+ * stage    —— 住在首屏上缘让出来的那条带子里：高度、透明度、内缩都跟收缩进度走
+ * framed   —— 子页没有那台钉住的桌面，于是定高、下缘一条发丝线，滚动时贴在顶上
+ * floating —— 首页那条带子随桌面滚走之后接班的一条：定高、玻璃底，由
+ *             FloatingHeader 决定何时滑下来
  *
- * 两处导航内容完全一致。「当前页那条要不要藏起来」是个特殊情况，而它换来的
+ * 三处导航内容完全一致。「当前页那条要不要藏起来」是个特殊情况，而它换来的
  * 只是少一条链接——不值得让这个组件多一个分支。
  */
 export function SiteHeader({
@@ -29,7 +31,7 @@ export function SiteHeader({
   download,
   features,
 }: {
-  variant: "stage" | "framed";
+  variant: "stage" | "framed" | "floating";
   locale: Locale;
   copy: SiteCatalog["nav"];
   download: SiteCatalog["download"];

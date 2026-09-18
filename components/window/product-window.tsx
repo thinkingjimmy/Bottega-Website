@@ -2,12 +2,12 @@
 
 /**
  * [INPUT]: Uses React state, localized DemoData, transcript/composer/Plan/Apps modules, and product icons
- * [OUTPUT]: Exports ProductWindow with localized Chat and Apps surfaces and optional persistent Composer disclosure
+ * [OUTPUT]: Exports ProductWindow with localized Chat and Apps surfaces, optional persistent Composer disclosure, and an onChat hand-off of the open Chat
  * [POS]: Canonical product-window implementation shared by Home and Agents feature illustrations
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   defaultTurn,
   type AgentId,
@@ -61,6 +61,7 @@ export function ProductWindow({
   pinnedComposerMenu,
   surface,
   onSurface,
+  onChat,
   onOpenApp,
   appOpen,
   appLead,
@@ -69,6 +70,9 @@ export function ProductWindow({
   pinnedComposerMenu?: "agent" | "model";
   surface: "chat" | "app";
   onSurface?: (surface: "chat" | "app") => void;
+  /* 首屏那台手机镜像的是这扇窗里打开的那条 Chat：换一条、换个 Agent，
+     手机上跟着变。窗自己持有 chat 状态，所以由它把当前那条交出去。 */
+  onChat?: (chat: Chat) => void;
   /* 打开一只 App 得到的是一扇独立的窗，而那扇窗盖在这台机器之外——
      只有装得下第二扇窗的宿主（首屏那块桌面）给得出这只手。 */
   onOpenApp?: (app: App) => void;
@@ -97,6 +101,10 @@ export function ProductWindow({
   const planChat = chats.find((chat) => chat.id === planChatId) ?? null;
   const planOpen = !isApp && planChatId === open.id;
   const chrome = demo.copy.chrome;
+
+  useEffect(() => {
+    onChat?.(open);
+  }, [onChat, open]);
 
   const patch = (turn: Partial<Chat>) =>
     setChats((current) =>

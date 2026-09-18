@@ -1,0 +1,205 @@
+/**
+ * [INPUT]: Uses the --app-* palette and the .chat/.bubble/.plan-card transcript classes from ./shell.css, ./surface.css and ./composer.css
+ * [OUTPUT]: Styles ProductPhone — the frame, the quiet status row, the Web-shell header and composer — and shrinks the shared transcript to fit its screen
+ * [POS]: Second device of the first screen; the sync story mounts the same phone alone, so its geometry lives here rather than in the hero shell
+ * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ */
+
+/* ── 一部手机，不是一张 iOS 截图 ─────────────────────────────────
+ * 边框 4px 的石墨渐变加一圈高光：厚一点就成了黑框，全黑就成了「贴上去的
+ * 图」。状态栏只留时间与四格信号——电池、运营商、Wi-Fi 都是别人的 UI；
+ * 灵动岛留一小粒，够说明这是一部手机。屏幕里跑的是 Web 壳：页头、
+ * 同一支转录、带电脑芯片的输入框。
+ * ────────────────────────────────────────────────────────── */
+.phone {
+  position: absolute;
+  z-index: 3;
+  right: 60px;
+  bottom: 40px;
+  width: 232px;
+  height: 474px;
+  padding: 4px;
+  border-radius: 34px;
+  background: linear-gradient(160deg, #4a4a4d, #2b2b2e 45%, #3a3a3d);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.28),
+    0 0 0 1px rgba(0, 0, 0, 0.28),
+    0 2px 6px rgba(0, 0, 0, 0.2),
+    0 40px 70px -28px rgba(0, 0, 0, 0.6);
+  font-size: 11px;
+  line-height: 1.4;
+}
+.phone-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 30px;
+  background: var(--app-bg);
+  color: var(--app-fg);
+}
+.ph-island {
+  position: absolute;
+  z-index: 2;
+  top: 9px;
+  left: 50%;
+  width: 54px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #1c1c1e;
+  transform: translateX(-50%);
+}
+.ph-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 32px;
+  padding: 4px 22px 0;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--app-muted-fg);
+}
+.ph-signal {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 1.5px;
+  height: 10px;
+}
+.ph-signal i {
+  display: block;
+  width: 2.5px;
+  border-radius: 1px;
+  background: currentColor;
+}
+.ph-signal i:nth-child(1) { height: 4px; }
+.ph-signal i:nth-child(2) { height: 6px; }
+.ph-signal i:nth-child(3) { height: 8px; }
+.ph-signal i:nth-child(4) { height: 10px; }
+
+.ph-head {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  flex: none;
+  padding: 4px 12px 10px 10px;
+  border-bottom: 1px solid var(--app-border);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+}
+.ph-title {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ── 同一支转录，缩到手机的尺度 ──────────────────────────────────
+ * 内容与桌面那扇窗逐字相同（同一个组件读同一条 Chat），只把字号、内边距
+ * 与圆角按屏幕收一档。顶上装不下的那截翻到滚动区外，与桌面一样。 */
+.phone .chat {
+  padding: 12px 12px 8px;
+  gap: 9px;
+  font-size: 11px;
+}
+.phone .chat > * {
+  flex: none;
+}
+.phone .bubble {
+  max-width: 86%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+}
+.phone .worked,
+.phone .trace {
+  font-size: 10.5px;
+}
+.phone .reply,
+.phone .reply p {
+  font-size: 11px;
+}
+.phone .plan-card {
+  border-radius: 10px;
+}
+.phone .plan-head {
+  padding: 9px 10px 0;
+  font-size: 10.5px;
+}
+.phone .plan-actions {
+  display: none;
+}
+.phone .plan-body {
+  padding: 4px 10px 0;
+  max-height: 70px;
+}
+.phone .plan-body h3 {
+  font-size: 12px;
+}
+.phone .plan-body h4 {
+  font-size: 11px;
+}
+.phone .plan-body li {
+  font-size: 10.5px;
+}
+.phone .shimmer-row {
+  font-size: 10.5px;
+}
+
+.ph-composer {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 10px 10px;
+  padding: 8px 8px 8px 10px;
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+}
+.ph-field {
+  color: var(--app-muted-fg);
+}
+.ph-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ph-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 9999px;
+  background: var(--app-accent);
+  font-size: 10.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.ph-chip--agent {
+  padding: 0 6px;
+}
+.ph-send {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-left: auto;
+  border-radius: 9999px;
+  background: var(--app-primary);
+  color: var(--app-primary-fg);
+}
+.ph-home {
+  flex: none;
+  align-self: center;
+  width: 88px;
+  height: 4px;
+  margin: 2px 0 6px;
+  border-radius: 9999px;
+  background: var(--app-fg);
+  opacity: 0.85;
+}

@@ -1,0 +1,316 @@
+/**
+ * [INPUT]: Uses the --app-* palette, --figure-inset-*, --font-mono, and the .phone geometry from ../hero/phone.css
+ * [OUTPUT]: Draws the two static home figures — the mid-Chat Agent switch (sidebar, divider, Agent menu) and the encrypted sync scene (phone beside the desktop panel)
+ * [POS]: Home-only figure layer; both sit in a .figure-card from ./stories.css and copy product geometry rather than approximating it
+ * [PROTOCOL]: Update this header when changing this file, then check README.md
+ */
+
+/* ── 浮在壁纸上的产品面板 ──────────────────────────────────────── */
+.fig-panel {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--app-bg);
+  color: var(--app-fg);
+  box-shadow: var(--app-shadow);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* ── 01 · 同一条 Chat 中途换 Agent ─────────────────────────────────
+ * 侧栏一个 Project 下三条 Chat、三家标记：分工。主区一条分隔线、一只开着
+ * 的 Agent 菜单，Claude 那行标着「已达用量限制」：接力。文案里的两句话，
+ * 图各画一句。几何抄产品：行高 32、缩进 24、页头 38、菜单行 28。 */
+.hf {
+  left: 20px;
+  top: 32px;
+  width: 540px;
+  height: 296px;
+  display: flex;
+}
+.hf-side {
+  flex: none;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 2px 0;
+  background: var(--app-sidebar);
+  border-right: 1px solid var(--app-border);
+}
+.hf-group {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--app-muted-fg);
+}
+.hf-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.hf-row--sub {
+  padding-left: 24px;
+}
+.hf-row--on {
+  background: var(--app-accent);
+  font-weight: 500;
+}
+.hf-row .mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+.hf-row .title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hf-main {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.hf-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--app-border);
+  font-size: 13px;
+  font-weight: 500;
+}
+.hf-chat {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 16px 8px;
+  overflow: hidden;
+}
+.hf-bubble {
+  align-self: flex-end;
+  max-width: 86%;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--app-accent);
+}
+.hf-worked {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--app-muted-fg);
+}
+.hf-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-right: 70px;
+}
+/* 分隔线：产品的转录边界原样——两段发丝线夹一句「从此处开始由 Codex 回复」，
+   句尾一个 Undo。 */
+.hf-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--app-muted-fg);
+  white-space: nowrap;
+}
+/* 只画右边那段线：菜单开在右下，左对齐的那句话才不会被它压住。 */
+.hf-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--app-border);
+}
+.hf-divider span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.hf-divider b {
+  font-weight: 500;
+  color: var(--app-fg);
+}
+.hf-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--app-muted-fg);
+}
+.hf-orb {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: 9999px;
+  border: 2px solid var(--app-muted-fg);
+  border-right-color: transparent;
+}
+.hf-composer {
+  flex: none;
+  margin: 0 12px 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+}
+.hf-composer p {
+  padding: 9px 12px 4px;
+  color: var(--app-muted-fg);
+}
+.hf-tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px 6px;
+}
+.hf-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 9999px;
+  color: var(--app-muted-fg);
+}
+.hf-tool--agent {
+  margin-left: auto;
+  background: var(--app-accent);
+  color: var(--app-fg);
+}
+.hf-send {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: var(--app-primary);
+  color: var(--app-primary-fg);
+}
+/* Agent 菜单开在输入框上方：四行、选中打勾、限额那行淡掉并标一句。 */
+.hf-menu {
+  position: absolute;
+  z-index: 2;
+  right: 48px;
+  bottom: 54px;
+  width: 172px;
+  padding: 4px;
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+  background: var(--app-bg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 16px 40px -16px rgba(0, 0, 0, 0.35);
+}
+[data-theme="dark"] .hf-menu {
+  background: var(--app-accent);
+}
+.hf-menu-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+.hf-menu-row--limit {
+  color: var(--app-muted-fg);
+}
+.hf-menu-row--limit .mark {
+  opacity: 0.45;
+}
+.hf-menu-note {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--app-muted-fg);
+}
+.hf-menu-check {
+  margin-left: auto;
+  display: inline-flex;
+}
+
+/* ── 03 · 加密同步与远控 ──────────────────────────────────────────
+ * 手机在左（缩到 0.63），桌面上同一条 Chat 的面板在右：手机上批准过的
+ * 那一步，桌面写着「已在 iPhone 处理」；底下一行说明中间只经过密文。 */
+.sf-phone {
+  left: 44px;
+  top: 22px;
+  right: auto;
+  bottom: auto;
+  transform: scale(0.63);
+  transform-origin: 0 0;
+}
+.sf-panel {
+  left: 214px;
+  top: 38px;
+  width: 346px;
+  height: 230px;
+}
+.sf-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--app-border);
+  font-size: 13px;
+  font-weight: 500;
+}
+.sf-head .ph-chip {
+  margin-left: auto;
+}
+.sf-body {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 12px 14px;
+}
+.sf-bubble {
+  align-self: flex-end;
+  max-width: 80%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--app-accent);
+}
+.sf-handled {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--app-muted-fg);
+}
+.sf-handled svg {
+  color: var(--app-ok-fg);
+}
+.sf-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.sf-foot {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--app-muted-fg);
+}

@@ -75,7 +75,7 @@
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--app-bg);
-  box-shadow: 0 24px 56px -38px rgba(27, 26, 22, 0.46);
+  box-shadow: 0 24px 56px -38px rgba(0, 0, 0, 0.46);
   color: var(--app-fg);
 }
 

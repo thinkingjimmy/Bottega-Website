@@ -1,9 +1,9 @@
 "use client";
 
 /**
- * [INPUT]: Uses React state, localized SiteCatalog/DemoData, ProductWindow, AppStudioWindow, SiteHeader, and the menu-bar language/theme controls
+ * [INPUT]: Uses React state, localized SiteCatalog/DemoData, ProductWindow, ProductPhone, AppStudioWindow, SiteHeader, and the menu-bar language/theme controls
  * [OUTPUT]: Exports the localized interactive Hero component
- * [POS]: Pinned product desktop; it owns the surface switch, the App that is open on it, and the only visible theme control
+ * [POS]: Pinned product desktop; it owns the surface switch, the App that is open on it, the phone mirroring the open Chat, and the only visible theme control
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
@@ -13,8 +13,9 @@ import { SceneLanguage } from "./scene-language";
 import { SiteHeader } from "./site-header";
 import { ThemeToggle } from "./theme";
 import { AppStudioWindow } from "./window/product-apps";
+import { ProductPhone } from "./window/product-phone";
 import { ProductWindow } from "./window/product-window";
-import type { App, DemoData } from "@/lib/agents";
+import type { App, Chat, DemoData } from "@/lib/agents";
 import type { SiteCatalog } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n/locale";
 import type { FeatureRecord } from "./features/catalog";
@@ -67,6 +68,8 @@ export function Hero({
      芯片是回到这一面的唯一入口，它若不重演，第二次点它什么都不会发生。 */
   const [pending, setPending] = useState(false);
   const [run, setRun] = useState(0);
+  /* 手机上镜像的那条 Chat 由窗口交出来：窗持有会话状态，手机只跟着显示。 */
+  const [mirror, setMirror] = useState<Chat | null>(null);
 
   const show = (next: "chat" | "app") => {
     setSurface(next);
@@ -178,6 +181,7 @@ export function Hero({
             <ProductWindow
               surface={surface}
               onSurface={show}
+              onChat={setMirror}
               onOpenApp={openNow}
               appOpen={openApp !== null}
               appLead={pending}
@@ -196,31 +200,40 @@ export function Hero({
               />
             ) : null}
 
-            {/* 两颗并列而不是一个开关：chat 与 App 是产品的两种表面，
-                开关会把其中一种说成「另一种的反面」，并列才说得对。
-                标签直说这一面是什么，不设问也不加注解——注解要说的话，
-                上面那台机器正在演，写下来只是把演过的再讲一遍。 */}
-            <div className="chip-bar rise rise-2">
-              <button
-                type="button"
-                className={`chip${surface === "chat" ? " on" : ""}`}
-                onClick={() => show("chat")}
-                aria-pressed={surface === "chat"}
-              >
-                <Stroke d={D.message} size={15} />
-                <span>{copy.chatChip}</span>
-              </button>
-              <button
-                type="button"
-                className={`chip${surface === "app" ? " on" : ""}`}
-                onClick={() => show("app")}
-                aria-pressed={surface === "app"}
-              >
-                <Stroke d={D.grid} size={15} />
-                <span>{copy.appChip}</span>
-              </button>
-            </div>
           </div>
+
+          {/* 两颗并列而不是一个开关：chat 与 App 是产品的两种表面，
+              开关会把其中一种说成「另一种的反面」，并列才说得对。
+              标签直说这一面是什么，不设问也不加注解——注解要说的话，
+              上面那台机器正在演，写下来只是把演过的再讲一遍。
+              条子钉在舞台正中而不是排在窗口下面：窗口为了给手机让位向左
+              挪了一截，条子不该跟着挪。 */}
+          <div className="chip-bar rise rise-2">
+            <button
+              type="button"
+              className={`chip${surface === "chat" ? " on" : ""}`}
+              onClick={() => show("chat")}
+              aria-pressed={surface === "chat"}
+            >
+              <Stroke d={D.message} size={15} />
+              <span>{copy.chatChip}</span>
+            </button>
+            <button
+              type="button"
+              className={`chip${surface === "app" ? " on" : ""}`}
+              onClick={() => show("app")}
+              aria-pressed={surface === "app"}
+            >
+              <Stroke d={D.grid} size={15} />
+              <span>{copy.appChip}</span>
+            </button>
+          </div>
+
+          {/* 同一条 Chat 的第二块屏，叠在桌面右下——它说的是「离开电脑也还在」，
+              所以只在 chat 这一面出现：Apps 那一面演的是另一件事。 */}
+          {surface === "chat" && mirror ? (
+            <ProductPhone chat={mirror} demo={demo} time={copy.date.trim().split(/\s+/).pop() ?? ""} className="rise rise-2" />
+          ) : null}
         </section>
       </div>
     </div>

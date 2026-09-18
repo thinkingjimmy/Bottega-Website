@@ -108,6 +108,9 @@ export type Chat = {
   fast?: boolean;
   plan?: Plan;
   question?: Question;
+  /* 上一轮。首屏那扇窗要读起来像一条正在进行的 Chat，而不是一条只有
+     一问一答的示例；只有 releaseNotes 带它，别的 chat 从顶上开始。 */
+  prior?: { ask: string; worked: string; trace: { icon: string; label: string }[]; reply: string };
 };
 
 export type App = {
@@ -135,9 +138,6 @@ export type KanbanLane = {
   cards: KanbanCard[];
 };
 
-export type AppMenuItem =
-  | { name: string; icon: string; sub?: boolean; sep?: false }
-  | { sep: true };
 
 const I_READ = "M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20";
 const I_EDIT = "M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z";
@@ -175,6 +175,21 @@ const LEDGER_ROWS = [
   ["08-14", "164.00", 3], ["08-13", "72.00", 0], ["08-12", "415.00", 1],
   ["08-11", "188.00", 2], ["08-10", "64.00", 4], ["08-09", "240.00", 3],
 ] as const;
+/* Expense Tracker 那台机器在首页会跟着字栏长高到 1125：十八行只够 780 那一档，
+   长高之后表格下面就空了一截。这十六行接在同一本账后面（日期继续往前数、
+   同五个类别、同一套备注宽度），只归那只 App；Base 的图与文档仍是十八行。 */
+const LEDGER_ROWS_EARLIER = [
+  ["08-08", "58.00", 0], ["08-07", "312.40", 2], ["08-06", "27.50", 4],
+  ["08-05", "450.00", 3], ["08-04", "96.00", 0], ["08-03", "1,120.00", 1],
+  ["08-02", "143.60", 2], ["08-01", "88.00", 4], ["07-31", "39.90", 0],
+  ["07-30", "265.00", 2], ["07-29", "520.00", 1], ["07-28", "76.00", 4],
+  ["07-27", "180.00", 3], ["07-26", "61.00", 0], ["07-25", "398.00", 1],
+  ["07-24", "212.30", 2],
+] as const;
+
+const ledgerSum = (rows: readonly (readonly [string, string, number])[]) =>
+  rows.reduce((sum, [, amount]) => sum + Number(amount.replace(/,/g, "")), 0)
+    .toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 const CATEGORY_METRICS = [
   [1, 2394, "#8b5cf6"], [2, 620.5, "#22c55e"], [3, 600, "#ef4444"],
@@ -206,7 +221,6 @@ export const MUSCLE_HEAT: Record<string, number> = {
   hamstrings: 0,
 };
 
-const APP_MENU_ICONS = ["pencilLine", "flask", "info", "importDown", "history", "share"];
 const VIEW_ICONS = ["table", "chartPie", "images", "map"];
 
 function createChats(copy: SiteCatalog["demo"]["chats"]): Chat[] {
@@ -240,6 +254,9 @@ function createChats(copy: SiteCatalog["demo"]["chats"]): Chat[] {
         ? { ...value.plan, sections: value.plan.sections.map((section) => ({ ...section, items: [...section.items] })) }
         : undefined,
       question,
+      prior: "prior" in value
+        ? { ask: value.prior.ask, worked: value.prior.worked, reply: value.prior.reply, trace: value.trace.map((label, index) => ({ icon: icons[index], label })) }
+        : undefined,
     };
   });
 }
@@ -283,19 +300,17 @@ export function createDemoData(copy: SiteCatalog["demo"]) {
     category: copy.ledger.categories[category],
     note: copy.ledger.notes[index],
   }));
+  const ledgerApp = [...LEDGER_ROWS, ...LEDGER_ROWS_EARLIER].map(([date, amount, category], index) => ({
+    date,
+    amount,
+    category: copy.ledger.categories[category],
+    note: copy.ledger.notes[index % copy.ledger.notes.length],
+  }));
   const categoryShare = CATEGORY_METRICS.map(([category, value, tone]) => ({
     label: copy.ledger.categories[category],
     value,
     tone,
   }));
-  const appMenu: AppMenuItem[] = [
-    { name: copy.appMenu.items[0], icon: APP_MENU_ICONS[0] }, { sep: true },
-    { name: copy.appMenu.items[1], icon: APP_MENU_ICONS[1] },
-    { name: copy.appMenu.items[2], icon: APP_MENU_ICONS[2] }, { sep: true },
-    { name: copy.appMenu.items[3], icon: APP_MENU_ICONS[3], sub: true },
-    { name: copy.appMenu.items[4], icon: APP_MENU_ICONS[4] }, { sep: true },
-    { name: copy.appMenu.items[5], icon: APP_MENU_ICONS[5] },
-  ];
   const baseViews = copy.baseViews.map((view, index) => ({ ...view, icon: VIEW_ICONS[index] }));
   return {
     copy,
@@ -312,11 +327,12 @@ export function createDemoData(copy: SiteCatalog["demo"]) {
     designAppWindowTitle: "Bottega Design Canvas",
     chats: createChats(copy.chats),
     ledgerLong,
-    ledgerLongSum: "4,531.20",
+    ledgerLongSum: ledgerSum(LEDGER_ROWS),
+    ledgerApp,
+    ledgerAppSum: ledgerSum([...LEDGER_ROWS, ...LEDGER_ROWS_EARLIER]),
     categoryShare,
     dailySpend: DAILY_SPEND,
     kanbanLanes: createKanban(copy.kanban),
-    appMenu,
     baseViews,
     basePins: BASE_PINS,
     muscleHeat: MUSCLE_HEAT,

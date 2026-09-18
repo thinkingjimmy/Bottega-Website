@@ -29,22 +29,27 @@
    16:10，下面露出的那截是纸面本身——不是把白板拉长。 */
 .dc-viewport {
   width: 100%;
-  aspect-ratio: 1440 / 900;
+  height: 100%;
   margin: 0 auto;
   overflow: hidden;
   border: 1px solid var(--dc-line);
   background: #fff;
   box-shadow: 0 2px 6px rgba(18, 18, 15, 0.08), 0 24px 64px rgba(18, 18, 15, 0.16);
 }
-/* 白板里那一页是 Agent 写的 HTML——不可信内容，所以只画骨架：
-   它不该被读，只该被认出「那是一页」。 */
+/* ── 白板上的那一页 ──────────────────────────────────────────────
+ * 全是骨架：它不该被读，只该被认出「那是一页」。每一段定高、按顺序往下排，
+ * 白板多高就露出多少段——780 那一档露到三张卡，1125 那一档露到页脚。 */
 .dc-page {
   display: flex;
   flex-direction: column;
   gap: 20px;
   height: 100%;
   padding: 22px 26px;
+  overflow: hidden;
   --sk-ink: rgba(30, 31, 27, 0.11);
+}
+.dc-page > * {
+  flex: none;
 }
 .dc-page-bar {
   display: flex;
@@ -53,12 +58,22 @@
   padding-bottom: 16px;
   border-bottom: 1px solid rgba(30, 31, 27, 0.08);
 }
+.dc-page-hero {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+}
+.dc-page-logos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+  opacity: 0.7;
+}
 .dc-page-cards {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
-  flex: 1;
-  min-height: 0;
 }
 .dc-page-card {
   display: flex;
@@ -67,6 +82,27 @@
   padding: 14px;
   border: 1px solid rgba(30, 31, 27, 0.08);
   border-radius: 8px;
+}
+/* 定价那三张里被选中的第二张：锚点坞里 `.pricing .card:nth-child(2)` 指的就是它。 */
+.dc-page-card--lit {
+  border-color: var(--dc-accent);
+  box-shadow: 0 0 0 1px var(--dc-accent);
+}
+.dc-page-split {
+  display: flex;
+  gap: 26px;
+  align-items: center;
+  padding: 18px 0;
+  border-top: 1px solid rgba(30, 31, 27, 0.08);
+  border-bottom: 1px solid rgba(30, 31, 27, 0.08);
+}
+.dc-page-band {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: 10px;
+  background: rgba(30, 31, 27, 0.04);
 }
 .dc-page-foot {
   display: flex;

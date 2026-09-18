@@ -4,13 +4,10 @@
 
 ## Members
 
-- `agents-reel.tsx`: Moves through one localized sidebar to show mixed Agent ownership.
-- `app-menu-reel.tsx`: Shows Edit App opening a localized source Chat and changing the canvas.
-- `base-views-reel.tsx`: Projects one localized ledger through Table, Chart, Gallery, and Map views; its donut comes from `components/base-charts.tsx`.
-- `replay-button.tsx`: Exposes a translated replay label after one-shot reels complete.
-- `use-carousel.ts`: Shares timed view selection and stops after user input; the Base feature figure uses it too.
+- `base-views-reel.tsx`: Projects one localized ledger through Table, Chart, Gallery, and Map views; the chart view is two half cards plus a wide `Largest expenses` ranking so it fills a stretched frame, and its donut comes from `components/base-charts.tsx`.
+- `use-carousel.ts`: Shares timed view selection and stops after user input; the Apps stage, the Data space story and the Base feature figure use it.
 - `use-play-when-seen.ts`: Starts motion only after the evidence enters the viewport.
 
-The machine in each reel is decorative; interactive replay remains keyboard-visible. Reduced motion leaves each reel in a legible resting state.
+The machine in the reel is decorative; the case list beside it (`components/home/story.tsx`) is the keyboard-visible control. Reduced motion leaves the reel in a legible resting state.
 
 [PROTOCOL]: Update this file when members or responsibilities change, then verify the parent README.md.

@@ -11,7 +11,7 @@ import type { DemoData } from "@/lib/agents";
 import { BaseDonut } from "../base-charts";
 import { D, Stroke, glyph } from "../icons";
 
-/* 十四行。画框现在跟着文栏长高，行数得跟上——留一片空白比留一行残行
+/* 十六行。画框跟着文栏长高，行数得跟上——留一片空白比留一行残行
    更像「没加载完」。汇总条 margin-top: auto 钉在底边，多几行不会把它挤走。 */
 /* 三轮往返。宽度是「这一句本来会有多长」的示意，不是随机数——
    随机数每次构建都会换一张脸。 */
@@ -24,6 +24,8 @@ const CHAT = [
 const NOTE_W = ["62%", "38%", "48%", "30%", "56%", "44%", "34%", "52%",
   "40%", "58%", "36%", "46%", "42%", "50%", "33%", "60%"];
 
+const amountOf = (value: string) => Number(value.replace(/,/g, ""));
+
 export function BaseViewsReel({
   active,
   frame,
@@ -35,6 +37,13 @@ export function BaseViewsReel({
 }) {
   const rows = demo.ledgerLong.slice(0, 16);
   const { chrome } = demo.copy;
+  /* 前五笔按金额真实排序，条长按最大那笔归一——排出来跟表里对不上的榜，
+     这张卡就成了装饰。 */
+  const top = [...demo.ledgerLong]
+    .sort((left, right) => amountOf(right.amount) - amountOf(left.amount))
+    .slice(0, 5);
+  const peak = amountOf(top[0].amount);
+  const tone = new Map(demo.categoryShare.map((slice) => [slice.label, slice.tone]));
   return (
     <div className="reel" ref={frame} data-active={active} aria-hidden="true">
       <div className="vw-cam">
@@ -132,7 +141,9 @@ export function BaseViewsReel({
               </div>
             </div>
 
-            {/* 分类占比：栅格 auto-rows-180 gap-3 p-3，卡片 rounded-xl + border。 */}
+            {/* 分析：产品的 chart 视图是一张按列打包的卡片栅格（见 base-ui/charts/chart-pack），
+                两张半宽 + 一张通栏正好铺满一屏——画框跟着文栏长高之后，两张
+                卡下面留一片空白，读起来是「还没加载完」。 */}
             <div className="vw-pane">
               <div className="vw-charts">
                 <div className="ch">
@@ -158,6 +169,25 @@ export function BaseViewsReel({
                         <i key={at} style={{ height: `${Math.round(height * 100)}%` }} />
                       ))}
                     </div>
+                  </div>
+                </div>
+                <div className="ch ch--wide">
+                  <div className="ch-h">{demo.copy.ledger.topExpenses}</div>
+                  <div className="ch-b ch-b--rows">
+                    {top.map((row) => (
+                      <div className="ch-row" key={row.date}>
+                        <span className="ch-row-label">{row.note}</span>
+                        <span className="ch-row-track">
+                          <i
+                            style={{
+                              width: `${Math.round((amountOf(row.amount) / peak) * 100)}%`,
+                              background: tone.get(row.category),
+                            }}
+                          />
+                        </span>
+                        <span className="ch-row-value">{row.amount}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

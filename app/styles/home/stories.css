@@ -1,0 +1,128 @@
+/**
+ * [INPUT]: Uses --figure-w/h, --home-demo-radius, --wall, the --ink scale and --line from ../tokens.css
+ * [OUTPUT]: Defines the story row (copy beside a figure), the one figure card every home figure sits in — the hero wallpaper as its backdrop — and the stacked layouts below 1300 and 900
+ * [POS]: Home-only layout layer for the numbered stories; the figures themselves are drawn by reels/, apps/ and home/figures.css
+ * [PROTOCOL]: Update this header when changing this file, then check README.md
+ */
+
+/* ── 一个故事：一栏字，一张图 ────────────────────────────────────
+ * 字栏吃余量、图定宽 580（tokens.css 的 --figure-w）。图在左那一版把栏序
+ * 反过来，DOM 里图仍排在前：它 aria-hidden，本就不在阅读顺序里。 */
+.stories {
+  display: flex;
+  flex-direction: column;
+  gap: 128px;
+  margin-top: 128px;
+}
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--figure-w);
+  gap: 72px;
+  align-items: center;
+}
+.story--figure-first {
+  grid-template-columns: var(--figure-w) minmax(0, 1fr);
+}
+.story-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 564px;
+}
+.story-copy h2,
+.story-copy h3 {
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+.story-copy > p {
+  margin-top: 16px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+/* 节标题也可以站在故事的字栏里（Apps 那一节整节就是一个故事）：
+   字号回到节标题那一档，其余一样。 */
+.story-copy .home-title {
+  font-size: 36px;
+}
+
+/* ── 六张图，一个画框 ────────────────────────────────────────────
+ * 底是首屏那张壁纸。图与首屏共用一张照片，整页才连成一件事；里面的产品
+ * 面板各自带边与影，从照片里浮出来。照片的取景每张图不同（--wall-pos），
+ * 六张图才不像同一张贴纸。
+ *
+ * 画框的高度交给旁边那栏字：带案例清单的两节字栏高出一截，画框跟着撑到
+ * 同一条下缘，两栏才是一件事的两面；字栏矮于 360 时画框守住 360。机器
+ * （.figure-stage）永远是 580×360，钉在画框正中——所有图的相机、缩放与
+ * 面板坐标都按这一块算，画框长高只多露出天与草。 */
+.figure-card {
+  position: relative;
+  width: var(--figure-w);
+  min-height: var(--figure-h);
+  max-width: 100%;
+  flex: none;
+  overflow: hidden;
+  border-radius: var(--home-demo-radius);
+  background: var(--ground-2) var(--wall) var(--wall-pos, 50% 40%) / cover no-repeat;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+[data-theme="dark"] .figure-card {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+.story > .figure-card {
+  align-self: stretch;
+}
+/* 静态图：机器 580×360，钉在画框正中。 */
+.figure-stage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: var(--figure-h);
+  transform: translateY(-50%);
+}
+/* 会长高的机器：铺满画框。Base 的 reel 从画框高度推出相机的取景高度，
+   Apps 的舞台从画框高度推出每台机器的画布高度——画框长高，机器就多露出
+   一截表格或一截泳道，而不是多一截空壁纸。 */
+.figure-fill {
+  position: absolute;
+  inset: 0;
+}
+.figure-fill > .reel,
+.figure-fill > .app-stage {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  aspect-ratio: auto;
+}
+
+@media (max-width: 1300px) {
+  .story,
+  .story--figure-first {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .story--figure-first > .figure-card {
+    order: 1;
+  }
+  /* 堆叠之后没有可对齐的下缘：画框回到 360，居中。 */
+  .story > .figure-card {
+    align-self: center;
+    height: var(--figure-h);
+    margin-inline: auto;
+  }
+}
+@media (max-width: 640px) {
+  .stories {
+    gap: 80px;
+    margin-top: 80px;
+  }
+  .story-copy h2,
+  .story-copy h3 {
+    font-size: 26px;
+  }
+}

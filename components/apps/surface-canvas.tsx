@@ -19,8 +19,11 @@ export function CanvasSurface({ demo }: { demo: DemoData }) {
   const copy = demo.copy.canvas;
   return (
     <div className="dc">
-      {/* 舞台里那块白板：Fit 之后是 16:10，下面露出的那截是纸面本身，
-          不是把白板拉长——真值见 gui/styles.css 的 .stage / .viewport。 */}
+      {/* 舞台里那块白板：一页落地页的骨架——导航、首屏、客户标、三张卡、
+          一段左右分栏、定价、订阅带、页脚。锚点坞里那三条选择器指的就是这
+          几段。白板铺满舞台的高度：机器在首页会跟着字栏长高，长高露出的是
+          页面下面的段落，不是拉长的卡片；780 那一档从定价那段起被框裁掉——
+          一页本来就比一屏长。 */}
       <div className="dc-stage">
         <div className="dc-viewport">
           <div className="dc-page">
@@ -32,7 +35,7 @@ export function CanvasSurface({ demo }: { demo: DemoData }) {
               <Sk w={52} />
               <Sk w={76} h={26} />
             </div>
-            <div style={{ display: "flex", gap: 26, alignItems: "center" }}>
+            <div className="dc-page-hero">
               <div style={{ display: "flex", flexDirection: "column", gap: 12, flex: 1, minWidth: 0 }}>
                 <Sk w="74%" h={30} />
                 <Sk w="52%" h={30} />
@@ -45,6 +48,11 @@ export function CanvasSurface({ demo }: { demo: DemoData }) {
               </div>
               <Sk w="34%" h={168} />
             </div>
+            <div className="dc-page-logos">
+              {[64, 48, 72, 56, 66, 50].map((width, at) => (
+                <Sk w={width} h={14} key={at} />
+              ))}
+            </div>
             <div className="dc-page-cards">
               {["76%", "68%", "82%"].map((width) => (
                 <div className="dc-page-card" key={width}>
@@ -54,6 +62,36 @@ export function CanvasSurface({ demo }: { demo: DemoData }) {
                   <Sk w="58%" />
                 </div>
               ))}
+            </div>
+            <div className="dc-page-split">
+              <Sk w="42%" h={140} />
+              <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: 1, minWidth: 0 }}>
+                <Sk w="64%" h={22} />
+                <Sk w="92%" />
+                <Sk w="84%" />
+                <Sk w="70%" />
+                <Sk w={88} h={26} />
+              </div>
+            </div>
+            <div className="dc-page-cards dc-page-pricing">
+              {["44%", "52%", "40%"].map((width, at) => (
+                <div className={`dc-page-card${at === 1 ? " dc-page-card--lit" : ""}`} key={width}>
+                  <Sk w={width} />
+                  <Sk w="36%" h={26} />
+                  <Sk w="90%" />
+                  <Sk w="76%" />
+                  <Sk w="82%" />
+                  <Sk w="100%" h={28} />
+                </div>
+              ))}
+            </div>
+            <div className="dc-page-band">
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, flex: 1, minWidth: 0 }}>
+                <Sk w="38%" h={18} />
+                <Sk w="60%" />
+              </div>
+              <Sk w={180} h={30} />
+              <Sk w={84} h={30} />
             </div>
             <div className="dc-page-foot">
               <Sk w={88} />

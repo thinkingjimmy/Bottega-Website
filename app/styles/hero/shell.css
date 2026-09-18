@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses every shared token from ../tokens.css
- * [OUTPUT]: Defines the hero runway/scene, both SiteHeader skins, product-window shell, sidebar, and third-panel geometry
+ * [OUTPUT]: Defines the hero runway/scene, the three SiteHeader skins (stage, sticky framed, floating), the stage-pinned chip bar, product-window shell, sidebar, and third-panel geometry
  * [POS]: Structural layer for the first screen; it owns the stage header because that skin follows the shrinking hero band
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
@@ -68,8 +68,8 @@
  * ────────────────────────────────────────────────────────── */
 .site-header-brand img {
   box-shadow:
-    0 0 0 1px rgba(27, 26, 22, 0.1),
-    0 1px 2px rgba(27, 26, 22, 0.14);
+    0 0 0 1px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.12);
 }
 .site-header nav {
   margin-left: auto;
@@ -101,11 +101,47 @@
   overflow: visible;
 }
 
-/* 子页没有那台钉住的桌面，于是定高、下缘一条发丝线。 */
+/* ── 贴在顶上的两层皮 ─────────────────────────────────────────────
+ * 子页没有那台钉住的桌面，于是定高、下缘一条发丝线，滚动时 sticky 在顶上；
+ * 首页那条带子随桌面滚走之后，由 floating 这条接班（components/floating-header.tsx
+ * 决定何时滑下来）。两层皮共用同一块玻璃：页面色 84% 加模糊——底下滚过的
+ * 内容隐约可见，导航仍然读得清。 */
+.site-header--framed,
+.site-header--floating {
+  background: color-mix(in srgb, var(--ground) 84%, transparent);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  border-bottom: 1px solid var(--line);
+}
 .site-header--framed {
+  position: sticky;
+  top: 0;
+  z-index: 30;
   height: 78px;
   padding: 0 var(--edge);
-  border-bottom: 1px solid var(--line);
+}
+.site-header--floating {
+  height: 60px;
+  padding: 0 var(--edge);
+}
+.site-header-float {
+  position: fixed;
+  z-index: 40;
+  top: 0;
+  left: 0;
+  right: 0;
+  transform: translateY(-100%);
+  transition: transform 220ms ease;
+  pointer-events: none;
+}
+.site-header-float[data-shown="true"] {
+  transform: none;
+  pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header-float {
+    transition: none;
+  }
 }
 
 .scene {
@@ -118,14 +154,10 @@
   /* 一层贴地的接触影 + 一层散开的环境影。单层又大又浓的投影在浅底上
      永远是一坨灰，因为它只携带「暗」，不携带「接触」。 */
   box-shadow:
-    0 calc(var(--stage-sh, 0px) * 0.08) calc(var(--stage-sh, 0px) * 0.24) rgba(27, 26, 22, 0.07),
+    0 calc(var(--stage-sh, 0px) * 0.08) calc(var(--stage-sh, 0px) * 0.24) rgba(0, 0, 0, 0.07),
     0 calc(var(--stage-sh, 0px) * 0.5) calc(var(--stage-sh, 0px) * 1.7)
-      calc(var(--stage-sh, 0px) * -0.72) rgba(27, 26, 22, 0.15);
-  background: var(--ground-2) url("/hero-bg-light.png") center / cover no-repeat;
-}
-
-[data-theme="dark"] .scene {
-  background-image: url("/hero-bg-dark.png");
+      calc(var(--stage-sh, 0px) * -0.72) rgba(0, 0, 0, 0.18);
+  background: var(--ground-2) var(--wall) center / cover no-repeat;
 }
 
 /* 真 macOS 的菜单栏随壁纸明暗反转文字，故按主题给两套半透明底。
@@ -150,12 +182,12 @@
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(20px) saturate(1.3);
   -webkit-backdrop-filter: blur(20px) saturate(1.3);
-  border-bottom: 1px solid rgba(27, 26, 22, 0.12);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.35);
 }
 [data-theme="dark"] .scene-bar {
-  background: rgba(4, 10, 24, 0.62);
-  border-bottom-color: rgba(237, 233, 222, 0.14);
+  background: rgba(10, 10, 10, 0.62);
+  border-bottom-color: rgba(255, 255, 255, 0.14);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
 }
 .scene-bar .menu {
@@ -259,13 +291,13 @@
   max-width: min(300px, calc(100vw - 32px));
   padding: 5px;
   border-radius: 12px;
-  border: 1px solid rgba(27, 26, 22, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   background: rgba(255, 255, 255, 0.86);
   backdrop-filter: blur(24px) saturate(1.4);
   -webkit-backdrop-filter: blur(24px) saturate(1.4);
   box-shadow:
-    0 1px 2px rgba(27, 26, 22, 0.08),
-    0 20px 46px -18px rgba(27, 26, 22, 0.38);
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 20px 46px -18px rgba(0, 0, 0, 0.38);
   /* 菜单是一张纸，不是壁纸的一部分：带子上的那层高光到此为止。 */
   text-shadow: none;
   opacity: 0;
@@ -275,8 +307,8 @@
   transition: opacity 140ms ease, visibility 140ms ease, transform 140ms ease;
 }
 [data-theme="dark"] .scene-input-panel {
-  border-color: rgba(237, 233, 222, 0.16);
-  background: rgba(22, 26, 36, 0.86);
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(23, 23, 23, 0.86);
 }
 .scene-input-menu[open] .scene-input-panel {
   opacity: 1;
@@ -305,7 +337,7 @@
 }
 .scene-input-panel a:hover,
 .scene-input-panel a:focus-visible {
-  background: rgba(27, 26, 22, 0.08);
+  background: rgba(0, 0, 0, 0.08);
 }
 [data-theme="dark"] .scene-input-panel a:hover,
 [data-theme="dark"] .scene-input-panel a:focus-visible {
@@ -346,28 +378,37 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
   /* 上缘多让 20px：居中只保证两头等分，而这一头顶着的是系统菜单栏，
      等分下来仍然贴得太近——那条带子需要一点自己的空气。
-     下缘 28 而非 40：封顶抬到 780 之后余量本就不多，再多让 12px，
-     切换那两颗芯片下面就空出一条比机器本身还显眼的白。 */
-  padding: 20px 0 20px;
+     下缘让出芯片条的高度（32 + 8 内边距）加一口 24 的气：条子钉在舞台
+     底边，不在这条流里，可窗口仍得给它留位。
+     右缘让 80px：手机叠在右下，窗口往左挪半个手机的宽度，两件东西合起来
+     才居中——窗口独自居中，手机就把整幅画压向右边。 */
+  padding: 20px 80px 84px 0;
 }
 
 /* 玻璃必须先是一块稳定的表面，再谈透明。草地与溪流都是高频纹理，原来
    0.34 的底色会让字直接落在纹理上；更实的底、发丝边与分层影把 tabs 从
    壁纸里托出来，仍保留玻璃质感。 */
 .chip-bar {
-  /* 芯片条压在两扇窗之上：它是回到 chat、或把这一面重演一遍的唯一入口，
-     被盖住的入口等于不存在的入口。 */
-  position: relative;
-  z-index: 4;
+  /* 芯片条钉在舞台底边正中，压在两扇窗与手机之上：它是回到 chat、或把
+     这一面重演一遍的唯一入口，被盖住的入口等于不存在的入口。 */
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  /* 居中靠 left/right 归零 + 自动外边距，不靠 transform：这条带子还挂着
+     .rise 的进场动画，动画一接管 transform，translateX(-50%) 就被顶掉，
+     带子于是整个滑到右半边。 */
+  width: max-content;
+  margin-inline: auto;
   display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 4px;
   border-radius: 9999px;
-  background: rgba(12, 18, 16, 0.72);
+  background: rgba(10, 10, 10, 0.72);
   backdrop-filter: blur(24px) saturate(1.15);
   -webkit-backdrop-filter: blur(24px) saturate(1.15);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -449,10 +490,7 @@
   overflow: hidden;
   background: var(--app-bg);
   color: var(--app-fg);
-  box-shadow:
-    0 0 0 1px rgba(27, 26, 22, 0.1),
-    0 2px 6px rgba(27, 26, 22, 0.1),
-    0 44px 90px -30px rgba(27, 26, 22, 0.55);
+  box-shadow: var(--app-shadow);
 }
 
 .win-sidebar {

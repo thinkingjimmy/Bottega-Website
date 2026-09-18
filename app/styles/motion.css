@@ -87,7 +87,7 @@
   .win-panel-face {
     transition: none;
   }
-  .app-switch button::after {
+  .cases button::after {
     animation: none !important;
   }
   .stage {
@@ -162,86 +162,48 @@
     --panel-w: 100cqw;
   }
   .split,
-  .split-figure-first,
-  .fork-layout {
+  .split-figure-first {
     grid-template-columns: 1fr;
     gap: 40px;
   }
-  /* ── 窄屏：裁，不是缩 ────────────────────────────────────────
-   * 342 宽把 994 的机器整台塞进去要缩到 0.34，产品里的 12px 落成 4px——
-   * 那已经不是「小一点的界面」，是一张认不出内容的缩略图。
-   * 所以窄屏保住 0.58 这个比例，只把窗开小：342×450 的窗在机器坐标系里
-   * 是 590×776，整台几乎正好装下，一刀不用裁。
-   * 目录用 order 提到图前面：图 aria-hidden，本就不在阅读顺序里，
-   * 手机上先读到的仍该是那句话。
-   * ──────────────────────────────────────────────────────── */
-  .split-figure-first {
-    gap: 32px;
-  }
-  .desk {
-    margin-inline: calc(var(--edge) * -1);
-    padding: 16px var(--edge);
-    border-radius: 0;
-  }
-  /* --z 一个字不动：窄屏若跟着缩，994 的机器要落到 0.34，产品里的 12px
-     就成了 4px——那已经不是「小一点的界面」，是一张认不出内容的缩略图。
-     只把画框收窄，机器照旧按 0.515 画，于是窗小了、字没小：
-     读得出的三分之二台机器，比读不出的整台说得多。 */
-  .app-stage {
-    width: 100%;
-  }
-  .app-switch {
-    padding-top: 24px;
-    gap: 6px;
-  }
-  /* 方阵留住，限定语收起：167 宽的格子里那句 mono 要断成三行，
-     方阵就变成了一堵字墙。名字留住，限定语交还给正文。 */
-  .app-switch-description {
+  /* 手机上没有第二块屏可叠：窗口回到正中，芯片条回到窗口下面的流里——
+     舞台在这里不再是定高的一屏，钉在底边的东西没有底边可钉。 */
+  .phone {
     display: none;
   }
-  /* ── 名单：三列变两列 ────────────────────────────────────────
-   * 三列要每格 190 才装得下最长的那句 `opencode auth login`；342 的正文宽
-   * 下每格只有 113，命令断成两行，两行标记就不再是两行。两列 + 收一档的
-   * mono 让每条命令保持整句；「还有更多」那格照旧横跨整行。
-   * 高度交回内容：360 是桌面上与三支 reel 对齐用的，这里没有可对齐的东西。
-   * ────────────────────────────────────────────────────────── */
-  /* 名单在窄屏交回内容高度，它的外壳跟着——两个数分开写，迟早只有
-     一个跟着改，而表现是格子下面空出一截画框。 */
-  .figure-frame {
-    height: auto;
+  .scene-body {
+    gap: 16px;
+    padding: 20px 0 24px;
   }
-  .roster {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: auto;
+  .chip-bar {
+    position: static;
     width: auto;
-    height: auto;
-    margin: var(--figure-inset-y) var(--figure-inset-x);
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
   }
-  .roster-cell {
-    gap: 10px;
-    padding: 26px 16px;
+  .chip {
+    white-space: nowrap;
   }
-  .roster-note {
-    font-size: 11.5px;
+  /* --z 一个字不动：窄屏若跟着缩，1320 的机器要落到 0.25，产品里的 12px
+     就成了 3px——那已经不是「小一点的界面」，是一张认不出内容的缩略图。
+     只把画框收窄，机器照旧按 0.4 画，于是窗小了、字没小：
+     读得出的大半台机器，比读不出的整台说得多。 */
+  .figure-card,
+  .app-stage,
+  .reel {
+    width: 100%;
   }
-  .roster-marks {
-    gap: 20px;
+  /* 方阵留住，限定语收起：167 宽的格子里那句要断成三行，方阵就变成了
+     一堵字墙。名字留住，限定语交还给正文。 */
+  .cases {
+    gap: 6px;
+  }
+  .cases-description {
+    display: none;
   }
   .section {
     padding: 88px 0 0;
-  }
-  /* 正文一节：留白与那条线一起收，否则线还在原处而内容已经上来了。 */
-  .section--feature {
-    padding: 0 0 72px;
-  }
-  .section--feature > .reveal::before {
-    margin-bottom: 72px;
-  }
-  .band {
-    padding: 48px 28px;
-  }
-  .band .split {
-    gap: 32px;
   }
   .entry {
     grid-template-columns: 1fr;

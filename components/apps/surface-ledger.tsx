@@ -1,11 +1,12 @@
 /**
- * [INPUT]: Uses localized DemoData plus shared product icons and Base chrome primitives
+ * [INPUT]: Uses localized DemoData, the shared BaseDonut, product icons, and Base chrome primitives
  * [OUTPUT]: Exports the localized LedgerSurface product demonstration
  * [POS]: Expense Tracker surface with ledger and analysis views backed by one data graph
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import type { DemoData } from "@/lib/agents";
+import { BaseDonut } from "../base-charts";
 import { D, Stroke } from "../icons";
 import { BaseChrome, Sk } from "./surface-chrome";
 
@@ -15,35 +16,6 @@ const NOTE_W = [
   "62%", "38%", "48%", "30%", "56%", "44%", "34%", "52%", "40%",
   "58%", "36%", "46%", "42%", "50%", "33%", "60%", "45%", "39%",
 ];
-
-/* ── 分类占比 ────────────────────────────────────────────────────
- * 角度按 CATEGORY_SHARE 真实求和算出来。画一个跟表里对不上的饼，
- * 这张图就成了装饰。
- * ────────────────────────────────────────────────────────── */
-function Pie({ slices }: { slices: DemoData["categoryShare"] }) {
-  const total = slices.reduce((sum, slice) => sum + slice.value, 0);
-  let angle = -Math.PI / 2;
-  return (
-    <svg viewBox="0 0 80 80" style={{ height: "100%", flex: "none" }} aria-hidden="true">
-      {slices.map((slice) => {
-        const sweep = (slice.value / total) * Math.PI * 2;
-        const x1 = 40 + 38 * Math.cos(angle);
-        const y1 = 40 + 38 * Math.sin(angle);
-        angle += sweep;
-        const x2 = 40 + 38 * Math.cos(angle);
-        const y2 = 40 + 38 * Math.sin(angle);
-        return (
-          <path
-            key={slice.label}
-            d={`M40 40 L${x1.toFixed(1)} ${y1.toFixed(1)} A38 38 0 ${sweep > Math.PI ? 1 : 0} 1 ${x2.toFixed(1)} ${y2.toFixed(1)} Z`}
-            fill={slice.tone}
-          />
-        );
-      })}
-      <circle cx="40" cy="40" r="19" fill="var(--app-bg)" />
-    </svg>
-  );
-}
 
 export function LedgerSurface({ demo }: { demo: DemoData }) {
   const { chrome } = demo.copy;
@@ -69,7 +41,7 @@ export function LedgerSurface({ demo }: { demo: DemoData }) {
             </span>
           </div>
           <div className="tb-rows">
-            {demo.ledgerLong.map((row, at) => (
+            {demo.ledgerApp.map((row, at) => (
               <div className="tb-row" key={row.date}>
                 <span className="tb-num">{at + 1}</span>
                 <span className="tb-date">{row.date}</span>
@@ -79,7 +51,7 @@ export function LedgerSurface({ demo }: { demo: DemoData }) {
                   <Stroke d={D.chevronDown} size={12} width={1.6} />
                 </span>
                 <span className="tb-note">
-                  <Sk w={NOTE_W[at]} />
+                  <Sk w={NOTE_W[at % NOTE_W.length]} />
                 </span>
                 <span className="tb-plus" />
               </div>
@@ -91,7 +63,7 @@ export function LedgerSurface({ demo }: { demo: DemoData }) {
             <span className="tb-date" />
             <span className="tb-amount">
               <span className="lbl">{chrome.sum}</span>
-              <span className="mono">{demo.ledgerLongSum}</span>
+              <span className="mono">{demo.ledgerAppSum}</span>
             </span>
             <span className="tb-cat" />
             <span className="tb-note" />
@@ -103,7 +75,7 @@ export function LedgerSurface({ demo }: { demo: DemoData }) {
         <div className="ch-card">
           <div className="ch-head">{demo.copy.ledger.categoryShare}</div>
           <div className="ch-body">
-            <Pie slices={demo.categoryShare} />
+            <BaseDonut slices={demo.categoryShare} />
             <div className="ch-legend">
               {demo.categoryShare.map((slice) => (
                 <span key={slice.label}>

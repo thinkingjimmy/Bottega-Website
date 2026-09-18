@@ -299,7 +299,8 @@
  * 产品里「明细」与「分析」是同一只 App 的两个视图，不能同框——所以这里
  * 不去编一个不存在的版面，而是把分析那一屏原样叠在明细上，像一张贴在
  * 表格上的第二块表面。卡片外壳 rounded-xl + border + bg-card、页头 h-10、
- * 标题 14/500、栅格 auto-rows-180 gap-3 p-3，逐项取自 views/chart。
+ * 标题 14/500、栅格 gap-3 p-3，逐项取自 views/chart；卡片比产品的 180 行高
+ * 出一倍——这一屏在舞台上按 0.4 缩放，按产品尺寸画，两张图就缩成两枚邮票。
  * 全站只有这一处是两屏叠放，其余都是一台机器的一屏。
  * ────────────────────────────────────────────────────────── */
 .tb-charts {
@@ -307,13 +308,13 @@
   right: 18px;
   bottom: 18px;
   display: grid;
-  grid-template-columns: repeat(2, 292px);
+  grid-template-columns: repeat(2, 400px);
   gap: 14px;
   padding: 14px;
   border: 1px solid var(--app-border);
   border-radius: 14px;
   background: var(--app-bg);
-  box-shadow: 0 2px 6px rgba(27, 26, 22, 0.06), 0 22px 48px -16px rgba(27, 26, 22, 0.34);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06), 0 22px 48px -16px rgba(0, 0, 0, 0.34);
 }
 [data-theme="dark"] .tb-charts {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 22px 48px -16px rgba(0, 0, 0, 0.7);
@@ -321,7 +322,7 @@
 .ch-card {
   display: flex;
   flex-direction: column;
-  height: 244px;
+  height: 340px;
   overflow: hidden;
   border: 1px solid var(--app-border);
   border-radius: 12px;
@@ -344,6 +345,13 @@
   flex: 1;
   min-height: 0;
   padding: 14px;
+}
+/* 环自己不带尺寸（见 components/base-charts.tsx）：高给满、宽拿剩下的，
+   圆由 viewBox 的 meet 保住，图例永远留在卡里。 */
+.ch-body > svg {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
 }
 .ch-legend {
   display: flex;

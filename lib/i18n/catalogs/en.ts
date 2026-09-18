@@ -45,61 +45,57 @@ export const en = {
   },
   common: {
     readMore: "Read More",
-    replay: "Replay",
   },
   home: {
     hero: {
       menu: ["File", "Edit", "View", "Chat", "Window", "Help"],
       date: "Tue Sep 1  9:36",
-      chatChip: "Use it like Codex",
+      chatChip: "Like Codex, but better",
       appChip: "Apps your Agent builds",
     },
     agents: {
-      title: "Your Agents, one sidebar.",
-      body:
-        "Codex, Claude, Kimi and OpenCode all run in Bottega — directly through the official CLIs you already have installed, with no additional Agent service required.",
+      eyebrow: "Agents",
+      title: ["Bring the Agents you already use.", "Keep the plan you already pay for."],
+      lede: "Codex, Claude Code, Kimi Code and OpenCode run inside Bottega through their official CLIs, signed in with your own accounts — one command each, and they share a sidebar. No resold tokens, no markup, nothing new to subscribe to.",
+      roster: {
+        codex: "The official Codex CLI with your account, models and permission ladder.",
+        claude: "Claude Code as installed on your machine: your subscription, its models, Plan mode.",
+        kimi: "The Kimi Code CLI with the account you already use, in the same sidebar.",
+        opencode: "OpenCode and the provider catalog you configured, without moving the work.",
+        more: "And more",
+        soon: "Coming soon",
+        moreBody: "Hermes, Pi and DeepSeek are next — each as its own CLI, never as a proxy.",
+      },
+      handoff: { eyebrow: "Handoff", title: "Hand work from one Agent to the next.", body: "Out of quota on one plan? Pick another Agent for the next turn and keep going in the same Chat. Or split the job on purpose: Claude writes the plan, Codex implements it, Kimi runs the tests — each hop is a Chat in your sidebar, not a step in a workflow file.", note: "Each Agent can also run several subagents in parallel." },
+      data: { eyebrow: "Data space", title: "One data space, shared by every Agent.", body: "What one Agent files, the next one reads. Base keeps the records from every conversation in one local data space, and shows the same records as a table, a chart, a gallery or a map — so the context doesn’t reset when the Agent changes." },
     },
-    subscription: {
-      title: "Bring your own Subscription.",
-      body:
-        "Bottega doesn’t resell tokens. Use the coding agents you already pay for. We orchestrate them, you keep your plan.",
-      more: "And more",
-      soon: "Coming soon",
+    trust: {
+      eyebrow: "Local first · Encrypted sync",
+      title: ["Yours, on your machine.", "Encrypted everywhere else."],
+      lede: "Bottega keeps your work in a folder you can open, runs the Agents through their official CLIs, and ships under the MIT license. Turn on sync when you want it, and it travels as ciphertext.",
+      claims: [
+        { title: "A folder, not a black box", body: "Chats, attachments, Projects, Base, App source and Skills are files in one folder you choose — readable without Bottega, backed up by copying it." },
+        { title: "Official CLIs, your accounts", body: "Every Agent runs through its own CLI, signed in as you. Bottega adds the workspace, never a proxy in between." },
+        { title: "Open source, MIT", body: "The code that touches your data is public. Read it, audit it, fork it." },
+        { title: "Encrypted before it leaves", body: "Sync is off until you turn it on. When it’s on, Chats are sealed with a password only you know; the server only holds ciphertext." },
+      ],
+      sync: { eyebrow: "Sync & remote control", title: "End-to-end encrypted sync, with your phone in control.", body: "Turn on sync and your Chats follow you to the Web and your phone, encrypted with a password only you know before they leave your computer. From the phone, send a task to the computer, watch the output live, approve, stop, follow up. Bottega’s servers store and relay ciphertext; they never read a message." },
     },
-    collaboration: {
-      title: "Agents talk to each other.",
-      body:
-        "An Agent can hand work to another Agent's Chat, and that Chat picks it up with its own Agent. Claude frames the plan, Codex implements it, Kimi runs the tests—each hop is a Chat in your sidebar, not a step in a workflow file.",
-      note: "Each Agent can also run several subagents in parallel.",
-      figureLabel:
-        "One Chat hands work to the next: Claude plans it, Codex implements it with two subagents running at once, Kimi runs the tests",
-      roles: { plan: "Plan", development: "Development", test: "Test" },
-      subagent: "Subagent · {name}",
-      sweep: "Sweep nav call sites",
-      breakpoints: "Verify breakpoints",
-      regression: "Nav regression",
-    },
-    apps: {
-      title: "Build AI-native Apps.",
-      body:
-        "Build an AI fitness coach, an AI expense tracker, or something entirely your own. Describe the idea—Bottega turns it into a working App, from data to interface. Here are four Apps built with Bottega:",
-    },
-    customizable: {
-      title: "Customize any App by chatting.",
-      body:
-        "Every Bottega App has editable source. Click Edit App and describe what you want to change. Your Agent modifies the code directly to update features, data, and interface—no separate code editor required.",
-    },
-    base: {
-      title: "Every Chat, one data space.",
-      body:
-        "Information from each conversation is captured in Base. Let your Agent organize, summarize, and analyze it directly, then view the same data as a table, chart, gallery, or map—no exports required.",
-    },
-    fork: {
+    apps: { eyebrow: "Apps", title: "Build AI-native Apps.", body: "Build an AI fitness coach, an AI expense tracker, or something entirely your own. Describe the idea — Bottega turns it into a working App, from data to interface, and you change it the same way: by chatting. Four Apps ship with it:" },
+    source: {
+      eyebrow: "Open source",
       title: "Release your own version.",
-      body:
-        "Bottega is licensed under the MIT License. You’re free to fork the repository, modify the code, and share your own version with others.",
-      source: "View the source",
+      lede: "Bottega is licensed under the MIT License. Fork the repository, change what you like, and ship your own version — the build below is the whole ceremony.",
       terminalLabel: "Terminal commands to build Bottega",
+      cloned: "Cloned Bottega into ./Bottega",
+      installed: "Dependencies installed",
+      items: [
+        { title: "Change the UI.", body: "Restyle any surface; the theme is one token file." },
+        { title: "Add an Agent.", body: "Wire another CLI in through the same ACP adapter." },
+        { title: "Ship your own build.", body: "Sign it, rename it, distribute it as your own." },
+      ],
+      license: "MIT licensed",
+      fork: "Fork on GitHub",
     },
   },
   changelog: {
@@ -426,15 +422,13 @@ export const en = {
       all: "All",
       exercises: "1324 exercises",
       showing: "Showing 1–24",
-      groups: ["Chest", "Upper legs", "Back"],
+      groups: ["Chest", "Upper legs", "Back", "Shoulders", "Arms"],
     },
-    appMenu: {
-      items: ["Edit App", "App Workbench", "About this App", "Import", "Version history", "Share to GitHub"],
-      ask: "Give the compare view a third pane.",
-      source: "App source",
-    },
+    handoff: { chats: ["Unify the nav bar", "Nav implementation", "Nav regression"], ask: "Move the nav call sites into the shared component.", divider: "Replies from here are by {agent}", undo: "Undo", usageLimit: "Usage limit" },
+    sync: { device: "MacBook Pro", phone: "iPhone", ask: "Approve the plan and write it.", handledOn: "Handled on {device}", editing: "Editing CHANGELOG.md", encrypted: "End-to-end encrypted · relayed as ciphertext", runningOn: "Now running on {device}" },
     chats: {
       releaseNotes: {
+        prior: { ask: "Which PRs merged since 0.1.9 would a user actually notice?", worked: "22s", reply: "Six of the eighteen. Agent parity is the one people will feel first; the two internal refactors fold into a line." },
         title: "Ship the release notes",
         ask: "Draft the 0.2.0 release notes from the merged PRs since 0.1.9.",
         trace: ["Read 18 commits across 4 packages", "Edited CHANGELOG.md"],

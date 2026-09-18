@@ -1,7 +1,7 @@
 /**
  * [INPUT]: Uses --figure-w/h and the --app-* tokens from ../tokens.css
- * [OUTPUT]: Sizes the three reels to the shared figure frame and provides skeletons, the screen-reader utility, and the replay control
- * [POS]: Shared sizing and primitives for all three home feature reels; the frame itself lives in ../base.css
+ * [OUTPUT]: Sizes the Base reel to the shared figure and provides the skeleton and screen-reader utilities
+ * [POS]: Shared primitives for the home reel and the static home figures; the wallpaper frame lives in ../home/stories.css
  * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
 
@@ -69,51 +69,4 @@
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
-}
-
-/* ── 演完之后那颗重播钮 ──────────────────────────────────────────
- * 两支「走一次就停」的 reel 共用（形状层见 components/reels/replay-button.tsx）。
- * 只在停住之后挂上来：演的时候就摆一颗钮，等于在一句话说到一半时递上打断
- * 的把手；说完了再递，才是把选择权交回去。
- * 右下角是三支 reel 的结论都不在的地方——一支停在侧栏底部，一支停在画布
- * 中央——一颗控件不该压着结论。
- * 它自己那下淡入只动 opacity：transform 留给 :active 那一下按压，
- * 带 fill 的动画会把 transform 钉死，于是按下去什么都不会发生。
- * ────────────────────────────────────────────────────────── */
-@keyframes reel-replay-in {
-  from {
-    opacity: 0;
-  }
-}
-
-.reel-replay {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  border: 0;
-  border-radius: 9999px;
-  background: var(--app-bg);
-  color: var(--app-muted-fg);
-  box-shadow:
-    0 0 0 1px var(--app-border),
-    0 4px 12px -4px rgba(27, 26, 22, 0.35);
-  cursor: pointer;
-  transition:
-    color 140ms ease,
-    background 140ms ease,
-    transform 140ms ease;
-  animation: reel-replay-in 260ms ease-out both;
-}
-.reel-replay:hover {
-  background: var(--app-accent);
-  color: var(--app-fg);
-}
-.reel-replay:active {
-  transform: scale(0.92);
 }

@@ -1,0 +1,24 @@
+# styles/home/
+
+> L2 | Parent: [styles/](../README.md)
+
+Home-only presentation for the four sections after the hero. Their React structure lives in [`components/home/`](../../../components/home/README.md).
+
+## Cascade
+
+`sections.css` loads first (skeleton, eyebrow, cell grids, case list, exit link), then `stories.css` (story rows and the figure card), then `figures.css` (the two static figures), then `source.css` (the terminal and checklist cards). All four load after `reels/` and `apps/` so the figure card can position the reel and the stage, and before `motion.css` so the narrow-screen overrides still win.
+
+## Member list
+
+- `sections.css`: `.home-section` (a full-width hairline, then `--edge` padding), `.home-title` / `.home-lede`, the `.eyebrow` (mono, with the amber `--num` variant for story numbers), the hairline `.cell-grid` (five-up roster, four-up claims), the `.cases` list whose selected cell carries the carousel tick (its 5000ms matches `use-carousel.ts`), and the `.feature-more` exit link.
+- `stories.css`: `.stories` / `.story` (copy beside a `--figure-w` figure, mirrored with `--figure-first`), `.story-copy`, and `.figure-card` — the one frame every home figure sits in, backed by the hero wallpaper (`--wall`, positioned per figure with `--wall-pos`). The card stretches to the copy column's height (never below `--figure-h`); `.figure-fill` lets the Base reel and the Apps stage grow with it, `.figure-stage` keeps the static figures centred at 580×360. Collapses below 1300 and 640.
+- `figures.css`: `.fig-panel` (a product panel floating on the wallpaper) and the geometry of the handoff figure (`hf-*`: sidebar, divider, Agent menu) and the sync figure (`sf-*`: the scaled phone and the desktop panel).
+- `source.css`: `.source-grid`, the `.terminal` card drawn as a product window, and the `.checklist` card with its license line and actions.
+
+## Rules
+
+- The figure card owns the ground; reels and stages inside it are transparent and bring their own hairline and shadow.
+- Story numbers are the only place `--accent` appears on the page.
+- Copy stays literal in the catalogs; these files size and place it and never restyle product vocabulary.
+
+[PROTOCOL]: Update this header when changing this file, then check README.md

@@ -2,7 +2,7 @@
  * [INPUT]: Uses React JSX and the localized category-share shape from @/lib/agents
  * [OUTPUT]: Exports BaseDonut and BaseSparkline, the two chart shapes Base dashboards draw
  * [NOTE]: Neither carries its own width or height — a shape that sizes itself cannot be reused by a second layout
- * [POS]: One definition per chart shape, shared by the home Base reel and the Base feature figure
+ * [POS]: One definition per chart shape, shared by the home Base reel, the Expense Tracker surface, and the Base feature figure
  * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
  */
 

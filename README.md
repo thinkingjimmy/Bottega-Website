@@ -4,11 +4,12 @@ Next.js 16 App Router + React 19 + TypeScript + plain CSS + static export
 
 <directory>
 app/ - Thirty static pages plus crawler and social-image endpoints: six unprefixed English pages and twenty-four prefixed translations
-app/styles/ - Presentation split by tokens, base, the download control, shared/Agents features, the Base figures, hero, Apps, reels, the Subscription roster, the handoff graph, bands, and motion
-components/ - Shared site chrome, the download control, home sections, feature navigation, chart shapes, and product-faithful visuals
-components/apps/ - Four first-party App surfaces, their shared switcher, and the id-to-surface lookup
+app/styles/ - Presentation split by tokens, base, the download control, shared/Agents features, the Base figures, hero (window and phone), the home sections, Apps, the Base reel, the page tail, and motion
+components/ - Shared site chrome, the download control, the hero, feature navigation, chart shapes, and product-faithful visuals
+components/apps/ - Four first-party App surfaces and the id-to-surface lookup
+components/home/ - The four home sections after the hero, their shared story/figure/case-list vocabulary, and the two static figures
 components/features/ - Feature catalog, navigation, document article, and code-drawn Agents and Base figures
-components/reels/ - Focused animated demonstrations for Agents, App editing, and Base views
+components/reels/ - The Base views reel and the shared playback hooks
 components/window/ - Hero product shell, transcript, composer, model menu, Plan panel, Apps page, and App Studio window
 content/ - Five locale-specific build-time Changelog snapshots
 lib/ - Typed i18n, shared SEO identity and structured data, the release snapshot, localized demos, body-map paths, and Changelog parsing
@@ -83,20 +84,29 @@ The site uses plain CSS because its visual system is already expressed as custom
 Styles are imported in a deliberate cascade from `app/globals.css`; module ownership is documented
 in `app/styles/README.md`.
 
-Two token families stay separate:
+One neutral ramp serves both the page and the product demonstrations, copied by value from the
+product's `packages/ui/src/styles/globals.css`:
 
-- `--ground`, `--ink`, and `--line` describe the warm paper-like marketing surface.
-- `--app-*` describes the neutral desktop UI shown inside product demonstrations.
+- `--ground`, `--card`, `--ink`, and `--line` describe the page: it sits one step below the cards
+  (`--secondary` under `--background`), exactly as the product's sidebar sits beside its main column,
+  and lines are 10% ink so a white card's border is the product's `--border`.
+- `--app-*` describes the product UI inside demonstrations with the same values, so a product window
+  on the page is the same material as the page.
+- `--accent` is the one chromatic token, taken from the amber dot on the app icon; it numbers the
+  stories and nothing else. Colour otherwise enters through content: Agent marks, chart palettes,
+  the Ready badge, and the hero wallpaper (`--wall`), which every home figure reuses as its backdrop.
 
-The separation prevents marketing treatments from leaking into product-faithful UI. Motion uses
-transform or opacity, starts only when its argument enters the viewport, and has a complete
-`prefers-reduced-motion` fallback.
+Motion uses transform or opacity, starts only when its argument enters the viewport, and has a
+complete `prefers-reduced-motion` fallback.
 
 ## Shared chrome
 
-`SiteHeader` renders the same DOM in two presentations: the home hero reveals the `stage` variant
-as the desktop shrinks, while content pages use the fixed-height `framed` variant. The controls use
-a shared 32px height and preserve brand, Features, and Download on narrow screens.
+`SiteHeader` renders the same DOM in three presentations: the home hero reveals the `stage` variant
+as the desktop shrinks; once that band scrolls off the top, `FloatingHeader` slides the fixed
+`floating` variant in (and back out when the band returns); content pages use the `framed` variant,
+which is sticky at the top. Both persistent skins share one glass — the page colour at 84% over a
+blur with a hairline below — so scrolled content stays faintly visible behind the navigation. The
+controls use a shared 32px height and preserve brand, Features, and Download on narrow screens.
 
 The Features, download, and language controls use native `details/summary`. Their entries remain in
 the initial DOM, so the menu works with pointer, keyboard, and assistive technology without a client
@@ -115,6 +125,11 @@ The light and dark wallpapers follow the active theme. Auto mode resolves system
 first paint and continues to follow operating-system changes. Manual choices remain local to the
 browser.
 
+On the Chat surface a phone stacks over the window's bottom-right corner, running the Web shell of the
+same open Chat — the window hands it the Chat it shows, so the two screens never disagree — with the
+executing computer's chip in its composer. The chip bar is pinned to the stage's bottom centre. Narrow
+screens hide the phone and return the chips to the flow under the window.
+
 The desktop shows one of two surfaces. Chat is the default. The Apps surface opens on the product's
 own Apps page — one card per first-party App — and then plays a single beat: the leading card takes a
 press, and that App opens in its own window stacked over the desktop, crossing the first window's
@@ -123,16 +138,21 @@ Apps home section uses, drawn at its natural width and scaled as one block. Any 
 App, the red traffic light closes it, and the Apps chip replays the sequence. Reduced motion skips the
 beat and the movement, never the result.
 
-The home narrative contains four feature sections immediately after the hero:
+The home narrative contains four sections immediately after the hero, each opened by a full-width
+hairline, an eyebrow, a title and a lede:
 
-1. Agents demonstrates Codex, Claude, Kimi, and OpenCode with provider-specific capabilities.
-2. Apps rotates through the four first-party App surfaces.
-3. Customizable demonstrates the source-chat editing workflow.
-4. Base demonstrates the structured-data surface and view changes.
+1. Agents: the CLI roster (one row, one sign-in command each), then two numbered stories — Handoff
+   (one Chat switching Agents mid-way, drawn with the product's own divider and Usage-limit label) and
+   Data space (the Base reel with its four-view case list).
+2. Local first · Encrypted sync: four claims in one row, then the Sync & remote control story with the
+   phone beside the desktop panel of the same Chat.
+3. Apps: the App stage rotating through the four first-party surfaces beside the four-App case list.
+4. Open source: the build in a terminal card beside the checklist of what a fork can do, carrying the
+   page's last download control.
 
-Each section ends with the same `FeatureLink` action and maps to one feature documentation route.
-Decorative demonstrations are hidden from the accessibility tree; the surrounding copy carries the
-argument in reading order.
+Every story figure sits in the same figure card, backed by the hero wallpaper. Each story ends with
+the same `FeatureLink` action and maps to one feature documentation route. Decorative demonstrations
+are hidden from the accessibility tree; the surrounding copy carries the argument in reading order.
 
 ## Feature documentation
 

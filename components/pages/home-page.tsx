@@ -1,5 +1,5 @@
 /**
- * [INPUT]: Uses one Locale to select SiteCatalog, page structured data, localized demo data, and home sections
+ * [INPUT]: Uses one Locale to select SiteCatalog, page structured data, localized demo data, the hero, the floating header, and home sections
  * [OUTPUT]: Exports HomePageView with static website/application JSON-LD for all five locales
  * [POS]: Locale-neutral home composition; route files only choose locale and metadata policy
  * [PROTOCOL]: Update this header when making changes, then check README.md.
@@ -7,15 +7,13 @@
 
 import { createDemoData } from "@/lib/agents";
 import { getCatalog, type Locale } from "@/lib/i18n";
-import { AgentsSection } from "../agents-section";
-import { AppsSection } from "../apps-section";
-import { BaseSection } from "../base-section";
-import { CollaborationSection } from "../collaboration-section";
-import { CustomizableSection } from "../customizable-section";
-import { ForkBand } from "../fork-band";
+import { FloatingHeader } from "../floating-header";
 import { Hero } from "../hero";
+import { AgentsSection } from "../home/agents-section";
+import { AppsSection } from "../home/apps-section";
+import { SourceSection } from "../home/source-section";
+import { TrustSection } from "../home/trust-section";
 import { SiteFooter } from "../site-footer";
-import { SubscriptionSection } from "../subscription-section";
 import { featuresFor } from "../features/catalog";
 import { PageStructuredData } from "./structured-data";
 
@@ -36,19 +34,12 @@ export function HomePageView({ locale }: { locale: Locale }) {
         features={features}
         locale={locale}
       />
+      <FloatingHeader locale={locale} copy={catalog.nav} download={catalog.download} features={features} />
       <div className="content">
         <AgentsSection demo={demo} catalog={catalog} locale={locale} />
-        <SubscriptionSection copy={catalog.home.subscription} readMore={catalog.common.readMore} locale={locale} />
-        <CollaborationSection
-          demo={demo}
-          copy={catalog.home.collaboration}
-          readMore={catalog.common.readMore}
-          locale={locale}
-        />
+        <TrustSection demo={demo} catalog={catalog} locale={locale} />
         <AppsSection demo={demo} catalog={catalog} locale={locale} />
-        <CustomizableSection demo={demo} catalog={catalog} locale={locale} />
-        <BaseSection demo={demo} copy={catalog.home.base} readMore={catalog.common.readMore} locale={locale} />
-        <ForkBand catalog={catalog} />
+        <SourceSection catalog={catalog} />
         <SiteFooter locale={locale} catalog={catalog} logicalPath="/" />
       </div>
     </>

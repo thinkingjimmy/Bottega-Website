@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Has no dependencies; every color, font, and geometry value is self-contained
- * [OUTPUT]: Provides site and product-surface palettes, App paper tokens, type stacks (including the handwriting stack), shared page and figure geometry, and the reset
+ * [OUTPUT]: Provides the one neutral palette shared by site and product surfaces (plus --wall, --card, --accent, --app-shadow), App paper tokens, type stacks (including the handwriting stack), shared page and figure geometry, and the reset
  * [POS]: Foundation of the stylesheet cascade; every later stylesheet consumes these tokens
  * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
@@ -58,52 +58,66 @@ p {
 /* ============================================================
  * 1 · token
  *
- * 两套调色板并存，各管各的地界：
- *   --ground/--ink/--line…  是「网站」的暖纸色系；
- *   --app-*                 是「产品窗口」的中性色系，取值与
- *                           packages/ui/src/styles/globals.css 的
- *                           oklch 中性阶一一对应（1 0 0 → #FFFFFF，
- *                           0.985 → #FAFAFA，0.922 → #E5E5E5，
- *                           0.145 → #252525，0.556 → #737373）。
- * 分成两套是有意的：首屏那台机器必须长得跟真产品一样，它不该
- * 跟着营销页的暖色走；而营销页也不该被产品的中性灰拖成一张
- * 后台管理界面。混成一套的那一刻，两边都会输。
+ * 一套中性阶，两个地界：
+ *   --ground/--ink/--line…  是「网站」的纸——取值逐项来自产品
+ *                           packages/ui/src/styles/globals.css 的 shadcn
+ *                           中性阶（oklch → hex：1 0 0 → #FFFFFF，0.985 →
+ *                           #FAFAFA，0.97 → #F5F5F5，0.922 → #E5E5E5，
+ *                           0.556 → #737373，0.205 → #171717，0.145 → #0A0A0A）；
+ *   --app-*                 是「产品窗口」的中性色系，同一阶、同一组值。
+ * 页面压在 --secondary 那一档（#F5F5F5）上，卡片与产品窗口是 --background
+ * （#FFFFFF）：产品里侧栏与主区就是这样一深一浅地挨着，网站照搬这一层关系，
+ * 于是一扇白色产品窗落在页面上时是同一种材质，而不是压在一张米黄纸上。
+ * 线是 10% 的墨：白底上恰好等于产品的 --border #E5E5E5，页面上深一档。
+ * 唯一的彩色是 app 图标上那颗橙点（amber-700）：只给故事编号，别处不用。
  * ============================================================ */
 :root {
   color-scheme: light;
 
-  --ground: #ede9de;
-  --ground-2: #e5e0d1;
-  --surface: #f7f4ec;
-  --surface-2: #fcfaf5;
+  --ground: #f5f5f5;
+  --ground-2: #ebebeb;
+  --surface: #ffffff;
+  --surface-2: #ffffff;
+  --card: #ffffff;
 
-  --ink: #1b1a16;
-  --ink-2: #514c42;
-  --ink-3: #7b7568;
+  --ink: #0a0a0a;
+  --ink-2: #525252;
+  --ink-3: #737373;
 
-  --line: #dad3c2;
-  --line-2: #c7bea8;
+  --line: rgba(10, 10, 10, 0.1);
+  --line-2: rgba(10, 10, 10, 0.18);
 
-  --green: #4e9430;
-  --green-lit: #6ec84c;
-  --amber: #a96c05;
-  --amber-lit: #f5a000;
+  /* 语义色只剩两族：emerald 是产品「Ready」与终端提示符那一档，
+     amber 是图标橙点的文字档——都不是装饰色。 */
+  --green: #047857;
+  --green-lit: #10b981;
+  --amber: #b45309;
+  --amber-lit: #d97706;
+  --accent: var(--amber);
 
-  --shadow: 0 1px 2px rgba(27, 26, 22, 0.05), 0 18px 44px -18px rgba(27, 26, 22, 0.22);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 18px 44px -18px rgba(0, 0, 0, 0.16);
 
   --app-bg: #ffffff;
   --app-sidebar: #fafafa;
   --app-border: #e5e5e5;
-  --app-fg: #252525;
+  --app-fg: #0a0a0a;
   --app-muted-fg: #737373;
   --app-accent: #f5f5f5;
-  --app-primary: #343434;
+  --app-primary: #171717;
   --app-primary-fg: #fafafa;
+  /* 浮在壁纸上的产品面板共用这一道影：一圈发丝边把它从照片里切出来，
+     一道散开的环境影说明它是浮着的，不是印上去的。 */
+  --app-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.06),
+    0 44px 90px -30px rgba(0, 0, 0, 0.35);
   /* Apps 页那枚 ready 徽标唯一的一处彩色，取自产品的
      `bg-emerald-500/10 text-emerald-700`。它只归 ready 一档：
      多给一档，颜色就不再是一句话，而是装饰。 */
   --app-ok-bg: rgba(16, 185, 129, 0.1);
   --app-ok-fg: #047857;
+
+  /* 首屏那张壁纸，也是正文每一张图的底：图与首屏共用一张照片，
+     整页才连成一件事。 */
+  --wall: url("/hero-bg-light.png");
 
   /* ── 两只带 GUI 的 App 自带的纸面 ──────────────────────────────
    * Design Canvas 是暖中性的工作台，Fitness Log 是一本训练手册，取值各自
@@ -212,37 +226,42 @@ p {
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --ground: #141310;
-  --ground-2: #0e0d0b;
-  --surface: #1d1b17;
-  --surface-2: #232019;
+  --ground: #0a0a0a;
+  --ground-2: #1f1f1f;
+  --surface: #171717;
+  --surface-2: #171717;
+  --card: #171717;
 
-  --ink: #ede9de;
-  --ink-2: #b3ad9e;
-  --ink-3: #877f72;
+  --ink: #fafafa;
+  --ink-2: #a3a3a3;
+  --ink-3: #737373;
 
-  --line: #2e2a23;
-  --line-2: #423c31;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-2: rgba(255, 255, 255, 0.2);
 
-  --green: #7cd65c;
-  --green-lit: #7cd65c;
-  --amber: #e9a83c;
-  --amber-lit: #f5a000;
+  --green: #34d399;
+  --green-lit: #34d399;
+  --amber: #fbbf24;
+  --amber-lit: #fbbf24;
 
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 24px 60px -20px rgba(0, 0, 0, 0.7);
 
-  --app-bg: #252525;
-  --app-sidebar: #343434;
+  --app-bg: #0a0a0a;
+  --app-sidebar: #171717;
   --app-border: rgba(255, 255, 255, 0.1);
   --app-fg: #fafafa;
-  --app-muted-fg: #a1a1a1;
-  --app-accent: #3f3f3f;
-  --app-primary: #fafafa;
-  --app-primary-fg: #252525;
-  /* 深色下 emerald-700 落在 #252525 上读不出来：底色留在同一档，
+  --app-muted-fg: #a3a3a3;
+  --app-accent: #262626;
+  --app-primary: #e5e5e5;
+  --app-primary-fg: #171717;
+  --app-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 2px 6px rgba(0, 0, 0, 0.4),
+    0 44px 90px -30px rgba(0, 0, 0, 0.8);
+  /* 深色下 emerald-700 落在 #0a0a0a 上读不出来：底色留在同一档，
      字换成 emerald-400。 */
   --app-ok-bg: rgba(16, 185, 129, 0.16);
   --app-ok-fg: #34d399;
+
+  --wall: url("/hero-bg-dark.png");
 
   --dc-paper: #11120f;
   --dc-chrome: #1b1c18;

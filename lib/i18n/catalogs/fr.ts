@@ -34,56 +34,57 @@ export const fr = {
     navigation: "Navigation du pied de page",
     links: { changelog: "Nouveautés", docs: "Documentation", github: "GitHub", issues: "Issues", download: "Télécharger" },
   },
-  common: { readMore: "En savoir plus", replay: "Rejouer" },
+  common: { readMore: "En savoir plus" },
   home: {
     hero: {
       menu: ["Fichier", "Édition", "Présentation", "Chat", "Fenêtre", "Aide"],
       date: "Mar. 1 sept.  9:36",
-      chatChip: "Utilisez-le comme Codex",
+      chatChip: "Comme Codex, en mieux",
       appChip: "Les Apps créées par votre Agent",
     },
     agents: {
-      title: "Vos Agents, une seule barre latérale.",
-      body:
-        "Codex, Claude, Kimi et OpenCode s’exécutent tous dans Bottega — directement via les CLI officielles que vous avez déjà installées, sans service d’Agent supplémentaire.",
+      eyebrow: "Agents",
+      title: ["Gardez les Agents que vous utilisez déjà.", "Gardez l’abonnement que vous payez déjà."],
+      lede: "Codex, Claude Code, Kimi Code et OpenCode tournent dans Bottega via leurs CLI officielles, connectées à vos propres comptes — une commande chacune, et une seule barre latérale. Pas de jetons revendus, pas de marge, rien de nouveau à souscrire.",
+      roster: {
+        codex: "La CLI Codex officielle, avec votre compte, ses modèles et son échelle de permissions.",
+        claude: "Claude Code tel qu’il est installé sur votre machine : votre abonnement, ses modèles, le mode Plan.",
+        kimi: "La CLI Kimi Code avec le compte que vous utilisez déjà, dans la même barre latérale.",
+        opencode: "OpenCode et le catalogue de fournisseurs que vous avez configuré, sans déplacer le travail.",
+        more: "Et d’autres",
+        soon: "Bientôt",
+        moreBody: "Hermes, Pi et DeepSeek arrivent — chacun avec sa propre CLI, jamais via un proxy.",
+      },
+      handoff: { eyebrow: "Passage de relais", title: "Passez le travail d’un Agent au suivant.", body: "Plus de quota sur un forfait ? Choisissez un autre Agent pour le tour suivant et continuez dans le même Chat. Ou répartissez volontairement : Claude écrit le plan, Codex l’implémente, Kimi lance les tests — chaque relais est un Chat dans votre barre latérale, pas une étape dans un fichier de workflow.", note: "Chaque Agent peut aussi lancer plusieurs sous-agents en parallèle." },
+      data: { eyebrow: "Espace de données", title: "Un espace de données, partagé par tous les Agents.", body: "Ce qu’un Agent enregistre, le suivant le lit. Base conserve les enregistrements de chaque conversation dans un seul espace de données local et montre les mêmes enregistrements en tableau, graphique, galerie ou carte — le contexte ne repart pas de zéro quand l’Agent change." },
     },
-    subscription: {
-      title: "Gardez votre propre abonnement.",
-      body:
-        "Bottega ne revend pas de tokens. Utilisez les agents de code que vous payez déjà : nous les orchestrons, votre abonnement reste le vôtre.",
-      more: "Et d’autres",
-      soon: "Bientôt disponible",
+    trust: {
+      eyebrow: "Local d’abord · Synchronisation chiffrée",
+      title: ["À vous, sur votre machine.", "Chiffré partout ailleurs."],
+      lede: "Bottega garde votre travail dans un dossier que vous pouvez ouvrir, fait tourner les Agents via leurs CLI officielles et est publié sous licence MIT. Activez la synchronisation quand vous le voulez : elle ne transporte que du chiffré.",
+      claims: [
+        { title: "Un dossier, pas une boîte noire", body: "Chats, pièces jointes, Projets, Base, sources des Apps et Skills sont des fichiers dans un dossier que vous choisissez — lisibles sans Bottega, sauvegardés en le copiant." },
+        { title: "CLI officielles, vos comptes", body: "Chaque Agent tourne via sa propre CLI, connecté en votre nom. Bottega ajoute l’espace de travail, jamais un proxy." },
+        { title: "Open source, MIT", body: "Le code qui touche vos données est public. Lisez-le, auditez-le, forkez-le." },
+        { title: "Chiffré avant de partir", body: "La synchronisation reste désactivée tant que vous ne l’activez pas. Une fois active, les Chats sont scellés avec un mot de passe que vous seul connaissez ; le serveur ne détient que du chiffré." },
+      ],
+      sync: { eyebrow: "Synchronisation et contrôle à distance", title: "Synchronisation chiffrée de bout en bout, votre téléphone aux commandes.", body: "Activez la synchronisation et vos Chats vous suivent sur le Web et sur votre téléphone, chiffrés avec un mot de passe que vous seul connaissez avant même de quitter l’ordinateur. Depuis le téléphone, envoyez une tâche à l’ordinateur, suivez la sortie en direct, approuvez, arrêtez, relancez. Les serveurs de Bottega stockent et relaient du chiffré ; ils ne lisent jamais un message." },
     },
-    collaboration: {
-      title: "Les Agents se passent le travail.",
-      body:
-        "Un Agent peut confier le travail au Chat d’un autre Agent, qui le reprend avec le sien. Claude cadre le plan, Codex l’implémente, Kimi lance les tests : chaque passage est un Chat dans votre barre latérale, pas une étape dans un fichier de workflow.",
-      note: "Chaque Agent peut aussi lancer plusieurs sous-agents en parallèle.",
-      figureLabel:
-        "Un Chat passe le travail au suivant : Claude planifie, Codex implémente avec deux sous-agents simultanés, Kimi lance les tests",
-      roles: { plan: "Plan", development: "Développement", test: "Test" },
-      subagent: "Sous-agent · {name}",
-      sweep: "Appels de nav",
-      breakpoints: "Points de rupture",
-      regression: "Régression nav",
-    },
-    apps: {
-      title: "Créez des Apps natives pour l’IA.",
-      body: "Créez un coach sportif IA, un suivi de dépenses IA ou quelque chose d’entièrement nouveau. Décrivez l’idée : Bottega la transforme en App fonctionnelle, des données jusqu’à l’interface. Voici quatre Apps créées avec Bottega :",
-    },
-    customizable: {
-      title: "Personnalisez chaque App par la conversation.",
-      body: "Chaque App Bottega possède un code source modifiable. Cliquez sur Edit App et décrivez ce que vous souhaitez changer : votre Agent modifie directement le code pour mettre à jour les fonctionnalités, les données et l’interface, sans ouvrir d’éditeur de code séparé.",
-    },
-    base: {
-      title: "Chaque Chat, un espace de données.",
-      body: "Les informations de chaque conversation sont enregistrées dans Base. Laissez votre Agent les organiser, les synthétiser et les analyser directement, puis consultez les mêmes données sous forme de tableau, de graphique, de galerie ou de carte, sans rien exporter.",
-    },
-    fork: {
+    apps: { eyebrow: "Apps", title: "Créez des Apps nativement IA.", body: "Un coach sportif IA, un suivi de dépenses IA, ou quelque chose d’entièrement à vous. Décrivez l’idée — Bottega en fait une App fonctionnelle, des données à l’interface, et vous la modifiez de la même façon : en discutant. Quatre Apps sont fournies :" },
+    source: {
+      eyebrow: "Open source",
       title: "Publiez votre propre version.",
-      body: "Bottega est distribué sous licence MIT. Vous êtes libre de forker le dépôt, de modifier le code et de partager votre propre version avec d’autres.",
-      source: "Voir le code source",
-      terminalLabel: "Commandes du terminal pour compiler Bottega",
+      lede: "Bottega est sous licence MIT. Forkez le dépôt, changez ce que vous voulez et publiez votre propre version — la compilation ci-dessous est toute la cérémonie.",
+      terminalLabel: "Commandes de terminal pour compiler Bottega",
+      cloned: "Bottega cloné dans ./Bottega",
+      installed: "Dépendances installées",
+      items: [
+        { title: "Changez l’interface.", body: "Restylez n’importe quelle surface ; le thème tient dans un seul fichier de tokens." },
+        { title: "Ajoutez un Agent.", body: "Branchez une autre CLI via le même adaptateur ACP." },
+        { title: "Livrez votre propre build.", body: "Signez-le, renommez-le, distribuez-le comme le vôtre." },
+      ],
+      license: "Licence MIT",
+      fork: "Forker sur GitHub",
     },
   },
   changelog: {
@@ -293,11 +294,13 @@ export const fr = {
       trainingRecord: "Fitness Log · Journal d’entraînement", title: "La couverture, pas le coaching", subtitle: "Compte uniquement les séries terminées. Enregistrez et corrigez via le Chat d’utilisation ou la table de données.",
       revision: "Révision", createPlan: "Créer un plan d’entraînement", coverage: "Couverture", heatmap: "Carte thermique musculaire", body: "Corps", male: "Homme", timeRange: "Période", last30Days: "30 derniers jours",
       front: "Face", back: "Dos", intensity: "Intensité de couverture", offlineCatalog: "Catalogue hors ligne · 1324 exercices", exerciseCatalog: "Catalogue d’exercices", clearFilters: "Effacer les filtres",
-      search: "Rechercher", searchHint: "Nom, alias, muscle ou équipement", bodyPart: "Partie du corps", muscleRegion: "Région musculaire", equipment: "Équipement", all: "Tout", exercises: "1324 exercices", showing: "Affichage 1–24", groups: ["Pectoraux", "Haut des jambes", "Dos"],
+      search: "Rechercher", searchHint: "Nom, alias, muscle ou équipement", bodyPart: "Partie du corps", muscleRegion: "Région musculaire", equipment: "Équipement", all: "Tout", exercises: "1324 exercices", showing: "Affichage 1–24", groups: ["Pectoraux", "Haut des jambes", "Dos", "Épaules", "Bras"],
     },
-    appMenu: { items: ["Modifier l’App", "Workbench de l’App", "À propos de cette App", "Importer", "Historique des versions", "Partager sur GitHub"], ask: "Ajoute un troisième volet à la vue de comparaison.", source: "Source de l’App" },
+    handoff: { chats: ["Unifier la barre de nav", "Implémentation nav", "Régression nav"], ask: "Regroupe les appels de la navigation dans le composant partagé.", divider: "À partir d’ici, {agent} répond", undo: "Annuler", usageLimit: "Limite atteinte" },
+    sync: { device: "MacBook Pro", phone: "iPhone", ask: "Approuve le plan et rédige-le.", handledOn: "Traité sur {device}", editing: "Modification de CHANGELOG.md", encrypted: "Chiffré de bout en bout · relayé en chiffré", runningOn: "Exécution sur {device}" },
     chats: {
       releaseNotes: {
+        prior: { ask: "Parmi les PR fusionnées depuis 0.1.9, lesquelles un utilisateur remarquerait-il vraiment ?", worked: "22s", reply: "Six sur dix-huit. La parité des Agents est celle qu’on sentira en premier ; les deux refactorisations internes tiennent en une ligne." },
         title: "Publier les notes de version", ask: "Rédige les notes de version 0.2.0 à partir des PR fusionnées depuis 0.1.9.", trace: ["Lecture de 18 commits dans 4 paquets", "Modification de CHANGELOG.md"], reply: "Le Plan est ci-dessus. Dites go et je l’écris ; indiquez le groupe à changer et je le réorganise d’abord.",
         plan: { title: "Notes de version 0.2.0", sections: [
           { heading: "Résumé", items: ["Six changements majeurs depuis `0.1.9`, regroupés selon ce que l’utilisateur remarque d’abord.", "La parité des Agents ouvre la marche : `Kimi` et `OpenCode` atteignent désormais la même échelle d’autorisations que `Codex`.", "Deux refactorings internes tiennent sur une ligne ; personne hors du dépôt ne les a ressentis."] },

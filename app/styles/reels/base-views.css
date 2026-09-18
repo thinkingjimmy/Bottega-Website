@@ -24,15 +24,13 @@
   background: var(--app-bg);
   color: var(--app-fg);
 }
-/* ── 机器摆进内框，不再跟着文栏拉高 ──────────────────────────────
- * 原来这一支让画框 align-self: stretch，高度交给网格——文栏一高，机器
- * 跟着长，于是这张图在 1440 下是 580×474，而另外五张是 580×360。图跟着
- * 文字的高度走，本身就是让图去将就一个跟它无关的数。
- *
- * 现在画框回到六张共用的 580×360，机器摆进内框 528×312：
+/* ── 机器按内框反推高度 ────────────────────────────────────────────
+ * 画框跟着文栏长高（home/stories.css 让它 align-self: stretch），reel 由
+ * .figure-fill 铺满画框；机器不裁不缩，只是多露出一截：
  *   0.5867 = 528 / 900，机器自然宽 900，缩完正好是内框的宽
- *   高度算式把上下各让出的 24px 还回去，于是机器落在内框的下缘——
- *   少这一步，输入框那颗发送键会被从中间切开，读起来是坏了不是取景
+ *   高度算式把上下各让出的 24px 还回去再除回缩放，于是机器落在内框的
+ *   下缘——少这一步，输入框那颗发送键会被从中间切开，读起来是坏了不是取景
+ * 内框高多少，机器就有多少自然高度：表多露几行、图表两行铺满、相册多一排。
  * ────────────────────────────────────────────────────────── */
 .vw-cam {
   /* 一个数管两件事：缩放比，以及「内框有多高就反推多少自然高度」。
@@ -153,13 +151,26 @@
 .vw-foot > * { display: flex; align-items: center; gap: 6px; padding: 0 8px; }
 .vw-foot .lbl { color: var(--app-muted-fg); font-size: 11px; }
 
-/* ── 分析：栅格 auto-rows-180 gap-3 p-3，卡片 rounded-xl + border ──── */
-.vw-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 12px; }
-.ch { display: flex; flex-direction: column; height: 180px; overflow: hidden; border: 1px solid var(--app-border); border-radius: 12px; }
+/* ── 分析：两行铺满一屏，卡片 rounded-xl + border，栅格 gap-3 p-3 ──────
+ * 行高不写死：画框跟着文栏长高，这一屏就跟着长；写死 180 会在高画框里
+ * 留下半屏空白。两张半宽 + 一张通栏，是产品 chart 视图按列打包的形状。
+ * ────────────────────────────────────────────────────────── */
+.vw-charts { display: grid; height: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 12px; }
+.ch { display: flex; min-width: 0; flex-direction: column; overflow: hidden; border: 1px solid var(--app-border); border-radius: 12px; }
+.ch--wide { grid-column: span 2; }
 .ch-h { display: flex; align-items: center; height: 40px; flex: none; padding: 0 10px; border-bottom: 1px solid var(--app-border); font-size: 14px; font-weight: 500; }
 .ch-b { display: flex; align-items: center; gap: 10px; flex: 1; min-height: 0; padding: 10px; }
-/* 环自己不带尺寸（见 components/base-charts.tsx），高度由这一处给。 */
-.ch-b > svg { height: 100%; flex: none; }
+/* 环自己不带尺寸（见 components/base-charts.tsx）：高给满、宽拿剩下的，
+   圆由 viewBox 的 meet 保住。按高撑成正圆再让宽跟上是不行的——卡矮宽高
+   时还好，卡高起来它会把图例顶出卡外。 */
+.ch-b > svg { flex: 1; min-width: 0; height: 100%; }
+/* 横条那张卡：一列标签、一列条、一列数，三列各自定宽，条才有共同的基准线。 */
+.ch-b--rows { flex-direction: column; align-items: stretch; justify-content: space-evenly; gap: 8px; padding: 6px 14px; }
+.ch-row { display: grid; grid-template-columns: 128px minmax(0, 1fr) 64px; align-items: center; gap: 10px; font-size: 11px; }
+.ch-row-label { overflow: hidden; color: var(--app-muted-fg); text-overflow: ellipsis; white-space: nowrap; }
+.ch-row-track { display: block; height: 10px; border-radius: 3px; background: color-mix(in srgb, var(--app-muted-fg) 10%, transparent); }
+.ch-row-track i { display: block; height: 100%; border-radius: 3px; }
+.ch-row-value { text-align: right; font-variant-numeric: tabular-nums; }
 .ch-lg { display: flex; flex-direction: column; gap: 5px; flex: none; font-size: 10px; color: var(--app-muted-fg); }
 .ch-lg span { display: flex; align-items: center; gap: 5px; }
 .ch-lg i { display: block; width: 7px; height: 7px; flex: none; border-radius: 2px; }

@@ -19,26 +19,28 @@
   display: inline-flex;
   flex: none;
   align-items: stretch;
-  border-radius: 9999px;
+  border-radius: 8px;
   background: var(--download-face);
   color: var(--download-text);
   white-space: nowrap;
 }
 
 .download--nav {
-  --download-face: var(--ink);
-  --download-text: var(--ground);
+  --download-face: var(--app-primary);
+  --download-text: var(--app-primary-fg);
   height: 32px;
   font-size: 14px;
   font-weight: 500;
 }
 
+/* 结尾那张清单卡上的主按钮：同一颗产品主色，大一号、圆角跟着大一档。 */
 .download--band {
-  --download-face: var(--ground);
-  --download-text: var(--ink);
-  height: 50px;
-  font-size: 16px;
-  font-weight: 600;
+  --download-face: var(--app-primary);
+  --download-text: var(--app-primary-fg);
+  height: 44px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 /* ── 认领本机那一条 ────────────────────────────────────────────
@@ -51,8 +53,8 @@
   display: none;
   align-items: center;
   gap: 8px;
-  padding: 0 13px 0 17px;
-  border-radius: 9999px 0 0 9999px;
+  padding: 0 13px 0 15px;
+  border-radius: 8px 0 0 8px;
 }
 [data-platform="mac"] .download-action[data-for="mac"],
 [data-platform="windows"] .download-action[data-for="windows"],
@@ -61,7 +63,8 @@
 }
 .download--band .download-action {
   gap: 10px;
-  padding: 0 20px 0 26px;
+  padding: 0 18px 0 22px;
+  border-radius: 10px 0 0 10px;
 }
 
 .download-short {
@@ -88,13 +91,14 @@
   align-items: center;
   justify-content: center;
   width: 30px;
-  border-radius: 0 9999px 9999px 0;
+  border-radius: 0 8px 8px 0;
   border-left: 1px solid color-mix(in srgb, var(--download-text) 20%, transparent);
   cursor: pointer;
   list-style: none;
 }
 .download--band .download-caret {
-  width: 44px;
+  width: 40px;
+  border-radius: 0 10px 10px 0;
 }
 .download-caret::-webkit-details-marker {
   display: none;

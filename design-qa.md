@@ -20,7 +20,7 @@ without horizontal overflow.
 The source and implementation were reviewed together. Both preserve the persistent-Chats eyebrow,
 workflow title, Visible handoff badge, Claude → Codex → Claude sequence, phase labels, Agent marks,
 two named handoff tools, card contents, semantic completion states, and restrained shadows. The
-implementation intentionally inherits the warm documentation background after the product shell is
+implementation intentionally inherits the documentation page background after the product shell is
 removed; the white cards remain the visual anchors.
 
 ## Required fidelity surfaces

@@ -2,7 +2,7 @@
 
 /**
  * [INPUT]: Uses React state, ThinkingOrb, localized demo copy, Chat/Plan contracts, and icons
- * [OUTPUT]: Exports ProductTranscript, planText, and inline-code Rich rendering
+ * [OUTPUT]: Exports ProductTranscript (the prior turn, then the current one), planText, and inline-code Rich rendering
  * [POS]: Localized product transcript covering elapsed work, Plan review, and streaming state
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
@@ -35,6 +35,17 @@ export function ProductTranscript({
 
   return (
     <div className="chat" ref={scroller}>
+      {/* 上一轮压在最上面，多出来的部分翻到滚动区外：一条真在进行的 Chat
+          顶上不是空白，是已经读过的东西。 */}
+      {chat.prior ? (
+        <>
+          <div className="bubble">{chat.prior.ask}</div>
+          <WorkedFor chat={{ ...chat, worked: chat.prior.worked, trace: chat.prior.trace }} label={copy.workedFor} />
+          <div className="reply">
+            <p>{chat.prior.reply}</p>
+          </div>
+        </>
+      ) : null}
       <div className="bubble">{chat.ask}</div>
       <WorkedFor chat={chat} label={copy.workedFor} />
       {chat.plan ? <PlanCard plan={chat.plan} open={planOpen} onToggle={onPlan} copy={copy} /> : null}
