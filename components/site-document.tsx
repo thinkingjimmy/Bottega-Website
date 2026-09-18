@@ -1,10 +1,11 @@
 /**
- * [INPUT]: Uses the theme and platform pre-paint scripts, self-hosted Caveat face, and one statically known locale
+ * [INPUT]: Uses the theme and platform pre-paint scripts, self-hosted Caveat face, Vercel Speed Insights, and one statically known locale
  * [OUTPUT]: Exports SiteDocument, the shared HTML root for English and prefixed locale route trees
- * [POS]: Multi-root-layout document boundary that guarantees a build-time-correct html lang and owns the one webfont the site loads
+ * [POS]: Multi-root-layout document boundary that guarantees a build-time-correct html lang and owns the one webfont and the one measurement script the site loads
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Caveat } from "next/font/google";
 import type { Locale } from "@/lib/i18n/locale";
 import { PLATFORM_BOOT, THEME_BOOT } from "./boot";
@@ -45,6 +46,11 @@ export function SiteDocument({
       <body>
         <ThemeRuntime />
         {children}
+        {/* Field Core Web Vitals for all thirty pages. Mounted once here rather than in each
+         * root layout; it renders nothing and appends one deferred same-origin script after
+         * hydration, so first paint stays untouched. Served by Vercel at /_vercel/, it only
+         * logs a console note on any other static host. */}
+        <SpeedInsights />
       </body>
     </html>
   );

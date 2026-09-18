@@ -71,8 +71,10 @@ To inspect an existing export, run `pnpm audit:i18n` and `pnpm audit:seo`.
 
 After deploying, submit `https://www.getbottega.app/sitemap.xml` in the site's Google Search Console
 property and inspect representative English and translated URLs. Local export checks do not measure
-index coverage or field Core Web Vitals. SoftwareApplication markup describes the product; eligibility
-for app rich results also requires a genuine published rating or review under
+index coverage; field Core Web Vitals come from Vercel Speed Insights, which `SiteDocument` mounts once
+for every page and which reports dynamic segments as `[locale]` and `[slug]` routes. SoftwareApplication
+markup describes the product; eligibility for app rich results also requires a genuine published rating
+or review under
 [Google's software app guidelines](https://developers.google.com/search/docs/appearance/structured-data/software-app).
 
 ## Styling
@@ -169,9 +171,9 @@ states as their desktop counterparts where those details carry meaning. Intentio
 remain visible in code comments and serve framing or legibility, never invent capability.
 
 Interactive controls only receive hover or pressed states when they perform the advertised action.
-Screenshot dimensions are declared to prevent layout shift. The specialized runtime dependency is
-`thinking-orbs@0.1.1`, shared with the product's streaming status treatment; icons and model marks
-otherwise come from local primitives.
+Screenshot dimensions are declared to prevent layout shift. The two runtime dependencies are
+`thinking-orbs@0.1.1`, shared with the product's streaming status treatment, and `@vercel/speed-insights`,
+which adds one deferred script after hydration; icons and model marks otherwise come from local primitives.
 
 ## Downloads
 
@@ -247,6 +249,10 @@ pnpm build
 
 Vercel can build this repository directly with automatic Next.js framework detection. No Bottega
 desktop runtime, local account, or sibling checkout is required.
+
+Speed Insights must be enabled once in the Vercel project; the client script is then served from the
+deployment's own `/_vercel/speed-insights/` path, so no domain is added to the page's request set. On any
+other static host the script request fails and the component only logs a console note.
 
 ## License
 
