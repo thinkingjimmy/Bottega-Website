@@ -25,6 +25,6 @@ The first-screen presentation: one sticky runway, a theme-aware desktop scene, a
 - `.app-studio` is a sibling of `.window`, not a child: a second window must be able to cross the first one's edge. It is positioned from the scene body's centre, and `--studio-anchor` carries the one offset that separates that centre from the window's own.
 - One knob, `--z`, produces the Studio window's width, its height, and the scale of the App page inside it. Below 900px the ratio is held and the window is cropped instead, because shrinking further would render the product's 15px text at 4px.
 - The chip bar outranks both windows: it is the only way back to Chat, and the only way to replay this surface. It is pinned to the stage's bottom centre, so the window can move left for the phone without dragging the chips along; below 900px it returns to the flow under the window.
-- The phone stacks over the window's bottom-right corner on the Chat surface only. `.scene-body` reserves 80px on the right so window and phone centre as one group; narrow screens hide the phone and drop the reservation.
+- The phone stacks over the window's bottom-right corner on the Chat surface only. It is positioned inside `.scene-body`, which reserves 80px on the right so window and phone centre as one group and caps itself at 1440px so the pair stays together on wider screens; narrow screens hide the phone and drop the reservation.
 
 [PROTOCOL]: Update this file when members or responsibilities change, then verify the parent README.md.

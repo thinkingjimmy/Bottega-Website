@@ -200,6 +200,13 @@ export function Hero({
               />
             ) : null}
 
+            {/* 同一条 Chat 的第二块屏，叠在窗口右下——它说的是「离开电脑也还在」，
+                所以只在 chat 这一面出现：Apps 那一面演的是另一件事。
+                它挂在 scene-body 里而不是 scene 上：scene 随视口铺满，
+                scene-body 封顶在 1440——手机要跟着窗口，不能跟着屏幕的右缘跑。 */}
+            {surface === "chat" && mirror ? (
+              <ProductPhone chat={mirror} demo={demo} time={copy.date.trim().split(/\s+/).pop() ?? ""} className="rise rise-2" />
+            ) : null}
           </div>
 
           {/* 两颗并列而不是一个开关：chat 与 App 是产品的两种表面，
@@ -229,11 +236,6 @@ export function Hero({
             </button>
           </div>
 
-          {/* 同一条 Chat 的第二块屏，叠在桌面右下——它说的是「离开电脑也还在」，
-              所以只在 chat 这一面出现：Apps 那一面演的是另一件事。 */}
-          {surface === "chat" && mirror ? (
-            <ProductPhone chat={mirror} demo={demo} time={copy.date.trim().split(/\s+/).pop() ?? ""} className="rise rise-2" />
-          ) : null}
         </section>
       </div>
     </div>
