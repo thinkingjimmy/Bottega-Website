@@ -73,7 +73,8 @@ To inspect an existing export, run `pnpm audit:i18n` and `pnpm audit:seo`.
 After deploying, submit `https://www.getbottega.app/sitemap.xml` in the site's Google Search Console
 property and inspect representative English and translated URLs. Local export checks do not measure
 index coverage; field Core Web Vitals come from Vercel Speed Insights, which `SiteDocument` mounts once
-for every page and which reports dynamic segments as `[locale]` and `[slug]` routes. SoftwareApplication
+for every page and which reports dynamic segments as `[locale]` and `[slug]` routes. Traffic analytics come
+from Google Analytics 4 (`G-D852HRD2JY`), which `SiteDocument` also mounts once after hydration. SoftwareApplication
 markup describes the product; eligibility for app rich results also requires a genuine published rating
 or review under
 [Google's software app guidelines](https://developers.google.com/search/docs/appearance/structured-data/software-app).

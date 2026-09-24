@@ -10,7 +10,7 @@
 - `download.tsx`: Renders the site's only download control — a split button whose primary half is the visitor's own platform.
 - `boot.ts`: Owns the two pre-paint scripts and the theme storage contract they share with the client runtime.
 - `site-footer.tsx`: Renders the shared copyright notice, localized links, and the footer language selector.
-- `site-document.tsx`: Supplies shared HTML roots with build-time `lang`, the pre-paint boot scripts, the site's only self-hosted webfont, and the single Vercel Speed Insights mount.
+- `site-document.tsx`: Supplies shared HTML roots with build-time `lang`, the pre-paint boot scripts, the site's only self-hosted webfont, the single Vercel Speed Insights mount, and the Google Analytics 4 tag (`afterInteractive`).
 - `disclosure.tsx`: Owns persistent-DOM outside-click, Escape, and opt-in hover dismissal behavior.
 - `language-switcher.tsx`: Wears the footer skin over explicit locale links.
 - `scene-language.tsx`: Wears the hero menu-bar input-source skin over those same locale links.
