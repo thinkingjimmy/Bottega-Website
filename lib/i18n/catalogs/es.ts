@@ -70,7 +70,30 @@ export const es = {
       ],
       sync: { eyebrow: "Sincronización y control remoto", title: "Sincronización cifrada de extremo a extremo, con tu teléfono al mando.", body: "Activa la sincronización y tus Chats te siguen a la Web y al teléfono, cifrados con una contraseña que solo tú conoces antes de salir del ordenador. Desde el teléfono, envía una tarea al ordenador, mira la salida en directo, aprueba, detén, pregunta más. Los servidores de Bottega almacenan y retransmiten texto cifrado; nunca leen un mensaje." },
     },
-    apps: { eyebrow: "Apps", title: "Crea Apps nativas de IA.", body: "Un entrenador de fitness con IA, un registro de gastos con IA o algo completamente tuyo. Describe la idea: Bottega la convierte en una App que funciona, de los datos a la interfaz, y la cambias de la misma manera: conversando. Se incluyen cuatro Apps:" },
+    apps: {
+      eyebrow: "Apps · Dock · Widgets",
+      title: ["Crea Apps nativas de IA.", "Tenlas siempre a un clic."],
+      lede: "Describe una App y Bottega la construye: los datos, la interfaz, los permisos. Fíjala en Bottega Dock, junto al resto de tu Mac, y deja que los widgets vigilen tus planes de IA mientras trabajas.",
+      cells: [
+        { title: "Apps", tag: "describir → construir → cambiar", body: "Di lo que necesitas y obtén una App que funciona, con sus propios datos e interfaz. Cámbiala de la misma manera: conversando." },
+        { title: "Bottega Dock", tag: "en lugar del Dock o a su lado", body: "Una barra en la parte inferior de la pantalla para tus Apps, el Finder, Descargas y la Papelera. El Dock del sistema siempre está a un clic." },
+        { title: "Widgets", tag: "en vivo · ocultables al compartir", body: "Los límites de IA y el uso de hoy, directamente en el Dock. Los anillos se vuelven naranjas cuando a un plan le queda poco." },
+      ],
+      build: { eyebrow: "Apps", title: "Descríbela. Bottega la construye.", body: "Un entrenador de fitness con IA, un registro de gastos con IA o algo completamente tuyo. Bottega convierte la idea en una App que funciona, de los datos a la interfaz. Se incluyen cuatro Apps:" },
+      dock: {
+        eyebrow: "Dock",
+        title: "Cada App a un clic.",
+        body: "Bottega Dock se sitúa en la parte inferior de la pantalla con tus Apps, el Finder, Descargas y la Papelera. Deja que sustituya al Dock del sistema o úsalos juntos. Nada cambia en tu Mac hasta que lo confirmes, y el Dock del sistema vuelve con un clic.",
+        points: ["Fija las Apps de Bottega junto a tus apps del Mac", "Ocultar automáticamente o mostrar siempre", "Una sola disposición, sincronizada entre tus Mac"],
+      },
+      widgets: {
+        eyebrow: "Widgets",
+        title: "Tus planes de IA, de un vistazo.",
+        body: "Los widgets viven en el Dock. Límites de IA dibuja lo que queda del plan de cada Agente como un anillo, que se vuelve naranja cuando queda poco; haz clic para ver cada ventana y su hora de reinicio. Uso de IA cuenta los tokens de hoy y su coste estimado.",
+        cases: ["Codex, Claude, Kimi y OpenCode, uno junto a otro", "Tokens y coste estimado de hoy"],
+        privacy: "¿Compartes pantalla? Un solo interruptor muestra •• en lugar de cada número.",
+      },
+    },
     source: {
       eyebrow: "Código abierto",
       title: "Publica tu propia versión.",
@@ -298,6 +321,7 @@ export const es = {
     },
     handoff: { chats: ["Unificar la barra de nav", "Implementación de nav", "Regresión de nav"], ask: "Mueve las llamadas de la navegación al componente compartido.", divider: "A partir de aquí responde {agent}", undo: "Deshacer", usageLimit: "Límite de uso" },
     sync: { device: "MacBook Pro", phone: "iPhone", ask: "Aprueba el plan y escríbelo.", handledOn: "Gestionado en {device}", editing: "Editando CHANGELOG.md", encrypted: "Cifrado de extremo a extremo · retransmitido cifrado", runningOn: "Ahora se ejecuta en {device}" },
+    widgets: { limits: "Límites de IA", usage: "Uso de IA", updated: "Actualizado ahora", left: "Queda un {percent} %", window: "Ventana de 5 h · se reinicia a las {time}", weekly: "Semanal", tokensToday: "tokens hoy" },
     chats: {
       releaseNotes: {
         prior: { ask: "De las PR fusionadas desde 0.1.9, ¿cuáles notaría de verdad un usuario?", worked: "22s", reply: "Seis de las dieciocho. La paridad de Agentes es la que se sentirá primero; las dos refactorizaciones internas caben en una línea." },

@@ -1,5 +1,5 @@
 /**
- * [INPUT]: Uses localized SiteCatalog/DemoData, Reveal, the Stroke/glyph primitives, SyncFigure, and the Story vocabulary
+ * [INPUT]: Uses localized SiteCatalog/DemoData, Reveal, the Stroke/D primitives, the dock-marks Tile, SyncFigure, and the Story vocabulary
  * [OUTPUT]: Exports the localized TrustSection — four local-first claims and the encrypted sync story
  * [POS]: Second home section; it argues that the work stays on the machine and leaves it only as ciphertext
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
@@ -8,13 +8,20 @@
 import type { DemoData } from "@/lib/agents";
 import type { SiteCatalog } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n/locale";
-import { Stroke, glyph } from "../icons";
+import { D, Stroke } from "../icons";
 import { Reveal } from "../reveal";
+import { Tile, type TileTone } from "./figures/dock-marks";
 import { SyncFigure } from "./figures/sync-figure";
 import { FigureCard, Story } from "./story";
 
-/* 四条主张各配一枚描边图标，顺序与目录里的四条一一对应。 */
-const CLAIM_ICONS = ["folder", "monitor", "gitFork", "shieldCheck"];
+/* 四条主张各配一枚彩色方章（与 Apps 节同一套），顺序与目录里的四条一一对应。
+   白色字形在渐变底上要比纸上的描边粗一档，才压得住底色。 */
+const CLAIM_TILES: { d: string; tone: TileTone }[] = [
+  { d: D.folder, tone: "blue" },
+  { d: D.monitor, tone: "graphite" },
+  { d: D.gitFork, tone: "violet" },
+  { d: D.shieldCheck, tone: "green" },
+];
 
 export function TrustSection({ demo, catalog, locale }: { demo: DemoData; catalog: SiteCatalog; locale: Locale }) {
   const copy = catalog.home.trust;
@@ -34,7 +41,9 @@ export function TrustSection({ demo, catalog, locale }: { demo: DemoData; catalo
           {copy.claims.map((claim, at) => (
             <div className="cell" key={claim.title}>
               <div className="cell-head">
-                <Stroke d={glyph(CLAIM_ICONS[at])} size={16} width={1.9} />
+                <Tile tone={CLAIM_TILES[at].tone} size={28} lifted>
+                  <Stroke d={CLAIM_TILES[at].d} size={16} width={2.1} />
+                </Tile>
                 <span>{claim.title}</span>
               </div>
               <p>{claim.body}</p>

@@ -7,7 +7,7 @@ app/ - Thirty static pages plus crawler and social-image endpoints: six unprefix
 app/styles/ - Presentation split by tokens, base, the download control, shared/Agents features, the Base figures, hero (window and phone), the home sections, Apps, the Base reel, the page tail, and motion
 components/ - Shared site chrome, the download control, the hero, feature navigation, chart shapes, and product-faithful visuals
 components/apps/ - Four first-party App surfaces and the id-to-surface lookup
-components/home/ - The four home sections after the hero, their shared story/figure/case-list vocabulary, and the two static figures
+components/home/ - The four home sections after the hero, their shared story/figure/case-list vocabulary, the static figures (handoff, sync, Bottega Dock, AI Limits), and the coloured tile/ring marks
 components/features/ - Feature catalog, navigation, document article, and code-drawn Agents and Base figures
 components/reels/ - The Base views reel and the shared playback hooks
 components/window/ - Hero product shell, transcript, composer, model menu, Plan panel, Apps page, and App Studio window

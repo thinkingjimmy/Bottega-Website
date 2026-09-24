@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * [INPUT]: Uses localized DemoData, BaseViewsReel, the shared carousel/visibility hooks, and Story/FigureCard/Cases
+ * [INPUT]: Uses localized DemoData, the Stroke/glyph primitives, BaseViewsReel, the shared carousel/visibility hooks, and Story/FigureCard/Cases
  * [OUTPUT]: Exports DataStory — the Data space story whose four-view case list drives the Base reel
  * [POS]: Second story of the Agents section; the only client component that section needs
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
@@ -10,6 +10,7 @@
 import type { DemoData } from "@/lib/agents";
 import type { SiteCatalog } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n/locale";
+import { Stroke, glyph } from "../icons";
 import { BaseViewsReel } from "../reels/base-views-reel";
 import { useCarousel } from "../reels/use-carousel";
 import { usePlayWhenSeen } from "../reels/use-play-when-seen";
@@ -30,7 +31,11 @@ export function DataStory({
      早已停在随机的一格上——那等于把「第一眼说什么」交给了随机数。 */
   const { frame, play } = usePlayWhenSeen();
   const { active, auto, pick } = useCarousel(demo.baseViews.length, play);
-  const views = demo.baseViews.map((view) => ({ icon: view.icon, name: view.name, description: view.blurb }));
+  const views = demo.baseViews.map((view) => ({
+    icon: <Stroke d={glyph(view.icon)} size={15} width={1.8} />,
+    name: view.name,
+    description: view.blurb,
+  }));
 
   return (
     <Story

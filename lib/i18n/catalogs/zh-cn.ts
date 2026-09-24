@@ -70,7 +70,30 @@ export const zhCN = {
       ],
       sync: { eyebrow: "同步与远程控制", title: "端到端加密同步，手机也能掌控。", body: "打开同步，你的 Chat 会跟着你到 Web 和手机上——离开电脑之前，就已用只有你知道的密码加密。在手机上把任务发给电脑，实时看输出、批准、停止、追问。Bottega 的服务器只存储和转发密文，从不读取任何一条消息。" },
     },
-    apps: { eyebrow: "App", title: "构建 AI 原生 App。", body: "构建 AI 健身教练、AI 记账工具，或任何只属于你的东西。描述想法，Bottega 会把它从数据到界面变成可运行的 App；要改，也还是同一种方式：对话。随产品附带四个 App：" },
+    apps: {
+      eyebrow: "App · Dock · 小组件",
+      title: ["构建 AI 原生 App。", "让它们始终一键可达。"],
+      lede: "描述一个 App，Bottega 就把它造出来——数据、界面、权限都在内。把它固定到 Bottega Dock，与 Mac 上的其他应用并排；工作时，让小组件替你盯着各家 AI 套餐。",
+      cells: [
+        { title: "App", tag: "描述 → 构建 → 修改", body: "说出你要什么，得到一个自带数据和界面、可以直接用的 App。要改，也还是同一种方式：对话。" },
+        { title: "Bottega Dock", tag: "替代，或与系统程序坞并存", body: "屏幕底部的一条栏，放你的 App、访达、下载和废纸篓。系统程序坞始终一键就能换回来。" },
+        { title: "小组件", tag: "实时 · 共享屏幕时可隐藏", body: "AI 额度和今日用量，直接显示在 Dock 上。套餐快用完时，圆环会变成橙色。" },
+      ],
+      build: { eyebrow: "App", title: "说出来，Bottega 就造出来。", body: "构建 AI 健身教练、AI 记账工具，或任何只属于你的东西。Bottega 会把想法从数据到界面变成可运行的 App。随产品附带四个 App：" },
+      dock: {
+        eyebrow: "Dock",
+        title: "每个 App 都只差一次点击。",
+        body: "Bottega Dock 位于屏幕底部，放着你的 App、访达、下载和废纸篓。可以让它替代系统程序坞，也可以让两者并存。在你确认之前，Mac 上的任何设置都不会改变；系统程序坞一键就能恢复。",
+        points: ["把 Bottega App 固定在 Mac 应用旁边", "自动隐藏，或始终显示", "一套布局，在你的多台 Mac 间同步"],
+      },
+      widgets: {
+        eyebrow: "小组件",
+        title: "AI 套餐余量，一眼看清。",
+        body: "小组件住在 Dock 上。AI 额度把每个 Agent 套餐的剩余量画成圆环，快用完时变成橙色；点开能看到每个额度窗口和重置时间。AI 用量统计今天的 Token 数和估算费用。",
+        cases: ["Codex、Claude、Kimi 和 OpenCode 并排显示", "今日 Token 数与估算费用"],
+        privacy: "要共享屏幕？打开一个开关，所有数字都显示为 ••。",
+      },
+    },
     source: {
       eyebrow: "开源",
       title: "发布你自己的版本。",
@@ -298,6 +321,7 @@ export const zhCN = {
     },
     handoff: { chats: ["统一导航栏", "导航实现", "导航回归"], ask: "把导航调用点收进共享组件。", divider: "从此处开始由 {agent} 回复", undo: "撤销", usageLimit: "已达用量限制" },
     sync: { device: "MacBook Pro", phone: "iPhone", ask: "批准这份计划并开始写。", handledOn: "已在 {device} 处理", editing: "正在编辑 CHANGELOG.md", encrypted: "端到端加密 · 只转发密文", runningOn: "现在由 {device} 执行" },
+    widgets: { limits: "AI 额度", usage: "AI 用量", updated: "刚刚更新", left: "剩余 {percent}%", window: "5 小时窗口 · {time} 重置", weekly: "每周", tokensToday: "今日 Token" },
     chats: {
       releaseNotes: {
         prior: { ask: "0.1.9 之后合并的 PR 里，用户真正会注意到的有哪些？", worked: "22s", reply: "十八个里有六个。Agent 一致性是大家最先感受到的；两处内部重构合成一句。" },

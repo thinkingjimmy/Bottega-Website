@@ -81,7 +81,30 @@ export const en = {
       ],
       sync: { eyebrow: "Sync & remote control", title: "End-to-end encrypted sync, with your phone in control.", body: "Turn on sync and your Chats follow you to the Web and your phone, encrypted with a password only you know before they leave your computer. From the phone, send a task to the computer, watch the output live, approve, stop, follow up. Bottega’s servers store and relay ciphertext; they never read a message." },
     },
-    apps: { eyebrow: "Apps", title: "Build AI-native Apps.", body: "Build an AI fitness coach, an AI expense tracker, or something entirely your own. Describe the idea — Bottega turns it into a working App, from data to interface, and you change it the same way: by chatting. Four Apps ship with it:" },
+    apps: {
+      eyebrow: "Apps · Dock · Widgets",
+      title: ["Build AI-native Apps.", "Keep them one click away."],
+      lede: "Describe an App and Bottega builds it — the data, the interface, the permissions. Pin it to Bottega Dock, next to the rest of your Mac, and let widgets keep an eye on your AI plans while you work.",
+      cells: [
+        { title: "Apps", tag: "describe → build → change", body: "Say what you need; get a working App with its own data and interface. Change it the same way — by chatting." },
+        { title: "Bottega Dock", tag: "replace or sit alongside", body: "A bar at the bottom of the screen for your Apps, Finder, Downloads and the Trash. The system Dock is always one click away." },
+        { title: "Widgets", tag: "live · private when you share", body: "AI limits and today’s usage, right on the Dock. Rings turn orange when a plan is running low." },
+      ],
+      build: { eyebrow: "Apps", title: "Describe it. Bottega builds it.", body: "Build an AI fitness coach, an AI expense tracker, or something entirely your own. Bottega turns the idea into a working App, from data to interface. Four Apps ship with it:" },
+      dock: {
+        eyebrow: "Dock",
+        title: "Keep every App one click away.",
+        body: "Bottega Dock sits at the bottom of the screen with your Apps, Finder, Downloads and the Trash. Let it replace the system Dock, or run it alongside. Nothing about your Mac changes until you confirm, and the system Dock comes back with one click.",
+        points: ["Pin Bottega Apps next to your Mac apps", "Hide automatically, or keep it always visible", "One layout, synced across your Macs"],
+      },
+      widgets: {
+        eyebrow: "Widgets",
+        title: "Your AI plans, at a glance.",
+        body: "Widgets live on the Dock. AI Limits draws what’s left of each Agent’s plan as a ring and turns it orange when it’s running low; click it for every window and reset time. AI Usage counts today’s tokens and estimated cost.",
+        cases: ["Codex, Claude, Kimi and OpenCode, side by side", "Tokens and estimated cost for today"],
+        privacy: "Sharing your screen? One switch shows •• instead of every number.",
+      },
+    },
     source: {
       eyebrow: "Open source",
       title: "Release your own version.",
@@ -426,6 +449,7 @@ export const en = {
     },
     handoff: { chats: ["Unify the nav bar", "Nav implementation", "Nav regression"], ask: "Move the nav call sites into the shared component.", divider: "Replies from here are by {agent}", undo: "Undo", usageLimit: "Usage limit" },
     sync: { device: "MacBook Pro", phone: "iPhone", ask: "Approve the plan and write it.", handledOn: "Handled on {device}", editing: "Editing CHANGELOG.md", encrypted: "End-to-end encrypted · relayed as ciphertext", runningOn: "Now running on {device}" },
+    widgets: { limits: "AI Limits", usage: "AI Usage", updated: "Updated just now", left: "{percent}% left", window: "5-hour window · resets {time}", weekly: "Weekly", tokensToday: "tokens today" },
     chats: {
       releaseNotes: {
         prior: { ask: "Which PRs merged since 0.1.9 would a user actually notice?", worked: "22s", reply: "Six of the eighteen. Agent parity is the one people will feel first; the two internal refactors fold into a line." },

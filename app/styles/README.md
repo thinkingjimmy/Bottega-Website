@@ -2,7 +2,7 @@
 
 > L2 | Parent: [app/](../README.md)
 
-The site stylesheet is split by responsibility. `globals.css` contains only the twenty-six imports whose order defines the cascade.
+The site stylesheet is split by responsibility. `globals.css` contains only the twenty-seven imports whose order defines the cascade.
 
 ## Cascade order
 
@@ -21,7 +21,7 @@ The site stylesheet is split by responsibility. `globals.css` contains only the 
 - `motion.css`: One-shot entrance behavior, reduced-motion policy, and narrow-screen hero/layout overrides.
 - `base-feature/`: The three Base detail-page figures; see its README.
 - `hero/`: Hero runway, product-window and phone styles; see its README.
-- `home/`: The four home sections — section skeleton, cell grids and case lists, story rows and the wallpaper figure card, the two static figures, and the open-source cards; see its README.
+- `home/`: The four home sections — section skeleton, cell grids and case lists, story rows and the wallpaper figure card, the static figures (including Bottega Dock, the AI Limits widget and the coloured tiles), and the open-source cards; see its README.
 - `apps/`: Product-faithful App surface styles; see its README.
 - `reels/`: The Base views reel and its shared primitives; see its README.
 

@@ -70,7 +70,30 @@ export const ja = {
       ],
       sync: { eyebrow: "同期とリモート操作", title: "端末間の暗号化同期を、手のひらから。", body: "同期をオンにすると、Chat は Web とスマートフォンへ付いてきます——パソコンを出る前に、あなただけが知るパスワードで暗号化して。スマートフォンからパソコンにタスクを送り、出力をライブで見て、承認し、止め、続きを頼めます。Bottega のサーバーは暗号文を保存・中継するだけで、メッセージを読むことはありません。" },
     },
-    apps: { eyebrow: "Apps", title: "AI ネイティブな App を作る。", body: "AI フィットネスコーチ、AI 家計簿、あるいはまったく自分だけのもの。アイデアを伝えれば、Bottega がデータから画面まで動く App に仕上げ、変更も同じやり方——対話で。四つの App が同梱されています：" },
+    apps: {
+      eyebrow: "Apps · Dock · ウィジェット",
+      title: ["AI ネイティブな App を作る。", "いつでもワンクリックで開ける。"],
+      lede: "App を説明すれば、Bottega がデータ、画面、権限まで含めて作ります。Bottega Dock に固定すれば Mac のほかのアプリと並び、作業中はウィジェットが AI プランの残りを見守ります。",
+      cells: [
+        { title: "Apps", tag: "説明 → 作成 → 変更", body: "必要なものを伝えれば、データと画面を備えた動く App が手に入ります。変更も同じやり方——対話で。" },
+        { title: "Bottega Dock", tag: "置き換えても、並べても", body: "App、Finder、ダウンロード、ゴミ箱を並べる画面下部のバー。システムの Dock にはいつでもワンクリックで戻せます。" },
+        { title: "ウィジェット", tag: "リアルタイム · 画面共有時は非表示に", body: "AI の利用上限と今日の使用量を Dock に表示。プランの残りが少なくなるとリングがオレンジに変わります。" },
+      ],
+      build: { eyebrow: "Apps", title: "説明すれば、Bottega が作る。", body: "AI フィットネスコーチ、AI 家計簿、あるいはまったく自分だけのもの。Bottega がアイデアをデータから画面まで動く App に仕上げます。四つの App が同梱されています：" },
+      dock: {
+        eyebrow: "Dock",
+        title: "どの App もワンクリックで。",
+        body: "Bottega Dock は画面下部に、App、Finder、ダウンロード、ゴミ箱を並べます。システムの Dock の代わりにも、並べて使うこともできます。確認するまで Mac の設定は何も変わらず、システムの Dock はワンクリックで戻ります。",
+        points: ["Bottega の App を Mac のアプリの隣に固定", "自動的に隠す、または常に表示", "ひとつのレイアウトを複数の Mac で同期"],
+      },
+      widgets: {
+        eyebrow: "ウィジェット",
+        title: "AI プランを、ひと目で。",
+        body: "ウィジェットは Dock に置かれます。AI 利用上限は各 Agent のプランの残りをリングで表し、少なくなるとオレンジに変わります。クリックすれば、すべての枠とリセット時刻を確認できます。AI 使用量は今日のトークン数と推定コストを集計します。",
+        cases: ["Codex、Claude、Kimi、OpenCode を並べて表示", "今日のトークン数と推定コスト"],
+        privacy: "画面を共有するなら、スイッチひとつで数字をすべて •• に。",
+      },
+    },
     source: {
       eyebrow: "オープンソース",
       title: "自分のバージョンを出す。",
@@ -298,6 +321,7 @@ export const ja = {
     },
     handoff: { chats: ["ナビゲーションの統一", "ナビゲーション実装", "ナビのリグレッション"], ask: "ナビの呼び出し箇所を共有コンポーネントにまとめて。", divider: "ここからは {agent} が返信します", undo: "元に戻す", usageLimit: "利用上限" },
     sync: { device: "MacBook Pro", phone: "iPhone", ask: "計画を承認して書いて。", handledOn: "{device} で処理済み", editing: "CHANGELOG.md を編集中", encrypted: "端末間暗号化 · 中継は暗号文のみ", runningOn: "現在は {device} で実行中" },
+    widgets: { limits: "AI 利用上限", usage: "AI 使用量", updated: "たった今更新", left: "残り {percent}%", window: "5 時間枠 · {time} にリセット", weekly: "週間", tokensToday: "今日のトークン" },
     chats: {
       releaseNotes: {
         prior: { ask: "0.1.9 以降にマージされた PR のうち、ユーザーが実際に気づくのはどれ？", worked: "22s", reply: "18 件のうち 6 件。Agent の足並みが揃ったことが最初に伝わります。内部のリファクタリング 2 件は一行にまとめます。" },

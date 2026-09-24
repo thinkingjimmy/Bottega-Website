@@ -1,6 +1,6 @@
 /**
- * [INPUT]: Uses FeatureLink, product icons, and the localized Locale/FeatureSlug contracts
- * [OUTPUT]: Exports Story (numbered copy beside a figure card), FigureCard, and Cases (the case list that drives a figure)
+ * [INPUT]: Uses FeatureLink and the localized Locale/FeatureSlug contracts
+ * [OUTPUT]: Exports Story (numbered copy beside a figure card, with an optional exit link), FigureCard, Cases (the case list that drives a figure), and CaseList (the same list when nothing drives)
  * [POS]: Layout vocabulary shared by every home section; sections decide the words, figures decide the picture
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
@@ -8,7 +8,6 @@
 import type { ReactNode } from "react";
 import { FeatureLink } from "../features/feature-link";
 import type { FeatureSlug } from "../features/catalog";
-import { Stroke, glyph } from "../icons";
 import type { Locale } from "@/lib/i18n/locale";
 
 /* ── 一张画框 ─────────────────────────────────────────────────────
@@ -44,7 +43,8 @@ export function Story({
   title: string;
   body: string;
   note?: string;
-  slug: FeatureSlug;
+  /* 没有专页的故事不给出口：宁可少一个链接，也不编一条路由。 */
+  slug?: FeatureSlug;
   locale: Locale;
   readMore: string;
   figureFirst?: boolean;
@@ -61,7 +61,7 @@ export function Story({
       <p>{body}</p>
       {note ? <p>{note}</p> : null}
       {children}
-      <FeatureLink slug={slug} locale={locale} label={readMore} />
+      {slug ? <FeatureLink slug={slug} locale={locale} label={readMore} /> : null}
     </div>
   );
   return (
@@ -72,6 +72,9 @@ export function Story({
   );
 }
 
+/* 图标由调用方画：Base 的视图是描边，App 是彩色方章。 */
+type CaseItem = { icon: ReactNode; name: string; description: string };
+
 /* ── 目录即开关 ────────────────────────────────────────────────────
  * 四只 App、四个视图都是一组同辈，摆成方阵读起来是「就这四个」。选中项
  * 驱动旁边那张图；有人点过，轮播就停。 */
@@ -81,7 +84,7 @@ export function Cases({
   auto,
   onPick,
 }: {
-  items: readonly { icon: string; name: string; description: string }[];
+  items: readonly CaseItem[];
   active: number;
   auto: boolean;
   onPick: (at: number) => void;
@@ -93,12 +96,33 @@ export function Cases({
           <button type="button" aria-pressed={at === active} onClick={() => onPick(at)}>
             <span className="cases-head">
               <span className="cases-icon" aria-hidden="true">
-                <Stroke d={glyph(item.icon)} size={15} width={1.8} />
+                {item.icon}
               </span>
               <span>{item.name}</span>
             </span>
             <span className="cases-description">{item.description}</span>
           </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/* 不驱动图的同一份清单：排版一样，没有选中、没有刻度、不可点。 */
+export function CaseList({ items }: { items: readonly CaseItem[] }) {
+  return (
+    <ul className="cases cases--static">
+      {items.map((item) => (
+        <li key={item.name}>
+          <div>
+            <span className="cases-head">
+              <span className="cases-icon" aria-hidden="true">
+                {item.icon}
+              </span>
+              <span>{item.name}</span>
+            </span>
+            <span className="cases-description">{item.description}</span>
+          </div>
         </li>
       ))}
     </ul>

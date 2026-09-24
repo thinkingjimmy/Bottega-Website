@@ -1,0 +1,450 @@
+/**
+ * [INPUT]: Uses the --app palette, --app-shadow, --ink scale and --line from ../tokens.css, and .fig-panel from ./figures.css
+ * [OUTPUT]: Defines the coloured .tile squircle and its tones, the .ring limit gauge, the shared Bottega Dock bar (dk-*), the Dock figure (dkf-*), the Widgets figure (wgf-*), the Apps check list and the static case list
+ * [POS]: Home-only layer after figures.css; everything the Apps section draws that the other sections do not, plus the tiles the Trust claims borrow
+ * [PROTOCOL]: Update this header when changing this file, then check README.md
+ */
+
+/* ── 彩色方章 ──────────────────────────────────────────────────
+ * 渐变自上而下、白色字形、圆角 24%。一枚章的颜色只在这里写一次，
+ * 格子、清单、Dock 与 Local first 的主张图标共用。 */
+.tile {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 24%;
+  background: linear-gradient(180deg, var(--tile-from), var(--tile-to));
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
+  color: #ffffff;
+}
+.tile[data-tone="design"] { --tile-from: #d9643f; --tile-to: #b8432a; }
+.tile[data-tone="kanban"] { --tile-from: #3b4048; --tile-to: #1f2328; }
+.tile[data-tone="expense"] { --tile-from: #24b07d; --tile-to: #0f8a5f; }
+.tile[data-tone="fitness"] { --tile-from: #e8872a; --tile-to: #c2610c; }
+.tile[data-tone="finder"] { --tile-from: #63b6ff; --tile-to: #1d8bf1; }
+.tile[data-tone="browser"] { --tile-from: #ffffff; --tile-to: #eef2f7; }
+.tile[data-tone="notes"] { --tile-from: #fffbe6; --tile-to: #fff4c2; }
+.tile[data-tone="blue"] { --tile-from: #5fb4f7; --tile-to: #2b8fe0; }
+.tile[data-tone="graphite"] { --tile-from: #474d57; --tile-to: #1f2328; }
+.tile[data-tone="violet"] { --tile-from: #9a6bf0; --tile-to: #6d3fd8; }
+.tile[data-tone="green"] { --tile-from: #2cb582; --tile-to: #0f8a5f; }
+/* 主张那一档（28px）比 Dock 里的章多一道落影：它站在纸上，不在玻璃里。 */
+.tile--claim {
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+[data-theme="dark"] .tile {
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.14);
+}
+[data-theme="dark"] .tile[data-tone="graphite"],
+[data-theme="dark"] .tile[data-tone="kanban"] {
+  --tile-from: #5a616d;
+  --tile-to: #2f343b;
+}
+
+/* ── AI Limits 的环 ────────────────────────────────────────────
+ * 颜色取自产品 system-dock/common/base.css：轨道 12%/18%，低额度转橙。 */
+.ring {
+  --ring-ink: #1d1d1f;
+  --ring-track: rgba(0, 0, 0, 0.12);
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+[data-theme="dark"] .ring {
+  --ring-ink: #f4f4f6;
+  --ring-track: rgba(255, 255, 255, 0.18);
+}
+.ring > svg {
+  position: absolute;
+  inset: 0;
+}
+.ring-track,
+.ring-arc {
+  fill: none;
+  stroke-width: 3;
+}
+.ring-track {
+  stroke: var(--ring-track);
+}
+.ring-arc {
+  stroke: var(--ring-ink);
+  stroke-linecap: round;
+}
+.ring[data-low] .ring-arc {
+  stroke: #ff9f0a;
+}
+.ring-center {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  line-height: 1;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ring-ink);
+}
+.ring[data-low] .ring-center > span {
+  color: #c46a00;
+}
+[data-theme="dark"] .ring[data-low] .ring-center > span {
+  color: #ffab5c;
+}
+
+/* ── Bottega Dock ──────────────────────────────────────────────
+ * 一条毛玻璃横条贴着画框底边。几何与产品同口径：图标 36（大号 48）、
+ * 分隔线、运行中的小点。 */
+.dk-bar {
+  --dk-fill: rgba(255, 255, 255, 0.34);
+  --dk-edge: inset 0 0 0 0.5px rgba(255, 255, 255, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --dk-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.1), 0 10px 30px rgba(0, 0, 0, 0.16);
+  --dk-dot: rgba(0, 0, 0, 0.65);
+  --dk-sep: rgba(0, 0, 0, 0.14);
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 50px;
+  padding: 0 7px;
+  border-radius: 16px;
+  background: var(--dk-fill);
+  -webkit-backdrop-filter: blur(22px) saturate(1.7);
+  backdrop-filter: blur(22px) saturate(1.7);
+  box-shadow: var(--dk-edge), var(--dk-shadow);
+  white-space: nowrap;
+}
+[data-theme="dark"] .dk-bar {
+  --dk-fill: rgba(40, 40, 46, 0.42);
+  --dk-edge: inset 0 0 0 0.5px rgba(255, 255, 255, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --dk-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.35), 0 10px 30px rgba(0, 0, 0, 0.35);
+  --dk-dot: rgba(255, 255, 255, 0.7);
+  --dk-sep: rgba(255, 255, 255, 0.18);
+}
+.dk-bar--large {
+  gap: 8px;
+  height: 70px;
+  padding: 0 10px;
+  border-radius: 22px;
+}
+.dk-item {
+  position: relative;
+  display: flex;
+  flex: none;
+  justify-content: center;
+}
+.dk-item[data-running]::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background: var(--dk-dot);
+}
+.dk-sep {
+  flex: none;
+  width: 1px;
+  height: 60%;
+  margin: 0 2px;
+  background: var(--dk-sep);
+}
+.dk-rings {
+  display: flex;
+  gap: 3px;
+}
+/* 面板开着的那一段：一块浅底圈出被点开的那只小组件。 */
+.dk-rings--on {
+  gap: 4px;
+  padding: 3px 5px;
+  border-radius: 13px;
+  background: rgba(0, 0, 0, 0.06);
+}
+[data-theme="dark"] .dk-rings--on {
+  background: rgba(255, 255, 255, 0.1);
+}
+/* 悬停提示：产品里就是这一块，Dock 上方居中于那枚图标。 */
+.dk-tip {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(30, 30, 34, 0.82);
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+/* 从 Dock 点开的面板：产品的半透明浮层，不是 App 窗口。 */
+.dk-panel {
+  position: absolute;
+  border-radius: 14px;
+  background: rgba(250, 250, 252, 0.86);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  backdrop-filter: blur(24px) saturate(1.6);
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 18px 40px rgba(0, 0, 0, 0.18);
+  color: #1d1d1f;
+}
+[data-theme="dark"] .dk-panel {
+  background: rgba(36, 36, 40, 0.82);
+  box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 18px 40px rgba(0, 0, 0, 0.45);
+  color: #f4f4f6;
+}
+
+/* ── 02 · Dock：壁纸上一扇 Expense Tracker，底下一条 Dock ─────────
+ * 画框跟着字栏长高时，Dock 贴着画框底边，窗口停在剩下那块的正中——
+ * 与屏幕上的样子一样，Dock 属于屏幕底边，不属于画面中心。 */
+.dkf {
+  position: absolute;
+  inset: 0;
+}
+.dkf-window {
+  left: calc(50% - 200px);
+  top: calc((100% - 74px) / 2 - 107px);
+  width: 400px;
+  height: 214px;
+  display: flex;
+  border-radius: 10px;
+}
+.dkf-side {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  gap: 6px;
+  width: 104px;
+  padding: 12px 10px;
+  background: var(--app-sidebar);
+  border-right: 1px solid var(--app-border);
+  font-size: 9px;
+  color: var(--app-muted-fg);
+}
+.dkf-lights {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+.dkf-lights i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+.dkf-lights i:nth-child(2) { background: #febc2e; }
+.dkf-lights i:nth-child(3) { background: #28c840; }
+.dkf-name {
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--app-fg);
+  overflow-wrap: anywhere;
+}
+.dkf-tab {
+  padding: 3px 5px;
+  border-radius: 4px;
+}
+.dkf-tab--on {
+  background: var(--app-accent);
+  color: var(--app-fg);
+}
+.dkf-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px 16px;
+}
+.dkf-label,
+.dkf-legend {
+  font-size: 9px;
+  color: var(--app-muted-fg);
+}
+.dkf-total {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.dkf-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  height: 92px;
+  padding-top: 6px;
+  border-bottom: 1px solid var(--app-border);
+}
+.dkf-bars i {
+  flex: 1;
+  border-radius: 3px 3px 0 0;
+  background: #dfe7e3;
+}
+.dkf-bars i[data-peak] {
+  background: #0f8a5f;
+}
+[data-theme="dark"] .dkf-bars i {
+  background: #26302b;
+}
+[data-theme="dark"] .dkf-bars i[data-peak] {
+  background: #2cb582;
+}
+.dkf-legend {
+  display: flex;
+  gap: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.dkf-bar {
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+}
+
+/* ── 03 · Widgets：AI Limits 面板开在 Dock 那一段的正上方 ──────────
+ * Dock 从右边出画：画的只是它有小组件的那一段。面板压在 Dock 上方，
+ * 画框长高时两者一起贴着底边。 */
+.wgf {
+  position: absolute;
+  inset: 0;
+}
+.wgf-panel {
+  right: 150px;
+  bottom: 118px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 250px;
+  padding: 14px;
+  font-size: 11px;
+  line-height: 1.3;
+}
+.wgf-head,
+.wgf-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.wgf-head > span:first-child {
+  font-size: 13px;
+  font-weight: 600;
+}
+.wgf-muted {
+  font-size: 9.5px;
+  opacity: 0.55;
+}
+.wgf-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.wgf-line {
+  font-weight: 600;
+}
+.wgf-left {
+  font-variant-numeric: tabular-nums;
+}
+.wgf-row[data-low] .wgf-left {
+  color: #c46a00;
+}
+[data-theme="dark"] .wgf-row[data-low] .wgf-left {
+  color: #ffab5c;
+}
+.wgf-meter {
+  height: 5px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.08);
+}
+[data-theme="dark"] .wgf-meter {
+  background: rgba(255, 255, 255, 0.14);
+}
+.wgf-meter i {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+  background: currentColor;
+}
+.wgf-row[data-low] .wgf-meter i {
+  background: #ff9f0a;
+}
+.wgf-bar {
+  right: -60px;
+  bottom: 16px;
+}
+.wgf-usage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  padding: 0 6px;
+  font-size: 9px;
+  color: rgba(0, 0, 0, 0.5);
+  font-variant-numeric: tabular-nums;
+}
+.wgf-usage strong {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: #1d1d1f;
+}
+[data-theme="dark"] .wgf-usage {
+  color: rgba(255, 255, 255, 0.6);
+}
+[data-theme="dark"] .wgf-usage strong {
+  color: #f4f4f6;
+}
+
+/* ── Apps 节的字栏：勾选清单、静态案例清单、一行小注 ───────────── */
+.checks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.checks li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.checks svg {
+  flex: none;
+  color: var(--app-ok-fg);
+}
+/* 不驱动图的案例清单：同一套排版，没有选中卡片、没有刻度、不可点。 */
+.cases--static li > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 14px 14px 17px;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.cases--static .cases-head {
+  color: var(--ink);
+}
+.story-copy > .story-aside {
+  margin-top: 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+@media (max-width: 640px) {
+  /* 窄屏上画框按比例缩小：Widgets 的面板让开 Dock 的出画那一截。 */
+  .wgf-panel {
+    right: auto;
+    left: 16px;
+  }
+}
