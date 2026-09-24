@@ -213,6 +213,7 @@ p {
    * ────────────────────────────────────────────────────────── */
   --figure-w: 580px;
   --figure-h: 360px;
+  --figure-h-tall: 480px;
   --figure-inset-x: 26px;
   --figure-inset-y: 24px;
   /* One silhouette for the four home feature demonstrations. The product windows

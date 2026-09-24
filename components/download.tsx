@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses the release manifest, localized download copy, Disclosure, and the three platform marks
- * [OUTPUT]: Exports DownloadButton, the split download control shared by the header and the Fork band
+ * [OUTPUT]: Exports DownloadButton, the split download control in the site header
  * [POS]: The site's only download implementation; every other surface links to the release archive instead
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
@@ -26,16 +26,15 @@ export function DownloadButton({
   variant,
 }: {
   copy: SiteCatalog["download"];
-  variant: "nav" | "band";
+  variant: "nav";
 }) {
-  const mark = variant === "nav" ? 15 : 17;
   return (
     <div className={`download download--${variant}`} data-hover-group="">
       {PLATFORMS.map((platform) => (
         <a className="download-action" data-for={platform} href={downloadUrl(platform)} key={platform}>
           <span className="download-long">{copy.action[platform]}</span>
           <span className="download-short">{copy.short}</span>
-          <Glyph d={MARK[platform]} size={mark} />
+          <Glyph d={MARK[platform]} size={15} />
         </a>
       ))}
       <Disclosure className="download-menu" hover>

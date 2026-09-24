@@ -11,7 +11,7 @@ import { FloatingHeader } from "../floating-header";
 import { Hero } from "../hero";
 import { AgentsSection } from "../home/agents-section";
 import { AppsSection } from "../home/apps-section";
-import { SourceSection } from "../home/source-section";
+import { FaqSection } from "../home/faq-section";
 import { TrustSection } from "../home/trust-section";
 import { SiteFooter } from "../site-footer";
 import { featuresFor } from "../features/catalog";
@@ -39,7 +39,7 @@ export function HomePageView({ locale }: { locale: Locale }) {
         <AgentsSection demo={demo} catalog={catalog} locale={locale} />
         <TrustSection demo={demo} catalog={catalog} locale={locale} />
         <AppsSection demo={demo} catalog={catalog} locale={locale} />
-        <SourceSection catalog={catalog} />
+        <FaqSection catalog={catalog} />
         <SiteFooter locale={locale} catalog={catalog} logicalPath="/" />
       </div>
     </>

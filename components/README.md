@@ -22,7 +22,7 @@
 ## Child modules
 
 - `apps/`: Four localized product-faithful App surfaces.
-- `home/`: The four home sections after the hero, their shared story/figure/case-list vocabulary, and the two static figures.
+- `home/`: The four home sections after the hero (Agents, Trust, Apps, FAQ), their shared story/figure/case-list vocabulary, the client stories that hold carousel state, and the figures.
 - `features/`: Stable feature identity and localized navigation/article assembly.
 - `pages/`: Locale-neutral page compositions reused by English and prefixed route trees.
 - `reels/`: The Base views reel and the shared playback hooks.

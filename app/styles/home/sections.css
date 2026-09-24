@@ -1,7 +1,7 @@
 /**
  * [INPUT]: Uses --ground, --card, the --ink and --line scales, --accent, --edge and the mono stack from ../tokens.css
  * [OUTPUT]: Defines the home section skeleton (full-width hairline, eyebrow, title, lede), the hairline cell grids, the case list beside a figure, and the section exit link
- * [POS]: Home-only layer above base.css; stories, figures and the open-source band build on it
+ * [POS]: Home-only layer above base.css; stories, figures, the Open source story and the FAQ build on it
  * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
 

@@ -12,16 +12,16 @@ The site stylesheet is split by responsibility. `globals.css` contains only the 
 
 ## Member list
 
-- `tokens.css`: Reset, the one neutral palette shared by site and product surfaces (light and dark, `--wall`, `--card`, `--accent`, `--app-shadow`), App paper tokens, type stacks (sans/mono/serif plus the handwriting stack), shared page-edge geometry, and the one figure frame every home section reads (`--figure-w/h`, `--figure-inset-*`, `--home-demo-radius`).
+- `tokens.css`: Reset, the one neutral palette shared by site and product surfaces (light and dark, `--wall`, `--card`, `--accent`, `--app-shadow`), App paper tokens, type stacks (sans/mono/serif plus the handwriting stack), shared page-edge geometry, and the one figure frame every home section reads (`--figure-w/h`, the taller `--figure-h-tall`, `--figure-inset-*`, `--home-demo-radius`).
 - `base.css`: Global typography, wraps, header navigation geometry, the content root, and the two-column split used by feature visuals.
-- `download.css`: The split download button, its platform panel, and both the header and checklist-card skins.
+- `download.css`: The split download button, its platform panel, and its header skin.
 - `features.css`: Header dropdown, wiki sidebar, detail article, screenshot frame, and responsive states.
 - `agents-feature.css`: Dedicated story rhythm plus the standalone capability matrix and the annotated cross-Agent handoff sketch for the Agents detail page.
 - `bands.css`: Localized footer/language disclosure, changelog entries, and wide-grid collapse.
 - `motion.css`: One-shot entrance behavior, reduced-motion policy, and narrow-screen hero/layout overrides.
 - `base-feature/`: The three Base detail-page figures; see its README.
 - `hero/`: Hero runway, product-window and phone styles; see its README.
-- `home/`: The four home sections — section skeleton, cell grids and case lists, story rows and the wallpaper figure card, the static figures (including Bottega Dock, the AI Limits widget and the coloured tiles), and the open-source cards; see its README.
+- `home/`: The four home sections — section skeleton, cell grids and case lists, story rows and the wallpaper figure card (standard and tall), the figures (Handoff, Sync, Bottega Dock at product metrics, the centred widget cards, the coloured tiles), the Open source terminal and buttons, and the FAQ; see its README.
 - `apps/`: Product-faithful App surface styles; see its README.
 - `reels/`: The Base views reel and its shared primitives; see its README.
 

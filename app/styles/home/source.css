@@ -1,17 +1,9 @@
 /**
- * [INPUT]: Uses --card, --line, the --ink scale, --green, the --app-ok pair and the mono stack from ../tokens.css, plus the download control skins from ../download.css
- * [OUTPUT]: Styles the open-source section — a terminal card beside a checklist card — and its stacked layout below 1100
- * [POS]: Last home section; both cards are drawn in the site's own tokens rather than as a dark band
+ * [INPUT]: Uses --card, --line, the --ink scale, --green, --app-shadow and the mono stack from ../tokens.css
+ * [OUTPUT]: Styles the Open source story — the terminal drawn as a product window and centred in its figure card, the two repository buttons, and the license line
+ * [POS]: Home-only layer for the Open source story in the Trust section; the terminal stays in the site's own tokens rather than a dark band
  * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
-
-/* ── 两张卡：左边是那次构建，右边是拿源码能做的三件事 ─────────── */
-.source-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 520px;
-  gap: 24px;
-  margin-top: 44px;
-}
 
 /* 终端画成一扇产品窗：红绿灯、等宽标题、提示符用产品 Ready 那一档绿。
    不是深色块——页面已经是一套中性阶，终端也在这一套里。 */
@@ -83,76 +75,55 @@
   background: var(--green);
 }
 
-.checklist {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  padding: 30px 32px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--card);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+/* 在画框里：终端是浮在壁纸上的一扇窗，钉在 580×360 的正中。 */
+.terminal--figure {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 500px;
+  transform: translate(-50%, -50%);
+  box-shadow: var(--app-shadow);
 }
-.checklist ul {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.checklist li {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  font-size: 15px;
-  line-height: 1.5;
-}
-.checklist-check {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  margin-top: 1px;
-  border-radius: 6px;
-  background: var(--app-ok-bg);
-  color: var(--app-ok-fg);
-}
-.checklist li b {
+.terminal-output[data-final] code {
   font-weight: 600;
   color: var(--ink);
 }
-.checklist li span {
-  color: var(--ink-2);
-}
-.checklist-license {
-  margin-top: auto;
-  font-family: var(--font-mono);
-  font-size: 12.5px;
-  color: var(--ink-3);
-}
-.checklist-actions {
+
+/* ── 字栏里的两个出口：Fork 是主动作，看源码是次动作 ─────────────── */
+.source-actions {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 14px 18px;
+  gap: 10px;
+  margin-top: 28px;
 }
-.checklist-fork {
+.source-button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 15px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: inset 0 0 0 1px var(--line);
+  font-size: 14px;
   font-weight: 500;
   color: var(--ink);
+  transition: background 140ms ease;
 }
-.checklist-fork:hover {
-  color: var(--ink-2);
+.source-button:hover {
+  background: color-mix(in srgb, var(--card) 80%, var(--ink) 4%);
 }
-
-@media (max-width: 1100px) {
-  .source-grid {
-    grid-template-columns: 1fr;
-  }
+.source-button--primary {
+  background: var(--ink);
+  box-shadow: none;
+  color: var(--ground);
+}
+.source-button--primary:hover {
+  background: var(--ink-2);
+}
+.story-copy > .source-license {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--ink-3);
 }

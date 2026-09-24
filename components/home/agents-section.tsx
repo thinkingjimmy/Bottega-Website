@@ -11,7 +11,7 @@ import type { SiteCatalog } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n/locale";
 import { AgentLogo, AnnouncedLogo } from "../icons";
 import { Reveal } from "../reveal";
-import { DataStory } from "./data-story";
+import { DataStory } from "./stories/data-story";
 import { HandoffFigure } from "./figures/handoff-figure";
 import { FigureCard, Story } from "./story";
 
@@ -66,12 +66,11 @@ export function AgentsSection({ demo, catalog, locale }: { demo: DemoData; catal
             eyebrow={copy.handoff.eyebrow}
             title={copy.handoff.title}
             body={copy.handoff.body}
-            note={copy.handoff.note}
             slug="agents"
             locale={locale}
             readMore={readMore}
             figure={
-              <FigureCard position="50% 30%">
+              <FigureCard position="50% 30%" tall>
                 <HandoffFigure demo={demo} />
               </FigureCard>
             }

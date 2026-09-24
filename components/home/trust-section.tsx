@@ -1,17 +1,19 @@
 /**
- * [INPUT]: Uses localized SiteCatalog/DemoData, Reveal, the Stroke/D primitives, the dock-marks Tile, SyncFigure, and the Story vocabulary
- * [OUTPUT]: Exports the localized TrustSection — four local-first claims and the encrypted sync story
- * [POS]: Second home section; it argues that the work stays on the machine and leaves it only as ciphertext
+ * [INPUT]: Uses localized SiteCatalog/DemoData, the repository URL, Reveal, the Glyph/Stroke/D primitives, the dock-marks Tile, TerminalFigure, SyncFigure, and the Story vocabulary
+ * [OUTPUT]: Exports the localized TrustSection — four local-first claims, the Open source story (read it, fork it, ship your own), and the encrypted sync story
+ * [POS]: Second home section; it argues that the work stays on the machine, that the code proving it is public, and that it leaves the machine only as ciphertext
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
 
 import type { DemoData } from "@/lib/agents";
 import type { SiteCatalog } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n/locale";
-import { D, Stroke } from "../icons";
+import { REPO } from "@/lib/release";
+import { D, Glyph, Stroke } from "../icons";
 import { Reveal } from "../reveal";
 import { Tile, type TileTone } from "./figures/dock-marks";
 import { SyncFigure } from "./figures/sync-figure";
+import { TerminalFigure } from "./figures/terminal-figure";
 import { FigureCard, Story } from "./story";
 
 /* 四条主张各配一枚彩色方章（与 Apps 节同一套），顺序与目录里的四条一一对应。
@@ -54,6 +56,31 @@ export function TrustSection({ demo, catalog, locale }: { demo: DemoData; catalo
         <div className="stories">
           <Story
             number="03"
+            eyebrow={copy.source.eyebrow}
+            title={copy.source.title}
+            body={copy.source.body}
+            locale={locale}
+            readMore={catalog.common.readMore}
+            figure={
+              <FigureCard position="40% 50%">
+                <TerminalFigure copy={copy.source} />
+              </FigureCard>
+            }
+          >
+            {/* 开源说的是两件事：能读它（隐私声明可查证），也能拿走它发自己的版本。 */}
+            <div className="source-actions">
+              <a className="source-button source-button--primary" href={REPO} rel="noreferrer" target="_blank">
+                <Glyph d={D.github} size={16} />
+                {copy.source.fork}
+              </a>
+              <a className="source-button" href={REPO} rel="noreferrer" target="_blank">
+                {copy.source.browse}
+              </a>
+            </div>
+            <p className="source-license">{copy.source.license} · thinkingjimmy/Bottega</p>
+          </Story>
+          <Story
+            number="04"
             eyebrow={copy.sync.eyebrow}
             title={copy.sync.title}
             body={copy.sync.body}

@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses localized DemoData, the canonical ProductWindow, shared Agent logos, skeleton primitives, and product icons
- * [OUTPUT]: Exports localized Agent picker, capability matrix, and the annotated cross-Agent handoff sketch
+ * [OUTPUT]: Exports localized Agent picker, capability matrix, the annotated cross-Agent handoff sketch, and the RELAY_ID/relayText pair the home Handoff figure reuses
  * [POS]: Product-faithful visual evidence for the Agents feature page; every figure is inert
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
@@ -108,9 +108,9 @@ export function ConversationMatrixDemo({ demo }: { demo: DemoData }) {
  * ────────────────────────────────────────────────────────── */
 
 /** 演示用的 Section id：产品里它们是随机的，这里定死好让两跳互相对得上。 */
-const RELAY_ID = { plan: "sec_7f2a3c", impl: "sec_91b4e0" } as const;
+export const RELAY_ID = { plan: "sec_7f2a3c", impl: "sec_91b4e0" } as const;
 
-const relayText = (template: string, name: string, id: string) =>
+export const relayText = (template: string, name: string, id: string) =>
   template.replace("{name}", name).replace("{id}", id);
 
 /** 骨架条借站点自己那一副（reels/shared.css 的 .sk），不另起一套。 */

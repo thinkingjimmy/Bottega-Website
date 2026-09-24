@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses the --app palette, --app-shadow, --ink scale and --line from ../tokens.css, and .fig-panel from ./figures.css
- * [OUTPUT]: Defines the coloured .tile squircle and its tones, the .ring limit gauge, the shared Bottega Dock bar (dk-*), the Dock figure (dkf-*), the Widgets figure (wgf-*), the Apps check list and the static case list
+ * [OUTPUT]: Defines the coloured .tile squircle and its tones, the .ring limit gauge, Bottega Dock drawn to product metrics (pd-*), the Dock figure (dkf-*), the Widgets figure and its centred widget cards (the wgf- and wgc- classes), and the Apps check list
  * [POS]: Home-only layer after figures.css; everything the Apps section draws that the other sections do not, plus the tiles the Trust claims borrow
  * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
@@ -96,309 +96,373 @@
   color: #ffab5c;
 }
 
-/* ── Bottega Dock ──────────────────────────────────────────────
- * 一条毛玻璃横条贴着画框底边。几何与产品同口径：图标 36（大号 48）、
- * 分隔线、运行中的小点。 */
-.dk-bar {
-  --dk-fill: rgba(255, 255, 255, 0.34);
-  --dk-edge: inset 0 0 0 0.5px rgba(255, 255, 255, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  --dk-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.1), 0 10px 30px rgba(0, 0, 0, 0.16);
-  --dk-dot: rgba(0, 0, 0, 0.65);
-  --dk-sep: rgba(0, 0, 0, 0.14);
-  position: absolute;
-  display: flex;
+/* ── Bottega Dock，照产品画 ────────────────────────────────────
+ * 几何抄 apps/desktop 的 shared/system-dock/metrics.ts 与 bar.css：格 48、
+ * 圆角 12、间距 6、内边距 10、分隔 13（中线 1px、上下各让 14）、条高 68、
+ * 圆角 17；运行中的点 4px、落在格下 7px；打开中的格垫一层选中蓝。颜色抄
+ * common/base.css。玻璃在产品里是窗口的原生材质，这里用模糊近似，亮边照抄。
+ * 画框放不下原尺寸时整条按 --dz 一起缩，比例一格不改。 */
+.pd {
+  --pd-text: #1d1d1f;
+  --pd-muted: #6b6b70;
+  --pd-caution: #a34a00;
+  --pd-selected: rgba(10, 100, 214, 0.14);
+  --pd-line: rgba(0, 0, 0, 0.1);
+  --pd-track: rgba(0, 0, 0, 0.12);
+  display: inline-flex;
   align-items: center;
-  gap: 5px;
-  height: 50px;
-  padding: 0 7px;
-  border-radius: 16px;
-  background: var(--dk-fill);
-  -webkit-backdrop-filter: blur(22px) saturate(1.7);
-  backdrop-filter: blur(22px) saturate(1.7);
-  box-shadow: var(--dk-edge), var(--dk-shadow);
-  white-space: nowrap;
-}
-[data-theme="dark"] .dk-bar {
-  --dk-fill: rgba(40, 40, 46, 0.42);
-  --dk-edge: inset 0 0 0 0.5px rgba(255, 255, 255, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  --dk-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.35), 0 10px 30px rgba(0, 0, 0, 0.35);
-  --dk-dot: rgba(255, 255, 255, 0.7);
-  --dk-sep: rgba(255, 255, 255, 0.18);
-}
-.dk-bar--large {
-  gap: 8px;
-  height: 70px;
+  gap: 6px;
+  height: 68px;
   padding: 0 10px;
-  border-radius: 22px;
+  border-radius: 17px;
+  background: rgba(246, 246, 248, 0.55);
+  -webkit-backdrop-filter: blur(30px) saturate(1.8);
+  backdrop-filter: blur(30px) saturate(1.8);
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 0 0 0.5px rgba(0, 0, 0, 0.14),
+    0 10px 30px rgba(0, 0, 0, 0.18);
+  font: 13px/1.35 -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  color: var(--pd-text);
+  white-space: nowrap;
+  transform: scale(var(--dz, 1));
+  transform-origin: 50% 100%;
 }
-.dk-item {
+[data-theme="dark"] .pd {
+  --pd-text: #f4f4f6;
+  --pd-muted: #a3a3aa;
+  --pd-caution: #ffab5c;
+  --pd-selected: rgba(76, 157, 255, 0.22);
+  --pd-line: rgba(255, 255, 255, 0.12);
+  --pd-track: rgba(255, 255, 255, 0.18);
+  background: rgba(36, 36, 40, 0.6);
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 0 0.5px rgba(0, 0, 0, 0.35),
+    0 10px 30px rgba(0, 0, 0, 0.4);
+}
+.pd-slot {
   position: relative;
-  display: flex;
+  display: grid;
+  place-items: center;
   flex: none;
-  justify-content: center;
+  height: 48px;
+  border-radius: 12px;
+  transition: background 200ms ease;
 }
-.dk-item[data-running]::after {
+.pd-slot[data-open] {
+  background: var(--pd-selected);
+}
+.pd-slot[data-running]::after {
   content: "";
   position: absolute;
-  bottom: -5px;
-  width: 3.5px;
-  height: 3.5px;
-  border-radius: 50%;
-  background: var(--dk-dot);
-}
-.dk-sep {
-  flex: none;
-  width: 1px;
-  height: 60%;
-  margin: 0 2px;
-  background: var(--dk-sep);
-}
-.dk-rings {
-  display: flex;
-  gap: 3px;
-}
-/* 面板开着的那一段：一块浅底圈出被点开的那只小组件。 */
-.dk-rings--on {
-  gap: 4px;
-  padding: 3px 5px;
-  border-radius: 13px;
-  background: rgba(0, 0, 0, 0.06);
-}
-[data-theme="dark"] .dk-rings--on {
-  background: rgba(255, 255, 255, 0.1);
-}
-/* 悬停提示：产品里就是这一块，Dock 上方居中于那枚图标。 */
-.dk-tip {
-  position: absolute;
-  bottom: calc(100% + 14px);
   left: 50%;
-  transform: translateX(-50%);
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: rgba(30, 30, 34, 0.82);
-  color: #ffffff;
-  font-size: 10.5px;
-  font-weight: 500;
-  line-height: 1.4;
-}
-/* 从 Dock 点开的面板：产品的半透明浮层，不是 App 窗口。 */
-.dk-panel {
-  position: absolute;
-  border-radius: 14px;
-  background: rgba(250, 250, 252, 0.86);
-  -webkit-backdrop-filter: blur(24px) saturate(1.6);
-  backdrop-filter: blur(24px) saturate(1.6);
-  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 18px 40px rgba(0, 0, 0, 0.18);
-  color: #1d1d1f;
-}
-[data-theme="dark"] .dk-panel {
-  background: rgba(36, 36, 40, 0.82);
-  box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.12), 0 18px 40px rgba(0, 0, 0, 0.45);
-  color: #f4f4f6;
-}
-
-/* ── 02 · Dock：壁纸上一扇 Expense Tracker，底下一条 Dock ─────────
- * 画框跟着字栏长高时，Dock 贴着画框底边，窗口停在剩下那块的正中——
- * 与屏幕上的样子一样，Dock 属于屏幕底边，不属于画面中心。 */
-.dkf {
-  position: absolute;
-  inset: 0;
-}
-.dkf-window {
-  left: calc(50% - 200px);
-  top: calc((100% - 74px) / 2 - 107px);
-  width: 400px;
-  height: 214px;
-  display: flex;
-  border-radius: 10px;
-}
-.dkf-side {
-  display: flex;
-  flex: none;
-  flex-direction: column;
-  gap: 6px;
-  width: 104px;
-  padding: 12px 10px;
-  background: var(--app-sidebar);
-  border-right: 1px solid var(--app-border);
-  font-size: 9px;
-  color: var(--app-muted-fg);
-}
-.dkf-lights {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 6px;
-}
-.dkf-lights i {
-  width: 6px;
-  height: 6px;
+  bottom: -7px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
   border-radius: 50%;
-  background: #ff5f57;
+  background: var(--pd-text);
+  opacity: 0.7;
 }
-.dkf-lights i:nth-child(2) { background: #febc2e; }
-.dkf-lights i:nth-child(3) { background: #28c840; }
-.dkf-name {
-  font-size: 10px;
-  font-weight: 600;
-  line-height: 1.25;
-  color: var(--app-fg);
-  overflow-wrap: anywhere;
+.pd-sep {
+  position: relative;
+  flex: none;
+  align-self: stretch;
+  width: 13px;
+  margin: 14px 0;
 }
-.dkf-tab {
-  padding: 3px 5px;
-  border-radius: 4px;
+.pd-sep::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--pd-line);
 }
-.dkf-tab--on {
-  background: var(--app-accent);
-  color: var(--app-fg);
-}
-.dkf-main {
+.pd-face {
   display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 10px;
-  min-width: 0;
-  padding: 14px 16px;
-}
-.dkf-label,
-.dkf-legend {
-  font-size: 9px;
-  color: var(--app-muted-fg);
-}
-.dkf-total {
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  width: 100%;
+  height: 100%;
+  padding: 4px 8px;
   font-variant-numeric: tabular-nums;
 }
-.dkf-bars {
+.pd-face--limits {
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0;
+}
+.pd-face--value {
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2px;
+}
+.pd-face-row {
   display: flex;
-  align-items: flex-end;
-  gap: 7px;
-  height: 92px;
-  padding-top: 6px;
-  border-bottom: 1px solid var(--app-border);
+  align-items: baseline;
+  gap: 5px;
 }
-.dkf-bars i {
-  flex: 1;
-  border-radius: 3px 3px 0 0;
-  background: #dfe7e3;
+.pd-face-row b {
+  font-size: 15px;
+  font-weight: 600;
 }
-.dkf-bars i[data-peak] {
-  background: #0f8a5f;
+.pd-face-unit,
+.pd-face-caption {
+  font-size: 10px;
+  color: var(--pd-muted);
 }
-[data-theme="dark"] .dkf-bars i {
-  background: #26302b;
+.pd-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
 }
-[data-theme="dark"] .dkf-bars i[data-peak] {
-  background: #2cb582;
+.pd-ring > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
 }
-.dkf-legend {
+.pd-ring-track,
+.pd-ring-arc {
+  stroke-width: 3;
+}
+.pd-ring-track {
+  stroke: var(--pd-track);
+}
+.pd-ring-arc {
+  stroke: var(--pd-text);
+  stroke-linecap: round;
+}
+.pd-ring-center {
+  position: relative;
   display: flex;
-  gap: 12px;
-  overflow: hidden;
-  white-space: nowrap;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  line-height: 1;
 }
-.dkf-bar {
-  left: 50%;
-  bottom: 12px;
-  transform: translateX(-50%);
+.pd-ring-center svg {
+  opacity: 0.75;
+}
+.pd-ring-center span {
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: -0.2px;
+}
+.pd-ring[data-low] .pd-ring-arc {
+  stroke: var(--pd-caution);
+}
+.pd-ring[data-low] .pd-ring-center {
+  color: var(--pd-caution);
 }
 
-/* ── 03 · Widgets：AI Limits 面板开在 Dock 那一段的正上方 ──────────
- * Dock 从右边出画：画的只是它有小组件的那一段。面板压在 Dock 上方，
- * 画框长高时两者一起贴着底边。 */
+/* ── 06 · Dock：上一节那只 Expense Tracker 开着，下面是 Dock ────────
+ * 界面就是 Apps 舞台渲染的同一只组件，按 1320×780 原尺寸落笔、整体缩到
+ * --z；Dock 贴画框底边，窗口停在剩下那块的正中。 */
+.dkf,
 .wgf {
   position: absolute;
   inset: 0;
 }
-.wgf-panel {
-  right: 150px;
-  bottom: 118px;
+.dkf-app {
+  --z: 0.32;
+  position: absolute;
+  left: calc(50% - 1320px * var(--z) / 2);
+  top: max(20px, calc((100% - 92px - 780px * var(--z)) / 2));
+  width: calc(1320px * var(--z));
+  height: calc(780px * var(--z));
+}
+.dkf-canvas {
+  width: 1320px;
+  height: 780px;
+  overflow: hidden;
+  transform: scale(var(--z));
+  transform-origin: 0 0;
+  border-radius: calc(9px / var(--z));
+  box-shadow:
+    0 0 0 calc(1px / var(--z)) rgba(0, 0, 0, 0.08),
+    0 calc(2px / var(--z)) calc(6px / var(--z)) rgba(0, 0, 0, 0.06),
+    0 calc(44px / var(--z)) calc(90px / var(--z)) calc(-30px / var(--z)) rgba(0, 0, 0, 0.35);
+}
+.dkf-dock,
+.wgf-dock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ── 07 · Widgets：选中的那只放大居中，Dock 上它那一格开着 ──────────
+ * 大卡只是示意这只 Widget 在说什么，不照抄产品面板；四张叠在同一格里
+ * 靠透明度换页（与 Apps 舞台同一个做法）。 */
+.wgf-cards {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 84px;
+  display: grid;
+  place-items: center;
+}
+.wgc {
+  grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  width: 250px;
-  padding: 14px;
-  font-size: 11px;
-  line-height: 1.3;
+  gap: 10px;
+  width: 360px;
+  padding: 20px 22px 22px;
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--app-bg) 88%, transparent);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  backdrop-filter: blur(24px) saturate(1.6);
+  box-shadow: var(--app-shadow);
+  color: var(--app-fg);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 320ms ease, transform 320ms ease;
 }
-.wgf-head,
-.wgf-line {
+.wgf[data-active="0"] .wgc:nth-child(1),
+.wgf[data-active="1"] .wgc:nth-child(2),
+.wgf[data-active="2"] .wgc:nth-child(3),
+.wgf[data-active="3"] .wgc:nth-child(4) {
+  opacity: 1;
+  transform: none;
+}
+.wgc-head {
   display: flex;
   justify-content: space-between;
+  gap: 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.wgc-head span:last-child {
+  font-weight: 500;
+  color: var(--app-muted-fg);
+}
+.wgc-big {
+  display: flex;
   align-items: baseline;
   gap: 8px;
 }
-.wgf-head > span:first-child {
+.wgc-big b {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+}
+.wgc-big span,
+.wgc-line {
   font-size: 13px;
-  font-weight: 600;
+  color: var(--app-muted-fg);
 }
-.wgf-muted {
-  font-size: 9.5px;
-  opacity: 0.55;
+.wgc-rings {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 4px;
 }
-.wgf-row {
+.wgc-ring {
+  --wgc-ink: var(--app-fg);
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  gap: 8px;
 }
-.wgf-line {
+.wgc-ring[data-agent="claude"] { --wgc-ink: #d97757; }
+.wgc-ring[data-agent="kimi"] { --wgc-ink: #027aff; }
+.wgc-ring[data-low] { --wgc-ink: #c2410c; }
+.wgc-ring-gauge {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+}
+.wgc-ring-gauge svg {
+  position: absolute;
+  inset: 0;
+  fill: none;
+  stroke-width: 7;
+}
+.wgc-ring-track {
+  stroke: color-mix(in srgb, var(--app-fg) 10%, transparent);
+}
+.wgc-ring-arc {
+  stroke: var(--wgc-ink);
+  stroke-linecap: round;
+}
+.wgc-ring-gauge b {
+  font-size: 18px;
   font-weight: 600;
-}
-.wgf-left {
-  font-variant-numeric: tabular-nums;
-}
-.wgf-row[data-low] .wgf-left {
-  color: #c46a00;
-}
-[data-theme="dark"] .wgf-row[data-low] .wgf-left {
-  color: #ffab5c;
-}
-.wgf-meter {
-  height: 5px;
-  overflow: hidden;
-  border-radius: 3px;
-  background: rgba(0, 0, 0, 0.08);
-}
-[data-theme="dark"] .wgf-meter {
-  background: rgba(255, 255, 255, 0.14);
-}
-.wgf-meter i {
-  display: block;
-  height: 100%;
-  border-radius: 3px;
-  background: currentColor;
-}
-.wgf-row[data-low] .wgf-meter i {
-  background: #ff9f0a;
-}
-.wgf-bar {
-  right: -60px;
-  bottom: 16px;
-}
-.wgf-usage {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1px;
-  padding: 0 6px;
-  font-size: 9px;
-  color: rgba(0, 0, 0, 0.5);
-  font-variant-numeric: tabular-nums;
-}
-.wgf-usage strong {
-  font-size: 15px;
-  font-weight: 650;
   letter-spacing: -0.02em;
-  color: #1d1d1f;
+  color: var(--wgc-ink);
 }
-[data-theme="dark"] .wgf-usage {
-  color: rgba(255, 255, 255, 0.6);
+.wgc-ring[data-agent="claude"]:not([data-low]) .wgc-ring-gauge b,
+.wgc-ring[data-agent="kimi"] .wgc-ring-gauge b {
+  color: var(--app-fg);
 }
-[data-theme="dark"] .wgf-usage strong {
-  color: #f4f4f6;
+.wgc-ring-gauge small {
+  font-size: 11px;
+}
+.wgc-ring-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--app-muted-fg);
+}
+.wgc-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 52px;
+}
+.wgc-bars i {
+  flex: 1;
+  border-radius: 3px;
+  background: var(--app-fg);
+}
+.wgc-spark {
+  display: block;
+  width: 100%;
+  height: 60px;
+}
+.wgc-spark-fill {
+  fill: rgba(15, 138, 95, 0.12);
+}
+.wgc-spark-line {
+  fill: none;
+  stroke: #0f8a5f;
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.wgc-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px;
+}
+.wgc-days i {
+  height: 22px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--app-fg) 10%, transparent);
+}
+.wgc-days i[data-on] {
+  background: #e8872a;
+}
+.wgc-days i[data-later] {
+  background: color-mix(in srgb, var(--app-fg) 4%, transparent);
 }
 
 /* ── Apps 节的字栏：勾选清单、静态案例清单、一行小注 ───────────── */
@@ -421,30 +485,17 @@
   flex: none;
   color: var(--app-ok-fg);
 }
-/* 不驱动图的案例清单：同一套排版，没有选中卡片、没有刻度、不可点。 */
-.cases--static li > div {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: 100%;
-  padding: 14px 14px 17px;
-  border-radius: 10px;
-  box-shadow: inset 0 0 0 1px var(--line);
-}
-.cases--static .cases-head {
-  color: var(--ink);
-}
-.story-copy > .story-aside {
-  margin-top: 18px;
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--ink-3);
-}
 
+/* 窄屏：画框跟着屏幕变窄（最窄约 340），Dock 整条再缩一档、窗口与大卡收进画框，不裁掉任何一格。 */
 @media (max-width: 640px) {
-  /* 窄屏上画框按比例缩小：Widgets 的面板让开 Dock 的出画那一截。 */
-  .wgf-panel {
-    right: auto;
-    left: 16px;
+  .dkf-dock .pd,
+  .wgf-dock .pd {
+    transform: scale(0.52);
+  }
+  .dkf-app {
+    --z: 0.24;
+  }
+  .wgc {
+    width: min(360px, calc(100% - 28px));
   }
 }

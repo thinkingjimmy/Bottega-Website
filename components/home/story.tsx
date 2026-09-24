@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses FeatureLink and the localized Locale/FeatureSlug contracts
- * [OUTPUT]: Exports Story (numbered copy beside a figure card, with an optional exit link), FigureCard, Cases (the case list that drives a figure), and CaseList (the same list when nothing drives)
+ * [OUTPUT]: Exports Story (numbered copy beside a figure card, with an optional exit link), FigureCard (standard or tall), Cases (optionally tagged) (the case list that drives a figure), and CaseList (the same list when nothing drives)
  * [POS]: Layout vocabulary shared by every home section; sections decide the words, figures decide the picture
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
@@ -17,9 +17,9 @@ import type { Locale } from "@/lib/i18n/locale";
  * 画框跟着旁边那栏字长高（带案例清单的那两节比别的高一截）。会长高的
  * 机器（Base 的 reel、Apps 的舞台）用 fill 铺满画框，多出来的高度是机器
  * 多露出的一截；两张静态图定在 580×360，钉在画框正中。 */
-export function FigureCard({ position, fill = false, children }: { position?: string; fill?: boolean; children: ReactNode }) {
+export function FigureCard({ position, fill = false, tall = false, children }: { position?: string; fill?: boolean; tall?: boolean; children: ReactNode }) {
   return (
-    <div className="figure-card" style={position ? { "--wall-pos": position } as React.CSSProperties : undefined} aria-hidden="true">
+    <div className={tall ? "figure-card figure-card--tall" : "figure-card"} style={position ? { "--wall-pos": position } as React.CSSProperties : undefined} aria-hidden="true">
       <div className={fill ? "figure-fill" : "figure-stage"}>{children}</div>
     </div>
   );
@@ -30,7 +30,6 @@ export function Story({
   eyebrow,
   title,
   body,
-  note,
   slug,
   locale,
   readMore,
@@ -42,7 +41,6 @@ export function Story({
   eyebrow: string;
   title: string;
   body: string;
-  note?: string;
   /* 没有专页的故事不给出口：宁可少一个链接，也不编一条路由。 */
   slug?: FeatureSlug;
   locale: Locale;
@@ -59,7 +57,6 @@ export function Story({
       </p>
       <h3>{title}</h3>
       <p>{body}</p>
-      {note ? <p>{note}</p> : null}
       {children}
       {slug ? <FeatureLink slug={slug} locale={locale} label={readMore} /> : null}
     </div>
@@ -102,27 +99,6 @@ export function Cases({
             </span>
             <span className="cases-description">{item.description}</span>
           </button>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/* 不驱动图的同一份清单：排版一样，没有选中、没有刻度、不可点。 */
-export function CaseList({ items }: { items: readonly CaseItem[] }) {
-  return (
-    <ul className="cases cases--static">
-      {items.map((item) => (
-        <li key={item.name}>
-          <div>
-            <span className="cases-head">
-              <span className="cases-icon" aria-hidden="true">
-                {item.icon}
-              </span>
-              <span>{item.name}</span>
-            </span>
-            <span className="cases-description">{item.description}</span>
-          </div>
         </li>
       ))}
     </ul>

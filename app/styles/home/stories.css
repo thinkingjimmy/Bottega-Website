@@ -1,5 +1,5 @@
 /**
- * [INPUT]: Uses --figure-w/h, --home-demo-radius, --wall, the --ink scale and --line from ../tokens.css
+ * [INPUT]: Uses --figure-w/h/h-tall, --home-demo-radius, --wall, the --ink scale and --line from ../tokens.css
  * [OUTPUT]: Defines the story row (copy beside a figure), the one figure card every home figure sits in — the hero wallpaper as its backdrop — and the stacked layouts below 1300 and 900
  * [POS]: Home-only layout layer for the numbered stories; the figures themselves are drawn by reels/, apps/ and home/figures.css
  * [PROTOCOL]: Update this header when changing this file, then check README.md
@@ -75,6 +75,13 @@
 .story > .figure-card {
   align-self: stretch;
 }
+/* 高一档的画框：Handoff 三扇窗叠着放要 480 高，画框为它守住 480。 */
+.figure-card--tall {
+  min-height: var(--figure-h-tall);
+}
+.figure-card--tall > .figure-stage {
+  height: var(--figure-h-tall);
+}
 /* 静态图：机器 580×360，钉在画框正中。 */
 .figure-stage {
   position: absolute;
@@ -114,6 +121,9 @@
     align-self: center;
     height: var(--figure-h);
     margin-inline: auto;
+  }
+  .story > .figure-card--tall {
+    height: var(--figure-h-tall);
   }
 }
 @media (max-width: 640px) {

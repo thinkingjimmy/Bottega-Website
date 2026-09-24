@@ -1,0 +1,87 @@
+/**
+ * [INPUT]: Uses the --ink and --line scales and --edge from ../tokens.css, and .home-title/.eyebrow from ./sections.css
+ * [OUTPUT]: Styles the FAQ section — a heading column beside a hairline list of native disclosures, the plus turning into a close mark when open, stacked below 900
+ * [POS]: Home-only layer for the last section; loads after source.css
+ * [PROTOCOL]: Update this header when changing this file, then check README.md
+ */
+
+/* ── 左边一栏标题，右边一列问题 ──────────────────────────────────
+ * 右栏吃余量、min-width 0：问题再长也在栏里换行，不把整列顶出页面。 */
+.faq {
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+  gap: 72px;
+  align-items: start;
+}
+.faq-lede {
+  margin-top: 16px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+.faq-lede a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--line-2);
+  text-underline-offset: 3px;
+}
+.faq-lede a:hover {
+  text-decoration-color: var(--ink);
+}
+.faq-list {
+  min-width: 0;
+  border-bottom: 1px solid var(--line);
+}
+.faq-item {
+  border-top: 1px solid var(--line);
+}
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 0;
+  cursor: pointer;
+  list-style: none;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item summary > span {
+  flex: 1;
+  min-width: 0;
+}
+.faq-item summary svg {
+  flex: none;
+  color: var(--ink-3);
+  transition: transform 180ms ease;
+}
+.faq-item[open] summary svg {
+  transform: rotate(45deg);
+}
+.faq-item summary:focus-visible {
+  outline: 2px solid var(--ink-3);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.faq-item p {
+  margin: -8px 48px 24px 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+@media (max-width: 900px) {
+  .faq {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+@media (max-width: 640px) {
+  .faq-item p {
+    margin-right: 0;
+  }
+}

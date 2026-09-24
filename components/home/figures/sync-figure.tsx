@@ -36,8 +36,8 @@ export function SyncFigure({ demo, time }: { demo: DemoData; time: string }) {
               <span className="sk sk-bar" style={{ width }} key={width} />
             ))}
           </div>
-          <div className="hf-status">
-            <span className="hf-orb" />
+          <div className="sf-status">
+            <span className="sf-orb" />
             {sync.editing}
           </div>
         </div>

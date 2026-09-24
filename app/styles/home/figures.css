@@ -1,6 +1,6 @@
 /**
- * [INPUT]: Uses the --app-* palette, --figure-inset-*, --font-mono, and the .phone geometry from ../hero/phone.css
- * [OUTPUT]: Draws the two static home figures — the mid-Chat Agent switch (sidebar, divider, Agent menu) and the encrypted sync scene (phone beside the desktop panel)
+ * [INPUT]: Uses the --app-* palette, --ink/--ground, --font-hand, --figure-inset-*, --font-mono, and the .phone geometry from ../hero/phone.css
+ * [OUTPUT]: Draws the static home figures — the stacked Handoff Chats with their labelled flow arrows, and the encrypted sync scene (phone beside the desktop panel)
  * [POS]: Home-only figure layer; both sit in a .figure-card from ./stories.css and copy product geometry rather than approximating it
  * [PROTOCOL]: Update this header when changing this file, then check README.md
  */
@@ -17,232 +17,139 @@
   line-height: 1.45;
 }
 
-/* ── 01 · 同一条 Chat 中途换 Agent ─────────────────────────────────
- * 侧栏一个 Project 下三条 Chat、三家标记：分工。主区一条分隔线、一只开着
- * 的 Agent 菜单，Claude 那行标着「已达用量限制」：接力。文案里的两句话，
- * 图各画一句。几何抄产品：行高 32、缩进 24、页头 38、菜单行 28。 */
-.hf {
-  left: 20px;
-  top: 32px;
-  width: 540px;
-  height: 296px;
-  display: flex;
+/* ── 01 · 交接：三扇 Chat 窗按时间先后叠下去 ─────────────────────
+ * 与 Agents 专页那张手绘同一件事、同一批产品原文：Claude 出 Plan → 投进
+ * Codex 那条 Chat → 结果自动回到原 Chat。窗叠着放，重点是窗里的字；左边
+ * 让出来的那一条只放两支流程箭头和它们的说明——说明是站在界面旁边说话
+ * 的人，所以用手写体。画框为它高一档（--figure-h-tall，480）。 */
+.ho {
+  position: absolute;
+  inset: 0;
 }
-.hf-side {
-  flex: none;
-  width: 180px;
-  display: flex;
-  flex-direction: column;
-  padding: 10px 2px 0;
-  background: var(--app-sidebar);
-  border-right: 1px solid var(--app-border);
+.ho-win {
+  width: 330px;
+  box-shadow: var(--app-shadow), 0 18px 44px rgba(0, 0, 0, 0.18);
 }
-.hf-group {
-  display: flex;
-  align-items: center;
-  height: 32px;
-  padding: 0 8px;
-  font-size: 12px;
-  color: var(--app-muted-fg);
-}
-.hf-row {
+.ho-win--plan { left: 150px; top: 18px; }
+.ho-win--impl { left: 196px; top: 150px; }
+.ho-win--back { left: 240px; top: 292px; }
+.ho-head {
   display: flex;
   align-items: center;
   gap: 8px;
-  height: 32px;
-  padding: 0 8px;
-  border-radius: 8px;
+  height: 36px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--app-border);
   font-size: 12px;
+  font-weight: 600;
   white-space: nowrap;
 }
-.hf-row--sub {
-  padding-left: 24px;
-}
-.hf-row--on {
-  background: var(--app-accent);
-  font-weight: 500;
-}
-.hf-row .mark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  flex: none;
-}
-.hf-row .title {
-  min-width: 0;
+.ho-head > span {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.hf-main {
-  position: relative;
-  flex: 1;
-  min-width: 0;
+.ho-body {
   display: flex;
   flex-direction: column;
-}
-.hf-head {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 38px;
-  padding: 0 16px;
-  border-bottom: 1px solid var(--app-border);
-  font-size: 13px;
-  font-weight: 500;
-}
-.hf-chat {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   gap: 10px;
-  padding: 12px 16px 8px;
+  padding: 12px 14px 14px;
+}
+.ho-plan {
   overflow: hidden;
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
 }
-.hf-bubble {
-  align-self: flex-end;
-  max-width: 86%;
-  padding: 8px 12px;
-  border-radius: 12px;
-  background: var(--app-accent);
-}
-.hf-worked {
+.ho-plan-label {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--app-border);
+  font-size: 11.5px;
   color: var(--app-muted-fg);
 }
-.hf-lines {
+.ho-plan-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+}
+.ho-plan-body b {
+  font-size: 14px;
+  font-weight: 600;
+}
+.ho-inbound {
+  align-self: flex-end;
   display: flex;
   flex-direction: column;
   gap: 7px;
-  padding-right: 70px;
+  max-width: 92%;
+  padding: 8px 11px;
+  border-radius: 10px;
+  background: var(--app-accent);
+  font-size: 12px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
-/* 分隔线：产品的转录边界原样——两段发丝线夹一句「从此处开始由 Codex 回复」，
-   句尾一个 Undo。 */
-.hf-divider {
+.ho-working {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 11px;
+  gap: 8px;
+}
+.ho-orb {
+  width: 9px;
+  height: 9px;
+  flex: none;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #dbe6f0 0%, #8ea9c4 45%, #5b7f9e 100%);
+}
+.ho-queue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: var(--app-sidebar);
+  font-size: 11.5px;
   color: var(--app-muted-fg);
   white-space: nowrap;
 }
-/* 只画右边那段线：菜单开在右下，左对齐的那句话才不会被它压住。 */
-.hf-divider::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--app-border);
+.ho-queue > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.hf-divider span {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
+.ho-review {
+  font-size: 13px;
+  line-height: 1.5;
 }
-.hf-divider b {
-  font-weight: 500;
-  color: var(--app-fg);
-}
-.hf-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  color: var(--app-muted-fg);
-}
-.hf-orb {
-  width: 10px;
-  height: 10px;
-  flex: none;
-  border-radius: 9999px;
-  border: 2px solid var(--app-muted-fg);
-  border-right-color: transparent;
-}
-.hf-composer {
-  flex: none;
-  margin: 0 12px 12px;
-  border: 1px solid var(--app-border);
-  border-radius: 14px;
-}
-.hf-composer p {
-  padding: 9px 12px 4px;
-  color: var(--app-muted-fg);
-}
-.hf-tools {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 0 6px 6px;
-}
-.hf-tool {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 9999px;
-  color: var(--app-muted-fg);
-}
-.hf-tool--agent {
-  margin-left: auto;
-  background: var(--app-accent);
-  color: var(--app-fg);
-}
-.hf-send {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 9999px;
-  background: var(--app-primary);
-  color: var(--app-primary-fg);
-}
-/* Agent 菜单开在输入框上方：四行、选中打勾、限额那行淡掉并标一句。 */
-.hf-menu {
+/* 手写说明与箭头压在壁纸上：墨色随主题，外圈一层地色光晕让它在云与草上都读得清。 */
+.ho-note {
   position: absolute;
-  z-index: 2;
-  right: 48px;
-  bottom: 54px;
-  width: 172px;
-  padding: 4px;
-  border: 1px solid var(--app-border);
-  border-radius: 10px;
-  background: var(--app-bg);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 16px 40px -16px rgba(0, 0, 0, 0.35);
+  left: 8px;
+  margin: 0;
+  font-family: var(--font-hand);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.05;
+  text-align: right;
+  color: var(--ink);
+  text-shadow: 0 0 6px var(--ground), 0 0 14px var(--ground);
 }
-[data-theme="dark"] .hf-menu {
-  background: var(--app-accent);
-}
-.hf-menu-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  height: 28px;
-  padding: 0 8px;
-  border-radius: 6px;
-  font-size: 12px;
-}
-.hf-menu-row--limit {
-  color: var(--app-muted-fg);
-}
-.hf-menu-row--limit .mark {
-  opacity: 0.45;
-}
-.hf-menu-note {
-  margin-left: auto;
-  font-size: 11px;
-  color: var(--app-muted-fg);
-}
-.hf-menu-check {
-  margin-left: auto;
-  display: inline-flex;
+.ho-note--sent { top: 132px; width: 100px; }
+.ho-note--back { top: 372px; width: 142px; }
+/* 箭头与窗口共用 580×480 这一套坐标：定尺寸而不是 100%，窄屏画框变窄时两者一起被裁，不会错位。 */
+.ho-ink {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 580px;
+  height: 480px;
+  stroke: var(--ink);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 3px var(--ground));
 }
 
 /* ── 03 · 加密同步与远控 ──────────────────────────────────────────
@@ -313,4 +220,19 @@
   gap: 6px;
   font-size: 11px;
   color: var(--app-muted-fg);
+}
+.sf-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--app-muted-fg);
+}
+.sf-orb {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: 9999px;
+  border: 2px solid var(--app-muted-fg);
+  border-right-color: transparent;
 }

@@ -10,11 +10,11 @@
 import type { DemoData } from "@/lib/agents";
 import type { SiteCatalog } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n/locale";
-import { Stroke, glyph } from "../icons";
-import { BaseViewsReel } from "../reels/base-views-reel";
-import { useCarousel } from "../reels/use-carousel";
-import { usePlayWhenSeen } from "../reels/use-play-when-seen";
-import { Cases, FigureCard, Story } from "./story";
+import { Stroke, glyph } from "../../icons";
+import { BaseViewsReel } from "../../reels/base-views-reel";
+import { useCarousel } from "../../reels/use-carousel";
+import { usePlayWhenSeen } from "../../reels/use-play-when-seen";
+import { Cases, FigureCard, Story } from "../story";
 
 export function DataStory({
   demo,

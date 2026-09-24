@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses the site tokens, the shared 32px header geometry, and the download control's markup
- * [OUTPUT]: Styles the split download button, its platform panel, and both the header and Fork band skins
+ * [OUTPUT]: Styles the split download button, its platform panel, and the header skin
  * [POS]: Complete presentation for the site's only download control
  * [PROTOCOL]: Update this header when changing this file, then verify README.md
  */
@@ -33,16 +33,6 @@
   font-weight: 500;
 }
 
-/* 结尾那张清单卡上的主按钮：同一颗产品主色，大一号、圆角跟着大一档。 */
-.download--band {
-  --download-face: var(--app-primary);
-  --download-text: var(--app-primary-fg);
-  height: 44px;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 500;
-}
-
 /* ── 认领本机那一条 ────────────────────────────────────────────
  * 三条链接都在 DOM 里，<html data-platform> 说了算——与 .img-light /
  * .img-dark 同一套写法。用 display 而不是 opacity：藏起来的那两条不该留在
@@ -60,11 +50,6 @@
 [data-platform="windows"] .download-action[data-for="windows"],
 [data-platform="linux"] .download-action[data-for="linux"] {
   display: inline-flex;
-}
-.download--band .download-action {
-  gap: 10px;
-  padding: 0 18px 0 22px;
-  border-radius: 10px 0 0 10px;
 }
 
 .download-short {
@@ -95,10 +80,6 @@
   border-left: 1px solid color-mix(in srgb, var(--download-text) 20%, transparent);
   cursor: pointer;
   list-style: none;
-}
-.download--band .download-caret {
-  width: 40px;
-  border-radius: 0 10px 10px 0;
 }
 .download-caret::-webkit-details-marker {
   display: none;
@@ -144,10 +125,6 @@
   visibility: visible;
   transform: none;
   pointer-events: auto;
-}
-.download--band .download-panel {
-  right: auto;
-  left: 0;
 }
 
 .download-panel ul {

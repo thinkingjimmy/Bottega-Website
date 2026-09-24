@@ -7,7 +7,7 @@ app/ - Thirty static pages plus crawler and social-image endpoints: six unprefix
 app/styles/ - Presentation split by tokens, base, the download control, shared/Agents features, the Base figures, hero (window and phone), the home sections, Apps, the Base reel, the page tail, and motion
 components/ - Shared site chrome, the download control, the hero, feature navigation, chart shapes, and product-faithful visuals
 components/apps/ - Four first-party App surfaces and the id-to-surface lookup
-components/home/ - The four home sections after the hero, their shared story/figure/case-list vocabulary, the static figures (handoff, sync, Bottega Dock, AI Limits), and the coloured tile/ring marks
+components/home/ - The four home sections after the hero, their shared story/figure/case-list vocabulary, the client stories, the figures (handoff, terminal, sync, Bottega Dock, widgets), and the coloured tile/ring marks
 components/features/ - Feature catalog, navigation, document article, and code-drawn Agents and Base figures
 components/reels/ - The Base views reel and the shared playback hooks
 components/window/ - Hero product shell, transcript, composer, model menu, Plan panel, Apps page, and App Studio window
@@ -139,16 +139,20 @@ App, the red traffic light closes it, and the Apps chip replays the sequence. Re
 beat and the movement, never the result.
 
 The home narrative contains four sections immediately after the hero, each opened by a full-width
-hairline, an eyebrow, a title and a lede:
+hairline, an eyebrow and a title:
 
 1. Agents: the CLI roster (one row, one sign-in command each), then two numbered stories — Handoff
-   (one Chat switching Agents mid-way, drawn with the product's own divider and Usage-limit label) and
+   (three Chat windows stacked in time order, Plan → Codex builds → the result back for review, joined
+   by two handwritten flow arrows and printed with the Agents feature page's own product strings) and
    Data space (the Base reel with its four-view case list).
-2. Local first · Encrypted sync: four claims in one row, then the Sync & remote control story with the
-   phone beside the desktop panel of the same Chat.
-3. Apps: the App stage rotating through the four first-party surfaces beside the four-App case list.
-4. Open source: the build in a terminal card beside the checklist of what a fork can do, carrying the
-   page's last download control.
+2. Local first · Encrypted sync: four claims in one row, then Open source (the fork/install/build
+   terminal beside Fork on GitHub and Browse source) and Sync & remote control (the phone beside the
+   desktop panel of the same Chat).
+3. Apps: the App stage rotating through the four first-party surfaces, then Dock (the same Expense
+   Tracker surface open above Bottega Dock drawn to the product's metrics, Apps and widgets on one bar)
+   and Widgets (a four-case list driving a centred widget card and
+   its open slot on the Dock).
+4. FAQ: a heading column beside seven native disclosures, the first one open.
 
 Every story figure sits in the same figure card, backed by the hero wallpaper. Each story ends with
 the same `FeatureLink` action and maps to one feature documentation route. Decorative demonstrations
