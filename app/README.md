@@ -11,7 +11,7 @@ Next.js App Router roots for unprefixed canonical English and four prefixed lang
 - `globals.css`: Imports the ordered plain-CSS cascade.
 - `sitemap.ts`: Emits thirty canonical URLs with complete English, translated, and `x-default` alternates.
 - `robots.ts`: Exports public crawl access and the production sitemap URL as `/robots.txt`.
-- `og.png/`: Generates the shared brand preview as a static PNG during the build.
+- `og.png/`: Generates the Forward Console icon and text Bottega social preview as a static PNG during the build.
 - `styles/`: Splits presentation by visual concern; see its README.
 
 Each route is statically generated. Root layouts choose `<html lang>` at build time; no component infers its content language from the browser.

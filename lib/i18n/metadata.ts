@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses Next Metadata, locale paths, localized copy, and the shared production site identity
- * [OUTPUT]: Exports page metadata inputs/resolution and canonical, hreflang, crawler, Open Graph, and Twitter metadata
+ * [OUTPUT]: Exports page metadata inputs/resolution and canonical, hreflang, crawler, Open Graph, Twitter and platform icon metadata.
  * [POS]: Localized metadata authority shared by static routes and structured data
  * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
@@ -93,6 +93,12 @@ export function buildMetadata(input: PageMetadataInput): Metadata {
       description: page.description,
       images: [page.image],
     },
-    icons: { icon: "/mark.png" },
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/mark.png", type: "image/png", sizes: "64x64" },
+      ],
+      apple: { url: "/apple-touch-icon.png", sizes: "180x180" },
+    },
   };
 }

@@ -6,7 +6,7 @@ The first-screen presentation: one sticky runway, a theme-aware desktop scene, a
 
 ## Member list
 
-- `shell.css`: Owns `.hero-pin`, `.stage`, `.scene` (whose backdrop is `--wall`), both SiteHeader skins, the menu-bar system controls, the stage-pinned chip bar, product-window shell, sidebar, and third-panel geometry.
+- `shell.css`: Owns `.hero-pin`, `.stage`, `.scene`, SiteHeader skins, menu-bar controls, stage-pinned chip bar, product-window shell, text-only sidebar brand row and third-panel geometry.
 - `surface.css`: Owns the transcript, message turns, tool activity, Plan preview, and streaming status presentation.
 - `composer.css`: Owns the positioned Composer, Agent/model menus, capability states, questions, and permission cards; feature hosts may re-anchor a disclosed menu without restyling it.
 - `apps.css`: Owns the Apps page card grid, its lead-card press cue, and the App Studio window that stacks over the desktop.
@@ -27,4 +27,4 @@ The first-screen presentation: one sticky runway, a theme-aware desktop scene, a
 - The chip bar outranks both windows: it is the only way back to Chat, and the only way to replay this surface. It is pinned to the stage's bottom centre, so the window can move left for the phone without dragging the chips along; below 900px it returns to the flow under the window.
 - The phone stacks over the window's bottom-right corner on the Chat surface only. It is positioned inside `.scene-body`, which reserves 80px on the right so window and phone centre as one group and caps itself at 1440px so the pair stays together on wider screens; narrow screens hide the phone and drop the reservation.
 
-[PROTOCOL]: Update this file when members or responsibilities change, then verify the parent README.md.
+[PROTOCOL]: Update this header when making changes, then check README.md.

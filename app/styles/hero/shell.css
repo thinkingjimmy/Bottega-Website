@@ -1,8 +1,8 @@
 /**
  * [INPUT]: Uses every shared token from ../tokens.css
- * [OUTPUT]: Defines the hero runway/scene, the three SiteHeader skins (stage, sticky framed, floating), the stage-pinned chip bar, product-window shell, sidebar, and third-panel geometry
+ * [OUTPUT]: Defines the hero runway/scene, three SiteHeader skins, stage-pinned chip bar, product-window shell, text-only sidebar brand row and third-panel geometry.
  * [POS]: Structural layer for the first screen; it owns the stage header because that skin follows the shrinking hero band
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 /* ============================================================
@@ -539,19 +539,16 @@
   margin-left: 6px;
 }
 
-/* 真值：`flex h-12 items-center px-2` 里放一张 `h-8 w-auto` 的字标
-   （app-sidebar.tsx + lib/brand.ts）。48px 的行配 32px 的图——字标是这块屏
-   上唯一的品牌落点，缩到 19px 就成了一行小字，而不是一个标识。 */
+/* The product sidebar uses the same text-only name and 48px brand row as WorkspaceNavigation. */
 .brand {
   flex: none;
   display: flex;
   align-items: center;
   gap: 4px;
   height: 48px;
-  /* 字标是容器的直接子级而非行，所以两段自己相加——落点仍是那一条线。 */
   padding: 0 calc(var(--sidebar-pad) + var(--sidebar-gutter));
 }
-.brand img {
+.brand [data-sidebar-brand-name] {
   margin-right: auto;
 }
 

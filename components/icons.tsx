@@ -1,8 +1,8 @@
 /**
- * [INPUT]: Uses React JSX and AgentId from @/lib/agents
- * [OUTPUT]: Exports Stroke (24 grid by default, `box` for other grids), Glyph, AgentLogo, AnnouncedLogo, AppIcon, Wordmark, and the D path table
+ * [INPUT]: Uses React JSX, AgentId from @/lib/agents and the Forward Console app icon.
+ * [OUTPUT]: Exports Stroke (24 grid by default, `box` for other grids), Glyph, AgentLogo, AnnouncedLogo, AppIcon, and the D path table.
  * [POS]: The dependency-free icon foundation shared by every Bottega-Website surface
- * [PROTOCOL]: 变更时更新此头部，然后检查 README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 import type { AgentId, AnnouncedId } from "@/lib/agents";
@@ -147,16 +147,7 @@ export function Glyph({ d, size = 16 }: { d: string; size?: number }) {
   );
 }
 
-/* ── 应用图标：那枚圆角方章 ────────────────────────────────────────
- * 取自 apps/desktop/resources/icon.png，画布贴着圆角方裁过（原图四周有
- * 104px 的 macOS 出血留白）。留白一旦烘焙进 PNG，它就成了每个消费点都看
- * 不见、却都要跟它较劲的偏移量——那是排版的职责，不是资产的。
- * 米色底两套主题下都成立，故只有一版，不必像字标那样明暗各备一张。
- *
- * alt 由调用方给：这枚砖旁边有没有「Bottega」那行字，只有调用方知道。
- * header 里那行字就在它右边，于是图标是装饰（alt=""）——两处都念一遍，
- * 读屏听到的是「Bottega Bottega」。
- * ────────────────────────────────────────────────────────── */
+/* The web icon has no Dock padding. Callers supply empty alt text when the product name is adjacent. */
 export function AppIcon({ size = 28, alt = "Bottega" }: { size?: number; alt?: string }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
@@ -167,18 +158,6 @@ export function AppIcon({ size = 28, alt = "Bottega" }: { size?: number; alt?: s
       height={size}
       style={{ width: size, height: size, display: "block", borderRadius: size * 0.23 }}
     />
-  );
-}
-
-/** 明暗两版都渲染，由 CSS 让其中一版让位——见 globals.css 的 .img-light/.img-dark。 */
-export function Wordmark({ height = 22 }: { height?: number }) {
-  return (
-    <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className="img-light" src="/wordmark.png" alt="Bottega" style={{ height, width: "auto" }} />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img className="img-dark" src="/wordmark-dark.png" alt="Bottega" style={{ height, width: "auto" }} />
-    </>
   );
 }
 

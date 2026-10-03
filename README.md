@@ -93,7 +93,7 @@ product's `packages/ui/src/styles/globals.css`:
   and lines are 10% ink so a white card's border is the product's `--border`.
 - `--app-*` describes the product UI inside demonstrations with the same values, so a product window
   on the page is the same material as the page.
-- `--accent` is the one chromatic token, taken from the amber dot on the app icon; it numbers the
+- `--accent` is the amber story accent; it numbers the
   stories and nothing else. Colour otherwise enters through content: Agent marks, chart palettes,
   the Ready badge, and the hero wallpaper (`--wall`), which every home figure reuses as its backdrop.
 
@@ -221,7 +221,7 @@ asked of the Bottega repository's release workflow, and no secret beyond this re
 involved. Publish a release; the site follows within a day, or immediately from the workflow's manual trigger.
 
 The control is one split button. Its primary half is the visitor's own platform, resolved before first paint by
-`PLATFORM_BOOT` — all three links are in the DOM and CSS claims one, the way the light and dark wordmarks work, so
+`PLATFORM_BOOT` — all three links are in the DOM and CSS claims the visitor's platform, so
 the button is still usable with scripting off. The caret opens a menu carrying all three platforms and nothing
 else. macOS is Apple silicon only; the builds have no Intel target and the menu does not offer one.
 

@@ -15,7 +15,7 @@
 - `language-switcher.tsx`: Wears the footer skin over explicit locale links.
 - `scene-language.tsx`: Wears the hero menu-bar input-source skin over those same locale links.
 - `theme.tsx`: Resolves and follows the local theme preference.
-- `icons.tsx`: Owns dependency-free SVG and product identity primitives.
+- `icons.tsx`: Owns dependency-free SVG primitives and the Forward Console app icon; product sidebars use the name as text.
 - `base-charts.tsx`: Owns the two Base chart shapes — a donut and a filled line — neither of which carries its own size, so both fit a second layout.
 - `reveal.tsx`: Adds one-shot entrance without hiding server content by default.
 
@@ -33,4 +33,4 @@ Complete catalogs enter at `pages/` and are narrowed to current-locale props bef
 `boot.ts` carries no `"use client"` directive on purpose: the server reads a value out of a client module as a
 throwing stub, so a pre-paint script defined there is inlined into `<head>` as invalid JavaScript.
 
-[PROTOCOL]: Update this file when members or responsibilities change, then verify the project README.md.
+[PROTOCOL]: Update this header when making changes, then check README.md.

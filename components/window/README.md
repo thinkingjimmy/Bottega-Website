@@ -4,7 +4,7 @@
 
 ## Members
 
-- `product-window.tsx`: Owns the Sidebar, Chat/Apps surface, active Chat, pagination, and optional pinned Composer menu; hands the open Chat to its host through `onChat`.
+- `product-window.tsx`: Owns the text-only Bottega Sidebar, Chat/Apps surface, active Chat, pagination and optional pinned Composer menu; hands the open Chat to its host through `onChat`.
 - `product-apps.tsx`: Draws the Apps page in the main column and the standalone App Studio window that opens over the desktop.
 - `product-transcript.tsx`: Renders the optional prior turn, then localized work traces, Plan preview, reply, and streaming state.
 - `product-phone.tsx`: Draws the same Chat on a phone — the Web shell's header, the shared transcript, and a composer carrying the executing-computer chip. The Home Hero stacks it beside the window; the sync story mounts it alone.
@@ -18,4 +18,4 @@ The phone is a mirror, not a second demo: it renders `ProductTranscript` over th
 
 The Studio window is a second window, not a panel: only a host with a desktop behind the machine (the Home Hero) passes `onOpenApp`, and only that host renders it. It reuses the App surfaces of `components/apps/` at their natural 1120px width and scales the whole page as one block, so the product's own type sizes survive.
 
-[PROTOCOL]: Update this file when members or responsibilities change, then verify the parent README.md.
+[PROTOCOL]: Update this header when making changes, then check README.md.

@@ -2,9 +2,9 @@
 
 /**
  * [INPUT]: Uses React state, localized DemoData, transcript/composer/Plan/Apps modules, and product icons
- * [OUTPUT]: Exports ProductWindow with localized Chat and Apps surfaces, optional persistent Composer disclosure, and an onChat hand-off of the open Chat
+ * [OUTPUT]: Exports ProductWindow with a text-only Bottega sidebar, localized Chat and Apps surfaces, optional persistent Composer disclosure, and an onChat hand-off of the open Chat.
  * [POS]: Canonical product-window implementation shared by Home and Agents feature illustrations
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ import {
   type Chat,
   type DemoData,
 } from "@/lib/agents";
-import { AgentLogo, D, Stroke, Wordmark } from "../icons";
+import { AgentLogo, D, Stroke } from "../icons";
 import { AppsGallery } from "./product-apps";
 import { ProductComposer } from "./product-composer";
 import { ProductPlanPanel } from "./product-plan-panel";
@@ -141,7 +141,7 @@ export function ProductWindow({
         </div>
 
         <div className="brand">
-          <Wordmark height={26} />
+          <span data-sidebar-brand-name style={{ fontSize: 18, fontWeight: 600, letterSpacing: "-.02em" }}>Bottega</span>
           <span className="icon-slot">
             <Stroke d={D.search} size={16} width={1.9} />
           </span>

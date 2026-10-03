@@ -11,7 +11,7 @@
 - `locale.test.mjs`: Verifies the default/prefixed locale split and path semantics.
 - `locale.ts`: Defines supported locales, the unprefixed English default, menu-bar marks, and localized paths.
 - `language-navigation.ts`: Preserves query and hash during explicit language-link navigation.
-- `metadata.ts`: Resolves localized page titles, descriptions, and social images for HTML and JSON-LD; builds canonical, hreflang, crawler, Open Graph, and Twitter metadata from the shared production origin.
+- `metadata.ts`: Resolves localized page titles, descriptions and social images; builds canonical, hreflang, crawler, Open Graph, Twitter, favicon and Apple touch metadata from the shared production origin.
 
 English defines the shape. A translation with a missing key, extra key, empty value, or changed placeholder fails typecheck or tests.
 

@@ -1,5 +1,5 @@
 /**
- * [INPUT]: Uses Next ImageResponse, local brand assets, and the shared social image dimensions
+ * [INPUT]: Uses Next ImageResponse, the Forward Console app icon, and the shared social image dimensions.
  * [OUTPUT]: Exports a build-time PNG response for the default social preview
  * [POS]: Static social image route with no browser JavaScript or remote image/font dependencies
  * [PROTOCOL]: Update this header when making changes, then check README.md.
@@ -13,8 +13,8 @@ import { SITE_URL, SOCIAL_IMAGE } from "@/lib/seo/site";
 export const dynamic = "force-static";
 
 export async function GET() {
-  const bytes = await readFile(join(process.cwd(), "public", "wordmark.png"));
-  const wordmark = `data:image/png;base64,${bytes.toString("base64")}`;
+  const bytes = await readFile(join(process.cwd(), "public", "app-icon.png"));
+  const icon = `data:image/png;base64,${bytes.toString("base64")}`;
 
   return new ImageResponse(
     (
@@ -22,8 +22,9 @@ export async function GET() {
         display: "flex", flexDirection: "column", justifyContent: "space-between",
         width: "100%", height: "100%", padding: "64px 72px", background: "#f8f5f0", color: "#252521",
       }}>
-        <div style={{ display: "flex", alignItems: "center", height: 112 }}>
-          <img src={wordmark} width={360} height={98} alt="Bottega" />
+        <div style={{ display: "flex", alignItems: "center", gap: 24, height: 112 }}>
+          <img src={icon} width={96} height={96} alt="" />
+          <span style={{ fontSize: 58, fontWeight: 700, letterSpacing: "-2px" }}>Bottega</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12, fontSize: 60, letterSpacing: "-2px" }}>
           <div style={{ display: "flex" }}>Codex + Claude Code</div>
