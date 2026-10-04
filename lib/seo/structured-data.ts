@@ -1,5 +1,5 @@
 /**
- * [INPUT]: Uses resolved localized metadata, locale paths, and public release facts
+ * [INPUT]: Uses resolved localized metadata, locale paths, nullable release assets, and the current release URL
  * [OUTPUT]: Exports the page JSON-LD graph builder
  * [POS]: Server-side semantic description of existing pages and the shipped desktop application
  * [PROTOCOL]: Update this header when making changes, then check README.md.
@@ -7,8 +7,10 @@
 
 import { LOCALES, localizedPath } from "../i18n/locale";
 import { resolvePageMetadata, type PageMetadataInput } from "../i18n/metadata";
-import { RELEASE, RELEASES_URL, REPO } from "../release";
+import { PLATFORMS, RELEASE, RELEASE_URL, REPO, type PlatformId } from "../release";
 import { absoluteUrl } from "./site";
+
+const OPERATING_SYSTEM: Record<PlatformId, string> = { mac: "macOS", windows: "Windows", linux: "Linux" };
 
 export function buildStructuredData(input: PageMetadataInput) {
   const { locale, logicalPath, catalog } = input;
@@ -48,9 +50,10 @@ export function buildStructuredData(input: PageMetadataInput) {
         description: catalog.meta.siteDescription,
         image: absoluteUrl("/app-icon.png"),
         applicationCategory: "DeveloperApplication",
-        operatingSystem: ["macOS", "Windows", "Linux"],
+        operatingSystem: PLATFORMS.filter((platform) => RELEASE.assets[platform] !== null)
+          .map((platform) => OPERATING_SYSTEM[platform]),
         softwareVersion: RELEASE.version,
-        downloadUrl: RELEASES_URL,
+        downloadUrl: RELEASE_URL,
         license: `${REPO}/blob/main/LICENSE`,
         sameAs: REPO,
         isAccessibleForFree: true,
@@ -58,7 +61,7 @@ export function buildStructuredData(input: PageMetadataInput) {
           "@type": "Offer",
           price: 0,
           priceCurrency: "USD",
-          url: RELEASES_URL,
+          url: RELEASE_URL,
         },
       }] : [{
         "@type": "BreadcrumbList",

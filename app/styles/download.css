@@ -1,8 +1,8 @@
 /**
- * [INPUT]: Uses the site tokens, the shared 32px header geometry, and the download control's markup
- * [OUTPUT]: Styles the split download button, its platform panel, and the header skin
+ * [INPUT]: Uses the site tokens, the shared 32px header geometry, and the download control's platform and release markup
+ * [OUTPUT]: Styles the split download button, release status, available installers, and release-page fallback
  * [POS]: Complete presentation for the site's only download control
- * [PROTOCOL]: Update this header when changing this file, then verify README.md
+ * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
 
 /* ── 一颗按钮，两个动作 ─────────────────────────────────────────
@@ -131,6 +131,13 @@
   margin: 0;
   padding: 0;
   list-style: none;
+}
+.download-version {
+  margin: 0;
+  padding: 8px 11px 6px;
+  color: var(--ink-2);
+  font-size: 12px;
+  font-weight: 400;
 }
 .download-panel li + li {
   margin-top: 1px;

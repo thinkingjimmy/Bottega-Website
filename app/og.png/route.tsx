@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses Next ImageResponse, the Forward Console app icon, and the shared social image dimensions.
- * [OUTPUT]: Exports a build-time PNG response for the default social preview
+ * [OUTPUT]: Exports a build-time PNG with product names and a platform-neutral workspace description
  * [POS]: Static social image route with no browser JavaScript or remote image/font dependencies
  * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
@@ -34,7 +34,7 @@ export async function GET() {
           display: "flex", justifyContent: "space-between", borderTop: "1px solid #d9d4ca",
           paddingTop: 24, color: "#6c6a62", fontSize: 23,
         }}>
-          <span>macOS / Windows / Linux</span>
+          <span>Open-source AI workspace</span>
           <span>{new URL(SITE_URL).hostname}</span>
         </div>
       </div>

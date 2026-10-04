@@ -12,12 +12,16 @@ export const ja = {
   meta: {
     siteTitle: "Bottega — オープンソースの AI エージェントワークスペース",
     siteDescription: "Codex、Claude Code、Kimi Code、OpenCode をひとつのデスクトップで。既存のサブスクリプションを使い、AI アプリの構築とローカルデータの管理ができるオープンソースのワークスペースです。",
-    socialImageAlt: "Bottega：macOS、Windows、Linux で Codex、Claude Code、Kimi Code、OpenCode を利用",
+    socialImageAlt: "Bottega：Codex、Claude Code、Kimi Code、OpenCode をまとめるオープンソースのデスクトップワークスペース",
   },
   language: { label: "言語", selected: "選択中" },
   nav: { features: "機能", changelog: "更新履歴" },
   download: {
     short: "ダウンロード",
+    viewRelease: "リリースを見る",
+    viewReleaseShort: "リリース",
+    releaseNotes: "リリースノートとインストール",
+    prerelease: "プレリリース",
     action: {
       mac: "macOS 版をダウンロード",
       windows: "Windows 版をダウンロード",
@@ -114,7 +118,7 @@ export const ja = {
         { question: "API キーや新しい契約は必要ですか？", answer: "いいえ。各 Agent は自身の CLI コマンドで、すでにお持ちのアカウントにログインします。" },
         { question: "データはどこに保存されますか？", answer: "あなたが選んだフォルダーです。Chat、添付、Project、Base、App、Skills は読めるファイルで、フォルダーをコピーすればバックアップになります。" },
         { question: "同期した Chat を誰かに読まれますか？", answer: "いいえ。同期はオンにするまでオフです。Chat はパソコンを出る前に、あなただけが知るパスワードで暗号化されます。Bottega のサーバーは暗号文を保存・中継するだけです。" },
-        { question: "対応プラットフォームは？", answer: "macOS、Windows、Linux です。Bottega Dock には Apple シリコン搭載の macOS 15 以降が必要です。" },
+        { question: "対応プラットフォームは？", answer: "v0.2.0 プレリリースは Apple シリコン搭載の Mac 向けです。Windows と Linux のインストーラーは含まれていません。Bottega Dock には macOS 15 以降が必要です。" },
         { question: "自分のバージョンを出せますか？", answer: "はい。リポジトリを fork して好きなように変え、三つのコマンドでビルドできます。MIT ライセンスなので、名前を変えて配布することもできます。" },
       ],
     },

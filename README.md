@@ -12,7 +12,7 @@ components/features/ - Feature catalog, navigation, document article, and code-d
 components/reels/ - The Base views reel and the shared playback hooks
 components/window/ - Hero product shell, transcript, composer, model menu, Plan panel, Apps page, and App Studio window
 content/ - Five locale-specific build-time Changelog snapshots
-lib/ - Typed i18n, shared SEO identity and structured data, the release snapshot, localized demos, body-map paths, and Changelog parsing
+lib/ - Typed i18n, shared SEO identity and structured data, the verified JSON release snapshot and URL contract, localized demos, body-map paths, and Changelog parsing
 public/ - Brand assets, theme-aware hero backgrounds, and privacy-clean product screenshots
 scripts/ - Explicit Changelog and release-snapshot synchronization, plus static i18n and SEO audits
 .github/workflows/ - One scheduled job that repoints the downloads at the newest published release
@@ -34,7 +34,7 @@ owned by the Bottega desktop repository.
 
 Each concept has one source of truth:
 
-- `lib/release.ts` names the public repository and the build every download link points at.
+- `lib/release.ts` exposes the public repository and URLs from the verified `lib/release.json` snapshot.
 - `lib/seo/site.ts` owns the production origin and default social image dimensions for metadata, crawler routes, and audits.
 - `lib/i18n/catalogs/en.ts` defines the complete content shape; four translated catalogs must match it.
 - `lib/agents.ts` combines stable Agent/App facts with the current locale's demonstration copy.
@@ -202,32 +202,31 @@ which adds one deferred script after hydration; icons and model marks otherwise 
 
 ## Downloads
 
-The download button hands over an installer rather than a repository page. Release assets carry their version
-in the filename, so GitHub's `releases/latest/download/<name>` shortcut does not apply; the site keeps its own
-snapshot in `lib/release.ts` and builds the asset URLs from it. No request-time or build-time network call is
-involved — a link is either correct or it was already red when the snapshot was written.
+The download button uses the verified `lib/release.json` snapshot. Its macOS action points directly to
+the installer; a visitor whose platform has no published installer sees **View release** instead.
+The menu lists only available installers, the version and prerelease status, and installation notes.
+macOS downloads are for Apple silicon. All three platform actions remain in the initial DOM so the
+prepaint platform selection and the native disclosure still work without a client-side data request.
 
-`scripts/sync-release.mjs` is that file's only writer. It reads the public Releases API, claims exactly one
-installer per platform by extension, and rewrites the snapshot only after each one answers a `HEAD` request.
-Zero or two matches for a platform fail the run: a missing installer and a changed naming rule both have to be
-loud rather than silently resolved into whichever file looks closest.
+`scripts/sync-release.mjs` is the snapshot's only writer. It reads the public release list, ignores
+drafts, and selects the greatest published `vX.Y.Z` version, including prereleases. It does not use
+GitHub Latest, which intentionally excludes the personal 0.2.0 prerelease. It claims at most one
+installer per platform by extension; unpublished platforms are explicitly `null`. No installers,
+duplicate claims, unfinished uploads, unexpected URLs, or failed HEAD/size checks leave the previous
+snapshot untouched and fail the run. Only a fully verified snapshot is written, with an atomic rename.
 
 ```bash
 pnpm sync:release
 ```
 
-`.github/workflows/sync-release.yml` runs the same script daily and on demand, and commits the result. Nothing is
-asked of the Bottega repository's release workflow, and no secret beyond this repository's own `GITHUB_TOKEN` is
-involved. Publish a release; the site follows within a day, or immediately from the workflow's manual trigger.
+`.github/workflows/sync-release.yml` runs the same script daily and on demand, authenticates the metadata
+request with its own `GITHUB_TOKEN`, and commits the JSON snapshot. Installer probes remain anonymous.
+The website follows new releases within a day, or immediately from the workflow's manual trigger.
+Builds stay offline and validate release, platform, version, and installer-link parity in the static export.
 
-The control is one split button. Its primary half is the visitor's own platform, resolved before first paint by
-`PLATFORM_BOOT` — all three links are in the DOM and CSS claims the visitor's platform, so
-the button is still usable with scripting off. The caret opens a menu carrying all three platforms and nothing
-else. macOS is Apple silicon only; the builds have no Intel target and the menu does not offer one.
-
-A direct download bypasses the release notes, and with them the one-time setup each unsigned build needs on its
-platform. Those steps stay on the release archive, which the footer's Download link and the public repository's
-README both reach; the menu does not repeat them.
+For 0.2.0, only the macOS Apple silicon installer is published. It uses ad-hoc signing, is not notarized,
+and requires manual updates while Apple Developer enrollment is pending. The menu links to the current
+release's installation instructions; the footer continues to link to the full release archive.
 
 ## Changelog
 

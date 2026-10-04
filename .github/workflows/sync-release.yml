@@ -1,7 +1,7 @@
-# Repoints every download on the site at the newest published Bottega release.
-# Reads the public Releases API and commits back to this repository; no secrets
-# beyond the repository's own GITHUB_TOKEN, and nothing is required of the
-# Bottega repository's release workflow.
+# [INPUT]: Reads the public release API through sync-release.mjs using this repository's token.
+# [OUTPUT]: Commits a verified lib/release.json snapshot on schedule or manual dispatch.
+# [POS]: Website-owned download synchronization, independent of desktop release automation.
+# [PROTOCOL]: Update this header when making changes, then check README.md.
 
 name: sync-release
 
@@ -27,19 +27,21 @@ jobs:
         with:
           node-version: 22.17.0
 
-      # Fails loudly when a release is missing an installer or the naming
-      # changed; a stale snapshot is better than a snapshot that 404s.
+      # Prereleases and partial platform releases are intentional. Every
+      # advertised installer must be unique, uploaded, and downloadable.
       - run: node scripts/sync-release.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Commit the new snapshot
         run: |
           set -euo pipefail
-          if git diff --quiet -- lib/release.ts; then
+          if git diff --quiet -- lib/release.json; then
             echo "already current"
             exit 0
           fi
-          version=$(node -p 'require("fs").readFileSync("lib/release.ts","utf8").match(/version: "([^"]+)"/)[1]')
+          version=$(node -p 'require("./lib/release.json").version')
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: point downloads at v${version}" -- lib/release.ts
+          git commit -m "chore: point downloads at v${version}" -- lib/release.json
           git push

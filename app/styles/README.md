@@ -14,7 +14,7 @@ The site stylesheet is split by responsibility. `globals.css` contains only the 
 
 - `tokens.css`: Reset, the one neutral palette shared by site and product surfaces (light and dark, `--wall`, `--card`, `--accent`, `--app-shadow`), App paper tokens, type stacks (sans/mono/serif plus the handwriting stack), shared page-edge geometry, and the one figure frame every home section reads (`--figure-w/h`, the taller `--figure-h-tall`, `--figure-inset-*`, `--home-demo-radius`).
 - `base.css`: Global typography, wraps, header navigation geometry, the content root, and the two-column split used by feature visuals.
-- `download.css`: The split download button, its platform panel, and its header skin.
+- `download.css`: The split download button, available-installer menu, release status and responsive release-page fallback labels.
 - `features.css`: Header dropdown, wiki sidebar, detail article, screenshot frame, and responsive states.
 - `agents-feature.css`: Dedicated story rhythm plus the standalone capability matrix and the annotated cross-Agent handoff sketch for the Agents detail page.
 - `bands.css`: Localized footer/language disclosure, changelog entries, and wide-grid collapse.
@@ -33,4 +33,4 @@ The site stylesheet is split by responsibility. `globals.css` contains only the 
 - Comment headers must not contain `*/` mid-line (a `--ink*/--line*` shorthand closes the comment and breaks the CSS parse); spell scales out in words.
 - Keep a media query beside the rules it overrides unless cascade order requires a later global gate.
 
-[PROTOCOL]: Update this header when changing this file, then check README.md
+[PROTOCOL]: Update this header when making changes, then check README.md.

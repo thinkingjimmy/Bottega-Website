@@ -4,7 +4,7 @@
 
 ## Members
 
-- `route.tsx`: Renders the shared 1200 x 630 PNG using the Forward Console icon, text Bottega and locale-neutral product names during static export.
+- `route.tsx`: Renders the shared 1200 x 630 PNG using the Forward Console icon, text Bottega, locale-neutral product names and the open-source workspace description during static export.
 
 The image is exported as `/og.png`. It uses the font bundled with Next ImageResponse and needs no remote assets.
 Pages with an existing product screenshot keep that more specific preview; all other pages use this image.

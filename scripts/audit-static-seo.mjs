@@ -1,6 +1,6 @@
 /**
- * [INPUT]: Uses the completed static export, canonical site identity, and locale paths
- * [OUTPUT]: Fails on crawler, metadata, social image, structured data, sitemap alternate, or internal link regressions
+ * [INPUT]: Uses the completed static export, canonical site identity, locale paths, and the public release snapshot
+ * [OUTPUT]: Fails on crawler, metadata, social image, release/download parity, sitemap alternate, or internal link regressions
  * [POS]: Post-build SEO gate over the actual HTML and assets delivered to crawlers
  * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
@@ -11,6 +11,7 @@ import { extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { LOCALES, localizedPath, stripLocale } from "../lib/i18n/locale.ts";
 import { SITE_URL, SOCIAL_IMAGE, absoluteUrl } from "../lib/seo/site.ts";
+import { PLATFORMS, RELEASE, RELEASE_URL, RELEASES_URL, downloadUrl } from "../lib/release.ts";
 
 const root = fileURLToPath(new URL("../out/", import.meta.url));
 const output = process.argv[2] ? resolve(process.argv[2]) : root;
@@ -42,6 +43,10 @@ assert.equal(new Set(locations).size, locations.length, "sitemap: duplicate page
 const knownPages = new Set(locations);
 const seenTitles = new Map();
 const seenDescriptions = new Map();
+const operatingSystems = { mac: "macOS", windows: "Windows", linux: "Linux" };
+const availablePlatforms = PLATFORMS.filter((platform) => RELEASE.assets[platform] !== null);
+const availableDownloads = new Set(availablePlatforms.map(downloadUrl));
+assert.ok(availableDownloads.size > 0, "release: no downloadable installers");
 
 for (const [index, url] of locations.entries()) {
   const html = readFileSync(fileFor(url), "utf8");
@@ -124,8 +129,11 @@ for (const [index, url] of locations.entries()) {
     assert.equal(software.url, url, `${url}: application URL`);
     assert.equal(software.description, description, `${url}: application description`);
     assert.equal(software["@id"], webpage.mainEntity["@id"], `${url}: main application`);
-    assert.deepEqual(software.operatingSystem, ["macOS", "Windows", "Linux"], `${url}: platforms`);
+    assert.deepEqual(software.operatingSystem, availablePlatforms.map((platform) => operatingSystems[platform]), `${url}: downloadable platforms`);
+    assert.equal(software.softwareVersion, RELEASE.version, `${url}: software version`);
+    assert.equal(software.downloadUrl, RELEASE_URL, `${url}: release page`);
     assert.equal(software.offers.price, 0, `${url}: application price`);
+    assert.equal(software.offers.url, RELEASE_URL, `${url}: offer release page`);
   } else {
     const breadcrumb = entity("BreadcrumbList");
     assert.equal(webpage.breadcrumb["@id"], breadcrumb["@id"], `${url}: breadcrumb identity`);
@@ -137,6 +145,9 @@ for (const [index, url] of locations.entries()) {
   for (const { href } of tags(html, "a")) {
     if (!href) continue;
     const target = new URL(href, url);
+    if (target.href.startsWith(`${RELEASES_URL}/download/`)) {
+      assert.ok(availableDownloads.has(target.href), `${url}: unavailable installer ${href}`);
+    }
     if (target.origin !== SITE_URL) continue;
     assert.ok(statSync(fileFor(target.href)).isFile(), `${url}: broken internal link ${href}`);
   }

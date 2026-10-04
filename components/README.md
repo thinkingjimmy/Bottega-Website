@@ -7,7 +7,7 @@
 - `hero.tsx`: Runs the localized full-viewport product stage and shrink geometry, and stacks the phone that mirrors the open Chat.
 - `site-header.tsx`: Renders language-preserving navigation, feature discovery, and the download control in three skins — the shrinking stage band, the sticky framed bar of subpages, and the floating bar.
 - `floating-header.tsx`: Slides the floating skin in once the stage band has scrolled off the top of the home page, and back out when it returns, so one navigation is on screen at a time.
-- `download.tsx`: Renders the site's only download control — a split button whose primary half is the visitor's own platform.
+- `download.tsx`: Renders available installers, current release notes and prerelease status; the detected platform's primary action opens its installer or explicitly opens the release page when no installer exists.
 - `boot.ts`: Owns the two pre-paint scripts and the theme storage contract they share with the client runtime.
 - `site-footer.tsx`: Renders the shared copyright notice, localized links, and the footer language selector.
 - `site-document.tsx`: Supplies shared HTML roots with build-time `lang`, the pre-paint boot scripts, the site's only self-hosted webfont, the single Vercel Speed Insights mount, and the Google Analytics 4 tag (`afterInteractive`).

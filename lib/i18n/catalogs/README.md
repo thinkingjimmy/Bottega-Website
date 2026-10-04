@@ -14,6 +14,7 @@ Commands, paths, model names, product identities, and code-level terminology rem
 `meta` owns the homepage search title, description, and default social image alt text. Each `features.<slug>` also owns a `metaTitle` and `metaDescription` so search snippets can describe the feature without changing its navigation label or visible headline. Metadata and structured data consume these same fields in every language.
 `demo.apps.items` pairs each localized switcher title with its concrete user-facing description so the two cannot drift apart.
 Locale-neutral legal boilerplate stays in the owning component instead of being duplicated across catalogs.
+`download` distinguishes direct installer actions from release-page fallbacks, including compact labels, installation notes and prerelease status. Platform FAQ copy describes the actual release scope; metadata does not promise unavailable installers.
 `home.subscription` carries only the section's prose and the two roster labels; the CLI names and their sign-in commands live in `lib/agents.ts`, because a terminal command reads the same in every locale.
 `features.base` follows the same three-part story in every locale: ask an Agent to organize records, explore six views of the same data, and reuse that data across Chats and Apps. Keep storage and permission details in plain language, and describe only what the product screenshot actually shows.
 `features.<slug>.screenshot` is present only for the pages that open on a product screenshot; Base has none, because three code-built figures carry that page instead.

@@ -12,12 +12,16 @@ export const fr = {
   meta: {
     siteTitle: "Bottega — Espace de travail open source pour agents IA",
     siteDescription: "Réunissez Codex, Claude Code, Kimi Code et OpenCode sur votre bureau. Créez des apps IA et gérez vos données locales avec vos abonnements existants.",
-    socialImageAlt: "Bottega avec Codex, Claude Code, Kimi Code et OpenCode sur macOS, Windows et Linux",
+    socialImageAlt: "Bottega, un espace de travail de bureau open source pour Codex, Claude Code, Kimi Code et OpenCode",
   },
   language: { label: "Langue", selected: "Sélectionné" },
   nav: { features: "Fonctions", changelog: "Nouveautés" },
   download: {
     short: "Télécharger",
+    viewRelease: "Voir la version",
+    viewReleaseShort: "Voir la version",
+    releaseNotes: "Notes de version et installation",
+    prerelease: "Préversion",
     action: {
       mac: "Télécharger pour macOS",
       windows: "Télécharger pour Windows",
@@ -114,7 +118,7 @@ export const fr = {
         { question: "Faut-il des clés d’API ou un nouvel abonnement ?", answer: "Non. Chaque Agent se connecte avec sa propre commande CLI, sur le compte que vous avez déjà." },
         { question: "Où sont stockées mes données ?", answer: "Dans un dossier que vous choisissez. Chats, pièces jointes, Projets, Base, Apps et Skills sont des fichiers lisibles — copiez le dossier pour les sauvegarder." },
         { question: "Quelqu’un peut-il lire mes Chats synchronisés ?", answer: "Non. La synchronisation reste désactivée tant que vous ne l’activez pas. Les Chats sont chiffrés avec un mot de passe que vous seul connaissez avant de quitter votre ordinateur ; les serveurs de Bottega stockent et relaient du chiffré." },
-        { question: "Quelles plateformes sont prises en charge ?", answer: "macOS, Windows et Linux. Bottega Dock demande macOS 15 ou plus récent sur puce Apple." },
+        { question: "Quelles plateformes sont prises en charge ?", answer: "La préversion v0.2.0 fournit un installateur pour les Mac avec puce Apple. Elle ne comprend pas d’installateur Windows ou Linux. Bottega Dock nécessite macOS 15 ou une version ultérieure." },
         { question: "Puis-je publier ma propre version ?", answer: "Oui. Forkez le dépôt, modifiez ce que vous voulez et construisez-le en trois commandes. La licence MIT vous permet de le renommer et de le distribuer." },
       ],
     },
