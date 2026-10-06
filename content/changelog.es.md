@@ -2,6 +2,106 @@
 
 Este archivo registra hitos del producto, no iteraciones internas de implementación.
 
+
+## 2026-10-06 — v0.2.1
+
+macOS con chip de Apple y Web. Se conservan el protocolo 14, el contenido en la nube y las contraseñas de sincronización. Cierra Bottega y reemplaza la aplicación manualmente desde 0.2.0. Firma ad-hoc, sin notarización de Apple. Esta versión preliminar queda fuera de GitHub Latest. Siguen pendientes el uso de CPU en reposo, las pruebas en dispositivos físicos y la firma oficial.
+
+- **Un inicio más corto.** Elige carpeta de contenido y Agent para empezar. Skills y Memory se configuran después. La detección supera entradas PATH dañadas y encuentra el CLI integrado en la aplicación Codex de macOS.
+- **Importa el historial cuando lo necesites.** Los ajustes del Project consultan solo Agents instalados. Tras la oferta inicial, volver a abrir el Project o reiniciar no inicia análisis automáticos.
+- **Conserva la elección de Agent.** Las preferencias y el modelo del primer mensaje se mantienen mientras se actualiza la lista de modelos. Los menús de entrada y los ajustes del Project usan una disposición coherente.
+- **Controles Memory coherentes.** La visibilidad del plugin y el permiso del servicio son independientes. Se conservan servicio elegido y datos, con el consentimiento necesario.
+- **Recupera Sketch con seguridad.** Reintenta fallos del compilador nativo o de inicialización sin perder el dibujo confirmado.
+- **Sincronización e inicio de sesión claros.** Las consecuencias de la contraseña se explican una vez. Comprueba ordenador, cuenta y código antes de aprobar. La entrada remota indica cómo restablecer la sincronización.
+
+## 2026-10-04 — v0.2.0
+
+Versión preliminar para macOS con chip de Apple y Web: actualización manual, firma ad-hoc, sin notarización. Windows, Linux y Android se distribuirán por separado. El protocolo 14 exige actualizar los ordenadores con protocolo 13. Se conservan contenido y contraseñas de la nube. Cierra y respalda contenido y datos antes de instalar. La firma oficial y las comprobaciones detalladas en dispositivos continúan pendientes.
+
+- **Plugins en un lugar.** Los ajustes muestran capacidades, dependencias, origen y uso. Base, Providers, Workflow, Sketch, Memory y Dock comparten controles. Desactivar conserva el contenido.
+- **Configuraciones de Agent y flujos.** Elige modelo y razonamiento en listas. Los fallos conservan las ediciones. Skills, MCP y Memory tienen permisos explícitos. Los cuatro Agents verificados ejecutan etapas; planificación y revisión son de solo lectura.
+- **Plugins Sketch editables.** Se conservan imagen y fuente, con selección de versiones. Una compilación fallida mantiene la versión funcional anterior. Reinicios y actualizaciones protegen dibujos confirmados y trabajo abierto sin guardar.
+- **Memory con control visible.** Desactivado por defecto, se pausa o reanuda desde Web en el ordenador propietario. Memory del flujo exige permiso independiente, es de solo lectura y no captura nuevos recuerdos.
+- **Dock en la pantalla elegida.** Elige pantalla principal, externa o concreta y borde izquierdo, inferior o derecho. La posición es local y la disposición puede sincronizarse. Esta versión convive con el Dock del sistema; no permite reemplazarlo.
+- **Un espacio Web más completo.** Menús App y Base adaptables, motivos de desconexión, informes y evidencias de etapas, y notificaciones opcionales. Funcionan Apps estáticas y vinculadas a Base; las interfaces server App permanecen en escritorio.
+- **Recuperación más clara.** Los fallos de carpeta y arranque ofrecen acciones concretas. Salir espera el guardado del borrador. Errores de carga o compilación protegen trabajo y próximo inicio. Las actualizaciones conservan cambios locales y Chats guardados.
+
+## 2026-09-30 — v0.1.9
+
+Respalda la carpeta Bottega y los datos de la aplicación. La base 0.1.8 se conserva aislada y el índice se reconstruye desde la carpeta. La nube se reinicia para esta versión: vuelve a iniciar sesión y configura la contraseña en el primer ordenador. Protocolo 13. Solo DMG/ZIP para macOS con chip de Apple, sin firma ni notarización. Desde 0.1.0 o 0.1.1, instala manualmente.
+
+- **Plan · Develop · Review.** Inicia un flujo desde una fila Base, confirma el plan y acepta, admite una excepción o devuelve el resultado. Stage y criterios de aceptación acompañan pausa, cancelación, reintento y avisos. Esta versión admite Claude y Codex.
+- **Configuraciones de Agent reutilizables.** Guarda Provider, modelo, instrucciones, permisos, espacio de trabajo y red desde Blank, Planner, Developer o Reviewer. Se sincronizan y los cambios se aplican a futuras ejecuciones.
+- **Plugins y Apps.** Administra Base, los cuatro Providers, Workflow, Extensions y plugins de Agents en un lugar. Desactivar no elimina datos.
+- **Needs you en Web y teléfono.** Inicia, confirma, aprueba, devuelve, pausa o cancela ejecuciones. La campana reúne decisiones pendientes. Se abren interfaces de Apps estáticas y vinculadas a Base.
+- **Node incluido.** MCP interno, compilador de Apps, adaptadores y scripts usan el Node 24 suministrado, sin depender del PATH.
+- **Límites más estrictos para Agents.** Se protege la configuración del CLI GitHub. Revisar no eleva permisos. Las herramientas del navegador quedan en pestañas autorizadas y Codex usa el aislamiento de Bottega en confirmación, aprobación y planificación.
+- **Conversaciones más estables.** Borradores conservados tras cierre, fallo o reinicio; colas enviadas fuera de pantalla; envío que espera el arranque; y Reintentar u Omitir para archivos fallidos.
+- **Aprobación de acceso por código.** El navegador exige elegir el código mostrado en el ordenador solicitante.
+- **Ajustes y recuperación simplificados.** Se eliminan Lab y mantener conexiones. Development Kanban deja de incluirse, pero la copia instalada permanece. Una carpeta ausente abre recuperación.
+- **Protocolo 13.** Sincroniza configuraciones de Agent, columnas de flujo, ejecuciones y elementos Needs you.
+
+## 2026-09-24 — v0.1.8
+
+Se conservan datos y ajustes locales de 0.1.7 y contenido en la nube. Actualiza todos los ordenadores de la cuenta para el protocolo 10. Esta versión ofrece macOS arm64, Windows x64 y Linux x64 sin firma ni notarización. macOS sigue siendo principal; la paridad en otras plataformas continúa.
+
+- **Bottega Dock.** En macOS 15 o posterior con chip de Apple, muestra Apps, Finder, Downloads, Trash y cuotas. Esta versión permite convivir o reemplazar el Dock del sistema, con recuperación tras fallo y Restore System Dock.
+- **Disposición del Dock sincronizada.** Sigue la cuenta con cifrado de extremo a extremo. Se combinan cambios simultáneos cuando es posible y se pide resolver los restantes.
+- **Ajustes coherentes.** Dock, Sync y Memory comparten secciones, filas, progreso y errores. Los pasos usan un diálogo común y el inicio muestra la lista a la izquierda.
+- **Mueve la carpeta Bottega.** Las rutas siguen el cambio al reiniciar. En otro disco se copia y verifica todo antes de mandar la copia anterior a la papelera.
+- **Borra los datos de este ordenador.** Elimina conversaciones, ajustes, claves y sesión para volver al inicio. La carpeta también puede ir a la papelera. La nube permanece y vuelve al iniciar sesión.
+- **Configura de nuevo tras borrar la carpeta.** Una carpeta ausente vuelve al inicio. Una copia de conversación ilegible se mueve a .trash y se notifica una vez.
+- **Protocolo 10.** Transporta la disposición cifrada del Dock. Los datos locales no cambian.
+
+## 2026-09-23 — v0.1.7
+
+Se conservan datos locales, contenido en la nube y contraseñas de 0.1.6. Actualiza todos los ordenadores para el protocolo 9. Instaladores macOS arm64, Windows x64 y Linux x64 sin firma ni notarización; continúa la paridad fuera de macOS.
+
+- **Providers, Updates, Community.** Define Agent inicial y orden, consulta versiones y actualiza CLI y Bottega, y accede a enlaces comunitarios. Update all actualiza primero los CLI. About y Backends se integran.
+- **Conserva instrucciones que no pueden aplicarse ahora.** Los Agents compatibles las usan en el turno; Kimi y OpenCode las guardan para después. Un rechazo conserva el borrador y un turno terminado permite enviar un mensaje nuevo.
+- **Limpia adjuntos antes del envío remoto.** Las fotos se reducen a 2048 px y se eliminan metadatos personales. Se verifica el formato real y se explica HEIC cuando no funciona. Un archivo subido sin enviar durante 20 horas exige volver a subirlo.
+- **Contraseña de sincronización más fuerte.** Las nuevas requieren 12 caracteres, letras, números y diversidad; se rechazan secuencias y palabras comunes. Las reglas aparecen al escribir. Las contraseñas existentes siguen funcionando.
+- **Duración de la desconexión visible.** La entrada muestra reposo, sin conexión o desconectado y el tiempo desde el último contacto.
+- **Protocolo 9.** Transporta el resultado de instrucciones adicionales y prepara el móvil. Los datos locales no cambian.
+
+## 2026-09-22 — v0.1.6
+
+Cierra y respalda carpeta Bottega y datos de la aplicación. Se aíslan la base 0.1.5 y sus archivos sin modificarlos y se reconstruye el índice desde la carpeta. Pueden faltar respuestas sin terminar; búsqueda y sincronización se recrean. La nube se reinicia para esta versión: vuelve a iniciar sesión y configura la contraseña en el primer ordenador.
+
+- **Cada conversación pertenece a su ordenador original.** Ya no cambia de ordenador durante una ejecución. Abre el propietario para controlarla. Se eliminan selección de ejecutor, traspaso y cola entre ordenadores.
+- **Iniciar sesión activa el control remoto.** El ordenador publica Projects y Chats y acepta sus comandos. No hay un segundo interruptor. El inicio es local; al conectarse se define o introduce la contraseña de sincronización.
+- **Cambia de ordenador en la barra lateral.** Web, teléfono y escritorio comparten pestañas con estado y tiempo. Los nombres repetidos se distinguen. Una cuenta sin ordenador debe conectarse primero desde uno.
+- **Usa Projects remotos.** Se muestra globo y nombre del propietario, sin pedir carpeta local. Los Chats creados se ejecutan y guardan allí. Fijar no copia y desfijar no cambia el propietario.
+- **Edita registros incluso sin conexión.** Renombrar, archivar, ordenar y editar Base o App sigue funcionando y se concilia al volver. Enviar, detener y aprobar requieren conexión. Una decisión duplicada identifica el ordenador que la resolvió.
+- **La carpeta pertenece a su ordenador.** El mismo ordenador la recupera tras reinstalar. Otro se rechaza indicando propietario y siguiente acción. Una carpeta nunca sincronizada sigue siendo transportable.
+- **Continúa conversaciones importadas.** Los historiales Codex, Claude Code y Kimi usan la entrada normal en un perfil nuevo o reconstruido, con una división que marca el historial importado.
+- **Primera subida exacta.** Sync muestra bytes reales y total. Las conversaciones pequeñas empiezan primero y cada mensaje necesita aproximadamente la mitad de viajes de ida y vuelta.
+- **Protocolo 8.** Cambian el protocolo de sincronización y la base local. Sigue las instrucciones de respaldo y recuperación anteriores.
+
+## 2026-09-19 — v0.1.5
+
+Nuevo almacenamiento centrado en la carpeta Bottega. No importa automáticamente Chats, Projects, Apps, Bases, adjuntos ni ajustes de 0.1.4 o anteriores. Cierra, respalda todos los datos y conserva Chat Homes y Projects externos. Mueve la carpeta anterior a un respaldo y configura una nueva. El contenido anterior no se modifica.
+
+- **Cloud Sync cifrado de extremo a extremo.** Opcional, usa una contraseña independiente definida en el primer ordenador. La clave se genera en el dispositivo y solo se almacena contenido cifrado. No hay clave de recuperación ni restablecimiento. Se participa con la misma cuenta y contraseña.
+- **Abre tu trabajo en el navegador.** Chats, adjuntos, búsqueda de siete días, seis vistas Base, registros App, archivos, dispositivos y preferencias están disponibles en Web y teléfono. Las interfaces App personalizadas y herramientas locales permanecen en el ordenador.
+- **Continúa desde otro dispositivo.** Si el servicio permite control remoto, un ordenador conectado y desbloqueado admite envío, parada, aprobación e instrucciones. Sin permiso, aún se puede leer y seguir un turno.
+- **Conserva una carpeta propia.** Guarda conversaciones, adjuntos, resultados, Chat Homes, Projects, Bases, fuentes App y Skills. Claves y permisos permanecen locales. Copia tras cerrar para un respaldo completo; iCloud y Dropbox no son compatibles.
+- **Elige el inicio adecuado.** El asistente de esta versión ofrece uso local o cuenta existente, seguido de carpeta, Agents, Skills y Memory.
+- **Revisa resultados.** Visualizaciones, previsualización, guardado, mostrar archivo, Quick Look, importación de hojas en Base y resultados Claude. Las vistas previas no acceden a red ni almacenamiento.
+- **Más control de los cuatro Agents.** Cuota OpenCode Go, Agent y modelo explícitos para títulos, y mantener conexiones en Lab, desactivado por defecto.
+- **Trabajo diario en la barra lateral.** El orden de Chats se sincroniza. Renombra y ordena Projects. El confeti al archivar es opcional y respeta la reducción de movimiento.
+
+## 2026-09-10 — v0.1.4
+
+Nuevo formato local: no abre ni migra automáticamente datos de 0.1.3 o anteriores. Cierra, respalda todos los datos y conserva Chat Homes y Projects externos. Mueve la carpeta antigua y empieza con una nueva. Chats, ajustes y registros App anteriores no se importan automáticamente.
+
+- **Sketch en la entrada.** Desde +, dibuja, añade texto u ocho formas, borra parcialmente y ajusta colores y grosor. Deshacer y rehacer están disponibles. Los borradores son editables y el Agent recibe un PNG de fondo blanco.
+- **Consulta cuota antes de elegir.** Codex, Claude Code y Kimi muestran saldo y reinicio. OpenCode indica que no hay información unificada en esta versión. La primera consulta se reanuda al volver y siguen disponibles acceso y reparación.
+- **Protege el trabajo local.** Se refuerzan coherencia y recuperación de Chat, Base, Project, App y adjuntos. Las interrupciones conservan el estado. No se necesita cuenta ni hay sincronización cloud en esta versión.
+- **Apps oficiales coherentes.** Development Kanban, Expense Tracker, Fitness Log y Design Canvas usan React y convenciones compartidas, manteniendo datos y uso. Requieren Bottega 0.1.3 o posterior.
+- **Elige acceso en segundo plano.** En macOS, usa logo, icono monocromo o panel de muesca. Sin muesca aparece un icono. Abrir al iniciar sesión es independiente y ambas opciones están desactivadas al principio.
+- **Controles cotidianos más fluidos.** Navegación, texto, renombrado, progreso y recuperación App, compartir y lienzo Sketch ofrecen acciones y disposiciones coherentes.
+
 ## 2026-09-08 — v0.1.3
 
 **Antes de actualizar:** 0.1.3 utiliza un nuevo formato de almacenamiento local. Las bases de Chat de 0.1.2 y anteriores no pueden abrirse ni migrarse automáticamente. Cierra Bottega y respalda toda la carpeta de datos de la aplicación. Guarda esa copia para la versión anterior e inicia 0.1.3 con una carpeta nueva; los Chats y ajustes previos no se importan automáticamente.
@@ -51,7 +151,7 @@ Los instaladores macOS arm64 DMG/ZIP, Windows x64 NSIS y Linux x64 AppImage sigu
 
 ## 2026-08-29 — Herramientas por Project, Extensions y vista previa del código de Design Canvas
 
-- Publicamos el código de producción actual como un commit hijo normal del historial público limpio, mientras las pruebas, la automatización de desarrollo y la evidencia interna permanecen en Bottega-Dev.
+- Publicación del código de producción del escritorio en un historial público limpio, sin pruebas internas ni automatización de desarrollo.
 - Añadimos overrides por Project exacto para herramientas integradas y servidores MCP manuales. Cada turn congela su plan efectivo de herramientas, scope revisions, compatibilidad runtime y configuración MCP sellada antes de cualquier efecto secundario.
 - Unificamos la propiedad de Extensions como `global | exact Project` en administración, Skills, App requirements, sessions, retained data y recuperación tras borrado. Los Registry y ledgers heredados explícitamente vacíos migran; cualquier estado con autoridad live o ambigua sigue en fail closed.
 - Añadimos Bottega Design Canvas con artboards HTML autocontenidos, comparación de direcciones e historial, anclas visuales numeradas, preview aislada y render check del Agent.

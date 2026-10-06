@@ -210,7 +210,7 @@ prepaint platform selection and the native disclosure still work without a clien
 
 `scripts/sync-release.mjs` is the snapshot's only writer. It reads the public release list, ignores
 drafts, and selects the greatest published `vX.Y.Z` version, including prereleases. It does not use
-GitHub Latest, which intentionally excludes the personal 0.2.0 prerelease. It claims at most one
+GitHub Latest, which intentionally excludes the personal prereleases. It claims at most one
 installer per platform by extension; unpublished platforms are explicitly `null`. No installers,
 duplicate claims, unfinished uploads, unexpected URLs, or failed HEAD/size checks leave the previous
 snapshot untouched and fail the run. Only a fully verified snapshot is written, with an atomic rename.
@@ -224,7 +224,7 @@ request with its own `GITHUB_TOKEN`, and commits the JSON snapshot. Installer pr
 The website follows new releases within a day, or immediately from the workflow's manual trigger.
 Builds stay offline and validate release, platform, version, and installer-link parity in the static export.
 
-For 0.2.0, only the macOS Apple silicon installer is published. It uses ad-hoc signing, is not notarized,
+For 0.2.1, only the macOS Apple silicon installer is published. It uses ad-hoc signing, is not notarized,
 and requires manual updates while Apple Developer enrollment is pending. The menu links to the current
 release's installation instructions; the footer continues to link to the full release archive.
 
