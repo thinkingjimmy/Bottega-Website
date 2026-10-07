@@ -3,6 +3,17 @@
 Ce fichier consigne les jalons du produit, pas les itérations internes d’implémentation.
 
 
+## 2026-10-07 — v0.2.2
+
+[Télécharger 0.2.2](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.2) pour les Mac avec puce Apple, ou [ouvrir Bottega Web](https://app.getbottega.app).
+
+- **Des conversations cohérentes entre appareils.** Le bureau et le Web partagent la présentation, les commandes de saisie et l’état de lecture. Lire un Chat efface son état non lu sur l’ordinateur qui l’exécute et les autres vues connectées. Les questions et la revue Plan gardent la commande Arrêter ; les commandes en attente gardent leurs actions de récupération. Les réponses produites pendant la synchronisation restent disponibles après récupération.
+- **Choisir une branche avant d’envoyer.** New Chat permet de rechercher, changer ou créer une branche de Project. Les actions distantes s’exécutent sur l’ordinateur sélectionné. Le retour des paramètres conserve le brouillon complet : pièces jointes, références, Plan, autorisations et modèle. Un Project occupé ou un conflit Git doit être résolu avant de changer de branche.
+- **Des paramètres et commandes alignés.** La sélection d’Agent, la barre latérale et les paramètres suivent la même présentation. La bibliothèque Skills vide reprend le cadre d’Extensions. Les plugins s’installent sur le bureau. Leur présentation permet de revenir à la liste. Les paramètres des outils incluent les plugins et les Preview gérés.
+- **Correction des croquis dans l’application installée.** L’éditeur isolé démarre à partir des ressources du paquet et conserve le contenu modifiable ainsi que l’état des menus partagés. Une installation App confirmée peut reprendre sans modifier le paquet approuvé.
+
+Cloud Sync passe au **protocole 15**. Mettez à jour tous les ordinateurs qui utilisent le cloud ; les clients de protocole 14 doivent être mis à jour pour se reconnecter. Les contenus cloud, mots de passe de synchronisation et clés de compte existants sont conservés. Quittez Bottega, puis remplacez l’application manuellement. Cette préversion utilise des signatures ad-hoc, sans notarisation Apple, et reste exclue de GitHub Latest.
+
 ## 2026-10-06 — v0.2.1
 
 macOS avec puce Apple et Web. Le protocole 14, les contenus cloud et les mots de passe de synchronisation sont conservés. Quittez Bottega puis remplacez l’application manuellement depuis 0.2.0. Signature ad-hoc, sans notarisation Apple. Cette préversion est exclue de GitHub Latest. L’usage CPU au repos, les vérifications sur appareils physiques et la signature officielle restent à vérifier.

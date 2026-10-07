@@ -118,7 +118,7 @@ export const zhCN = {
         { question: "需要 API key 或新的订阅吗？", answer: "不需要。每个 Agent 用它自己的 CLI 命令登录，用的是你已有的账号。" },
         { question: "我的数据存在哪里？", answer: "存在你选定的文件夹里。Chat、附件、Project、Base、App 和 Skills 都是可读的文件——复制这个文件夹就是备份。" },
         { question: "同步的 Chat 会被别人读到吗？", answer: "不会。同步默认关闭。打开后，Chat 在离开你的电脑之前就用只有你知道的密码加密；Bottega 的服务器只存储和转发密文。" },
-        { question: "支持哪些平台？", answer: "v0.2.1 预发布版本提供 Apple 芯片 Mac 安装包，不含 Windows 或 Linux 安装包。Bottega Dock 需要 macOS 15 或更高版本。" },
+        { question: "支持哪些平台？", answer: "v0.2.2 预发布版本提供 Apple 芯片 Mac 安装包，不含 Windows 或 Linux 安装包。Bottega Dock 需要 macOS 15 或更高版本。" },
         { question: "可以发布我自己的版本吗？", answer: "可以。fork 仓库，改成你想要的样子，三条命令就能构建。MIT 协议允许你改名并分发。" },
       ],
     },

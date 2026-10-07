@@ -118,7 +118,7 @@ export const fr = {
         { question: "Faut-il des clés d’API ou un nouvel abonnement ?", answer: "Non. Chaque Agent se connecte avec sa propre commande CLI, sur le compte que vous avez déjà." },
         { question: "Où sont stockées mes données ?", answer: "Dans un dossier que vous choisissez. Chats, pièces jointes, Projets, Base, Apps et Skills sont des fichiers lisibles — copiez le dossier pour les sauvegarder." },
         { question: "Quelqu’un peut-il lire mes Chats synchronisés ?", answer: "Non. La synchronisation reste désactivée tant que vous ne l’activez pas. Les Chats sont chiffrés avec un mot de passe que vous seul connaissez avant de quitter votre ordinateur ; les serveurs de Bottega stockent et relaient du chiffré." },
-        { question: "Quelles plateformes sont prises en charge ?", answer: "La préversion v0.2.1 fournit un installateur pour les Mac avec puce Apple. Elle ne comprend pas d’installateur Windows ou Linux. Bottega Dock nécessite macOS 15 ou une version ultérieure." },
+        { question: "Quelles plateformes sont prises en charge ?", answer: "La préversion v0.2.2 fournit un installateur pour les Mac avec puce Apple. Elle ne comprend pas d’installateur Windows ou Linux. Bottega Dock nécessite macOS 15 ou une version ultérieure." },
         { question: "Puis-je publier ma propre version ?", answer: "Oui. Forkez le dépôt, modifiez ce que vous voulez et construisez-le en trois commandes. La licence MIT vous permet de le renommer et de le distribuer." },
       ],
     },

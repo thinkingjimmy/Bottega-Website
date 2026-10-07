@@ -1,9 +1,9 @@
 {
-  "version": "0.2.1",
-  "tag": "v0.2.1",
+  "version": "0.2.2",
+  "tag": "v0.2.2",
   "prerelease": true,
   "assets": {
-    "mac": "Bottega-0.2.1-arm64.dmg",
+    "mac": "Bottega-0.2.2-arm64.dmg",
     "windows": null,
     "linux": null
   }

@@ -3,6 +3,17 @@
 Este archivo registra hitos del producto, no iteraciones internas de implementación.
 
 
+## 2026-10-07 — v0.2.2
+
+[Descargar 0.2.2](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.2) para Mac con chip de Apple, o [abrir Bottega Web](https://app.getbottega.app).
+
+- **Conversaciones coherentes entre dispositivos.** El escritorio y la Web comparten la presentación, los controles de escritura y el estado de lectura. Leer un Chat elimina su marca de no leído en el ordenador que lo ejecuta y en las otras vistas conectadas. Las preguntas y la revisión Plan conservan Detener; los comandos pendientes conservan las acciones de recuperación. Las respuestas producidas durante la sincronización se conservan tras la recuperación.
+- **Elegir una rama antes de enviar.** New Chat permite buscar, cambiar o crear ramas de Project. Las acciones remotas se ejecutan en el ordenador seleccionado. Al volver de los ajustes se conserva el borrador completo: adjuntos, referencias, Plan, permisos y modelo. Un Project ocupado o un conflicto Git debe resolverse antes de cambiar de rama.
+- **Ajustes y controles alineados.** La selección de Agent, la barra lateral y los ajustes siguen la misma presentación. La biblioteca Skills vacía usa el mismo marco que Extensions. Los plugins se instalan desde el escritorio. Su presentación permite volver a la lista. Los ajustes de herramientas incluyen plugins y Preview administrados.
+- **Corrección de bocetos en la aplicación instalada.** El editor aislado se inicia con los recursos del paquete y conserva el contenido editable y el estado de los menús compartidos. Una instalación de App confirmada puede recuperarse sin modificar el paquete aprobado.
+
+Cloud Sync pasa al **protocolo 15**. Actualiza todos los ordenadores que usan el cloud; los clientes del protocolo 14 deben actualizarse para volver a conectarse. Se conservan el contenido cloud, las contraseñas de sincronización y las claves de cuenta existentes. Cierra Bottega y sustituye la aplicación manualmente. Esta versión preliminar usa firmas ad-hoc, sin notarización de Apple, y queda fuera de GitHub Latest.
+
 ## 2026-10-06 — v0.2.1
 
 macOS con chip de Apple y Web. Se conservan el protocolo 14, el contenido en la nube y las contraseñas de sincronización. Cierra Bottega y reemplaza la aplicación manualmente desde 0.2.0. Firma ad-hoc, sin notarización de Apple. Esta versión preliminar queda fuera de GitHub Latest. Siguen pendientes el uso de CPU en reposo, las pruebas en dispositivos físicos y la firma oficial.
