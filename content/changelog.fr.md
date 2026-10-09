@@ -3,6 +3,18 @@
 Ce fichier consigne les jalons du produit, pas les itérations internes d’implémentation.
 
 
+## 2026-10-08 — v0.2.3
+
+[Télécharger 0.2.3](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.3) pour les Mac avec puce Apple, ou [ouvrir Bottega Web](https://app.getbottega.app).
+
+- **Contrôler la file d’attente Web.** Modifiez un message en attente ou échangez-le avec le brouillon actuel, changez l’ordre des messages ou supprimez-les. Utilisez Steer si l’Agent en cours le prend en charge. Les pièces jointes, les croquis modifiables et les paramètres du message restent avec le brouillon. Arrêter suspend la file du navigateur actuel ; Reprendre vérifie l’ordinateur et les autorisations avant de continuer.
+- **Garder la conversation visible.** Le premier message envoyé, l’activité et le brouillon suivant restent à l’écran pendant l’ouverture d’un nouveau Chat. Les titres des Chats distants peuvent être récupérés après un rechargement. Lorsque l’activité des outils s’allonge, le texte des réponses précédentes et la liste des outils sont conservés dans les limites existantes.
+- **Rétablir la synchronisation et les réponses distantes.** La récupération après une erreur temporaire d’authentification ou de connexion ne renvoie pas la commande d’origine. L’état de l’ordinateur n’attend plus le comptage du contenu, et le Web rétablit sa liste d’ordinateurs après une interruption des mises à jour. Le bureau et le Web peuvent exporter des diagnostics locaux sans contenu des messages ni informations d’authentification. Correction d’un plantage du Web lors de la fermeture d’un abonnement au Chat pendant le nettoyage de l’espace de travail.
+- **Améliorer les commandes du Chat.** Changez le modèle ou les autorisations d’un message ultérieur pendant le tour en cours. Le bouton du panneau latéral suit l’état du panneau, et la navigation dans le plan de la conversation met en évidence la bulle du message sélectionné. Après un refus confirmé du premier message, modifiez ou remplacez ses pièces jointes avant de réessayer. Si l’Agent sélectionné vous demande de vous connecter, utilisez son action pour réessayer l’authentification. L’interface de l’App est rétablie après la fermeture d’une fenêtre séparée.
+- **Corriger les icônes et l’arrêt des aperçus.** Les installateurs macOS utilisent des images d’icône au format natif, et le Web conserve son favicon et ses icônes d’installation. Les Agents peuvent arrêter les processus d’aperçu dans leur propre bac à sable ; les autres processus restent protégés. Les compilations d’App accordent plus de temps aux vérifications de démarrage natif et arrêtent complètement les processus de vérification en cas de dépassement du délai.
+
+Cette version utilise le **protocole 16**. Mettez à jour vers 0.2.3 tous les ordinateurs qui utilisent les fonctions cloud. Les clients de protocole 15 doivent être mis à jour pour se reconnecter après le déploiement coordonné du Web et du service. Aucune réinitialisation des données cloud ni modification du mot de passe de synchronisation n’est nécessaire. Quittez Bottega, puis remplacez l’application manuellement. Cette préversion pour macOS avec puce Apple utilise des signatures ad-hoc, sans notarisation Apple, et reste exclue de GitHub Latest. Consultez le [guide de mise à jour](../getting-started/README.md#upgrading-to-023).
+
 ## 2026-10-07 — v0.2.2
 
 [Télécharger 0.2.2](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.2) pour les Mac avec puce Apple, ou [ouvrir Bottega Web](https://app.getbottega.app).

@@ -224,7 +224,7 @@ request with its own `GITHUB_TOKEN`, and commits the JSON snapshot. Installer pr
 The website follows new releases within a day, or immediately from the workflow's manual trigger.
 Builds stay offline and validate release, platform, version, and installer-link parity in the static export.
 
-For 0.2.1, only the macOS Apple silicon installer is published. It uses ad-hoc signing, is not notarized,
+For 0.2.3, only the macOS Apple silicon installer is published. It uses ad-hoc signing, is not notarized,
 and requires manual updates while Apple Developer enrollment is pending. The menu links to the current
 release's installation instructions; the footer continues to link to the full release archive.
 

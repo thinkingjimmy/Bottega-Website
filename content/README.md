@@ -11,7 +11,7 @@
 - `changelog.es.md`: Spanish snapshot maintained by the website repository.
 
 All snapshots preserve the English entry dates, order, and item counts. The i18n content test enforces this contract.
-All five snapshots include every public milestone through v0.2.2, with concise maintained summaries in Japanese, French, and Spanish. Builds read committed content without synchronizing it; new upstream releases enter through the explicit synchronization and translation workflow below.
+All five snapshots include every public milestone through v0.2.3, with concise maintained summaries in Japanese, French, and Spanish. Builds read committed content without synchronizing it; new upstream releases enter through the explicit synchronization and translation workflow below.
 
 `sync:changelog` refreshes only the two synchronized snapshots. When it brings in a new entry, the three
 maintained translations must gain the same entry in the same change — otherwise `pnpm check` fails on

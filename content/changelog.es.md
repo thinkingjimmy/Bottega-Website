@@ -3,6 +3,18 @@
 Este archivo registra hitos del producto, no iteraciones internas de implementación.
 
 
+## 2026-10-08 — v0.2.3
+
+[Descargar 0.2.3](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.3) para Mac con chip de Apple, o [abrir Bottega Web](https://app.getbottega.app).
+
+- **Controla la cola de la Web.** Edita un mensaje en cola o intercámbialo con el borrador actual, cambia el orden de los mensajes o elimínalos. Usa Steer cuando el Agent en ejecución lo admita. Los adjuntos, los bocetos editables y los ajustes del mensaje se conservan con el borrador. Detener pausa la cola del navegador actual; Reanudar comprueba el ordenador y los permisos antes de continuar.
+- **Mantén la conversación visible.** El primer mensaje enviado, la actividad y el siguiente borrador permanecen en pantalla mientras se abre un nuevo Chat. Los títulos de Chats remotos se recuperan tras recargar. Cuando aumenta la actividad de las herramientas, se conservan el texto de las respuestas anteriores y la lista de herramientas dentro de los límites existentes.
+- **Recupera la sincronización y las respuestas remotas.** La recuperación tras fallos temporales de autenticación o conexión no reenvía el comando original. El estado del ordenador ya no espera al recuento del contenido, y la Web recupera su lista de ordenadores tras una interrupción de las actualizaciones. El escritorio y la Web pueden exportar diagnósticos locales sin contenido de mensajes ni credenciales. Se corrige un fallo de la aplicación Web al cerrar una suscripción de Chat durante la limpieza del espacio de trabajo.
+- **Mejora los controles del Chat.** Cambia el modelo o los permisos de un mensaje posterior mientras se ejecuta el turno actual. El botón del panel lateral sigue el estado del panel, y la navegación por el esquema resalta la burbuja del mensaje seleccionado. Tras el rechazo confirmado del primer mensaje, edita o sustituye sus adjuntos antes de volver a intentarlo. Si el Agent seleccionado requiere iniciar sesión, usa su acción para reintentar la autenticación. La interfaz de la App se restaura al cerrar una ventana independiente.
+- **Corrige los iconos y el cierre de vistas previas.** Los instaladores de macOS usan imágenes de icono en formato nativo, y la Web conserva su favicon y sus iconos de instalación. Los Agents pueden detener procesos de vista previa dentro de su propio entorno aislado; los demás procesos siguen protegidos. Las compilaciones de Apps dan más tiempo a las comprobaciones de inicio nativo y detienen por completo los procesos de comprobación que agotan el tiempo de espera.
+
+Esta versión usa el **protocolo 16**. Actualiza a 0.2.3 todos los ordenadores que usan funciones cloud. Los clientes del protocolo 15 deben actualizarse para volver a conectarse tras el despliegue coordinado de la Web y el servicio. No es necesario borrar los datos cloud ni cambiar la contraseña de sincronización. Cierra Bottega y sustituye la aplicación manualmente. Esta versión preliminar para macOS con chip de Apple usa firmas ad-hoc, sin notarización de Apple, y queda fuera de GitHub Latest. Consulta la [guía de actualización](../getting-started/README.md#upgrading-to-023).
+
 ## 2026-10-07 — v0.2.2
 
 [Descargar 0.2.2](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.2) para Mac con chip de Apple, o [abrir Bottega Web](https://app.getbottega.app).
