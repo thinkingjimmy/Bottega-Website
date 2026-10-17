@@ -4,6 +4,20 @@
 
 This file records product milestones, not internal implementation iterations. Dates describe when each capability reached its first coherent product form.
 
+## 2026-10-18 — v0.2.6
+
+[Download 0.2.6](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.6), the official stable release for macOS on Apple silicon (ARM64) only.
+
+- **Artifact navigation and controls.** Move the third-column Canvas with two fingers on a trackpad. Zoom stays centered on the pointer, while text fields and scrollable content keep their own scrolling. A single header and separate floating toolbars leave more room for your work. Export sits to the left of Play, Undo and Redo move to the bottom right, and the shape menu has clear icon, label and shortcut alignment. Restore missing Design tool controls in Settings. Closing the More menu no longer blocks subsequent Canvas clicks. Board thumbnails still open their boards when previews fail to load.
+- **Direct previews in Chat.** Artifact cards show a large static preview without a title bar or internal scrollbars. Download floats at the top right, with Open Artifact at the bottom. Completed replies and Worked for details remain visible when an Artifact card arrives first. The work dropdown includes saved versions, including v1, and other Artifacts.
+- **Reliable captures and comments.** Fix incomplete previews of content created by scripts and capture failures on large pages. Comment mode stays active when changing boards, so clicking an element opens its comment form. Forms remain inside the visible Canvas, and focusing an input no longer moves the canvas.
+- **App preview recovery.** Repair App preview authorization. When a preview cannot open, show the error and recovery actions on the App page instead of switching to Data.
+- **Simpler plugin settings.** Browse the complete plugin catalog in groups with fewer controls. Plugin introduction pages use one title and a clear return to the catalog.
+
+**Upgrade path.** 0.2.6 uses the official stable automatic-update channel for macOS on Apple silicon. The shipped 0.2.5 personal build has its updater disabled and cannot upgrade automatically. Quit Bottega and install 0.2.6 manually once. Subsequent automatic-upgrade tests require a later stable version **higher than 0.2.6**.
+
+This patch keeps **protocol 19**. Existing Bottega content, sync passwords and account keys remain. No data reset is required.
+
 ## 2026-10-17 — v0.2.5
 
 [Download 0.2.5](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.5) for macOS on Apple silicon, or [open Bottega Web](https://app.getbottega.app).

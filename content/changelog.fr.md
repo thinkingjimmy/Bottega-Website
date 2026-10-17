@@ -3,6 +3,20 @@
 Ce fichier consigne les jalons du produit, pas les itérations internes d’implémentation.
 
 
+## 2026-10-18 — v0.2.6
+
+Version stable officielle, uniquement pour les Mac avec puce Apple.
+
+- **Navigation et commandes Artifact.** Déplacez le Canvas de la troisième colonne avec deux doigts sur le pavé tactile. Le zoom reste centré sur le pointeur ; les champs de saisie et les contenus défilants conservent leur propre défilement. Un seul en-tête et des barres d’outils flottantes séparées libèrent de l’espace. L’export se trouve à gauche de Play, Annuler et Rétablir en bas à droite. Le menu des formes aligne clairement les icônes, les noms et les raccourcis. Les commandes Design manquantes sont rétablies dans Réglages. La fermeture du menu More ne bloque plus les clics suivants sur le Canvas. Les miniatures permettent d’ouvrir le plan de travail même si son aperçu ne se charge pas.
+- **Aperçus directs dans Chat.** Les cartes Artifact présentent un grand aperçu statique, sans barre de titre ni défilement interne. Télécharger flotte en haut à droite et Open Artifact reste en bas. Les réponses terminées et les détails Worked for restent visibles quand la carte arrive en premier. Le menu des œuvres permet de choisir les versions enregistrées, dont v1, et les autres Artifacts.
+- **Captures et commentaires fiables.** Les aperçus incomplets des contenus générés par script et les échecs de capture des grandes pages sont corrigés. Le mode commentaire reste actif lors d’un changement de plan de travail : cliquer sur un élément ouvre son formulaire. Les formulaires restent dans la zone visible du Canvas, et donner le focus à un champ ne déplace plus le Canvas.
+- **Récupération des aperçus App.** L’autorisation des aperçus est corrigée. Si un aperçu ne peut pas s’ouvrir, la page App conserve l’erreur et les actions de récupération au lieu de basculer vers Data.
+- **Réglages des plugins simplifiés.** Parcourez le catalogue complet par groupes avec moins de commandes. Les pages de présentation ont un seul titre et un retour clair vers le catalogue.
+
+**Mise à niveau.** 0.2.6 utilise le canal officiel des mises à jour automatiques stables. Le mécanisme de mise à jour de la version personnelle 0.2.5 est désactivé : elle ne peut pas se mettre à jour automatiquement. Quittez complètement Bottega et installez 0.2.6 manuellement une fois. Pour tester ensuite la mise à jour automatique, il faut publier une version stable **supérieure à 0.2.6**.
+
+Le **protocole 19** est conservé. Le contenu existant, les mots de passe de synchronisation et les clés de compte restent en place. Aucune réinitialisation des données n’est nécessaire.
+
 ## 2026-10-17 — v0.2.5
 
 [Télécharger 0.2.5](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.5) pour les Mac avec puce Apple, ou [ouvrir Bottega Web](https://app.getbottega.app).

@@ -118,7 +118,7 @@ export const es = {
         { question: "¿Necesito claves de API o una suscripción nueva?", answer: "No. Cada Agente inicia sesión con su propio comando de CLI, con la cuenta que ya tienes." },
         { question: "¿Dónde se guardan mis datos?", answer: "En una carpeta que eliges. Chats, adjuntos, Proyectos, Base, Apps y Skills son archivos legibles; copia la carpeta para hacer una copia de seguridad." },
         { question: "¿Alguien puede leer mis Chats sincronizados?", answer: "No. La sincronización está desactivada hasta que la activas. Los Chats se cifran con una contraseña que solo tú conoces antes de salir de tu ordenador; los servidores de Bottega guardan y retransmiten texto cifrado." },
-        { question: "¿Qué plataformas son compatibles?", answer: "La versión preliminar v0.2.2 incluye un instalador para Mac con chip de Apple. No incluye instaladores para Windows o Linux. Bottega Dock requiere macOS 15 o posterior." },
+        { question: "¿Qué plataformas son compatibles?", answer: "Bottega 0.2.6 es una versión estable oficial para Mac con chip de Apple. No incluye instaladores para Windows o Linux. Bottega Dock requiere macOS 15 o posterior. La versión personal 0.2.5 no puede actualizarse automáticamente: cierra Bottega por completo e instala 0.2.6 manualmente una vez. Desde 0.2.6, las actualizaciones automáticas usan el canal estable; para probarlas se necesita una versión estable posterior, superior a 0.2.6. El contenido existente se conserva y no es necesario restablecer los datos." },
         { question: "¿Puedo publicar mi propia versión?", answer: "Sí. Haz fork del repositorio, cambia lo que quieras y constrúyelo con tres comandos. La licencia MIT te permite cambiarle el nombre y distribuirlo." },
       ],
     },

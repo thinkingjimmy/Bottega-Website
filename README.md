@@ -224,10 +224,13 @@ request with its own `GITHUB_TOKEN`, and commits the JSON snapshot. Installer pr
 The website follows new releases within a day, or immediately from the workflow's manual trigger.
 Builds stay offline and validate release, platform, version, and installer-link parity in the static export.
 
-For 0.2.5, only the macOS Apple silicon installer is published. It uses Developer ID signing and Apple
-notarization. This personal prerelease uses manual updates and remains outside GitHub Latest. Product
-acceptance is performed by the maintainer after publication. The menu links to the current release's
-installation instructions; the footer continues to link to the full release archive.
+Version 0.2.6 is the official stable release dated 2026-10-18 for macOS on Apple silicon (ARM64).
+Windows and Linux installers are not distributed in this release. The macOS installer uses Developer ID
+signing and Apple notarization, and 0.2.6 uses the official stable automatic-update channel.
+The shipped 0.2.5 personal build cannot update automatically: quit Bottega and install 0.2.6 manually once.
+Later automatic-upgrade tests require a stable version higher than 0.2.6. Existing content stays in place;
+no data reset is needed. The menu links to the current release's installation instructions, and the
+footer continues to link to the full release archive.
 
 ## Changelog
 

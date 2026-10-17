@@ -129,7 +129,7 @@ export const en = {
         { question: "Do I need API keys or a new subscription?", answer: "No. Each Agent signs in with its own CLI command, using the account you already have." },
         { question: "Where is my data stored?", answer: "In a folder you choose. Chats, attachments, Projects, Base, Apps and Skills are readable files — back them up by copying the folder." },
         { question: "Can anyone read my synced Chats?", answer: "No. Sync is off until you turn it on. Chats are encrypted with a password only you know before they leave your computer; Bottega’s servers store and relay ciphertext." },
-        { question: "Which platforms are supported?", answer: "The v0.2.2 pre-release provides an installer for Apple silicon Macs. It does not include Windows or Linux installers. Bottega Dock needs macOS 15 or later." },
+        { question: "Which platforms are supported?", answer: "Bottega 0.2.6 is an official stable release for Apple silicon Macs. Windows and Linux installers are not included. Bottega Dock needs macOS 15 or later. The 0.2.5 personal build cannot update automatically: quit Bottega and install 0.2.6 manually once. From 0.2.6, automatic updates use the stable channel; testing them requires a later stable version higher than 0.2.6. Existing content stays in place; no data reset is needed." },
         { question: "Can I ship my own version?", answer: "Yes. Fork the repository, change what you like and build it with three commands. The MIT license lets you rename and distribute it." },
       ],
     },

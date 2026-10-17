@@ -3,6 +3,20 @@
 Este archivo registra hitos del producto, no iteraciones internas de implementación.
 
 
+## 2026-10-18 — v0.2.6
+
+Versión estable oficial, solo para Mac con chip de Apple.
+
+- **Navegación y controles de Artifact.** Mueve el Canvas de la tercera columna con dos dedos en el trackpad. El zoom permanece centrado en el puntero; los campos de texto y el contenido desplazable conservan su propio desplazamiento. Un solo encabezado y barras de herramientas flotantes separadas dejan más espacio para trabajar. Exportar está a la izquierda de Play; Deshacer y Rehacer, abajo a la derecha. El menú de formas alinea con claridad iconos, nombres y atajos. Se restauran en Ajustes los controles de Design que faltaban. Cerrar el menú More ya no bloquea los clics posteriores en el Canvas. Las miniaturas permiten abrir la mesa de trabajo aunque falle la vista previa.
+- **Vistas previas directas en Chat.** Las tarjetas Artifact muestran una vista previa estática grande, sin barra de título ni desplazamiento interno. Descargar flota arriba a la derecha y Open Artifact queda abajo. Las respuestas terminadas y los detalles de Worked for siguen visibles cuando la tarjeta llega primero. El menú de obras incluye las versiones guardadas, incluida v1, y otros Artifacts.
+- **Capturas y comentarios fiables.** Se corrigen las vistas previas incompletas de contenido generado por scripts y los fallos al capturar páginas grandes. El modo de comentarios sigue activo al cambiar de mesa de trabajo: hacer clic en un elemento abre su formulario. Los formularios permanecen dentro del Canvas visible y enfocar un campo ya no desplaza el Canvas.
+- **Recuperación de vistas previas de Apps.** Se corrige la autorización de las vistas previas. Si una no puede abrirse, la página App mantiene el error y las acciones de recuperación en lugar de cambiar a Data.
+- **Ajustes de plugins más sencillos.** Explora el catálogo completo por grupos y con menos controles. Las páginas de presentación tienen un solo título y una vuelta clara al catálogo.
+
+**Actualización.** 0.2.6 usa el canal oficial de actualizaciones automáticas estables. La versión personal 0.2.5 tiene desactivado el actualizador y no puede actualizarse automáticamente. Cierra Bottega por completo e instala 0.2.6 manualmente una vez. Para probar después la actualización automática, se debe publicar una versión estable **superior a 0.2.6**.
+
+Se mantiene el **protocolo 19**. Se conservan el contenido existente, las contraseñas de sincronización y las claves de cuenta. No es necesario restablecer los datos.
+
 ## 2026-10-17 — v0.2.5
 
 [Descargar 0.2.5](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.5) para Mac con chip de Apple, o [abrir Bottega Web](https://app.getbottega.app).
