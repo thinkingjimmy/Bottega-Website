@@ -3,6 +3,24 @@
 Ce fichier consigne les jalons du produit, pas les itérations internes d’implémentation.
 
 
+## 2026-10-17 — v0.2.5
+
+[Télécharger 0.2.5](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.5) pour les Mac avec puce Apple, ou [ouvrir Bottega Web](https://app.getbottega.app).
+
+- **Espaces Artifact.** Ouvrez les Artifacts enregistrés avec navigation, aperçu, références, exportation et historique des versions.
+- **Édition Canvas.** Modifiez les pages, les plans de travail, le texte, les propriétés des objets, la typographie et les transformations. Les sauvegardes traitent explicitement la récupération et les conflits.
+- **Outils de conception partagés.** Le bureau et le Web utilisent les mêmes contrats Artifact et Canvas. Les Agents disposent d’outils pour lire et modifier les contenus de conception.
+
+Les fonctions cloud utilisent le **protocole 19**. Mettez les ordinateurs à jour vers 0.2.5 et rechargez Bottega Web. Le contenu, les mots de passe de synchronisation et les clés de compte sont conservés. Aucune réinitialisation des données cloud n’est nécessaire.
+
+Cette préversion est testée par le mainteneur après publication. Les mises à jour sont manuelles et la version est exclue de GitHub Latest. Les paquets utilisent une signature Developer ID et la notarisation Apple. La validation fonctionnelle, visuelle et des interactions reste en attente ; les problèmes suivants seront traités comme des bugs. Voir le [guide de mise à jour](../getting-started/README.md#upgrading-to-025).
+
+## 2026-10-12 — Builds candidats macOS vérifiables
+
+Ce dépôt public dispose d’un workflow de compilation des candidats de production pour les Mac avec puce Apple. Le code, le workflow, les outils figés, les empreintes des installateurs et la provenance GitHub peuvent être vérifiés ensemble. Le contrôle des signatures inspecte chaque fichier avec un nombre limité de tâches simultanées. Les futurs candidats conservent les fichiers créés dans le cloud après leur validation native privée. Une nouvelle tentative de transfert conserve les installateurs d’origine.
+
+Il s’agit de la préparation du processus de compilation, sans nouvelle version du produit. Les candidats de compilation seuls ne changent ni le téléchargement public de 0.2.4, ni son tag, ni ses fichiers. À cette date, les versions personnelles gardent une signature ad-hoc, des mises à jour manuelles et aucune notarisation Apple.
+
 ## 2026-10-12 — v0.2.4
 
 [Télécharger 0.2.4](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.4) pour les Mac avec puce Apple, ou [ouvrir Bottega Web](https://app.getbottega.app).

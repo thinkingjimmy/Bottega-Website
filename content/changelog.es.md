@@ -3,6 +3,24 @@
 Este archivo registra hitos del producto, no iteraciones internas de implementación.
 
 
+## 2026-10-17 — v0.2.5
+
+[Descargar 0.2.5](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.5) para Mac con chip de Apple, o [abrir Bottega Web](https://app.getbottega.app).
+
+- **Espacios de Artifact.** Abra los Artifacts guardados con navegación, vistas previas, referencias, exportación e historial de versiones.
+- **Edición de Canvas.** Edite páginas, mesas de trabajo, texto, propiedades de objetos, tipografía y transformaciones. Los cambios se guardan con recuperación y gestión explícita de conflictos.
+- **Herramientas de diseño compartidas.** Escritorio y Web usan los mismos contratos de Artifact y Canvas. Los Agents pueden leer y editar el contenido de diseño mediante herramientas.
+
+Las funciones de la nube usan el **protocolo 19**. Actualice los ordenadores a 0.2.5 y vuelva a cargar Bottega Web. Se conservan el contenido, las contraseñas de sincronización y las claves de cuenta. No es necesario restablecer los datos de la nube.
+
+El mantenedor prueba esta versión preliminar después de publicarla. Las actualizaciones son manuales y la versión queda fuera de GitHub Latest. Los paquetes usan firma Developer ID y notarización de Apple. La validación funcional, visual y de interacción sigue pendiente; los problemas posteriores se tratarán como bugs. Consulte la [guía de actualización](../getting-started/README.md#upgrading-to-025).
+
+## 2026-10-12 — Compilaciones candidatas de macOS verificables
+
+Este repositorio público incorpora un flujo de compilación de candidatos de producción para Mac con chip de Apple. Se pueden comprobar juntos el código, el flujo, las versiones de herramientas, los hashes de los instaladores y la procedencia de GitHub. El análisis de firmas revisa todos los archivos con concurrencia limitada. Los futuros candidatos conservan los archivos originales de la nube tras la validación nativa privada. Reintentar solo la carga no vuelve a crear los instaladores.
+
+Es una preparación del proceso de compilación, sin una nueva versión del producto. Los candidatos de solo compilación no cambian la descarga pública de 0.2.4, su etiqueta ni sus archivos. En esa fecha, las versiones personales mantienen firmas ad-hoc, actualizaciones manuales y ninguna notarización de Apple.
+
 ## 2026-10-12 — v0.2.4
 
 [Descargar 0.2.4](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.4) para Mac con chip de Apple, o [abrir Bottega Web](https://app.getbottega.app).
