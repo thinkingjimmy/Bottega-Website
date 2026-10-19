@@ -3,6 +3,20 @@
 Este archivo registra hitos del producto, no iteraciones internas de implementación.
 
 
+## 2026-10-19 — v0.2.8
+
+Versión estable oficial para Mac con chip de Apple (ARM64), que usa el canal estable de actualización.
+
+- **Actualiza cuando estés listo.** Descarga una versión nueva desde la barra lateral sin salir de tu trabajo. La barra lateral y Ajustes muestran el progreso y su porcentaje. Cuando termine la descarga, elige Reiniciar y actualizar. Bottega espera esta acción antes de reiniciarse.
+- **Controla cada servicio en segundo plano.** Los servicios de Codex muestran el nombre del comando, el estado y Detener encima del campo de Chat. Detén un servicio mientras los demás siguen activos. La salida permanece en los detalles del comando original y puedes reintentar si falla la detención.
+- **Mantén Bottega a mano.** Bottega Dock conserva un icono de Bottega incluso cuando ocultas las otras Apps abiertas. Vuelve a la página actual o abre de nuevo la ventana principal desde ese icono. La acción Salir de las Apps activas conserva sus avisos normales para guardar o cancelar.
+- **Un Dock más claro.** Los nuevos ajustes mantienen visible la barra. Las Apps y los widgets, las otras Apps activas y Descargas y Papelera forman grupos separados. En modo sustitución, la barra permanece en el borde de la pantalla. Se conservan las opciones existentes de ocultación automática.
+- **Previsualiza las descargas.** Explora los grupos Recientes, Últimos 7 días y Anteriores con miniaturas nativas e iconos de archivos. Amplía una vista previa, vuelve con Escape o muestra el archivo en Finder. La máscara de privacidad también oculta el contenido de las miniaturas.
+- **Detalles de Chat más sencillos.** La vista previa de archivos coloca Mostrar en Finder junto a Cerrar. Los mensajes tienen menos espacio entre ellos y la ayuda para archivar es más breve.
+- **Actualiza las Apps con seguridad.** La vista de la App sigue disponible mientras carga la vista actualizada. Si la actualización detecta que el acceso ha caducado o se ha revocado, Bottega retira la vista anterior y mantiene las opciones de recuperación en la página de la App.
+
+Esta versión conserva el **protocolo 19**, el contenido existente, las contraseñas de sincronización y las claves de cuenta. No es necesario restablecer los datos. Las versiones 0.2.6 y 0.2.7 usan el canal estable; la versión personal 0.2.5 requiere una actualización manual. Bottega Dock sigue en **Alpha** y requiere macOS 27.x con un chip de Apple. La recuperación de la sustitución y las combinaciones de pantallas físicas y pantalla completa mantienen su validación independiente en dispositivos.
+
 ## 2026-10-18 — v0.2.7
 
 Versión estable oficial para Mac con chip de Apple (ARM64), con el canal estable de actualización.

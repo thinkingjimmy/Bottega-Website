@@ -4,6 +4,20 @@
 
 This file records product milestones, not internal implementation iterations. Dates describe when each capability reached its first coherent product form.
 
+## 2026-10-19 — v0.2.8
+
+[Download 0.2.8](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.8) for macOS on Apple silicon (ARM64), using the official stable update channel.
+
+- **Update when you are ready.** Download a new version from the sidebar without leaving your work. The sidebar and Settings show progress and a visible percentage. When the download finishes, choose Restart and update. Bottega waits for this action before restarting.
+- **Control background services.** Codex services show their command name, status and Stop above the Chat input. Stop one service while the others keep running. Read output in the original command details, and retry if a stop fails.
+- **Keep Bottega within reach.** Bottega Dock keeps one Bottega icon available, including when other open Apps are hidden. Return to your current page or reopen the main window from that icon. Running Apps have a Quit action that preserves their normal save and cancel prompts.
+- **A clearer Dock.** New Dock settings keep the bar visible. Apps and widgets, other running Apps, and Downloads and Trash have separate groups. Replacement placement stays at the display edge. Existing auto-hide choices remain available.
+- **Preview Downloads.** Browse Recent, Previous 7 days and Earlier groups with native image thumbnails and file icons. Enlarge a preview, return with Escape, or reveal the file in Finder. Privacy masking also hides thumbnail content.
+- **Simpler Chat details.** File previews place Reveal in Finder beside Close. Conversation rows use tighter spacing, and the Archive tooltip has a shorter label.
+- **Refresh Apps safely.** Keep the App view available while its replacement loads. If refresh reports expired or withdrawn access, the old view is removed and recovery stays on the App page.
+
+This release keeps **protocol 19**, existing content, sync passwords and account keys. No data reset is required. Versions 0.2.6 and 0.2.7 use the stable update channel; 0.2.5 personal requires a manual update. Bottega Dock remains **Alpha** and requires macOS 27.x with Apple silicon. Replacement recovery and physical display/fullscreen scenarios retain their separate device validation.
+
 ## 2026-10-18 — v0.2.7
 
 [Download 0.2.7](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.7) for macOS on Apple silicon (ARM64), using the official stable update channel.
