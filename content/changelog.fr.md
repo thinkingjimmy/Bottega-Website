@@ -3,6 +3,30 @@
 Ce fichier consigne les jalons du produit, pas les itérations internes d’implémentation.
 
 
+## 2026-10-18 — v0.2.7
+
+Version stable officielle pour les Mac avec puce Apple (ARM64), utilisant le canal stable de mise à jour.
+
+- **Connexion native de Codex.** Codex utilise son App Server natif et exige **exactement la CLI 0.163.0-alpha.10.2**. La disposition des conversations reste identique. Les résumés de raisonnement et les noms de commandes restent dans les vues d’activité ; la sortie en arrière-plan, l’état et l’action Arrêter restent dans les détails de la commande d’origine.
+- **Approbation native des commandes.** Le mode de demande d’approbation vous laisse décider ; le mode automatique fait appel au réviseur de Codex. Le lancement d’Electron peut demander les autorisations nécessaires par cette voie. Une demande peut être refusée ; ce refus ne fait pas passer le Chat en accès complet.
+- **Changements de permissions explicites.** Les modes espace de travail autorisent le réseau, l’écriture dans les répertoires temporaires et les lectures ordinaires hors de l’espace de travail. Les anciennes interdictions de lecture des chemins d’identifiants et les limites internes de lecture seule de Bottega ne s’appliquent plus aux commandes Codex. L’accès complet accorde des droits plus larges. Plan n’impose pas la lecture seule du système de fichiers. Les rôles stricts non pris en charge sont refusés avant toute exécution.
+- **Continuité des Chats.** Après un changement d’Agent, les Chats peuvent retrouver les images et fichiers enregistrés dans les messages précédents. Les liens locaux TXT, Markdown et JSON s’ouvrent dans l’aperçu latéral.
+- **Génération du titre.** Les Agents compatibles avec la génération de titres revérifient la connexion lorsque l’état d’authentification en cache expire. La connexion Codex de cette version ne permet pas l’exécution restreinte, sans outils, nécessaire à la génération des titres. Si Codex est choisi pour les titres, Bottega utilise le premier message et conserve l’Agent et le modèle sélectionnés. Pour générer des titres, choisissez un Agent compatible dans Réglages › Général › Génération du titre. Bottega ne change jamais automatiquement d’Agent.
+- **Vérifications de connexion.** La découverte des modèles et les vérifications de connexion signalent les échecs de démarrage, les annulations et les arrêts précoces des processus, puis terminent le nettoyage pour éviter de rester en attente.
+- **État de validation.** Cette version est publiée sur décision du responsable, avant la fin des tests locaux complets de bout en bout et des vérifications GUI Codex/Electron du paquet final. Les problèmes restants seront traités comme des bugs ultérieurs. Aucune archive complète des preuves de validation n’est fournie, et la mise à niveau d’une application déjà installée n’a pas été vérifiée.
+- **Dock reste en Alpha.** L’ensemble du plugin exige macOS 27.x et une puce Apple. Le remplacement, la récupération après déconnexion ou redémarrage et les combinaisons d’écrans et de plein écran restent en cours de validation. Les exigences de l’application principale ne changent pas.
+
+Cette version conserve le **protocole 19**, le contenu existant, les mots de passe de synchronisation et les clés de compte. Aucune réinitialisation des données n’est nécessaire. La version 0.2.6 utilise le canal stable ; la version personnelle 0.2.5 nécessite une mise à jour manuelle.
+
+## 2026-10-18 — Candidat source Bottega Dock Alpha
+
+- **Alpha sur macOS 27.** L’ensemble du plugin Dock exige macOS 27.x et une puce Apple. La carte du plugin, sa présentation et ses réglages affichent séparément Alpha et la configuration requise. Les exigences de l’application principale ne changent pas.
+- **Vérifications du remplacement signé.** Le remplacement devient sélectionnable après validation de l’application installée, de son assistant natif, de l’exécutable de récupération et de la configuration fournie du service en arrière-plan. Les versions de développement et non signées proposent la coexistence. Choisir un mode ou une disposition ne modifie pas le système ; le remplacement exige une confirmation finale de ses effets. Les réglages et dispositions de coexistence existants sont conservés.
+- **Approbation et enregistrement.** Une approbation en attente pour l’exécution en arrière-plan propose d’ouvrir Réglages Système. Le retour actualise son état sans enregistrement ni remplacement automatique. Si macOS ne trouve pas l’enregistrement de récupération, Dock explique qu’il n’a peut-être pas encore été créé. Une demande de remplacement déjà confirmée peut être relancée avec Continuer l’activation après vérification de l’installation et résolution de la récupération en attente.
+- **Activation et récupération.** Le remplacement actif exige une liaison confirmée avec la récupération, un accès au Dock et la confirmation des écritures de préférences. Une fermeture inattendue du pont natif pendant la préparation ou le remplacement actif lance la restauration du Dock système et suspend le remplacement jusqu’à une reprise explicite. Quitter, désactiver ou revenir à la coexistence conserve la voie de restauration. Un échec conserve son enregistrement et l’action de réessai. La récupération indépendante vérifie à nouveau une restauration interrompue après un court délai de grâce.
+
+Ce candidat source garde la version **0.2.6** et se distingue par son commit source et les hashes de ses installateurs. La validation finale native et système du même installateur signé, inchangé, reste en attente. Le téléchargement public 0.2.6, son tag, sa Release et Latest restent inchangés.
+
 ## 2026-10-18 — v0.2.6
 
 Version stable officielle, uniquement pour les Mac avec puce Apple.

@@ -108,8 +108,8 @@ export const en = {
       dock: {
         eyebrow: "Dock",
         title: "Your Apps, on their own Dock.",
-        body: "Every App Bottega builds lands on Bottega Dock, one click from open. It sits above the macOS Dock without changing a thing on your Mac — or takes its place, if you prefer one bar.",
-        points: ["One click opens any Bottega App", "The macOS Dock stays as it is", "Finder, Downloads and Mac apps fit alongside"],
+        body: "Bottega Dock is an Alpha plugin for macOS 27.x and Apple silicon. Open your Bottega Apps from their own bar. Coexistence keeps the macOS Dock. Replacement requires a verified installation and your final confirmation; replacement and recovery across logout, restart and display changes are still being validated.",
+        points: ["One click opens any Bottega App", "Coexistence keeps the macOS Dock", "Finder, Downloads and Mac apps fit alongside"],
       },
       widgets: {
         eyebrow: "Widgets",
@@ -125,11 +125,11 @@ export const en = {
       issues: "Ask on GitHub",
       items: [
         { question: "Is Bottega free?", answer: "Yes. The app is free to use and open source under the MIT license, and you run it with the Agent plans you already pay for. Sync is free during the public beta; it will become a paid option later." },
-        { question: "Which Agents does it work with?", answer: "Codex, Claude Code, Kimi Code and OpenCode, each through its official CLI. Hermes, Pi and DeepSeek are next." },
+        { question: "Which Agents does it work with?", answer: "Codex, Claude Code, Kimi Code and OpenCode, each through its official CLI. Codex requires version 0.163.0-alpha.10.2 exactly. Hermes, Pi and DeepSeek are next." },
         { question: "Do I need API keys or a new subscription?", answer: "No. Each Agent signs in with its own CLI command, using the account you already have." },
         { question: "Where is my data stored?", answer: "In a folder you choose. Chats, attachments, Projects, Base, Apps and Skills are readable files — back them up by copying the folder." },
         { question: "Can anyone read my synced Chats?", answer: "No. Sync is off until you turn it on. Chats are encrypted with a password only you know before they leave your computer; Bottega’s servers store and relay ciphertext." },
-        { question: "Which platforms are supported?", answer: "Bottega 0.2.6 is an official stable release for Apple silicon Macs. Windows and Linux installers are not included. Bottega Dock needs macOS 15 or later. The 0.2.5 personal build cannot update automatically: quit Bottega and install 0.2.6 manually once. From 0.2.6, automatic updates use the stable channel; testing them requires a later stable version higher than 0.2.6. Existing content stays in place; no data reset is needed." },
+        { question: "Which platforms are supported?", answer: "Bottega 0.2.7 is an official stable release for Apple silicon Macs. Windows and Linux installers are not included. Bottega Dock is an Alpha plugin that requires macOS 27.x and Apple silicon; this does not change the main app’s requirements. Version 0.2.6 uses the stable automatic-update channel. The 0.2.5 personal build cannot update automatically: quit Bottega and install 0.2.7 manually. Existing content, sync passwords and account keys stay in place; no data reset is needed." },
         { question: "Can I ship my own version?", answer: "Yes. Fork the repository, change what you like and build it with three commands. The MIT license lets you rename and distribute it." },
       ],
     },
@@ -297,7 +297,7 @@ export const en = {
           paragraphs: [
             "Bottega runs Codex, Claude Code, Kimi Code, and OpenCode through their official local CLIs. It does not replace their harness with a generic Agent layer.",
             "Authentication, subscription access, and quotas stay with the provider. Model and reasoning-effort controls come from each CLI's live catalog, so an option appears only when that backend can actually accept it.",
-            "A conversation stays bound to the Agent that started it. Open another conversation when you want a different Agent; both can live in the same Project.",
+            "A Chat keeps its workspace and history. After an Agent switch, the new Agent can recover saved images and files from earlier messages.",
           ],
         },
         {
@@ -305,6 +305,9 @@ export const en = {
           title: "One interaction model, not one Agent.",
           paragraphs: [
             "Each Agent Harness has its own runtime model. To keep the experience consistent, Bottega provides one interaction layer and adapts streaming replies, tool status, Plan mode, queued messages, and more to each backend.",
+            "Codex uses its native App Server with CLI 0.163.0-alpha.10.2 exactly. Ask for approval uses your decision; Approve for me uses Codex’s automatic reviewer. Electron launches can request the permissions they need. Approval can be refused, and a refusal does not switch the Chat to Full access.",
+            "Codex workspace modes allow network access, temporary-directory writes and ordinary reads outside the workspace. Bottega’s previous credential-path denials and internal read-only fences no longer apply to Codex commands.",
+            "Full access is broader. Plan follows the selected permissions and does not enforce filesystem read-only access. Unsupported strict roles are refused before execution.",
             "Here is the current capability coverage, which continues to evolve:",
           ],
         },

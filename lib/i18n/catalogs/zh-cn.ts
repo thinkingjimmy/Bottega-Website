@@ -97,8 +97,8 @@ export const zhCN = {
       dock: {
         eyebrow: "Dock",
         title: "你的 App，有自己的 Dock。",
-        body: "Bottega 做的每个 App 都在 Bottega Dock 上，一点就开。它停在 macOS 程序坞上方，不动 Mac 的任何设置；想只留一条栏，也可以让它替代系统程序坞。",
-        points: ["一次点击打开任意 Bottega App", "macOS 程序坞保持原样", "访达、下载和 Mac 应用也能放在旁边"],
+        body: "Bottega Dock 是适用于 macOS 27.x 和 Apple 芯片的 Alpha 插件，让你从专属栏打开 Bottega App。共存模式保留系统程序坞。替代模式需要安装校验通过，并由你最终确认；替代、注销或重启后的恢复以及显示器切换仍在验证中。",
+        points: ["一次点击打开任意 Bottega App", "共存模式保留 macOS 程序坞", "访达、下载和 Mac 应用也能放在旁边"],
       },
       widgets: {
         eyebrow: "小组件",
@@ -114,11 +114,11 @@ export const zhCN = {
       issues: "去 GitHub 提问",
       items: [
         { question: "Bottega 免费吗？", answer: "App 本身免费使用，并以 MIT 协议开源，你用的是自己已经付费的 Agent 套餐。同步在公测期间免费，之后会收费。" },
-        { question: "支持哪些 Agent？", answer: "Codex、Claude Code、Kimi Code 和 OpenCode，都通过各自的官方 CLI 运行。接下来是 Hermes、Pi 和 DeepSeek。" },
+        { question: "支持哪些 Agent？", answer: "Codex、Claude Code、Kimi Code 和 OpenCode，都通过各自的官方 CLI 运行。Codex 仅支持 0.163.0-alpha.10.2 版本。接下来是 Hermes、Pi 和 DeepSeek。" },
         { question: "需要 API key 或新的订阅吗？", answer: "不需要。每个 Agent 用它自己的 CLI 命令登录，用的是你已有的账号。" },
         { question: "我的数据存在哪里？", answer: "存在你选定的文件夹里。Chat、附件、Project、Base、App 和 Skills 都是可读的文件——复制这个文件夹就是备份。" },
         { question: "同步的 Chat 会被别人读到吗？", answer: "不会。同步默认关闭。打开后，Chat 在离开你的电脑之前就用只有你知道的密码加密；Bottega 的服务器只存储和转发密文。" },
-        { question: "支持哪些平台？", answer: "Bottega 0.2.6 是适用于 Apple 芯片 Mac 的正式稳定版，不含 Windows 或 Linux 安装包。Bottega Dock 需要 macOS 15 或更高版本。0.2.5 个人版无法自动更新：请完全退出 Bottega，手动安装 0.2.6 一次。0.2.6 开始使用稳定版自动更新通道；测试自动升级需要发布高于 0.2.6 的后续稳定版本。已有内容保留，无需清空数据。" },
+        { question: "支持哪些平台？", answer: "Bottega 0.2.7 是适用于 Apple 芯片 Mac 的正式稳定版，不含 Windows 或 Linux 安装包。Bottega Dock 是 Alpha 插件，整个插件需要 macOS 27.x 和 Apple 芯片；主应用的系统要求不变。0.2.6 使用稳定版自动更新通道。0.2.5 个人版无法自动更新：请完全退出 Bottega，手动安装 0.2.7。已有内容、同步密码和账户密钥均保留，无需清空数据。" },
         { question: "可以发布我自己的版本吗？", answer: "可以。fork 仓库，改成你想要的样子，三条命令就能构建。MIT 协议允许你改名并分发。" },
       ],
     },
@@ -263,9 +263,9 @@ export const zhCN = {
           index: "01 · Multi-Agent",
           title: "统一入口，原生能力不变。",
           paragraphs: [
-            "Bottega 通过官方本地 CLI 运行 Codex、Claude Code、Kimi Code 与 OpenCode，不用额外的 Agent 框架。这有以下几点好处：",
-            "1. 使用你已经安装的官方 CLI，无需额外的 Agent 框架。同时不需要额外的订阅或付费。",
-            "2. 功能上，Bottega 保留各 CLI 的原生能力，同时提供统一的对话体验。",
+            "Bottega 通过官方本地 CLI 运行 Codex、Claude Code、Kimi Code 与 OpenCode，保留各 CLI 的原生能力。",
+            "使用你已经安装的官方 CLI 和已有订阅，无需额外的 Agent 框架或订阅。",
+            "Chat 保留自己的工作空间和任务记录。切换 Agent 后，新的 Agent 可恢复读取已保存的历史图片和文件。",
           ],
         },
         {
@@ -273,6 +273,9 @@ export const zhCN = {
           title: "统一的是交互，不是 Agent。",
           paragraphs: [
             "每个 Agent Harness 都有其独特的运行模式，但为了统一用户体验，我们统一了一套用户交互界面。对流式回复、工具状态、Plan 模式、队列消息等功能进行了适配。",
+            "Codex 使用原生 App Server，仅支持 CLI 0.163.0-alpha.10.2。逐项询问由你决定，代我批准使用 Codex 自动审核。启动 Electron 时可通过这条路径申请所需权限。申请可能被拒绝，拒绝后不会自动切换为完全访问。",
+            "Codex 工作区模式允许联网、写入临时目录，以及普通的工作区外读取。Bottega 原有的凭据路径拒读规则和内部只读围栏不再作用于 Codex 命令。",
+            "“完全访问”的权限范围更大。Plan 沿用所选权限，不保证文件系统只读。不支持的严格权限角色会在执行前被拒绝。",
             "以下是各功能适配情况（仍然在持续更新中）：",
           ],
         },

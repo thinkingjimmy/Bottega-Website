@@ -97,8 +97,8 @@ export const fr = {
       dock: {
         eyebrow: "Dock",
         title: "Vos Apps, dans leur propre Dock.",
-        body: "Chaque App que Bottega construit rejoint Bottega Dock et s’ouvre en un clic. Il se place au-dessus du Dock de macOS sans rien changer à votre Mac — ou le remplace, si vous préférez une seule barre.",
-        points: ["Un clic ouvre n’importe quelle App Bottega", "Le Dock de macOS reste tel quel", "Finder, Téléchargements et apps Mac à côté"],
+        body: "Bottega Dock est un plugin Alpha pour macOS 27.x et les puces Apple. Ouvrez vos Apps Bottega depuis leur propre barre. Le mode coexistence conserve le Dock de macOS. Le remplacement exige une installation vérifiée et votre confirmation finale. Le remplacement, la récupération après déconnexion ou redémarrage et les changements d’écran restent en cours de validation.",
+        points: ["Un clic ouvre n’importe quelle App Bottega", "Le mode coexistence conserve le Dock de macOS", "Finder, Téléchargements et apps Mac à côté"],
       },
       widgets: {
         eyebrow: "Widgets",
@@ -114,11 +114,11 @@ export const fr = {
       issues: "Posez la question sur GitHub",
       items: [
         { question: "Bottega est-il gratuit ?", answer: "Oui. L’App est gratuite et open source sous licence MIT, et vous l’utilisez avec les forfaits d’Agent que vous payez déjà. La synchronisation est gratuite pendant la bêta publique ; elle deviendra payante par la suite." },
-        { question: "Avec quels Agents fonctionne-t-il ?", answer: "Codex, Claude Code, Kimi Code et OpenCode, chacun via sa CLI officielle. Hermes, Pi et DeepSeek suivent." },
+        { question: "Avec quels Agents fonctionne-t-il ?", answer: "Codex, Claude Code, Kimi Code et OpenCode, chacun via sa CLI officielle. Codex exige exactement la version 0.163.0-alpha.10.2. Hermes, Pi et DeepSeek suivent." },
         { question: "Faut-il des clés d’API ou un nouvel abonnement ?", answer: "Non. Chaque Agent se connecte avec sa propre commande CLI, sur le compte que vous avez déjà." },
         { question: "Où sont stockées mes données ?", answer: "Dans un dossier que vous choisissez. Chats, pièces jointes, Projets, Base, Apps et Skills sont des fichiers lisibles — copiez le dossier pour les sauvegarder." },
         { question: "Quelqu’un peut-il lire mes Chats synchronisés ?", answer: "Non. La synchronisation reste désactivée tant que vous ne l’activez pas. Les Chats sont chiffrés avec un mot de passe que vous seul connaissez avant de quitter votre ordinateur ; les serveurs de Bottega stockent et relaient du chiffré." },
-        { question: "Quelles plateformes sont prises en charge ?", answer: "Bottega 0.2.6 est une version stable officielle pour les Mac avec puce Apple. Aucun installateur Windows ou Linux n’est inclus. Bottega Dock nécessite macOS 15 ou une version ultérieure. La version personnelle 0.2.5 ne peut pas se mettre à jour automatiquement : quittez complètement Bottega et installez 0.2.6 manuellement une fois. À partir de 0.2.6, les mises à jour automatiques utilisent le canal stable ; leur test nécessite une version stable ultérieure, supérieure à 0.2.6. Votre contenu est conservé, sans réinitialisation des données." },
+        { question: "Quelles plateformes sont prises en charge ?", answer: "Bottega 0.2.7 est une version stable officielle pour les Mac avec puce Apple. Aucun installateur Windows ou Linux n’est inclus. Bottega Dock est un plugin Alpha qui exige macOS 27.x et une puce Apple pour l’ensemble de ses fonctions ; les exigences de l’application principale restent inchangées. La version 0.2.6 utilise le canal stable de mise à jour automatique. La version personnelle 0.2.5 ne peut pas se mettre à jour automatiquement : quittez complètement Bottega et installez 0.2.7 manuellement. Le contenu, les mots de passe de synchronisation et les clés de compte sont conservés, sans réinitialisation des données." },
         { question: "Puis-je publier ma propre version ?", answer: "Oui. Forkez le dépôt, modifiez ce que vous voulez et construisez-le en trois commandes. La licence MIT vous permet de le renommer et de le distribuer." },
       ],
     },
@@ -265,7 +265,7 @@ export const fr = {
           paragraphs: [
             "Bottega exécute Codex, Claude Code, Kimi Code et OpenCode via leurs CLI locales officielles. Il ne remplace pas leur environnement par une couche Agent générique.",
             "Authentification, abonnement et quotas restent chez le fournisseur. Les commandes de modèle et de reasoning effort proviennent du catalogue actif de chaque CLI, donc une option n’apparaît que si le backend peut réellement l’accepter.",
-            "Une conversation reste liée à l’Agent qui l’a commencée. Ouvrez-en une autre pour changer d’Agent ; les deux peuvent vivre dans le même Project.",
+            "Un Chat conserve son espace de travail et son historique. Après un changement d’Agent, le nouvel Agent peut retrouver les images et fichiers enregistrés dans les messages précédents.",
           ],
         },
         {
@@ -273,6 +273,9 @@ export const fr = {
           title: "Une interaction unifiée, pas un Agent unique.",
           paragraphs: [
             "Chaque Agent Harness possède son propre modèle d’exécution. Pour unifier l’expérience, Bottega fournit une même couche d’interaction et adapte à chaque backend les réponses en continu, l’état des outils, le mode Plan, les messages en file d’attente et d’autres fonctions.",
+            "Codex utilise son App Server natif et exige exactement la CLI 0.163.0-alpha.10.2. Le mode de demande d’approbation vous laisse décider ; le mode d’approbation automatique fait appel au réviseur de Codex. Le lancement d’Electron peut demander les autorisations nécessaires par cette voie. Une demande peut être refusée ; ce refus ne fait pas passer le Chat en accès complet.",
+            "Les modes espace de travail de Codex autorisent le réseau, l’écriture dans les répertoires temporaires et les lectures ordinaires hors de l’espace de travail. Les anciennes interdictions de lecture des chemins d’identifiants et les limites internes de lecture seule de Bottega ne s’appliquent plus aux commandes Codex.",
+            "L’accès complet accorde des droits plus larges. Plan suit les autorisations choisies et n’impose pas la lecture seule du système de fichiers. Les rôles stricts non pris en charge sont refusés avant toute exécution.",
             "Voici la couverture actuelle des fonctions, toujours en cours d’évolution :",
           ],
         },

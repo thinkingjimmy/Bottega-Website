@@ -224,13 +224,23 @@ request with its own `GITHUB_TOKEN`, and commits the JSON snapshot. Installer pr
 The website follows new releases within a day, or immediately from the workflow's manual trigger.
 Builds stay offline and validate release, platform, version, and installer-link parity in the static export.
 
-Version 0.2.6 is the official stable release dated 2026-10-18 for macOS on Apple silicon (ARM64).
+Version 0.2.7 is the official stable release for macOS on Apple silicon (ARM64).
 Windows and Linux installers are not distributed in this release. The macOS installer uses Developer ID
-signing and Apple notarization, and 0.2.6 uses the official stable automatic-update channel.
-The shipped 0.2.5 personal build cannot update automatically: quit Bottega and install 0.2.6 manually once.
-Later automatic-upgrade tests require a stable version higher than 0.2.6. Existing content stays in place;
-no data reset is needed. The menu links to the current release's installation instructions, and the
-footer continues to link to the full release archive.
+signing and Apple notarization, and 0.2.7 uses the official stable automatic-update channel.
+Version 0.2.6 uses that stable channel. The shipped 0.2.5 personal build cannot update automatically:
+quit Bottega and install 0.2.7 manually. Existing content, sync passwords and account keys stay in place;
+no data reset is needed. This describes the supported upgrade path, not a completed automatic-upgrade test.
+The menu links to the current release's installation instructions, and the footer continues to link to
+the full release archive. Changelog dates identify development milestones; the GitHub Release is the
+source for the actual publication timestamp.
+
+Codex uses its native App Server with CLI 0.163.0-alpha.10.2 exactly. All five Agents pages explain
+native approval, network and temporary-directory access, ordinary reads outside the workspace,
+the removal of Bottega's previous credential-path denials and internal read-only fences, and the
+limits of Plan and strict roles. The shared conversation presentation is retained.
+Bottega Dock remains Alpha and requires macOS 27.x and Apple silicon for the entire plugin.
+Replacement, recovery across logout or restart, and display/fullscreen combinations remain under
+validation. These plugin requirements do not change the main application's requirements.
 
 ## Changelog
 

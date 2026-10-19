@@ -97,8 +97,8 @@ export const es = {
       dock: {
         eyebrow: "Dock",
         title: "Tus Apps, en un Dock propio.",
-        body: "Cada App que Bottega construye va a Bottega Dock y se abre con un clic. Se coloca encima del Dock de macOS sin cambiar nada de tu Mac, o lo reemplaza si prefieres una sola barra.",
-        points: ["Un clic abre cualquier App de Bottega", "El Dock de macOS queda tal cual", "Finder, Descargas y apps de Mac al lado"],
+        body: "Bottega Dock es un plugin Alpha para macOS 27.x y chips de Apple. Abre tus Apps de Bottega desde su propia barra. El modo de coexistencia conserva el Dock de macOS. La sustitución requiere una instalación verificada y tu confirmación final. La sustitución, la recuperación tras cerrar sesión o reiniciar y los cambios de pantalla siguen en validación.",
+        points: ["Un clic abre cualquier App de Bottega", "El modo de coexistencia conserva el Dock de macOS", "Finder, Descargas y apps de Mac al lado"],
       },
       widgets: {
         eyebrow: "Widgets",
@@ -114,11 +114,11 @@ export const es = {
       issues: "Pregunta en GitHub",
       items: [
         { question: "¿Bottega es gratis?", answer: "Sí. La App es gratuita y de código abierto con licencia MIT, y la usas con los planes de Agente que ya pagas. La sincronización es gratuita durante la beta pública; más adelante será de pago." },
-        { question: "¿Con qué Agentes funciona?", answer: "Codex, Claude Code, Kimi Code y OpenCode, cada uno mediante su CLI oficial. Hermes, Pi y DeepSeek vienen después." },
+        { question: "¿Con qué Agentes funciona?", answer: "Codex, Claude Code, Kimi Code y OpenCode, cada uno mediante su CLI oficial. Codex requiere exactamente la versión 0.163.0-alpha.10.2. Hermes, Pi y DeepSeek vienen después." },
         { question: "¿Necesito claves de API o una suscripción nueva?", answer: "No. Cada Agente inicia sesión con su propio comando de CLI, con la cuenta que ya tienes." },
         { question: "¿Dónde se guardan mis datos?", answer: "En una carpeta que eliges. Chats, adjuntos, Proyectos, Base, Apps y Skills son archivos legibles; copia la carpeta para hacer una copia de seguridad." },
         { question: "¿Alguien puede leer mis Chats sincronizados?", answer: "No. La sincronización está desactivada hasta que la activas. Los Chats se cifran con una contraseña que solo tú conoces antes de salir de tu ordenador; los servidores de Bottega guardan y retransmiten texto cifrado." },
-        { question: "¿Qué plataformas son compatibles?", answer: "Bottega 0.2.6 es una versión estable oficial para Mac con chip de Apple. No incluye instaladores para Windows o Linux. Bottega Dock requiere macOS 15 o posterior. La versión personal 0.2.5 no puede actualizarse automáticamente: cierra Bottega por completo e instala 0.2.6 manualmente una vez. Desde 0.2.6, las actualizaciones automáticas usan el canal estable; para probarlas se necesita una versión estable posterior, superior a 0.2.6. El contenido existente se conserva y no es necesario restablecer los datos." },
+        { question: "¿Qué plataformas son compatibles?", answer: "Bottega 0.2.7 es una versión estable oficial para Mac con chip de Apple. No incluye instaladores para Windows o Linux. Bottega Dock es un plugin Alpha que requiere macOS 27.x y un chip de Apple para todo el plugin; los requisitos de la aplicación principal no cambian. La versión 0.2.6 usa el canal estable de actualización automática. La versión personal 0.2.5 no puede actualizarse automáticamente: cierra Bottega por completo e instala 0.2.7 manualmente. Se conservan el contenido, las contraseñas de sincronización y las claves de cuenta; no es necesario restablecer los datos." },
         { question: "¿Puedo publicar mi propia versión?", answer: "Sí. Haz fork del repositorio, cambia lo que quieras y constrúyelo con tres comandos. La licencia MIT te permite cambiarle el nombre y distribuirlo." },
       ],
     },
@@ -265,7 +265,7 @@ export const es = {
           paragraphs: [
             "Bottega ejecuta Codex, Claude Code, Kimi Code y OpenCode mediante sus CLI locales oficiales. No sustituye sus entornos por una capa de Agent genérica.",
             "La autenticación, el acceso a suscripciones y las cuotas siguen con el proveedor. Los controles de modelo y reasoning effort vienen del catálogo activo de cada CLI, así que una opción solo aparece si el backend puede aceptarla.",
-            "Una conversación permanece vinculada al Agent que la inició. Abre otra cuando quieras otro Agent; ambas pueden vivir en el mismo Project.",
+            "Un Chat conserva su espacio de trabajo y su historial. Después de cambiar de Agent, el nuevo Agent puede recuperar las imágenes y los archivos guardados en mensajes anteriores.",
           ],
         },
         {
@@ -273,6 +273,9 @@ export const es = {
           title: "Unificamos la interacción, no los Agents.",
           paragraphs: [
             "Cada Agent Harness tiene su propio modelo de ejecución. Para unificar la experiencia, Bottega ofrece una misma capa de interacción y adapta a cada backend las respuestas en streaming, el estado de las herramientas, el modo Plan, los mensajes en cola y otras funciones.",
+            "Codex usa su App Server nativo y requiere exactamente la CLI 0.163.0-alpha.10.2. En el modo de solicitud de aprobación decides tú; en el modo automático decide el revisor de Codex. El inicio de Electron puede solicitar los permisos necesarios por esta vía. La solicitud puede denegarse; la denegación no cambia el Chat a acceso completo.",
+            "Los modos de espacio de trabajo de Codex permiten el acceso a la red, la escritura en directorios temporales y las lecturas normales fuera del espacio de trabajo. Las anteriores prohibiciones de lectura de rutas de credenciales y las restricciones internas de solo lectura de Bottega ya no se aplican a los comandos de Codex.",
+            "El acceso completo concede permisos más amplios. Plan sigue los permisos seleccionados y no impone el modo de solo lectura al sistema de archivos. Los roles estrictos no compatibles se rechazan antes de la ejecución.",
             "Esta es la cobertura actual de funciones, que seguimos ampliando:",
           ],
         },
