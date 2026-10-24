@@ -224,13 +224,15 @@ request with its own `GITHUB_TOKEN`, and commits the JSON snapshot. Installer pr
 The website follows new releases within a day, or immediately from the workflow's manual trigger.
 Builds stay offline and validate release, platform, version, and installer-link parity in the static export.
 
-Version 0.2.8 is the official stable release for macOS on Apple silicon (ARM64).
+Version 0.2.9 is the official stable release for macOS on Apple silicon (ARM64).
 Windows and Linux installers are not distributed in this release. The macOS installer uses Developer ID
-signing and Apple notarization, and 0.2.8 uses the official stable automatic-update channel.
-Versions 0.2.6 and 0.2.7 use that stable channel. The shipped 0.2.5 personal build cannot update automatically:
-quit Bottega and install 0.2.8 manually. Existing content, sync passwords and account keys stay in place;
-no data reset is needed. This describes the supported upgrade path, not a completed automatic-upgrade test.
-The sidebar and Settings show download progress and require an explicit Restart and update action.
+signing and Apple notarization, and 0.2.9 uses the official stable automatic-update channel.
+Versions 0.2.6, 0.2.7 and 0.2.8 use that stable channel. The shipped 0.2.5 personal build cannot update automatically:
+quit Bottega and install 0.2.9 manually. This release uses protocol 21: update the computers that run
+Agents and reload Bottega Web; desktop, Web and Cloud must use the matching protocol. Existing content,
+sync passwords and account keys stay in place; no data reset is needed. This describes the supported
+upgrade path, not a completed automatic-upgrade test. The sidebar and Settings show download progress
+and require an explicit Restart and update action.
 
 The menu links to the current release's installation instructions, and the footer continues to link to
 the full release archive. Changelog dates identify development milestones; the GitHub Release is the

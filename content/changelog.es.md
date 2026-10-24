@@ -3,6 +3,17 @@
 Este archivo registra hitos del producto, no iteraciones internas de implementación.
 
 
+## 2026-10-23 — v0.2.9
+
+- **Más espacio para los Artifacts.** Reduce la columna de Chat hasta 180px para ampliar la vista previa lateral. Los controles de entrada pasan a otra línea en columnas estrechas. El ancho manual del panel vuelve cuando la ventana tiene espacio suficiente.
+- **Controles de Canvas más claros.** Abre los trabajos y el historial de versiones desde el título. Las herramientas y los inspectores flotantes se adaptan al ancho disponible sin cambiar el tamaño del Canvas. Las acciones de un objeto se limitan a Duplicar y Eliminar. La tipografía tiene una fila de fuente legible y acciones claras para cerrar, cancelar y recuperar. Introduce un porcentaje de zoom o ajusta la vista a la página, la mesa de trabajo o la selección.
+- **Conserva la posición del Canvas.** Desplaza la vista desde los espacios entre grupos de herramientas. Crear o duplicar un objeto conserva la vista actual, incluso durante un desplazamiento. Las imágenes se cargan cuando hacen falta, las vistas previas comparten recursos con límites y el reloj visual se detiene al terminar el gesto.
+- **Lleva los comentarios al Chat.** Selecciona un elemento, escribe un comentario y confirma para añadir su referencia y comentario al borrador del Chat original. Se conservan el texto y los archivos existentes. El foco vuelve después de guardar; una solicitud anterior no puede cerrar una vista previa que abras después. Tú decides cuándo enviar el mensaje.
+- **Recupera respuestas y Artifacts.** Reintenta guardar una respuesta terminada o cargar su Artifact original sin volver a enviar la solicitud. Conserva los cambios sin guardar después de un conflicto o un fallo de actualización. Bottega espera a que termine el guardado antes de cerrar. Se mejoran la limpieza de vistas previas, las versiones y la recuperación de bifurcaciones y del primer guardado de un sistema de diseño. Se mejora la detención de Agents y la recuperación de ejecuciones en segundo plano tras una pérdida de conexión o un resultado ausente.
+- **Un Dock más legible.** Los paneles usan fondos opacos en las apariencias clara y oscura. El icono de Bottega sigue las proporciones de los iconos nativos y conserva toda su zona de clic.
+- **Actualiza los entornos juntos.** Esta versión usa el **protocolo 21**. Actualiza los equipos que ejecutan tus Agents a 0.2.9 y vuelve a cargar Bottega Web. El escritorio, la Web y Cloud necesitan protocolos coincidentes. Se conservan el contenido, las contraseñas de sincronización y las claves de cuenta. No es necesario restablecer datos.
+- **Límites de validación del Canvas.** Las comprobaciones de operaciones habituales pasaron. Seis observaciones controladas en reposo midieron aproximadamente un 83,6% menos de CPU en el renderizador anfitrión frente a la referencia conservada. El resultado no describe toda la aplicación ni el consumo de energía. La comparación final de memoria sigue incompleta y una diferencia medida de respuesta en el relevo sigue abierta. Se aplazan las comprobaciones estrictas de latencia, los casos extremos, el trackpad físico, el IME nativo y los 120 Hz físicos. Bottega Dock sigue en **Alpha** y requiere macOS 27.x con chip de Apple. La recuperación de la sustitución y los escenarios de pantallas físicas y pantalla completa mantienen su validación independiente.
+
 ## 2026-10-19 — v0.2.8
 
 Versión estable oficial para Mac con chip de Apple (ARM64), que usa el canal estable de actualización.
