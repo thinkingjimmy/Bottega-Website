@@ -5,7 +5,7 @@
 ## Members
 
 - `home-page.tsx`: Assembles one localized home page from a catalog and its DemoData.
-- `changelog-page.tsx`: Renders one locale-specific milestone snapshot with shared site chrome.
+- `changelog-page.tsx`: Renders one locale-specific milestone snapshot with unchanged item lists followed by approved release-context paragraphs, safe inline formatting and shared site chrome.
 - `feature-page.tsx`: Resolves localized feature content and selects the Agents or document presentation.
 - `structured-data.tsx`: Serializes the shared page JSON-LD graph into initial HTML with script-safe escaping.
 

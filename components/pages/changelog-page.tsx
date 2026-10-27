@@ -1,6 +1,6 @@
 /**
- * [INPUT]: Uses one Locale, its SiteCatalog, page structured data, Changelog snapshot, and shared site chrome
- * [OUTPUT]: Exports ChangelogPageView with static page/breadcrumb JSON-LD for all five locales
+ * [INPUT]: Uses one Locale, its SiteCatalog, page structured data, Changelog lists and release-context paragraphs, and shared site chrome
+ * [OUTPUT]: Exports ChangelogPageView with unchanged milestone lists, safe release-context prose and static page/breadcrumb JSON-LD for all five locales
  * [POS]: Locale-neutral milestone page composition
  * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
@@ -11,6 +11,14 @@ import { SiteFooter } from "../site-footer";
 import { SiteHeader } from "../site-header";
 import { featuresFor } from "../features/catalog";
 import { PageStructuredData } from "./structured-data";
+
+function Inline({ text }: { text: string }) {
+  return renderInline(text).map((part, index) =>
+    part.kind === "strong" ? <strong key={index}>{part.value}</strong>
+      : part.kind === "code" ? <code key={index} className="mono" style={{ fontSize: "0.92em" }}>{part.value}</code>
+        : <span key={index}>{part.value}</span>
+  );
+}
 
 export function ChangelogPageView({ locale }: { locale: Locale }) {
   const catalog = getCatalog(locale);
@@ -45,14 +53,15 @@ export function ChangelogPageView({ locale }: { locale: Locale }) {
                   <ul>
                     {entry.items.map((item) => (
                       <li key={item}>
-                        {renderInline(item).map((part, index) =>
-                          part.kind === "strong" ? <strong key={index}>{part.value}</strong>
-                            : part.kind === "code" ? <code key={index} className="mono" style={{ fontSize: "0.92em" }}>{part.value}</code>
-                              : <span key={index}>{part.value}</span>
-                        )}
+                        <Inline text={item} />
                       </li>
                     ))}
                   </ul>
+                  {entry.paragraphs.map((paragraph, index) => (
+                    <p key={index} style={{ marginTop: 16, marginBottom: 0, fontSize: 15.5, lineHeight: 1.62, color: "var(--ink-2)" }}>
+                      <Inline text={paragraph} />
+                    </p>
+                  ))}
                 </div>
               </article>
             ))}
