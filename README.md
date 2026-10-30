@@ -224,11 +224,11 @@ request with its own `GITHUB_TOKEN`, and commits the JSON snapshot. Installer pr
 The website follows new releases within a day, or immediately from the workflow's manual trigger.
 Builds stay offline and validate release, platform, version, and installer-link parity in the static export.
 
-Version 0.2.10 is the official stable release for macOS on Apple silicon (ARM64).
+Version 0.2.11 is the official stable release for macOS on Apple silicon (ARM64).
 Windows and Linux installers are not distributed in this release. The macOS installer uses Developer ID
-signing and Apple notarization, and 0.2.10 uses the official stable automatic-update channel.
-Versions 0.2.6, 0.2.7, 0.2.8 and 0.2.9 use that stable channel. The shipped 0.2.5 personal build cannot update automatically:
-quit Bottega and install 0.2.10 manually. This release uses protocol 21: update the computers that run
+signing and Apple notarization, and 0.2.11 uses the official stable automatic-update channel.
+Versions 0.2.6, 0.2.7, 0.2.8, 0.2.9 and 0.2.10 use that stable channel. The shipped 0.2.5 personal build cannot update automatically:
+quit Bottega and install 0.2.11 manually. This release uses protocol 22: update the computers that run
 Agents and reload Bottega Web; desktop, Web and Cloud must use the matching protocol. Existing content,
 sync passwords and account keys stay in place; no data reset is needed. This describes the supported
 upgrade path, not a completed automatic-upgrade test. The sidebar and Settings show download progress

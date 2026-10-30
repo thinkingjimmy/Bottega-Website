@@ -3,6 +3,14 @@
 Ce fichier consigne les jalons du produit, pas les itérations internes d’implémentation.
 
 
+## 2026-10-30 — v0.2.11
+
+- **Créez vos propres widgets Dock.** Démarrez un Widget depuis les réglages du Dock, créez-le dans son Chat d’origine, prévisualisez une version candidate et approuvez son ajout. Modifiez-le dans le même Chat et choisissez quand appliquer une nouvelle version. Chaque instance conserve ses propres réglages et autorisations de données.
+- **Choisissez les données accessibles.** Autorisez des données Base précises ou des API déclarées en lecture seule. Configurez les clés API ou les identifiants Bearer via l’hôte. Ils restent chiffrés sur cet ordinateur. L’aperçu et l’instance installée nécessitent des consentements distincts.
+- **Gardez les détails à portée de main.** Ouvrez les détails standard ou personnalisés isolés, actualisez les données et utilisez les actions approuvées. Suspendez ou supprimez une instance dans les réglages du Dock. Les paquets privés contiennent des fichiers compilés immuables. Recevoir un paquet n’autorise ni son exécution ni la lecture des données locales.
+
+**Compatibilité et limites.** Cette version utilise le protocole 22. Mettez à jour les ordinateurs connectés et rechargez Bottega Web après la mise à jour coordonnée du service. Les anciens clients doivent être mis à jour pour accéder au Cloud. Le contenu, les mots de passe de synchronisation et les clés de compte sont conservés ; aucune réinitialisation des données n’est nécessaire. Dock reste en Alpha sur macOS 27.x et Apple silicon. Le transfert entre deux Mac physiques, VoiceOver, les contrôles physiques de verrouillage, de saisie et d’affichage ainsi que la validation de mise à niveau d’une installation existante restent distincts. L’application de test Android conserve son canal séparé.
+
 ## 2026-10-26 — v0.2.10
 
 - **Gardez les Artifacts dans des onglets.** Ouvrez plusieurs Artifacts dans la troisième colonne, à côté des autres aperçus. Rouvrez un Artifact enregistré pour retrouver son onglet existant. Utilisez la largeur actuelle du panneau ou choisissez la vue complète. Le changement d’onglet et la fermeture attendent l’enregistrement. En cas d’échec, l’onglet et la saisie d’origine sont conservés. Une demande de suivi depuis un aperçu agrandi vous ramène au brouillon du Chat d’origine et rétablit le focus de saisie, même sur un écran étroit après l’actualisation de l’aperçu.

@@ -3,6 +3,14 @@
 Este archivo registra hitos del producto, no iteraciones internas de implementación.
 
 
+## 2026-10-30 — v0.2.11
+
+- **Crea tus propios widgets del Dock.** Inicia un Widget desde los ajustes del Dock, créalo en su Chat de origen, previsualiza una versión candidata y aprueba añadirlo. Edítalo desde el mismo Chat y elige cuándo aplicar una nueva versión. Cada instancia conserva sus propios ajustes y permisos de datos.
+- **Elige los datos que puede leer.** Autoriza datos Base concretos o API declaradas de solo lectura. Configura las claves API o credenciales Bearer mediante el host. Permanecen cifradas en este ordenador. La vista previa y la instancia instalada requieren consentimientos separados.
+- **Consulta los detalles con facilidad.** Abre detalles estándar o personalizados aislados, actualiza los datos y usa acciones aprobadas. Pausa o elimina una instancia desde los ajustes del Dock. Los paquetes privados contienen archivos compilados inmutables. Recibir un paquete no autoriza ejecutarlo ni leer datos locales.
+
+**Compatibilidad y límites.** Esta versión usa el protocolo 22. Actualiza los ordenadores conectados y recarga Bottega Web después de la actualización coordinada del servicio. Los clientes anteriores deben actualizarse para acceder al Cloud. Se conservan el contenido, las contraseñas de sincronización y las claves de cuenta; no hace falta restablecer los datos. Dock sigue en Alpha para macOS 27.x y Apple silicon. La transferencia entre dos Mac físicos, VoiceOver, las comprobaciones físicas de bloqueo, entrada y pantalla y la validación de actualización desde una instalación anterior siguen siendo verificaciones independientes. La aplicación de prueba de Android mantiene su canal separado.
+
 ## 2026-10-26 — v0.2.10
 
 - **Conserva los Artifacts en pestañas.** Abre varios Artifacts en la tercera columna junto a otras vistas previas. Vuelve a abrir un Artifact guardado para regresar a su pestaña existente. Usa el ancho actual del panel o elige la vista completa. Cambiar de pestaña o cerrar espera a que termine el guardado. Si falla, se conservan la pestaña y la entrada originales. Las indicaciones de seguimiento desde una vista previa ampliada vuelven al borrador del Chat original y restauran el foco en el campo de entrada, incluso en pantallas estrechas tras actualizar la vista previa.
