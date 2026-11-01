@@ -63,7 +63,7 @@ otherwise a 1200 x 630 branded PNG generated locally at `/og.png` during the bui
 `/robots.txt` permits crawling and points to `/sitemap.xml`. Normal pages permit indexing and large
 image previews; the generated 404 remains `noindex`. Static JSON-LD describes the website and each
 localized page, the downloadable application on home pages, and breadcrumbs on feature and Changelog
-pages. Application facts reuse the release snapshot and the MIT source repository; no ratings are invented.
+pages. Application facts reuse the release snapshot and the public source repository and bundled-component license disclosure; no ratings are invented.
 
 `pnpm build` runs catalog tests, Next.js compilation/typechecking, and audits against the fresh export.
 The audits verify all thirty URLs, reciprocal HTML/XML alternates, unique metadata per locale,
@@ -224,15 +224,9 @@ request with its own `GITHUB_TOKEN`, and commits the JSON snapshot. Installer pr
 The website follows new releases within a day, or immediately from the workflow's manual trigger.
 Builds stay offline and validate release, platform, version, and installer-link parity in the static export.
 
-Version 0.2.11 is the official stable release for macOS on Apple silicon (ARM64).
-Windows and Linux installers are not distributed in this release. The macOS installer uses Developer ID
-signing and Apple notarization, and 0.2.11 uses the official stable automatic-update channel.
-Versions 0.2.6, 0.2.7, 0.2.8, 0.2.9 and 0.2.10 use that stable channel. The shipped 0.2.5 personal build cannot update automatically:
-quit Bottega and install 0.2.11 manually. This release uses protocol 22: update the computers that run
-Agents and reload Bottega Web; desktop, Web and Cloud must use the matching protocol. Existing content,
-sync passwords and account keys stay in place; no data reset is needed. This describes the supported
-upgrade path, not a completed automatic-upgrade test. The sidebar and Settings show download progress
-and require an explicit Restart and update action.
+Version 0.2.12 is the official stable macOS Apple silicon release, with protocol 23. Windows and Linux installers are not included. Official Mac releases from 0.2.6 onward use the stable update channel; the 0.2.5 personal build requires a complete quit, a backup of the Bottega folder/application data and manual installation. Desktop, Web and Cloud must use the matching protocol after the coordinated service update. Existing content, sync passwords and account keys remain; no reset is required. Supported upgrade instructions do not certify a completed installed upgrade.
+
+Bottega first-party code uses the MIT License. Bundled components retain their own terms; the modified Canvas/Slides editors retain the BaoCut Community License. Commercial distribution, inclusion in commercial software supplied to others, or commercial hosted access to covered editor code requires a separate written license from the applicable rights holders. The application JSON-LD points to the complete component disclosure instead of describing the entire product as MIT.
 
 The menu links to the current release's installation instructions, and the footer continues to link to
 the full release archive. Changelog dates identify development milestones; the GitHub Release is the

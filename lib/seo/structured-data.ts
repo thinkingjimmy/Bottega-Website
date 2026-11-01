@@ -1,5 +1,5 @@
 /**
- * [INPUT]: Uses resolved localized metadata, locale paths, nullable release assets, and the current release URL
+ * [INPUT]: Uses resolved localized metadata, locale paths, nullable release assets, and the current release URL and bundled component license disclosure
  * [OUTPUT]: Exports the page JSON-LD graph builder
  * [POS]: Server-side semantic description of existing pages and the shipped desktop application
  * [PROTOCOL]: Update this header when making changes, then check README.md.
@@ -54,7 +54,7 @@ export function buildStructuredData(input: PageMetadataInput) {
           .map((platform) => OPERATING_SYSTEM[platform]),
         softwareVersion: RELEASE.version,
         downloadUrl: RELEASE_URL,
-        license: `${REPO}/blob/main/LICENSE`,
+        license: `${REPO}#component-licenses`,
         sameAs: REPO,
         isAccessibleForFree: true,
         offers: {

@@ -3,6 +3,21 @@
 Ce fichier consigne les jalons du produit, pas les itérations internes d’implémentation.
 
 
+## 2026-11-01 — v0.2.12
+
+[Télécharger 0.2.12](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.12) pour macOS sur Apple silicon (ARM64).
+
+- **Modifiez les Canvas et Slides natifs.** Conservez la structure d’origine du document, les pages multiples, les notes et les commandes manuelles Annuler/Rétablir. Ouvrez le travail actuel dans les onglets existants de la troisième colonne. La vue agrandie et le changement de travail restent dans la barre d’onglets.
+- **Vérifiez avant d’appliquer les modifications de l’IA.** Enregistrez des commentaires sur un élément ou une zone, répondez, résolvez et rouvrez les fils. Le mode Codex pris en charge travaille sur une version candidate séparée. Prévisualisez-la, acceptez-la, abandonnez-la ou poursuivez sa modification. Une seule annulation de la modification IA restaure l’ensemble complet des fichiers précédents sans nouvel appel au modèle. Si l’Agent sélectionné ne prend pas en charge l’édition isolée, cette action reste indisponible.
+- **Gardez des commandes cohérentes.** Les icônes SVG et les commandes de révision flottantes compactes suivent les apparences claire et sombre. Les commandes tactiles conservent des cibles plus grandes. L’édition chiffrée dans le navigateur préserve les saisies non envoyées et demande quel brouillon conserver après un conflit.
+- **Exportez et présentez.** Utilisez les exports Canvas d’origine en PNG, PDF et HTML hors ligne. Slides propose des aperçus de substitution de polices PPTX avec confirmation explicite. Présentez avec une fenêtre de notes séparée en lecture seule. Fermer l’onglet source ferme les fenêtres de présentation.
+
+**Compatibilité.** Cette version utilise le protocole 23. Mettez à jour les ordinateurs connectés et rechargez Bottega Web après la mise à jour coordonnée du service. Le contenu existant, les mots de passe de synchronisation et les clés de compte sont conservés ; aucune réinitialisation des données n’est nécessaire.
+
+**Limites de validation.** Les iPhone/iPad physiques, le presse-papiers et le glisser-déposer du système, la parité complète avec les opérations de la version 2.3 et la réouverture dans Keynote/PowerPoint restent non vérifiés. Le parcours réel continu, de la création d’un document Slides à l’acceptation d’une modification IA issue d’un commentaire, ainsi que tous les scénarios de génération simultanée de miniatures au démarrage à froid, restent des validations distinctes.
+
+**Licences.** Le code propre à Bottega reste sous licence MIT. Les forks modifiés des éditeurs Canvas/Slides conservent la BaoCut Community License et leurs mentions d’origine. La distribution ou l’hébergement commerciaux du code couvert nécessitent une autorisation écrite distincte ; la licence MIT à la racine ne remplace pas ces conditions.
+
 ## 2026-10-30 — v0.2.11
 
 - **Créez vos propres widgets Dock.** Démarrez un Widget depuis les réglages du Dock, créez-le dans son Chat d’origine, prévisualisez une version candidate et approuvez son ajout. Modifiez-le dans le même Chat et choisissez quand appliquer une nouvelle version. Chaque instance conserve ses propres réglages et autorisations de données.

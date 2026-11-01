@@ -34,7 +34,7 @@ export async function GET() {
           display: "flex", justifyContent: "space-between", borderTop: "1px solid #d9d4ca",
           paddingTop: 24, color: "#6c6a62", fontSize: 23,
         }}>
-          <span>Open-source AI workspace</span>
+          <span>AI workspace on your computer</span>
           <span>{new URL(SITE_URL).hostname}</span>
         </div>
       </div>

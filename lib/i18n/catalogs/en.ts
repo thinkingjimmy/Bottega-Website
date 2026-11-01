@@ -7,9 +7,9 @@
 
 export const en = {
   meta: {
-    siteTitle: "Bottega — Open-Source AI Agent Workspace",
-    siteDescription: "Run Codex, Claude Code, Kimi Code and OpenCode in one open-source desktop workspace. Build AI apps, manage local data and use your existing subscriptions.",
-    socialImageAlt: "Bottega, an open-source desktop workspace for Codex, Claude Code, Kimi Code and OpenCode",
+    siteTitle: "Bottega — AI Agent Workspace",
+    siteDescription: "Run Codex, Claude Code, Kimi Code and OpenCode in one desktop workspace. Build AI apps, manage local data and use your existing subscriptions.",
+    socialImageAlt: "Bottega, a desktop workspace for Codex, Claude Code, Kimi Code and OpenCode",
   },
   language: {
     label: "Language",
@@ -76,21 +76,21 @@ export const en = {
     trust: {
       eyebrow: "Local first · Encrypted sync",
       title: ["Yours, on your machine.", "Encrypted everywhere else."],
-      lede: "Bottega keeps your work in a folder you can open, runs the Agents through their official CLIs, and ships under the MIT license. Turn on sync when you want it, and it travels as ciphertext.",
+      lede: "Bottega keeps your work in a folder you can open and runs the Agents through their official CLIs. Its first-party code is MIT-licensed; bundled components retain their own licenses. Turn on sync when you want it, and it travels as ciphertext.",
       claims: [
         { title: "A folder, not a black box", body: "Chats, attachments, Projects, Base, App source and Skills are files in one folder you choose — readable without Bottega, backed up by copying it." },
         { title: "Official CLIs, your accounts", body: "Every Agent runs through its own CLI, signed in as you. Bottega adds the workspace, never a proxy in between." },
-        { title: "Open source, MIT", body: "The code that touches your data is public. Read it, audit it, fork it." },
+        { title: "Public source", body: "The code that touches your data is public. Read it, audit it, fork it." },
         { title: "Encrypted before it leaves", body: "Sync is off until you turn it on. When it’s on, Chats are sealed with a password only you know; the server only holds ciphertext." },
       ],
       sync: { eyebrow: "Sync & remote control", title: "End-to-end encrypted sync, with your phone in control.", body: "Turn on sync and your Chats follow you to the Web and your phone, encrypted with a password only you know before they leave your computer. From the phone, send a task to the computer, watch the output live, approve, stop, follow up. Bottega’s servers store and relay ciphertext; they never read a message." },
       source: {
-        eyebrow: "Open source",
-        title: "Open source. Release your own version.",
-        body: "Every line is MIT-licensed, the encryption included. Read it, change it, and ship your own build.",
+        eyebrow: "Public source",
+        title: "Read the source. Build your version.",
+        body: "Bottega’s first-party code is MIT-licensed. Bundled components, including the modified Canvas and Slides editors, retain their own licenses. Read those terms before distribution or commercial hosting.",
         fork: "Fork on GitHub",
         browse: "Browse source",
-        license: "MIT licensed",
+        license: "Component licenses",
         cloned: "Cloned Bottega into ./Bottega",
         installed: "Dependencies installed",
       },
@@ -124,13 +124,13 @@ export const en = {
       lede: "Something else? The people who build Bottega read every issue.",
       issues: "Ask on GitHub",
       items: [
-        { question: "Is Bottega free?", answer: "Yes. The app is free to use and open source under the MIT license, and you run it with the Agent plans you already pay for. Sync is free during the public beta; it will become a paid option later." },
+        { question: "Is Bottega free?", answer: "Yes. The app is free to use, and you run it with the Agent plans you already pay for. Bottega’s first-party code is MIT-licensed; bundled components retain their own license terms. Sync is free during the public beta; it will become a paid option later." },
         { question: "Which Agents does it work with?", answer: "Codex, Claude Code, Kimi Code and OpenCode, each through its official CLI. Codex requires version 0.163.0-alpha.10.2 exactly. Hermes, Pi and DeepSeek are next." },
         { question: "Do I need API keys or a new subscription?", answer: "No. Each Agent signs in with its own CLI command, using the account you already have." },
         { question: "Where is my data stored?", answer: "In a folder you choose. Chats, attachments, Projects, Base, Apps and Skills are readable files — back them up by copying the folder." },
         { question: "Can anyone read my synced Chats?", answer: "No. Sync is off until you turn it on. Chats are encrypted with a password only you know before they leave your computer; Bottega’s servers store and relay ciphertext." },
-        { question: "Which platforms are supported?", answer: "Bottega 0.2.10 is an official stable release for Apple silicon Macs. Windows and Linux installers are not included. Bottega Dock is an Alpha plugin that requires macOS 27.x and Apple silicon; this does not change the main app’s requirements. Versions 0.2.6 through 0.2.9 use the stable automatic-update channel. The 0.2.5 personal build cannot update automatically: quit Bottega and install 0.2.10 manually. This release keeps protocol 21. Update the computers that run your Agents to receive the desktop fixes, and reload Bottega Web. Existing content, sync passwords and account keys stay in place; no data reset is needed." },
-        { question: "Can I ship my own version?", answer: "Yes. Fork the repository, change what you like and build it with three commands. The MIT license lets you rename and distribute it." },
+        { question: "Which platforms are supported?", answer: "Bottega 0.2.12 is for Apple silicon Macs. Windows and Linux installers are not included. Bottega Dock is an Alpha plugin that requires macOS 27.x and Apple silicon; this does not change the main app’s requirements. Official Mac releases from 0.2.6 onward use the stable automatic-update channel. The 0.2.5 personal build cannot update automatically: quit Bottega completely, back up your Bottega folder and application data, and install 0.2.12 manually. This version uses protocol 23. After the coordinated service update, update connected desktops and reload Bottega Web. Existing content, sync passwords and account keys stay in place; no data reset is needed. See the 0.2.12 changelog for native Canvas and Slides validation limits." },
+        { question: "Can I ship my own version?", answer: "Yes. Fork the repository, change what you like and build it with three commands. The MIT License applies to Bottega’s first-party code. Distribution must comply with every bundled component’s license. The modified Canvas and Slides editors retain the BaoCut Community License. Commercial redistribution, inclusion in commercial software supplied to others, or commercial hosted access to covered editor code requires a separate written license from the applicable rights holders." },
       ],
     },
   },

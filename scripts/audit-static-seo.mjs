@@ -1,6 +1,6 @@
 /**
  * [INPUT]: Uses the completed static export, canonical site identity, locale paths, and the public release snapshot
- * [OUTPUT]: Fails on crawler, metadata, social image, release/download parity, sitemap alternate, or internal link regressions
+ * [OUTPUT]: Fails on crawler, metadata, social image, component license, release/download parity, sitemap alternate, or internal link regressions
  * [POS]: Post-build SEO gate over the actual HTML and assets delivered to crawlers
  * [PROTOCOL]: Update this header when making changes, then check README.md.
  */
@@ -11,7 +11,7 @@ import { extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { LOCALES, localizedPath, stripLocale } from "../lib/i18n/locale.ts";
 import { SITE_URL, SOCIAL_IMAGE, absoluteUrl } from "../lib/seo/site.ts";
-import { PLATFORMS, RELEASE, RELEASE_URL, RELEASES_URL, downloadUrl } from "../lib/release.ts";
+import { PLATFORMS, RELEASE, RELEASE_URL, RELEASES_URL, REPO, downloadUrl } from "../lib/release.ts";
 
 const root = fileURLToPath(new URL("../out/", import.meta.url));
 const output = process.argv[2] ? resolve(process.argv[2]) : root;
@@ -131,6 +131,7 @@ for (const [index, url] of locations.entries()) {
     assert.equal(software["@id"], webpage.mainEntity["@id"], `${url}: main application`);
     assert.deepEqual(software.operatingSystem, availablePlatforms.map((platform) => operatingSystems[platform]), `${url}: downloadable platforms`);
     assert.equal(software.softwareVersion, RELEASE.version, `${url}: software version`);
+    assert.equal(software.license, `${REPO}#component-licenses`, `${url}: component licenses`);
     assert.equal(software.downloadUrl, RELEASE_URL, `${url}: release page`);
     assert.equal(software.offers.price, 0, `${url}: application price`);
     assert.equal(software.offers.url, RELEASE_URL, `${url}: offer release page`);
