@@ -76,7 +76,7 @@ export const zhCN = {
       source: {
         eyebrow: "源码公开",
         title: "阅读源码。构建自己的版本。",
-        body: "Bottega 的第一方代码采用 MIT 许可。捆绑组件，包括修改后的 Canvas 和 Slides 编辑器，保留各自的许可。分发或提供商业托管服务前，请阅读相关条款。",
+        body: "Bottega 的第一方代码采用 MIT 许可。捆绑组件，包括修改后的 Canvas、Slides 与 Design System 编辑器，保留各自的许可。分发或提供商业托管服务前，请阅读相关条款。",
         fork: "在 GitHub 上 fork",
         browse: "浏览源码",
         license: "组件许可",
@@ -114,12 +114,12 @@ export const zhCN = {
       issues: "去 GitHub 提问",
       items: [
         { question: "Bottega 免费吗？", answer: "App 本身免费使用，你用的是自己已经付费的 Agent 套餐。Bottega 的第一方代码采用 MIT 许可，捆绑组件保留各自的许可条款。同步在公测期间免费，之后会收费。" },
-        { question: "支持哪些 Agent？", answer: "Codex、Claude Code、Kimi Code 和 OpenCode，都通过各自的官方 CLI 运行。Codex 仅支持 0.163.0-alpha.10.2 版本。接下来是 Hermes、Pi 和 DeepSeek。" },
+        { question: "支持哪些 Agent？", answer: "Codex、Claude Code、Kimi Code 和 OpenCode，都通过各自的官方 CLI 运行。普通 Codex Chat 按原生协议和所需能力准入。额度查询与可选更新独立运行；原生标题生成与隔离编辑保留独立的 CLI 0.163.0-alpha.10.2 资格要求。接下来是 Hermes、Pi 和 DeepSeek。" },
         { question: "需要 API key 或新的订阅吗？", answer: "不需要。每个 Agent 用它自己的 CLI 命令登录，用的是你已有的账号。" },
         { question: "我的数据存在哪里？", answer: "存在你选定的文件夹里。Chat、附件、Project、Base、App 和 Skills 都是可读的文件——复制这个文件夹就是备份。" },
         { question: "同步的 Chat 会被别人读到吗？", answer: "不会。同步默认关闭。打开后，Chat 在离开你的电脑之前就用只有你知道的密码加密；Bottega 的服务器只存储和转发密文。" },
-        { question: "支持哪些平台？", answer: "Bottega 0.2.12 适用于 Apple 芯片 Mac，不包含 Windows 或 Linux 安装包。Bottega Dock 是 Alpha 插件，要求 macOS 27.x 与 Apple 芯片；主应用的系统要求不变。从 0.2.6 起，正式 Mac 版本使用稳定版自动更新通道。0.2.5 个人版无法自动更新：请完全退出 Bottega，备份 Bottega 文件夹与应用数据，再手动安装 0.2.12。本版使用协议 23。请在服务协同更新后，更新已连接的桌面端并重新加载 Bottega Web。已有内容、同步密码与账号密钥保留，无需清空数据。原生 Canvas 和 Slides 的验证范围限制见 0.2.12 变更日志。" },
-        { question: "可以发布我自己的版本吗？", answer: "可以。fork 仓库，改成你想要的样子，三条命令就能构建。MIT 许可适用于 Bottega 的第一方代码。分发时必须遵守每个捆绑组件的许可。修改后的 Canvas 和 Slides 编辑器保留 BaoCut Community License。对其覆盖的编辑器代码进行商业再分发、将其纳入向他人提供的商业软件，或提供商业托管访问，都需要取得相应权利人的单独书面许可。" },
+        { question: "支持哪些平台？", answer: "Bottega 0.3.0 适用于 Apple 芯片 Mac，不包含 Windows 或 Linux 安装包。Bottega Dock 是 Alpha 插件，要求 macOS 27.x 与 Apple 芯片；主应用的系统要求不变。从 0.2.6 起，正式 Mac 版本使用稳定版自动更新通道。0.2.5 个人版无法自动更新：请完全退出 Bottega，备份 Bottega 文件夹与应用数据，再手动安装 0.3.0。本版使用协议 25。请在服务协同更新后，更新已连接的桌面端并重新加载 Bottega Web。已有内容、同步密码与账号密钥保留，无需清空数据。原生 Canvas、Slides 与 Design System 的验证范围限制见 0.3.0 变更日志。" },
+        { question: "可以发布我自己的版本吗？", answer: "可以。fork 仓库，改成你想要的样子，三条命令就能构建。MIT 许可适用于 Bottega 的第一方代码。分发时必须遵守每个捆绑组件的许可。修改后的 Canvas、Slides 与 Design System 编辑器保留 BaoCut Community License。对其覆盖的编辑器代码进行商业再分发、将其纳入向他人提供的商业软件，或提供商业托管访问，都需要取得相应权利人的单独书面许可。" },
       ],
     },
   },
@@ -251,7 +251,7 @@ export const zhCN = {
           heading: "备份已保存的本机内容",
           paragraphs: [
             "使用库格式 v1 的版本中，请完全退出 Bottega，再复制首次设置时选择的整个文件夹。重装后选择副本即可恢复已保存的本机内容；运行中复制只能尽力恢复，可能有内容缺失。",
-            "首次设置后文件夹位置固定。需要换位置时，请退出、完整复制，重装后再选择副本。不支持 iCloud Drive、Dropbox、OneDrive 等网盘同步目录；多设备使用请通过 Bottega Cloud Sync。",
+            "在 设置 › 通用 › 移动文件夹 中更改位置，Bottega 会重启完成移动，无需重装。备份可在原归属电脑重新打开。不支持 iCloud Drive、Dropbox、OneDrive 等网盘同步目录；多设备使用请通过 Bottega Cloud Sync。",
           ],
           points: [],
         },
@@ -273,7 +273,7 @@ export const zhCN = {
           title: "统一的是交互，不是 Agent。",
           paragraphs: [
             "每个 Agent Harness 都有其独特的运行模式，但为了统一用户体验，我们统一了一套用户交互界面。对流式回复、工具状态、Plan 模式、队列消息等功能进行了适配。",
-            "Codex 使用原生 App Server，仅支持 CLI 0.163.0-alpha.10.2。逐项询问由你决定，代我批准使用 Codex 自动审核。启动 Electron 时可通过这条路径申请所需权限。申请可能被拒绝，拒绝后不会自动切换为完全访问。",
+            "普通 Codex Chat 使用原生 App Server，按实际协议和所需能力准入。原生标题生成与隔离编辑保留独立的 CLI 0.163.0-alpha.10.2 资格要求。逐项询问由你决定，代我批准使用 Codex 自动审核。启动 Electron 时可通过这条路径申请所需权限。申请可能被拒绝，拒绝后不会自动切换为完全访问。",
             "Codex 工作区模式允许联网、写入临时目录，以及普通的工作区外读取。Bottega 原有的凭据路径拒读规则和内部只读围栏不再作用于 Codex 命令。",
             "“完全访问”的权限范围更大。Plan 沿用所选权限，不保证文件系统只读。不支持的严格权限角色会在执行前被拒绝。",
             "以下是各功能适配情况（仍然在持续更新中）：",

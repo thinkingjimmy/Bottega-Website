@@ -3,6 +3,25 @@
 Este archivo registra hitos del producto, no iteraciones internas de implementación.
 
 
+## 2026-11-05 — v0.3.0
+
+[Descargar 0.3.0](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.3.0) para macOS con Apple silicon (ARM64).
+
+- **Edita cuatro tipos de trabajo.** Usa Canvas y Slides nativos, un editor Design System dedicado y un Dashboard interactivo con fuentes CSV, TSV o JSON fijas. Las páginas y los ejemplos de componentes permanecen aislados de los permisos de escritura del anfitrión.
+- **Envía comentarios desde el Chat original.** Añade instrucciones sobre un elemento, una zona o todo el trabajo al borrador actual y conserva texto y adjuntos. Los comentarios enviados guardan sus instrucciones y la versión de destino. Vuelve al destino sin cambios o consulta su versión original de solo lectura cuando cambie. Los resultados aplicados enlazan las versiones guardadas exactas en el mismo Chat. Si se desconoce el resultado del guardado, se recupera la operación original sin otra llamada al modelo.
+- **Recupera trabajos anteriores.** Consulta autores, cambios y vistas previas fijas de solo lectura. Restaura cambios seleccionados o una versión completa y conserva los demás trabajos actuales. Reanuda una restauración pausada sin crear otra operación.
+- **Entrega un proyecto completo.** Exporta código, recursos, comentarios y todo el historial compatible en un ZIP. Ábrelo en la herramienta original fijada o impórtalo en un nuevo espacio Bottega para continuar con permisos nuevos.
+- **Comprueba los colores de los gráficos.** Usa la guía dataviz y la validación de paletas sin abrir un editor. Cada regla conserva sus advertencias o errores.
+- **Continúa el Chat.** El primer mensaje en cola se envía cuando vuelve el entorno de ejecución. Envía los archivos locales seleccionados con el primer mensaje desde la vista principal o un Project. Una vez guardado el primer mensaje y abierto su Chat, el texto y los adjuntos enviados se retiran del cuadro de entrada. Los títulos nativos de Codex que cumplen los requisitos usan el modelo seleccionado. El Chat ordinario comprueba el protocolo nativo y las capacidades necesarias en lugar de exigir una sola versión de CLI. Las cuotas y las actualizaciones opcionales son independientes; los títulos nativos y la edición aislada mantienen su calificación separada.
+- **Reduce los bloqueos en conversaciones largas.** El historial carga en lotes pequeños y conserva la posición de lectura. Al abrir un resultado de búsqueda, se vuelve al mensaje seleccionado mientras se carga el historial. El streaming y el resaltado de código evitan trabajo repetido sobre mensajes anteriores. Los bloques de código conservan la copia y la disposición.
+- **Descarga menos.** Las dependencias App GUI excluyen archivos de compilación y herramientas de edición sin uso y conservan las rutas de compilación compatibles y los avisos de licencia.
+
+**Compatibilidad.** Esta versión usa el **protocolo 25**. Tras la actualización coordinada del servicio, actualiza los equipos conectados y vuelve a cargar Bottega Web. Se conservan el contenido, las contraseñas de sincronización y las claves de cuenta, sin restablecer datos. Los archivos y las instantáneas Artifact retirados permanecen sin cambios; sus tarjetas indican formato no compatible y no restablecen el editor ni los permisos de escritura. Dock sigue en Alpha y requiere macOS 27.x con Apple silicon.
+
+**Límites de validación.** Los dispositivos físicos, el portapapeles y el arrastre del sistema, la reapertura PPTX en las aplicaciones de destino, la paridad completa con la herramienta de referencia, la memoria de la aplicación instalada durante periodos largos y la revisión UX manual final conservan su validación separada. Las mediciones con datos controlados no certifican Safari en un iPhone físico.
+
+**Licencias.** El código propio de Bottega sigue bajo MIT. Los editores Canvas, Slides y Design System modificados conservan la BaoCut Community License y sus avisos originales. Los demás materiales de referencia conservan sus propias condiciones. La distribución comercial, la inclusión en software comercial que se suministra a terceros o el acceso comercial alojado al código cubierto requiere derechos escritos por separado. La licencia MIT de la raíz no sustituye estas condiciones.
+
 ## 2026-11-01 — v0.2.12
 
 [Descargar 0.2.12](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.2.12) para macOS con Apple silicon (ARM64).
