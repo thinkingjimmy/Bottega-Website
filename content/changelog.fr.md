@@ -3,6 +3,16 @@
 Ce fichier consigne les jalons du produit, pas les itérations internes d’implémentation.
 
 
+## 2026-11-09 — v0.4.1
+
+[Télécharger 0.4.1](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.4.1) pour macOS sur puce Apple (ARM64).
+
+- **Ouvrir après une mise à jour.** Corrige l’échec du démarrage après une mise à jour vers 0.4.0 lorsque d’anciens enregistrements de plugins conservent des champs d’appartenance à un Chat qui ont été retirés.
+- **Conserver l’état existant.** Les enregistrements sont validés et migrés. Une copie exacte du fichier d’origine est conservée avant son remplacement atomique. Les paramètres des plugins, les paquets Widget, les données de génération et les livraisons en attente sont conservés. Une nouvelle tentative après une migration interrompue conserve la même garantie de sauvegarde.
+- **Conserver les anciennes versions de Sketch.** Les anciennes générations compilées de Sketch restent conservées et désactivées dans la quarantaine de provenance.
+
+**Compatibilité.** Le protocole 26 est maintenu. Le contenu existant, les mots de passe de synchronisation et les clés de compte sont conservés. Aucune réinitialisation des données n’est nécessaire. Si 0.4.0 ne s’ouvre pas, installez directement le DMG de la version 0.4.1.
+
 ## 2026-11-07 — v0.4.0
 
 [Télécharger 0.4.0](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.4.0) pour macOS sur Apple silicon (ARM64).
