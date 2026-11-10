@@ -5,6 +5,20 @@
 This file records product milestones, not internal implementation iterations. Dates describe when each capability reached its first coherent product form.
 
 
+## 2026-11-09 — v0.4.2
+
+Version 0.4.2 source targets macOS on Apple silicon (ARM64). See the [latest stable Release](https://github.com/thinkingjimmy/Bottega/releases/latest) for installer availability and actual acceptance scope.
+
+- **Keep the workspace focused.** Remove Workflow, standalone Agent configurations and Bottega Team. Ordinary and former Lead Chats, native Provider subagents, Provider settings, ordinary Chat forks and plugin authoring remain. Former Stage and Acceptance criteria columns are ordinary editable Base fields, with their IDs, options, values and view references intact.
+- **Recover updates quietly.** Retry temporary check failures in the background, pause while offline and keep confirmed update information. Settings separates check failures from download failures and provides the corresponding retry action. Downloads and restarts still require your action.
+- **Reach the current installer from recovery.** Use Download latest in startup recovery to open the official latest-release page in your browser, including when the main workspace cannot open.
+- **Use Dock on macOS 26 or 27.** Admit Apple silicon on macOS 26.x and 27.x, show native setup requirements in the unified plugin catalog and keep its enabled state aligned with the native Dock owner. Unsupported systems stay blocked.
+- **Read menus and settings more easily.** Explain Chat modes before selection, align composer and Project menus, remove duplicate external-format plugin sections and keep plugin failure notices compact with details available.
+
+**Compatibility and data.** Version 0.4.2 uses protocol **27**. Update connected desktops and reload Bottega Web after the coordinated service update. Old protocol 26 clients must update before reconnecting to Cloud. Targeted release maintenance removes only records verified as belonging to the retired features. Retained plugins keep their source and data. Ordinary and former Lead Chats, original Project folders, Base field content, sync passwords and account keys remain. Back up the Bottega folder and complete application data before updating. Product startup does not run the retirement cleanup.
+
+**Validation limits.** Dock remains Alpha. Controlled macOS 26.4.1 and 27.0.0 scenarios ran on a macOS 27 Apple silicon host; they do not establish physical macOS 26 acceptance. Exact signed Dock replacement, approval, restoration, login/reboot and display scenarios, physical input, assistive technology and physical two-computer delivery keep their separate acceptance scope. Installed old-to-new upgrade acceptance remains separate. Existing Artifact and component-license limits remain.
+
 ## 2026-11-09 — v0.4.1
 
 [Download 0.4.1](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.4.1) for macOS on Apple silicon (ARM64).

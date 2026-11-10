@@ -224,7 +224,7 @@ request with its own `GITHUB_TOKEN`, and commits the JSON snapshot. Installer pr
 The website follows new releases within a day, or immediately from the workflow's manual trigger.
 Builds stay offline and validate release, platform, version, and installer-link parity in the static export.
 
-Version 0.4.1 is published on the official stable macOS Apple silicon release channel and uses protocol 26. The published GitHub Release and synchronized snapshot identify actual availability. Windows and Linux installers are not included. Official Mac releases from 0.2.6 onward use the stable update channel; the 0.2.5 personal build requires a complete quit, a backup of the Bottega folder/application data and manual installation. Existing Web and Cloud services remain compatible with this desktop update. Existing content, sync passwords and account keys remain; no reset is required. If 0.4.0 cannot open, install the 0.4.1 DMG directly. Supported upgrade instructions do not certify a completed installed upgrade.
+Version 0.4.2 uses the official stable macOS Apple silicon release channel and protocol 27. The published GitHub Release and synchronized snapshot identify actual availability. Windows and Linux installers are not included. Official Mac releases from 0.2.6 onward use the stable update channel; the 0.2.5 personal build needs a manual installation. Connected desktops must update and Bottega Web must reload after the coordinated service update. Workflow, standalone Agent configurations and Bottega Team are retired. Ordinary and former Lead Chats, original Project folders, Base field content, sync passwords and account keys remain. Product startup does not perform retirement cleanup; the milestone describes the targeted maintenance scope. Upgrade instructions do not certify a completed installed upgrade.
 
 Bottega first-party code uses the MIT License. Bundled components retain their own terms; the modified Canvas, Slides and Design System editors retain the BaoCut Community License. Commercial distribution, inclusion in commercial software supplied to others, or commercial hosted access to covered editor code requires a separate written license from the applicable rights holders. The application JSON-LD points to the complete component disclosure instead of describing the entire product as MIT.
 
@@ -235,10 +235,11 @@ source for the actual publication timestamp.
 Ordinary Codex Chat uses its native App Server and checks actual protocol and required capabilities. Quota queries and optional updates are independent. Native title generation and isolated editing retain separate CLI 0.163.0-alpha.10.2 qualification. All five Agents pages explain
 native approval, network and temporary-directory access, ordinary reads outside the workspace,
 the removal of Bottega's previous credential-path denials and internal read-only fences, and the
-limits of Plan and strict roles. The shared conversation presentation is retained.
-Bottega Dock remains Alpha and requires macOS 27.x and Apple silicon for the entire plugin.
-Replacement, recovery across logout or restart, and display/fullscreen combinations remain under
-validation. These plugin requirements do not change the main application's requirements.
+limits of Plan. Retired Workflow strict-role admission is no longer described as a current capability. The shared conversation presentation is retained.
+Bottega Dock remains Alpha and requires macOS 26.x or 27.x and Apple silicon for the entire plugin.
+Controlled-version checks do not certify physical macOS 26. Signed replacement, recovery across logout or
+restart, and display/fullscreen combinations retain separate validation. These plugin requirements do not
+change the main application's requirements.
 
 ## Changelog
 

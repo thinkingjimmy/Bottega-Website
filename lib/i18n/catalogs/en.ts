@@ -108,7 +108,7 @@ export const en = {
       dock: {
         eyebrow: "Dock",
         title: "Your Apps, on their own Dock.",
-        body: "Bottega Dock is an Alpha plugin for macOS 27.x and Apple silicon. Open your Bottega Apps from their own bar. Coexistence keeps the macOS Dock. Replacement requires a verified installation and your final confirmation; replacement and recovery across logout, restart and display changes are still being validated.",
+        body: "Bottega Dock is an Alpha plugin for Apple silicon on macOS 26.x or 27.x. Open your Bottega Apps from their own bar. Coexistence keeps the macOS Dock. Replacement requires a verified installation and your final confirmation. Physical macOS 26 validation, signed replacement, recovery after logout or restart, and display changes remain separate.",
         points: ["One click opens any Bottega App", "Coexistence keeps the macOS Dock", "Finder, Downloads and Mac apps fit alongside"],
       },
       widgets: {
@@ -129,7 +129,7 @@ export const en = {
         { question: "Do I need API keys or a new subscription?", answer: "No. Each Agent signs in with its own CLI command, using the account you already have." },
         { question: "Where is my data stored?", answer: "In a folder you choose. Chats, attachments, Projects, Base, Apps and Skills are readable files — back them up by copying the folder." },
         { question: "Can anyone read my synced Chats?", answer: "No. Sync is off until you turn it on. Chats are encrypted with a password only you know before they leave your computer; Bottega’s servers store and relay ciphertext." },
-        { question: "Which platforms are supported?", answer: "Bottega 0.4.1 is for Apple silicon Macs. Windows and Linux installers are not included. Bottega Dock is an Alpha plugin that requires macOS 27.x and Apple silicon; this does not change the main app’s requirements. Official Mac releases from 0.2.6 onward use the stable automatic-update channel. The 0.2.5 personal build cannot update automatically: quit Bottega completely, back up your Bottega folder and application data, and install 0.4.1 manually. Protocol 26 continues. If 0.4.0 cannot open, install the 0.4.1 DMG directly. Existing content, sync passwords and account keys stay in place; no data reset is needed. Restored queues wait for explicit Resume before automatic sending. See the 0.4.0 changelog for plugin trust, Weather and validation limits." },
+        { question: "Which platforms are supported?", answer: "Bottega 0.4.2 is for Apple silicon Macs. Windows and Linux installers are not included. Dock is Alpha and requires macOS 26.x or 27.x with Apple silicon; the main app’s requirements stay unchanged. Official Mac releases from 0.2.6 onward use the stable automatic-update channel. The 0.2.5 personal build needs a manual installation of 0.4.2. Quit Bottega and back up the Bottega folder and application data before updating. Protocol 27 requires connected desktops to update and Bottega Web to reload after the coordinated service update. Workflow, standalone Agent configurations and Bottega Team are retired. Ordinary and former Lead Chats, original Project folders, Base field content, sync passwords and account keys remain. Startup does not perform retirement cleanup. Read the 0.4.2 changelog for cleanup scope and Dock validation limits." },
         { question: "Can I ship my own version?", answer: "Yes. Fork the repository, change what you like and build it with three commands. The MIT License applies to Bottega’s first-party code. Distribution must comply with every bundled component’s license. The modified Canvas, Slides and Design System editors retain the BaoCut Community License. Commercial redistribution, inclusion in commercial software supplied to others, or commercial hosted access to covered editor code requires a separate written license from the applicable rights holders." },
       ],
     },
@@ -307,7 +307,7 @@ export const en = {
             "Each Agent Harness has its own runtime model. To keep the experience consistent, Bottega provides one interaction layer and adapts streaming replies, tool status, Plan mode, queued messages, and more to each backend.",
             "Ordinary Codex Chat uses its native App Server and checks the actual protocol and required capabilities. Native titles and isolated editing retain separate CLI 0.163.0-alpha.10.2 qualification. Ask for approval uses your decision; Approve for me uses Codex’s automatic reviewer. Electron launches can request the permissions they need. Approval can be refused, and a refusal does not switch the Chat to Full access.",
             "Codex workspace modes allow network access, temporary-directory writes and ordinary reads outside the workspace. Bottega’s previous credential-path denials and internal read-only fences no longer apply to Codex commands.",
-            "Full access is broader. Plan follows the selected permissions and does not enforce filesystem read-only access. Unsupported strict roles are refused before execution.",
+            "Full access is broader. Plan follows the selected permissions and does not enforce filesystem read-only access.",
             "Here is the current capability coverage, which continues to evolve:",
           ],
         },

@@ -3,6 +3,21 @@
 Este archivo registra hitos del producto, no iteraciones internas de implementación.
 
 
+## 2026-11-09 — v0.4.2
+
+El código fuente de la versión 0.4.2 está dirigido a macOS con chip de Apple (ARM64). Consulta la [última Release estable](https://github.com/thinkingjimmy/Bottega/releases/latest) para conocer la disponibilidad de los instaladores y el alcance real de la validación.
+
+- **Simplifica el espacio de trabajo.** Se retiran Workflow, las configuraciones Agent independientes y Bottega Team. Se conservan los Chats ordinarios y los antiguos Chats Lead, los subagentes nativos de los Providers, los ajustes de Provider, las bifurcaciones de Chat ordinarias y la creación de plugins. Las antiguas columnas Stage y Acceptance criteria pasan a ser campos Base ordinarios y editables, con sus identificadores, opciones, valores y referencias de vistas.
+- **Recupera las comprobaciones de actualización sin interrupciones.** Los fallos temporales se reintentan en segundo plano, las comprobaciones se pausan sin conexión y se conserva la información de actualización confirmada. Los ajustes distinguen los fallos de comprobación de los fallos de descarga y ofrecen la acción de reintento correspondiente. La descarga y el reinicio siguen requiriendo tu acción.
+- **Encuentra el instalador actual desde la recuperación.** Descargar la última versión abre la página oficial de la última Release en el navegador, incluso cuando el espacio de trabajo principal no se abre.
+- **Usa Dock en macOS 26 o 27.** Se admiten los Mac con chip de Apple en macOS 26.x y 27.x. El catálogo unificado de plugins muestra los requisitos de configuración nativa y mantiene su estado de activación alineado con el gestor nativo de Dock. Los sistemas no compatibles siguen bloqueados.
+- **Lee mejor los menús y ajustes.** Los modos Chat se explican antes de elegirlos, los menús del cuadro de entrada y de Project se unifican y se retiran las secciones duplicadas de plugins de formato externo. Los avisos de fallo de plugins son más breves y conservan el acceso a los detalles.
+
+**Compatibilidad y datos.** La versión 0.4.2 usa el protocolo **27**. Tras la actualización coordinada del servicio, actualiza los equipos conectados y vuelve a cargar Bottega Web. Los clientes con protocolo 26 deben actualizarse antes de volver a conectar con Cloud. El mantenimiento específico de la Release retira solo los registros verificados como propios de las funciones retiradas. Los plugins conservados mantienen su código fuente y sus datos. Se conservan los Chats ordinarios y los antiguos Chats Lead, las carpetas Project originales, el contenido de los campos Base, las contraseñas de sincronización y las claves de cuenta. Haz una copia de seguridad de la carpeta de Bottega y de todos los datos de la aplicación antes de actualizar. El inicio del producto no ejecuta la limpieza de las funciones retiradas.
+
+**Límites de validación.** Dock sigue en Alpha. Los escenarios controlados de macOS 26.4.1 y 27.0.0 se ejecutaron en un Mac con chip de Apple y macOS 27; no validan un Mac físico con macOS 26. La sustitución de Dock con el paquete firmado exacto, la aprobación, la restauración, el inicio de sesión o reinicio y los escenarios de pantalla, junto con la entrada física, las tecnologías de asistencia y la entrega entre dos equipos físicos, mantienen su validación independiente. La validación de una actualización real desde una instalación anterior sigue siendo independiente. Se conservan los límites existentes de Artifacts y de las licencias de componentes.
+
+
 ## 2026-11-09 — v0.4.1
 
 [Descargar 0.4.1](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.4.1) para macOS con chip de Apple (ARM64).
