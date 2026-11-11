@@ -3,6 +3,18 @@
 Este archivo registra hitos del producto, no iteraciones internas de implementación.
 
 
+## 2026-11-11 — v0.4.3
+
+El código fuente de la versión 0.4.3 está dirigido a macOS con chip de Apple (ARM64) y usa el protocolo de Cloud **27**. Consulta la [última Release estable](https://github.com/thinkingjimmy/Bottega/releases/latest) para conocer la disponibilidad de los instaladores y el alcance de la validación.
+
+- **Encuentra los plugins y consulta sus detalles con más facilidad.** El catálogo presenta tarjetas con un diseño uniforme y descripciones claras. La ficha del plugin muestra quién lo publica, su versión y su estado. Despliega una herramienta para ver su descripción completa, sus campos de entrada y salida y su esquema JSON original.
+- **Configura Bottega Dock en menos pasos.** Dock sale de la fase Alpha en Mac con chip de Apple y macOS 26 o 27. Al confirmar la sustitución, Bottega Dock copia las apps ancladas al Dock del sistema en el mismo orden. Tu disposición conserva los accesos directos a las Apps de Bottega y los Widgets. En el modo de coexistencia puedes copiar la lista manualmente.
+- **Reconstruye desde el código fuente las Apps que admiten esta opción.** La tarjeta y la página de detalles de la App explican por qué una compilación no está disponible. Elige **Reconstruir desde el código fuente** y revisa los permisos antes de abrir la App reconstruida.
+- **Consulta el progreso al abrir la carpeta de Bottega.** El botón de configuración muestra directamente el progreso. Si la apertura falla, vuelve a intentarlo desde ese paso.
+
+La sustitución y la recuperación del Dock con el instalador firmado, las combinaciones de pantallas y pantalla completa, y la actualización de una versión anterior ya instalada se verifican por separado.
+
+
 ## 2026-11-09 — v0.4.2
 
 El código fuente de la versión 0.4.2 está dirigido a macOS con chip de Apple (ARM64). Consulta la [última Release estable](https://github.com/thinkingjimmy/Bottega/releases/latest) para conocer la disponibilidad de los instaladores y el alcance real de la validación.

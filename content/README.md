@@ -11,7 +11,9 @@
 - `changelog.es.md`: Spanish snapshot maintained by the website repository.
 
 All snapshots preserve the English entry dates, order, and item counts. The i18n content test enforces this contract.
-All five snapshots include every public milestone through v0.4.2 (development milestone date: 2026-11-09). Japanese, French and Spanish preserve historical entries and translate the new five-item milestone with its compatibility/data and validation-limit paragraphs. Changelog dates describe development milestones; GitHub Release metadata owns the actual publication timestamp.
+All five snapshots include every public milestone through v0.4.3 (development milestone date: 2026-11-11). Japanese, French and Spanish preserve historical entries and translate the four new items and their acceptance scope. Changelog dates describe development milestones; GitHub Release metadata owns the actual publication timestamp.
+
+The 0.4.3 entry covers the plugin catalog and details, shorter Dock setup, eligible App rebuilds from source, and progress while opening the Bottega folder. It records protocol 27 and separate acceptance checks for signed Dock replacement and recovery, display and full-screen combinations, and installed upgrades.
 
 The 0.4.2 entry covers Workflow, standalone Agent configuration and Bottega Team retirement; quiet update recovery; the startup Download latest action; macOS 26/27 Dock admission; and clearer menus, settings and plugin notices. Protocol 27 requires coordinated desktop, Web and backend delivery. Targeted retirement cleanup handles verified retired-feature records only and is separate from product startup. Retained plugins keep their source and data. Ordinary and former Lead Chats, original Project folders, Base field content, sync passwords and account keys remain. Controlled-version Dock checks do not certify physical macOS 26 or signed replacement/recovery. These instructions do not certify a completed installed upgrade.
 

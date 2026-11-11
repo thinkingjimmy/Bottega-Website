@@ -3,6 +3,18 @@
 Ce fichier consigne les jalons du produit, pas les itérations internes d’implémentation.
 
 
+## 2026-11-11 — v0.4.3
+
+Le code source de la version 0.4.3 cible macOS sur puce Apple (ARM64) et utilise le protocole Cloud **27**. Consultez la [dernière Release stable](https://github.com/thinkingjimmy/Bottega/releases/latest) pour connaître la disponibilité des installateurs et le périmètre de validation.
+
+- **Trouver les plugins et consulter leurs détails plus facilement.** Le catalogue présente des cartes au format uniforme et des descriptions claires. La fiche du plugin indique son éditeur, sa version et son état. Développez un outil pour consulter sa description complète, ses champs d’entrée et de sortie et son schéma JSON d’origine.
+- **Configurer Bottega Dock en moins d’étapes.** Dock sort de la phase Alpha sur les Mac avec puce Apple sous macOS 26 ou 27. Confirmez le remplacement pour reprendre les apps épinglées dans le Dock système et leur ordre. Votre disposition conserve les raccourcis des Apps Bottega et les Widgets. En mode coexistence, vous pouvez copier cette liste manuellement.
+- **Reconstruire une App éligible depuis le code source.** La carte de l’App et sa page de détails indiquent pourquoi une compilation est indisponible. Choisissez **Reconstruire depuis le code source**, puis vérifiez les autorisations avant d’ouvrir l’App reconstruite.
+- **Suivre l’ouverture du dossier Bottega.** Le bouton de configuration affiche directement la progression. Si l’ouverture échoue, réessayez depuis la même étape.
+
+Le remplacement et la restauration du Dock avec l’installateur signé, les combinaisons d’écrans et de modes plein écran, ainsi que la mise à jour d’une ancienne version déjà installée font l’objet de vérifications distinctes.
+
+
 ## 2026-11-09 — v0.4.2
 
 Le code source de la version 0.4.2 cible macOS sur puce Apple (ARM64). Consultez la [dernière Release stable](https://github.com/thinkingjimmy/Bottega/releases/latest) pour la disponibilité des installateurs et le périmètre réel de validation.
