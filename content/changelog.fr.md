@@ -3,6 +3,16 @@
 Ce fichier consigne les jalons du produit, pas les itérations internes d’implémentation.
 
 
+## 2026-11-12 — v0.4.4
+
+La version 0.4.4 est compatible avec macOS sur puce Apple (ARM64) et utilise le protocole Cloud **27**. [Version et programme d’installation](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.4.4)
+
+- **Gérer les Apps et les Widgets du Dock.** Une fois le Dock activé, ouvrez l’onglet Widgets dans Apps pour ajouter ou configurer un Widget. Les Apps épinglées apparaissent une seule fois dans la barre latérale.
+- **Voir la météo de la ville de votre choix.** Recherchez une ville et sa région. Le Widget moyen affiche les températures minimale et maximale du jour, et le grand affiche les trois prochains jours. Les Widgets qui utilisaient la localisation automatique vous demandent de choisir une ville.
+- **Continuer à travailler dans l’App.** Ouvrez Données, Réglages ou Chat dans le panneau latéral. L’ouverture des données conserve la page active de l’App.
+- **Accéder plus vite à Skills et aux réglages des Providers.** Skills ouvre directement la bibliothèque. Les réglages des Providers regroupent la connexion, l’état, la version et les mises à jour.
+- **Utiliser le Chat dans un espace réduit.** Les noms de modèles longs prennent moins de place. La sélection de l’Agent et le bouton d’envoi restent accessibles. La barre latérale affiche un nouveau logo Bottega.
+
 ## 2026-11-11 — v0.4.3
 
 Le code source de la version 0.4.3 cible macOS sur puce Apple (ARM64) et utilise le protocole Cloud **27**. Consultez la [dernière Release stable](https://github.com/thinkingjimmy/Bottega/releases/latest) pour connaître la disponibilité des installateurs et le périmètre de validation.

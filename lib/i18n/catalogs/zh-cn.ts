@@ -118,7 +118,7 @@ export const zhCN = {
         { question: "需要 API key 或新的订阅吗？", answer: "不需要。每个 Agent 用它自己的 CLI 命令登录，用的是你已有的账号。" },
         { question: "我的数据存在哪里？", answer: "存在你选定的文件夹里。Chat、附件、Project、Base、App 和 Skills 都是可读的文件——复制这个文件夹就是备份。" },
         { question: "同步的 Chat 会被别人读到吗？", answer: "不会。同步默认关闭。打开后，Chat 在离开你的电脑之前就用只有你知道的密码加密；Bottega 的服务器只存储和转发密文。" },
-        { question: "支持哪些平台？", answer: "Bottega 0.4.3 适用于 Apple 芯片 Mac，不包含 Windows 或 Linux 安装包。Dock 插件要求 macOS 26.x 或 27.x 与 Apple 芯片。从 0.2.6 起，正式 Mac 版本使用稳定版自动更新通道。0.2.5 个人版需手动安装 0.4.3。更新前请完全退出 Bottega，并备份 Bottega 文件夹与应用数据。Cloud 使用协议 27。协议 26 客户端需更新后才能重新连接 Cloud。Workflow、独立 Agent 配置与 Bottega Team 已退役。普通 Chat、原 Lead Chat、原 Project 文件夹、Base 字段内容、同步密码与账号密钥保留。产品启动不会自动执行退役清理。清理范围见 0.4.2 更新日志，Dock 验收范围见 0.4.3 更新日志。" },
+        { question: "支持哪些平台？", answer: "Bottega 0.4.4 适用于 Apple 芯片 Mac，不包含 Windows 或 Linux 安装包。Dock 插件要求 macOS 26.x 或 27.x 与 Apple 芯片。从 0.2.6 起，正式 Mac 版本使用稳定版自动更新通道。0.2.5 个人版需手动安装 0.4.4。更新前请完全退出 Bottega，并备份 Bottega 文件夹与应用数据。Cloud 使用协议 27。协议 26 客户端需更新后才能重新连接 Cloud。Workflow、独立 Agent 配置与 Bottega Team 已退役。普通 Chat、原 Lead Chat、原 Project 文件夹、Base 字段内容、同步密码与账号密钥保留。产品启动不会自动执行退役清理。清理范围见 0.4.2 更新日志，Dock 验收范围见 0.4.3 更新日志。" },
         { question: "可以发布我自己的版本吗？", answer: "可以。fork 仓库，改成你想要的样子，三条命令就能构建。MIT 许可适用于 Bottega 的第一方代码。分发时必须遵守每个捆绑组件的许可。修改后的 Canvas、Slides 与 Design System 编辑器保留 BaoCut Community License。对其覆盖的编辑器代码进行商业再分发、将其纳入向他人提供的商业软件，或提供商业托管访问，都需要取得相应权利人的单独书面许可。" },
       ],
     },

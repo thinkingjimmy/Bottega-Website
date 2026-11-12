@@ -11,7 +11,9 @@
 - `changelog.es.md`: Spanish snapshot maintained by the website repository.
 
 All snapshots preserve the English entry dates, order, and item counts. The i18n content test enforces this contract.
-All five snapshots include every public milestone through v0.4.3 (development milestone date: 2026-11-11). Japanese, French and Spanish preserve historical entries and translate the four new items and their acceptance scope. Changelog dates describe development milestones; GitHub Release metadata owns the actual publication timestamp.
+All five snapshots include every public milestone through v0.4.4 (development milestone date: 2026-11-12). Japanese, French and Spanish preserve historical entries and translate the five new items. Changelog dates describe development milestones; GitHub Release metadata owns the actual publication timestamp.
+
+The 0.4.4 entry covers Dock Widget management, Weather forecasts by city, App side panels, Skills and Provider settings, and the Chat composer and sidebar wordmark.
 
 The 0.4.3 entry covers the plugin catalog and details, shorter Dock setup, eligible App rebuilds from source, and progress while opening the Bottega folder. It records protocol 27 and separate acceptance checks for signed Dock replacement and recovery, display and full-screen combinations, and installed upgrades.
 
