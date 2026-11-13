@@ -3,6 +3,16 @@
 Ce fichier consigne les jalons du produit, pas les itérations internes d’implémentation.
 
 
+## 2026-11-13 — v0.4.5
+
+La version 0.4.5 est compatible avec macOS sur puce Apple (ARM64) et utilise le protocole Cloud **27**. [Version et programme d’installation](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.4.5)
+
+- **Quatre Widgets inclus.** Ajoutez Météo, Limites IA, Utilisation IA ou Tâches. Les éléments déjà dans le Dock conservent leur ordre et leurs réglages. Limites IA fusionne l’ordre des Agents et les quotas sélectionnés sur plusieurs appareils.
+- **Un onglet pour les Apps et un autre pour les Widgets.** Réglages → Plugins regroupe les plugins qui fournissent des outils, des modes ou d’autres fonctions. La présentation des réglages du Dock est plus simple.
+- **Des réglages d’outils communs à tous les Projects.** Gérez les serveurs MCP globaux dans Réglages → MCP. Activez ou désactivez les outils intégrés dans la section Fonctions du plugin qui les fournit.
+- **Accédez aux Skills du Project.** La page Skills affiche les Skills du Project ouvert. Recherchez-les, actualisez la liste ou choisissez Ajouter des Skills.
+- **Une météo plus lisible.** Le Widget Météo offre un meilleur contraste. L’état des mises à jour s’affiche dans la barre latérale.
+
 ## 2026-11-12 — v0.4.4
 
 La version 0.4.4 est compatible avec macOS sur puce Apple (ARM64) et utilise le protocole Cloud **27**. [Version et programme d’installation](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.4.4)

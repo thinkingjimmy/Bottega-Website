@@ -3,6 +3,16 @@
 Este archivo registra hitos del producto, no iteraciones internas de implementación.
 
 
+## 2026-11-13 — v0.4.5
+
+La versión 0.4.5 es compatible con macOS en equipos con chip de Apple (ARM64) y usa el protocolo Cloud **27**. [Versión e instalador](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.4.5)
+
+- **Cuatro Widgets incluidos.** Añade Tiempo, Límites de IA, Uso de IA o Tareas. Los elementos que ya están en el Dock conservan su orden y sus ajustes. Límites de IA combina el orden de los Agents y las cuotas seleccionadas entre dispositivos.
+- **Una pestaña para Apps y otra para Widgets.** Ajustes → Plugins reúne los plugins que ofrecen herramientas, modos u otras funciones. La disposición de los ajustes del Dock es más sencilla.
+- **Ajustes de herramientas para todos los Projects.** Gestiona los servidores MCP globales en Ajustes → MCP. Activa o desactiva las herramientas integradas desde Funciones en los detalles del plugin que las ofrece.
+- **Encuentra los Skills del Project.** La página Skills muestra los Skills del Project abierto. Puedes buscarlos, actualizar la lista o elegir Añadir Skills.
+- **El tiempo se lee mejor.** El Widget Tiempo tiene mejor contraste. El estado de las actualizaciones aparece en la barra lateral.
+
 ## 2026-11-12 — v0.4.4
 
 La versión 0.4.4 es compatible con macOS en equipos con chip de Apple (ARM64) y usa el protocolo Cloud **27**. [Versión e instalador](https://github.com/thinkingjimmy/Bottega/releases/tag/v0.4.4)
